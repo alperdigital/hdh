@@ -20,11 +20,24 @@ get_header();
                 </svg>
             </div>
             
-            <article id="post-<?php the_ID(); ?>" <?php post_class('single-post farm-journal'); ?>>
-                <header class="post-header">
-                    <?php // Kategori badge kaldırıldı ?>
-                    
-                    <h1 class="post-title"><?php the_title(); ?></h1>
+            <!-- HDH: Wooden Board Article Header -->
+            <div class="article-wooden-board">
+                <article id="post-<?php the_ID(); ?>" <?php post_class('single-post farm-journal'); ?>>
+                    <header class="post-header wooden-header">
+                        <?php 
+                        // HDH: Category badge as hay bale
+                        $categories = get_the_category();
+                        if (!empty($categories)) : ?>
+                            <div class="post-category-badges">
+                                <?php foreach ($categories as $cat) : ?>
+                                    <span class="hay-bale-badge">
+                                        <?php echo esc_html($cat->name); ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <h1 class="post-title cartoon-title"><?php the_title(); ?></h1>
                     
                     <div class="post-meta">
                         <span class="post-author">
@@ -120,6 +133,32 @@ get_header();
             
             <?php if (mi_has_sidebar()) : ?>
                 <?php get_sidebar(); ?>
+            <?php else : ?>
+                <!-- HDH: Floating Farm Toolbox Widget Panel -->
+                <aside class="farm-toolbox-panel">
+                    <div class="toolbox-header">
+                        <span class="toolbox-icon">🧰</span>
+                        <h3 class="toolbox-title">Farm Toolbox</h3>
+                    </div>
+                    <div class="toolbox-content">
+                        <div class="toolbox-item">
+                            <span class="toolbox-item-icon">📚</span>
+                            <a href="#guides" class="toolbox-link">Rehberler</a>
+                        </div>
+                        <div class="toolbox-item">
+                            <span class="toolbox-item-icon">🎁</span>
+                            <a href="#events" class="toolbox-link">Etkinlikler</a>
+                        </div>
+                        <div class="toolbox-item">
+                            <span class="toolbox-item-icon">👥</span>
+                            <a href="#community" class="toolbox-link">Topluluk</a>
+                        </div>
+                        <div class="toolbox-item">
+                            <span class="toolbox-item-icon">🔍</span>
+                            <a href="<?php echo esc_url(home_url('/')); ?>" class="toolbox-link">Ara</a>
+                        </div>
+                    </div>
+                </aside>
             <?php endif; ?>
         </div>
     </div>

@@ -1,0 +1,778 @@
+/**
+ * HDH: Cartoon Farm Theme - Main Stylesheet
+ * Premium, interactive, cartoon-inspired farm theme for hayday.help
+ */
+
+/* ============================================
+   CARTOON FARM COLOR SYSTEM
+   ============================================ */
+:root {
+    /* Primary Farm Colors - Bright & Vivid */
+    --farm-green: #74C365;
+    --farm-green-dark: #5AA34A;
+    --farm-green-light: #9DD88A;
+    
+    /* Hay Yellow */
+    --hay-yellow: #FFDB6E;
+    --hay-yellow-dark: #FFC947;
+    --hay-yellow-light: #FFE99F;
+    
+    /* Warm Orange */
+    --warm-orange: #E86F33;
+    --warm-orange-dark: #D45A1F;
+    --warm-orange-light: #F58A5A;
+    
+    /* Wood Brown */
+    --wood-brown: #6C3F1F;
+    --wood-brown-dark: #4A2A15;
+    --wood-brown-light: #8B5A3C;
+    
+    /* Sky Blue */
+    --sky-blue: #ADD8FF;
+    --sky-blue-dark: #7BB5FF;
+    --sky-blue-light: #D4E8FF;
+    
+    /* Neutrals */
+    --clean-white: #FFFFFF;
+    --soft-cream: #FFF9E6;
+    --light-beige: #F5E6D3;
+    
+    /* Gradients */
+    --gradient-sky: linear-gradient(180deg, #D4E8FF 0%, #ADD8FF 50%, #7BB5FF 100%);
+    --gradient-grass: linear-gradient(180deg, #9DD88A 0%, #74C365 50%, #5AA34A 100%);
+    --gradient-wood: linear-gradient(180deg, #8B5A3C 0%, #6C3F1F 50%, #4A2A15 100%);
+    --gradient-sunset: linear-gradient(135deg, #FFDB6E 0%, #E86F33 100%);
+    
+    /* Shadows - Soft & Cartoon-like */
+    --shadow-soft: 0 4px 12px rgba(108, 63, 31, 0.15);
+    --shadow-medium: 0 6px 20px rgba(108, 63, 31, 0.2);
+    --shadow-strong: 0 10px 30px rgba(108, 63, 31, 0.25);
+    --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    /* Border Radius - Rounded & Friendly */
+    --radius-small: 12px;
+    --radius-medium: 20px;
+    --radius-large: 30px;
+    --radius-round: 50px;
+}
+
+/* ============================================
+   TYPOGRAPHY - Friendly & Rounded
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Quicksand:wght@400;500;600;700&family=Baloo+2:wght@400;500;600;700;800&display=swap');
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--wood-brown);
+    background: var(--gradient-sky);
+    background-attachment: fixed;
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Baloo 2', 'Poppins', sans-serif;
+    font-weight: 700;
+    color: var(--wood-brown);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+h1 { font-size: 3rem; font-weight: 800; }
+h2 { font-size: 2.5rem; font-weight: 700; }
+h3 { font-size: 2rem; font-weight: 600; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.1rem; }
+
+/* ============================================
+   ANIMATIONS - Keyframes
+   ============================================ */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes floatSlow {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    33% { transform: translateY(-8px) translateX(5px); }
+    66% { transform: translateY(-5px) translateX(-5px); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ============================================
+   DECORATIVE ELEMENTS
+   ============================================ */
+.floating-cloud {
+    position: absolute;
+    opacity: 0.6;
+    animation: floatSlow 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating-leaf {
+    position: absolute;
+    opacity: 0.5;
+    animation: float 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--hay-yellow);
+    border-radius: 50%;
+    animation: sparkle 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* ============================================
+   CARTOON HEADER - Wooden Board Style
+   ============================================ */
+.cartoon-header {
+    background: var(--gradient-wood);
+    border-bottom: 4px solid var(--wood-brown-dark);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.3s ease;
+}
+
+.cartoon-header.scrolled {
+    box-shadow: var(--shadow-strong);
+    padding: 0;
+}
+
+.header-wooden-board {
+    background: 
+        repeating-linear-gradient(
+            90deg,
+            var(--wood-brown) 0px,
+            var(--wood-brown) 2px,
+            var(--wood-brown-light) 2px,
+            var(--wood-brown-light) 4px
+        );
+    padding: 20px 0;
+    position: relative;
+    box-shadow: var(--shadow-inset);
+}
+
+.header-wooden-board::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--wood-brown-dark);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.site-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.site-logo:hover {
+    transform: scale(1.05);
+}
+
+.site-logo-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--farm-green);
+    border-radius: var(--radius-round);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: var(--shadow-soft);
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.site-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--clean-white);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin: 0;
+}
+
+/* ============================================
+   CARTOON NAVIGATION
+   ============================================ */
+.cartoon-nav {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.cartoon-nav-item {
+    margin: 0;
+}
+
+.cartoon-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: var(--soft-cream);
+    color: var(--wood-brown);
+    text-decoration: none;
+    border-radius: var(--radius-medium);
+    font-weight: 600;
+    font-size: 15px;
+    border: 3px solid var(--wood-brown);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    overflow: hidden;
+}
+
+.cartoon-nav-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--farm-green);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.cartoon-nav-link:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.cartoon-nav-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--farm-green);
+    color: var(--clean-white);
+    z-index: 1;
+}
+
+.cartoon-nav-link span {
+    position: relative;
+    z-index: 1;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================
+   HERO SECTION - Farm World Landing
+   ============================================ */
+.farm-hero-world {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--gradient-sky);
+    padding: 80px 0;
+}
+
+.farm-hero-world::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: var(--gradient-grass);
+    clip-path: polygon(0 40%, 100% 20%, 100% 100%, 0 100%);
+    z-index: 1;
+}
+
+.hero-content-wrapper {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    padding: 0 20px;
+    animation: slideInUp 1s ease-out;
+}
+
+.hero-title-cartoon {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--wood-brown);
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 0 var(--clean-white), 6px 6px 0 rgba(108, 63, 31, 0.2);
+    line-height: 1.1;
+}
+
+.hero-subtitle-cartoon {
+    font-size: 1.5rem;
+    color: var(--wood-brown);
+    margin-bottom: 40px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+/* ============================================
+   WOODEN SIGN BUTTONS
+   ============================================ */
+.btn-wooden-sign {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 35px;
+    background: var(--gradient-wood);
+    color: var(--clean-white);
+    text-decoration: none;
+    border-radius: var(--radius-medium);
+    font-weight: 700;
+    font-size: 18px;
+    border: 4px solid var(--wood-brown-dark);
+    box-shadow: var(--shadow-medium), var(--shadow-inset);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-wooden-sign::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: var(--hay-yellow);
+    border-radius: var(--radius-medium);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.btn-wooden-sign:hover::before {
+    opacity: 1;
+}
+
+.btn-wooden-sign:hover {
+    transform: translateY(-5px) rotate(-2deg);
+    box-shadow: var(--shadow-strong), var(--shadow-inset);
+    animation: bounce 0.6s ease;
+}
+
+.btn-wooden-sign.btn-primary {
+    background: var(--gradient-grass);
+    border-color: var(--farm-green-dark);
+}
+
+.btn-wooden-sign.btn-secondary {
+    background: var(--gradient-sunset);
+    border-color: var(--warm-orange-dark);
+}
+
+/* ============================================
+   FARM BOARD CARDS
+   ============================================ */
+.farm-board-card {
+    background: var(--soft-cream);
+    border: 4px solid var(--wood-brown);
+    border-radius: var(--radius-large);
+    padding: 30px;
+    box-shadow: var(--shadow-medium);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    overflow: hidden;
+}
+
+.farm-board-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: var(--gradient-wood);
+    border-bottom: 2px solid var(--wood-brown-dark);
+}
+
+.farm-board-card:hover {
+    transform: translateY(-8px) rotate(1deg);
+    box-shadow: var(--shadow-strong);
+    border-color: var(--farm-green);
+}
+
+.farm-board-card-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.8rem;
+    color: var(--wood-brown);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.farm-board-card-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--farm-green);
+    border-radius: var(--radius-round);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: var(--shadow-soft);
+}
+
+/* ============================================
+   HAY BALE BADGES
+   ============================================ */
+.hay-bale-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--hay-yellow);
+    color: var(--wood-brown);
+    border-radius: var(--radius-round);
+    font-weight: 700;
+    font-size: 14px;
+    border: 3px solid var(--hay-yellow-dark);
+    box-shadow: var(--shadow-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+/* ============================================
+   SINGLE POST - WOODEN BOARD DESIGN
+   ============================================ */
+.article-wooden-board {
+    background: var(--soft-cream);
+    border: 4px solid var(--wood-brown);
+    border-radius: var(--radius-large);
+    padding: 40px;
+    box-shadow: var(--shadow-medium);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.article-wooden-board::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: var(--gradient-wood);
+    border-bottom: 2px solid var(--wood-brown-dark);
+    border-radius: var(--radius-large) var(--radius-large) 0 0;
+}
+
+.wooden-header {
+    border-bottom: 3px solid var(--wood-brown);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.post-category-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.cartoon-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 2.8rem;
+    color: var(--wood-brown);
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.farm-journal .post-content {
+    color: var(--wood-brown);
+    font-size: 18px;
+    line-height: 1.9;
+    max-width: 100%;
+}
+
+.farm-journal .post-content p {
+    margin-bottom: 25px;
+}
+
+.farm-journal .post-featured-image {
+    border-radius: var(--radius-medium);
+    overflow: hidden;
+    margin: 30px 0;
+    border: 4px solid var(--wood-brown);
+    box-shadow: var(--shadow-medium);
+}
+
+.farm-journal .post-featured-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.farm-journal .post-featured-image:hover img {
+    transform: scale(1.02);
+}
+
+/* ============================================
+   FARM TOOLBOX PANEL
+   ============================================ */
+.farm-toolbox-panel {
+    position: sticky;
+    top: 100px;
+    background: var(--soft-cream);
+    border: 4px solid var(--wood-brown);
+    border-radius: var(--radius-large);
+    padding: 25px;
+    box-shadow: var(--shadow-medium);
+    max-width: 280px;
+    margin-left: 30px;
+}
+
+.toolbox-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--wood-brown);
+}
+
+.toolbox-icon {
+    font-size: 32px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.toolbox-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.5rem;
+    color: var(--wood-brown);
+    margin: 0;
+}
+
+.toolbox-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toolbox-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--clean-white);
+    border: 2px solid var(--wood-brown-light);
+    border-radius: var(--radius-small);
+    transition: all 0.3s ease;
+}
+
+.toolbox-item:hover {
+    background: var(--farm-green-light);
+    border-color: var(--farm-green);
+    transform: translateX(5px);
+}
+
+.toolbox-item-icon {
+    font-size: 24px;
+}
+
+.toolbox-link {
+    color: var(--wood-brown);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.toolbox-item:hover .toolbox-link {
+    color: var(--farm-green-dark);
+}
+
+/* ============================================
+   FARM FEATURES GRID
+   ============================================ */
+.farm-features-section {
+    padding: 80px 0;
+    position: relative;
+}
+
+.section-title-cartoon {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 3rem;
+    text-align: center;
+    color: var(--wood-brown);
+    margin-bottom: 50px;
+}
+
+.farm-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* ============================================
+   FARM ANNOUNCEMENT BANNER
+   ============================================ */
+.farm-announcement-banner {
+    background: var(--gradient-grass);
+    padding: 12px 0;
+    border-bottom: 3px solid var(--farm-green-dark);
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+}
+
+.farm-announcement-text {
+    margin: 0;
+    color: var(--wood-brown);
+    font-weight: 700;
+    font-size: 15px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================
+   FARM HERO BACKGROUND ELEMENTS
+   ============================================ */
+.farm-hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.farm-sun {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    font-size: 80px;
+    animation: floatSlow 10s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(255, 219, 110, 0.5));
+}
+
+.farm-hills {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: var(--gradient-grass);
+    clip-path: polygon(0 60%, 20% 40%, 40% 50%, 60% 30%, 80% 45%, 100% 35%, 100% 100%, 0 100%);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .hero-title-cartoon {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle-cartoon {
+        font-size: 1.2rem;
+    }
+    
+    .cartoon-nav {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .cartoon-nav-link {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .header-content {
+        flex-direction: column;
+    }
+    
+    .site-title {
+        font-size: 1.5rem;
+    }
+    
+    .farm-toolbox-panel {
+        position: static;
+        max-width: 100%;
+        margin-left: 0;
+        margin-top: 30px;
+    }
+    
+    .farm-features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .article-wooden-board {
+        padding: 25px;
+    }
+    
+    .cartoon-title {
+        font-size: 2rem;
+    }
+}
+

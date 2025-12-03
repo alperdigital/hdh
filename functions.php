@@ -104,9 +104,18 @@ function mi_theme_setup() {
 }
 add_action('after_setup_theme', 'mi_theme_setup');
 
+// HDH: Include farm components
+require_once get_template_directory() . '/components/farm-card.php';
+require_once get_template_directory() . '/components/farm-banner.php';
+require_once get_template_directory() . '/components/cta-buttons.php';
+
 // Enqueue styles and scripts
 function mi_enqueue_scripts() {
-    wp_enqueue_style('mi-style', get_stylesheet_uri(), array(), '1.0.0');
+    // HDH: Main cartoon farm stylesheet
+    wp_enqueue_style('hdh-farm-style', get_template_directory_uri() . '/assets/css/farm-style.css', array(), '2.0.0');
+    
+    // Original theme stylesheet (for compatibility)
+    wp_enqueue_style('mi-style', get_stylesheet_uri(), array('hdh-farm-style'), '2.0.0');
     
     // Print stylesheet
     wp_enqueue_style('mi-print', get_template_directory_uri() . '/print.css', array(), '1.0.0', 'print');
@@ -136,7 +145,16 @@ function mi_enqueue_scripts() {
         'hdh-farm-effects',
         get_template_directory_uri() . '/assets/js/farm-effects.js',
         array(),
-        '1.0.0',
+        '2.0.0',
+        true
+    );
+    
+    // HDH: Cartoon farm interactions script
+    wp_enqueue_script(
+        'hdh-cartoon-interactions',
+        get_template_directory_uri() . '/assets/js/cartoon-interactions.js',
+        array('jquery'),
+        '2.0.0',
         true
     );
 }

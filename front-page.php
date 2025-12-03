@@ -45,23 +45,107 @@ if ($front_page_section_id > 0) {
 // Ana sayfa görünümü - single-mi_section.php ile bire bir aynı
 ?>
 
-<!-- HDH: Farm-themed Hero Section -->
-<section class="farm-hero">
+<!-- HDH: Immersive Farm World Hero Section -->
+<section class="farm-hero-world" id="farm-hero">
+    <!-- Floating Decorative Elements -->
+    <div class="floating-cloud" style="top: 10%; left: 5%; animation-delay: 0s;">☁️</div>
+    <div class="floating-cloud" style="top: 20%; right: 10%; animation-delay: 2s;">☁️</div>
+    <div class="floating-cloud" style="top: 15%; left: 50%; animation-delay: 4s;">☁️</div>
+    <div class="floating-leaf" style="top: 30%; left: 20%; animation-delay: 1s;">🍃</div>
+    <div class="floating-leaf" style="top: 25%; right: 25%; animation-delay: 3s;">🍃</div>
+    <div class="sparkle" style="top: 40%; left: 15%; animation-delay: 0.5s;"></div>
+    <div class="sparkle" style="top: 35%; right: 20%; animation-delay: 1.5s;"></div>
+    <div class="sparkle" style="top: 50%; left: 60%; animation-delay: 2.5s;"></div>
+    
     <div class="container">
-        <div class="hero-content">
-            <h1 class="hero-title">Hay Day Yardım, Rehber ve Etkinlik Merkezi</h1>
-            <p class="hero-subtitle">Çiftliğinizi geliştirmek, etkinlikleri kaçırmamak ve toplulukla bağlantıda kalmak için ihtiyacınız olan her şey burada!</p>
+        <div class="hero-content-wrapper">
+            <h1 class="hero-title-cartoon">Hay Day Yardım, Rehber ve Etkinlik Merkezi</h1>
+            <p class="hero-subtitle-cartoon">Çiftliğinizi geliştirmek, etkinlikleri kaçırmamak ve toplulukla bağlantıda kalmak için ihtiyacınız olan her şey burada!</p>
+            
+            <!-- HDH: Wooden Sign CTA Buttons -->
             <div class="hero-buttons">
-                <a href="#events" class="btn-farm btn-primary">🎁 Güncel Çekilişler</a>
-                <a href="#guides" class="btn-farm btn-secondary">📚 Başlangıç Rehberi</a>
+                <?php
+                $cta_buttons = array(
+                    array(
+                        'text' => 'Güncel Çekilişler',
+                        'url' => '#events',
+                        'type' => 'primary',
+                        'icon' => '🎁'
+                    ),
+                    array(
+                        'text' => 'Başlangıç Rehberi',
+                        'url' => '#guides',
+                        'type' => 'secondary',
+                        'icon' => '📚'
+                    )
+                );
+                if (function_exists('hdh_cta_buttons')) {
+                    hdh_cta_buttons($cta_buttons);
+                } else {
+                    // Fallback
+                    echo '<a href="#events" class="btn-wooden-sign btn-primary">🎁 Güncel Çekilişler</a>';
+                    echo '<a href="#guides" class="btn-wooden-sign btn-secondary">📚 Başlangıç Rehberi</a>';
+                }
+                ?>
             </div>
         </div>
-        <!-- HDH: Decorative farm elements (SVG) -->
-        <div class="hero-decoration">
-            <svg class="farm-silhouette" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                <path d="M0,200 Q300,100 600,120 T1200,100 L1200,200 Z" fill="rgba(124, 179, 66, 0.2)"/>
-                <path d="M0,200 Q200,120 400,140 T800,120 T1200,110 L1200,200 Z" fill="rgba(124, 179, 66, 0.15)"/>
-            </svg>
+    </div>
+    
+    <!-- HDH: Animated Farm Background Elements -->
+    <div class="farm-hero-background">
+        <div class="farm-sun">☀️</div>
+        <div class="farm-hills"></div>
+    </div>
+</section>
+
+<!-- HDH: Feature Sections with Farm Board Cards -->
+<section class="farm-features-section" id="features">
+    <div class="container">
+        <h2 class="section-title-cartoon">Neler Sunuyoruz?</h2>
+        <div class="farm-features-grid">
+            <?php
+            $features = array(
+                array(
+                    'icon' => '📚',
+                    'title' => 'Detaylı Rehberler',
+                    'content' => 'Hay Day\'de başarılı olmak için ihtiyacınız olan tüm ipuçları ve stratejiler.'
+                ),
+                array(
+                    'icon' => '🎁',
+                    'title' => 'Güncel Etkinlikler',
+                    'content' => 'Hiçbir özel etkinliği kaçırmayın! Tüm güncel etkinlikler ve çekilişler burada.'
+                ),
+                array(
+                    'icon' => '👥',
+                    'title' => 'Aktif Topluluk',
+                    'content' => 'Binlerce oyuncu ile bilgi paylaşın, sorularınızı sorun ve deneyimlerinizi paylaşın.'
+                ),
+                array(
+                    'icon' => '🎉',
+                    'title' => 'Özel Çekilişler',
+                    'content' => 'Düzenli olarak düzenlenen özel çekilişler ve ödüller sizi bekliyor!'
+                )
+            );
+            
+            foreach ($features as $feature) {
+                if (function_exists('hdh_farm_card')) {
+                    hdh_farm_card(
+                        $feature['title'],
+                        '<p>' . esc_html($feature['content']) . '</p>',
+                        $feature['icon']
+                    );
+                } else {
+                    // Fallback
+                    echo '<div class="farm-board-card">';
+                    echo '<h3 class="farm-board-card-title">';
+                    echo '<span class="farm-board-card-icon">' . esc_html($feature['icon']) . '</span>';
+                    echo esc_html($feature['title']);
+                    echo '</h3>';
+                    echo '<div class="farm-board-card-content"><p>' . esc_html($feature['content']) . '</p></div>';
+                    echo '</div>';
+                }
+            }
+            ?>
         </div>
     </div>
 </section>
