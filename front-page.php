@@ -45,6 +45,27 @@ if ($front_page_section_id > 0) {
 // Ana sayfa görünümü - single-mi_section.php ile bire bir aynı
 ?>
 
+<!-- HDH: Farm-themed Hero Section -->
+<section class="farm-hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Hay Day Yardım, Rehber ve Etkinlik Merkezi</h1>
+            <p class="hero-subtitle">Çiftliğinizi geliştirmek, etkinlikleri kaçırmamak ve toplulukla bağlantıda kalmak için ihtiyacınız olan her şey burada!</p>
+            <div class="hero-buttons">
+                <a href="#events" class="btn-farm btn-primary">🎁 Güncel Çekilişler</a>
+                <a href="#guides" class="btn-farm btn-secondary">📚 Başlangıç Rehberi</a>
+            </div>
+        </div>
+        <!-- HDH: Decorative farm elements (SVG) -->
+        <div class="hero-decoration">
+            <svg class="farm-silhouette" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                <path d="M0,200 Q300,100 600,120 T1200,100 L1200,200 Z" fill="rgba(124, 179, 66, 0.2)"/>
+                <path d="M0,200 Q200,120 400,140 T800,120 T1200,110 L1200,200 Z" fill="rgba(124, 179, 66, 0.15)"/>
+            </svg>
+        </div>
+    </div>
+</section>
+
 <main>
     <div class="container">
         <?php if ($section && $section->post_type === 'mi_section') : ?>

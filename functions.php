@@ -19,27 +19,42 @@ function mi_theme_setup() {
     add_theme_support('responsive-embeds');
     add_editor_style('editor-style.css');
     
-    // Editor color palette
+    // HDH: Farm-themed editor color palette
     add_theme_support('editor-color-palette', array(
         array(
-            'name' => __('Kırmızı', 'hdh'),
-            'slug' => 'primary-red',
-            'color' => '#C41E3A',
+            'name' => __('Çimen Yeşili', 'hdh'),
+            'slug' => 'farm-grass-green',
+            'color' => '#7CB342',
         ),
         array(
-            'name' => __('Koyu Kırmızı', 'hdh'),
-            'slug' => 'primary-dark',
-            'color' => '#A01A2E',
+            'name' => __('Koyu Yeşil', 'hdh'),
+            'slug' => 'farm-grass-dark',
+            'color' => '#558B2F',
         ),
         array(
-            'name' => __('Koyu Gri', 'hdh'),
-            'slug' => 'text-dark',
-            'color' => '#1A1A1A',
+            'name' => __('Güneş Sarısı', 'hdh'),
+            'slug' => 'farm-sun-yellow',
+            'color' => '#FFC107',
         ),
         array(
-            'name' => __('Gri', 'hdh'),
-            'slug' => 'text-gray',
-            'color' => '#4D4D4D',
+            'name' => __('Ahır Kırmızısı', 'hdh'),
+            'slug' => 'farm-barn-red',
+            'color' => '#E53935',
+        ),
+        array(
+            'name' => __('Ahşap Kahverengi', 'hdh'),
+            'slug' => 'farm-wood-dark',
+            'color' => '#5D4037',
+        ),
+        array(
+            'name' => __('Gökyüzü Mavisi', 'hdh'),
+            'slug' => 'farm-sky-blue',
+            'color' => '#87CEEB',
+        ),
+        array(
+            'name' => __('Koyu Metin', 'hdh'),
+            'slug' => 'farm-text-dark',
+            'color' => '#3E2723',
         ),
         array(
             'name' => __('Beyaz', 'hdh'),
@@ -115,6 +130,15 @@ function mi_enqueue_scripts() {
             true
         );
     }
+    
+    // HDH: Enqueue farm-themed effects script
+    wp_enqueue_script(
+        'hdh-farm-effects',
+        get_template_directory_uri() . '/assets/js/farm-effects.js',
+        array(),
+        '1.0.0',
+        true
+    );
 }
 add_action('wp_enqueue_scripts', 'mi_enqueue_scripts');
 

@@ -13,7 +13,14 @@ get_header();
         <?php while (have_posts()) : the_post(); ?>
             <?php /* Breadcrumb kaldırıldı - UI'da gösterilmiyor */ ?>
             
-            <article id="post-<?php the_ID(); ?>" <?php post_class('single-post'); ?>>
+            <!-- HDH: Farm-themed banner for single post -->
+            <div class="single-post-banner">
+                <svg class="banner-wave" viewBox="0 0 1200 100" preserveAspectRatio="none">
+                    <path d="M0,50 Q300,0 600,50 T1200,50 L1200,100 L0,100 Z" fill="var(--farm-grass-light)"/>
+                </svg>
+            </div>
+            
+            <article id="post-<?php the_ID(); ?>" <?php post_class('single-post farm-journal'); ?>>
                 <header class="post-header">
                     <?php // Kategori badge kaldırıldı ?>
                     
@@ -78,6 +85,35 @@ get_header();
             ?>
             
             <?php /* İlgili Haberler bölümü kaldırıldı */ ?>
+            
+            <!-- HDH: Farm-themed Post Navigation -->
+            <nav class="post-navigation farm-navigation">
+                <?php
+                $prev_post = get_previous_post();
+                $next_post = get_next_post();
+                ?>
+                <?php if ($prev_post || $next_post) : ?>
+                    <div class="nav-links">
+                        <?php if ($prev_post) : ?>
+                            <div class="nav-previous">
+                                <span class="nav-subtitle">← Önceki</span>
+                                <a href="<?php echo esc_url(get_permalink($prev_post->ID)); ?>" class="nav-link">
+                                    <?php echo esc_html(get_the_title($prev_post->ID)); ?>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($next_post) : ?>
+                            <div class="nav-next">
+                                <span class="nav-subtitle">Sonraki →</span>
+                                <a href="<?php echo esc_url(get_permalink($next_post->ID)); ?>" class="nav-link">
+                                    <?php echo esc_html(get_the_title($next_post->ID)); ?>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </nav>
             
         <?php endwhile; ?>
             </div>

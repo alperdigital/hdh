@@ -13,12 +13,36 @@
         echo ' data-single-page-mode="1"';
     }
 ?>>
+    <!-- HDH: Farm-themed announcement strip -->
+    <?php if (get_theme_mod('hdh_show_announcement', true)) : ?>
+        <div class="header-announcement">
+            <p>
+                <?php 
+                $announcement = get_theme_mod('hdh_announcement_text', '🌾 Hay Day Rehber, Etkinlik ve Çekiliş Merkezi!');
+                echo esc_html($announcement);
+                ?>
+            </p>
+        </div>
+    <?php endif; ?>
+    
     <header>
         <div class="container">
             <div class="header-top">
-                <h1><a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo('name'); ?></a></h1>
+                <h1><a href="<?php echo esc_url(home_url('/')); ?>">
+                    <?php 
+                    // HDH: Farm-themed logo with emoji
+                    $site_name = get_bloginfo('name');
+                    if (empty($site_name) || $site_name === 'HDH') {
+                        echo '🌾 hayday.help';
+                    } else {
+                        echo esc_html($site_name);
+                    }
+                    ?>
+                </a></h1>
                 <?php if (get_bloginfo('description')) : ?>
                     <p class="site-description"><?php bloginfo('description'); ?></p>
+                <?php else : ?>
+                    <p class="site-description">Hay Day Yardım, Rehber ve Etkinlik Merkezi</p>
                 <?php endif; ?>
             </div>
             
@@ -96,14 +120,13 @@
     // Fallback menu if no menu is assigned
     function default_nav_menu() {
         echo '<ul class="nav-menu">';
-        echo '<li><a href="' . esc_url(home_url('/')) . '">Ana Sayfa</a></li>';
-        echo '<li><a href="' . esc_url(home_url('/')) . '">Gündem</a></li>';
-        echo '<li><a href="' . esc_url(home_url('/')) . '">Yazarlar</a></li>';
-        echo '<li><a href="' . esc_url(home_url('/')) . '">Siyaset</a></li>';
-        echo '<li><a href="' . esc_url(home_url('/')) . '">Ekonomi</a></li>';
-        echo '<li><a href="' . esc_url(home_url('/')) . '">Dünya</a></li>';
-        echo '<li><a href="' . esc_url(home_url('/')) . '">Spor</a></li>';
-        echo '<li><a href="' . esc_url(home_url('/')) . '">Yaşam</a></li>';
+        // HDH: Farm-themed default menu items
+        echo '<li><a href="' . esc_url(home_url('/')) . '">🏠 Ana Sayfa</a></li>';
+        echo '<li><a href="' . esc_url(home_url('/')) . '">📚 Rehberler</a></li>';
+        echo '<li><a href="' . esc_url(home_url('/')) . '">🎁 Etkinlikler</a></li>';
+        echo '<li><a href="' . esc_url(home_url('/')) . '">🎉 Çekilişler</a></li>';
+        echo '<li><a href="' . esc_url(home_url('/')) . '">👥 Topluluk</a></li>';
+        echo '<li><a href="' . esc_url(home_url('/')) . '">📞 İletişim</a></li>';
         echo '</ul>';
     }
     ?>
