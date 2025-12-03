@@ -1,0 +1,77 @@
+/**
+ * Block Editor Styles
+ */
+
+/* Custom Block Styles in Editor */
+.mi-highlight-box {
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    color: #FFFFFF;
+}
+
+.mi-highlight-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.mi-highlight-content {
+    line-height: 1.7;
+}
+
+.mi-cta-block {
+    padding: 30px;
+    background: linear-gradient(135deg, #C41E3A 0%, #A01A2E 100%);
+    border-radius: 8px;
+    text-align: center;
+    margin: 20px 0;
+    color: #FFFFFF;
+}
+
+.cta-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.cta-description {
+    font-size: 16px;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #FFFFFF;
+    color: #C41E3A;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+}
+
+/* Block Style Variations */
+.wp-block-button.is-style-mi-primary .wp-block-button__link {
+    background-color: #C41E3A;
+    color: #FFFFFF;
+}
+
+.wp-block-button.is-style-mi-outline .wp-block-button__link {
+    background-color: transparent;
+    border: 2px solid #C41E3A;
+    color: #C41E3A;
+}
+
+.wp-block-quote.is-style-mi-highlight {
+    background-color: #F5F5F5;
+    border-left: 4px solid #C41E3A;
+    padding: 20px;
+    border-radius: 4px;
+}
+

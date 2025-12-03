@@ -1,0 +1,45 @@
+/**
+ * Editor Styles - Block Editor Custom Styles
+ */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1A1A1A;
+    background: #FFFFFF;
+    line-height: 1.6;
+    font-size: 16px;
+}
+.editor-styles-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #C41E3A;
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+h1 { font-size: 2.5em; }
+h2 { font-size: 2em; }
+h3 { font-size: 1.75em; }
+p {
+    margin-bottom: 1.5em;
+    line-height: 1.8;
+}
+a {
+    color: #C41E3A;
+    text-decoration: underline;
+}
+.wp-block-button__link {
+    background-color: #C41E3A;
+    color: #FFFFFF;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-weight: 600;
+}
+.wp-block-quote {
+    border-left: 4px solid #C41E3A;
+    padding-left: 20px;
+    margin: 2em 0;
+    font-style: italic;
+}

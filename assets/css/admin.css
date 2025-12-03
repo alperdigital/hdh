@@ -1,0 +1,88 @@
+/**
+ * Admin Panel Styles
+ */
+
+.mi-dashboard-widget {
+    padding: 10px 0;
+}
+
+.mi-links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.mi-quick-link {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.mi-quick-link:hover {
+    background: #fff;
+    border-color: #C41E3A;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.mi-quick-link .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: #C41E3A;
+    margin-bottom: 10px;
+}
+
+.mi-quick-link strong {
+    color: #1a1a1a;
+    margin-bottom: 5px;
+}
+
+.mi-quick-link span:last-child {
+    color: #666;
+    font-size: 12px;
+}
+
+.mi-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.mi-features-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.mi-features-list li:last-child {
+    border-bottom: none;
+}
+
+.mi-features-list .dashicons {
+    color: #46b450;
+    margin-right: 10px;
+}
+
+.mi-status-active {
+    color: #46b450;
+    font-weight: 600;
+}
+
+.mi-status-inactive {
+    color: #dc3232;
+}
+
+.mi-help-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
