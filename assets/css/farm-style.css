@@ -1008,6 +1008,10 @@ h6 { font-size: 1.1rem; }
     background: var(--clean-white);
     padding: 5px;
     box-shadow: var(--shadow-soft);
+    /* SVG Optimization */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: optimizeQuality;
 }
 
 .trade-item-info {
@@ -1057,6 +1061,10 @@ h6 { font-size: 1.1rem; }
     border-radius: var(--radius-small);
     background: var(--soft-cream);
     padding: 3px;
+    /* SVG Optimization */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: optimizeQuality;
 }
 
 .trade-offer-item-info {
@@ -1689,6 +1697,11 @@ h6 { font-size: 1.1rem; }
     height: 100%;
     object-fit: contain;
     transition: transform 0.3s ease;
+    /* SVG Optimization */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: optimizeQuality;
+    will-change: transform;
 }
 
 .item-card:hover .item-card-image {

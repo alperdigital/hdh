@@ -200,6 +200,19 @@ function mi_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'mi_enqueue_scripts');
 
+/**
+ * HDH: Preload critical SVG images for better performance
+ */
+function hdh_preload_item_images() {
+    if (is_front_page()) {
+        $items = hdh_get_items_config();
+        foreach ($items as $item) {
+            echo '<link rel="preload" as="image" href="' . esc_url($item['image']) . '" type="image/svg+xml">' . "\n";
+        }
+    }
+}
+add_action('wp_head', 'hdh_preload_item_images', 1);
+
 // Custom excerpt length (will be overridden by compatibility-check.php if customizer setting exists)
 function mi_excerpt_length($length) {
     $custom_length = get_theme_mod('mi_excerpt_length', 30);

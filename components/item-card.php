@@ -37,7 +37,10 @@ if (!function_exists('hdh_render_item_card')) {
                     <img src="<?php echo esc_url($item_image); ?>" 
                          alt="<?php echo esc_attr($item_label); ?>" 
                          class="item-card-image"
-                         loading="lazy">
+                         loading="lazy"
+                         decoding="async"
+                         width="80"
+                         height="80">
                     <div class="item-card-overlay">
                         <span class="item-card-check">✓</span>
                     </div>

@@ -20,39 +20,39 @@ function hdh_get_items_config() {
     return array(
         'civata' => array(
             'label' => 'Cıvata',
-            'image' => $template_uri . '/assets/items/civata.PNG',
+            'image' => $template_uri . '/assets/items/civata.svg',
         ),
         'kalas' => array(
             'label' => 'Kalas',
-            'image' => $template_uri . '/assets/items/kalas.PNG',
+            'image' => $template_uri . '/assets/items/kalas.svg',
         ),
         'bant' => array(
             'label' => 'Bant',
-            'image' => $template_uri . '/assets/items/bant.PNG',
+            'image' => $template_uri . '/assets/items/bant.svg',
         ),
         'civi' => array(
             'label' => 'Çivi',
-            'image' => $template_uri . '/assets/items/civi.PNG',
+            'image' => $template_uri . '/assets/items/civi.svg',
         ),
         'vida' => array(
             'label' => 'Vida',
-            'image' => $template_uri . '/assets/items/vida.PNG',
+            'image' => $template_uri . '/assets/items/vida.svg',
         ),
         'tahta' => array(
             'label' => 'Ahşap Levha',
-            'image' => $template_uri . '/assets/items/tahta.PNG',
+            'image' => $template_uri . '/assets/items/tahta.svg',
         ),
         'kazik' => array(
             'label' => 'İşaret Kazığı',
-            'image' => $template_uri . '/assets/items/kazik.PNG',
+            'image' => $template_uri . '/assets/items/kazik.svg',
         ),
         'tokmak' => array(
             'label' => 'Tokmak',
-            'image' => $template_uri . '/assets/items/tokmak.PNG',
+            'image' => $template_uri . '/assets/items/tokmak.svg',
         ),
         'tapu' => array(
             'label' => 'Tapu',
-            'image' => $template_uri . '/assets/items/tapu.PNG',
+            'image' => $template_uri . '/assets/items/tapu.svg',
         ),
     );
 }

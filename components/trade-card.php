@@ -58,7 +58,11 @@ if (!function_exists('hdh_render_trade_card')) {
                             <div class="trade-item-with-image">
                                 <img src="<?php echo esc_url($wanted_image); ?>" 
                                      alt="<?php echo esc_attr($wanted_label); ?>" 
-                                     class="trade-item-icon">
+                                     class="trade-item-icon"
+                                     loading="lazy"
+                                     decoding="async"
+                                     width="50"
+                                     height="50">
                                 <div class="trade-item-info">
                                     <span class="item-quantity"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
                                     <span class="item-name"><?php echo esc_html($wanted_label); ?></span>
@@ -88,7 +92,11 @@ if (!function_exists('hdh_render_trade_card')) {
                                     <?php if ($offer_image) : ?>
                                         <img src="<?php echo esc_url($offer_image); ?>" 
                                              alt="<?php echo esc_attr($offer_label); ?>" 
-                                             class="trade-offer-item-icon">
+                                             class="trade-offer-item-icon"
+                                             loading="lazy"
+                                             decoding="async"
+                                             width="35"
+                                             height="35">
                                     <?php endif; ?>
                                     <div class="trade-offer-item-info">
                                         <span class="item-quantity"><?php echo esc_html($offer['qty']); ?>x</span>

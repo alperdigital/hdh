@@ -1,0 +1,17 @@
+# HDH: SVG Optimization
+# Cache SVG files for better performance
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/svg+xml "access plus 1 year"
+</IfModule>
+
+# Enable compression for SVG files
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Set proper MIME type for SVG
+<IfModule mod_mime.c>
+    AddType image/svg+xml .svg
+</IfModule>
+
