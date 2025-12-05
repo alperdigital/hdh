@@ -50,8 +50,24 @@ if (!function_exists('hdh_render_trade_card')) {
                         İSTEDİĞİ:
                     </h4>
                     <div class="trade-item-display trade-wanted-item">
-                        <span class="item-quantity"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
-                        <span class="item-name"><?php echo esc_html($trade_data['wanted_item']); ?></span>
+                        <?php 
+                        $wanted_slug = $trade_data['wanted_item'];
+                        $wanted_image = hdh_get_item_image($wanted_slug);
+                        $wanted_label = hdh_get_item_label($wanted_slug);
+                        if ($wanted_image) : ?>
+                            <div class="trade-item-with-image">
+                                <img src="<?php echo esc_url($wanted_image); ?>" 
+                                     alt="<?php echo esc_attr($wanted_label); ?>" 
+                                     class="trade-item-icon">
+                                <div class="trade-item-info">
+                                    <span class="item-quantity"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
+                                    <span class="item-name"><?php echo esc_html($wanted_label); ?></span>
+                                </div>
+                            </div>
+                        <?php else : ?>
+                            <span class="item-quantity"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
+                            <span class="item-name"><?php echo esc_html($wanted_label ?: $trade_data['wanted_item']); ?></span>
+                        <?php endif; ?>
                     </div>
                 </div>
                 
@@ -63,10 +79,21 @@ if (!function_exists('hdh_render_trade_card')) {
                             VEREBİLECEKLERİ:
                         </h4>
                         <div class="trade-offer-items">
-                            <?php foreach ($offer_items as $offer) : ?>
+                            <?php foreach ($offer_items as $offer) : 
+                                $offer_slug = $offer['item'];
+                                $offer_image = hdh_get_item_image($offer_slug);
+                                $offer_label = hdh_get_item_label($offer_slug);
+                            ?>
                                 <div class="trade-offer-item">
-                                    <span class="item-quantity"><?php echo esc_html($offer['qty']); ?>x</span>
-                                    <span class="item-name"><?php echo esc_html($offer['item']); ?></span>
+                                    <?php if ($offer_image) : ?>
+                                        <img src="<?php echo esc_url($offer_image); ?>" 
+                                             alt="<?php echo esc_attr($offer_label); ?>" 
+                                             class="trade-offer-item-icon">
+                                    <?php endif; ?>
+                                    <div class="trade-offer-item-info">
+                                        <span class="item-quantity"><?php echo esc_html($offer['qty']); ?>x</span>
+                                        <span class="item-name"><?php echo esc_html($offer_label ?: $offer['item']); ?></span>
+                                    </div>
                                 </div>
                             <?php endforeach; ?>
                         </div>

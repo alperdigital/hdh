@@ -12,19 +12,15 @@ if (!defined('ABSPATH')) {
 /**
  * Hay Day Items List
  * Fixed list of key items for filtering
+ * Uses items-config.php for consistency
  */
 function hdh_get_hayday_items() {
-    return array(
-        'Bant' => 'Bant',
-        'Cıvata' => 'Cıvata',
-        'Kalas' => 'Kalas',
-        'Vida' => 'Vida',
-        'Tahta' => 'Tahta',
-        'Demir' => 'Demir',
-        'Fırın Ürünü' => 'Fırın Ürünü',
-        'Süt Ürünü' => 'Süt Ürünü',
-        'Diğer' => 'Diğer'
-    );
+    $items_config = hdh_get_items_config();
+    $items = array();
+    foreach ($items_config as $key => $item) {
+        $items[$key] = $item['label'];
+    }
+    return $items;
 }
 
 /**

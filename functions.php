@@ -109,9 +109,16 @@ require_once get_template_directory() . '/components/farm-card.php';
 require_once get_template_directory() . '/components/farm-banner.php';
 require_once get_template_directory() . '/components/cta-buttons.php';
 require_once get_template_directory() . '/components/trade-card.php';
+require_once get_template_directory() . '/components/item-card.php';
+
+// HDH: Include Items Configuration
+require_once get_template_directory() . '/inc/items-config.php';
 
 // HDH: Include Trade Offers System
 require_once get_template_directory() . '/inc/trade-offers.php';
+
+// HDH: Include Create Trade Handler
+require_once get_template_directory() . '/inc/create-trade-handler.php';
 
 // HDH: Include Trust/Rating System
 require_once get_template_directory() . '/inc/trust-system.php';
@@ -173,6 +180,17 @@ function mi_enqueue_scripts() {
         '1.0.0',
         true
     );
+    
+    // HDH: Trade form script (only on front page)
+    if (is_front_page()) {
+        wp_enqueue_script(
+            'hdh-trade-form',
+            get_template_directory_uri() . '/assets/js/trade-form.js',
+            array(),
+            '1.0.0',
+            true
+        );
+    }
 }
 add_action('wp_enqueue_scripts', 'mi_enqueue_scripts');
 

@@ -994,6 +994,28 @@ h6 { font-size: 1.1rem; }
     gap: 10px;
 }
 
+.trade-item-with-image {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.trade-item-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: var(--radius-small);
+    background: var(--clean-white);
+    padding: 5px;
+    box-shadow: var(--shadow-soft);
+}
+
+.trade-item-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .trade-offer-section {
     background: var(--hay-yellow-light);
     padding: 15px;
@@ -1023,6 +1045,21 @@ h6 { font-size: 1.1rem; }
     border-radius: var(--radius-small);
     border: 2px solid var(--hay-yellow);
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.trade-offer-item-icon {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    border-radius: var(--radius-small);
+    background: var(--soft-cream);
+    padding: 3px;
+}
+
+.trade-offer-item-info {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -1554,6 +1591,287 @@ h6 { font-size: 1.1rem; }
     .trade-info-item {
         flex-direction: column;
         gap: 5px;
+    }
+}
+
+/* ============================================
+   ITEM CARD SELECTION UI
+   ============================================ */
+.create-trade-form-section {
+    padding: 60px 0;
+    background: var(--soft-cream);
+}
+
+.create-trade-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--clean-white);
+    padding: 40px;
+    border-radius: var(--radius-large);
+    border: 4px solid var(--wood-brown);
+    box-shadow: var(--shadow-strong);
+}
+
+.form-section {
+    margin-bottom: 40px;
+}
+
+.form-section-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.5rem;
+    color: var(--wood-brown);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.item-card-wrapper {
+    position: relative;
+}
+
+.item-card-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.item-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background: var(--clean-white);
+    border: 3px solid var(--wood-brown-light);
+    border-radius: var(--radius-medium);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.item-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    border-color: var(--farm-green);
+    box-shadow: var(--shadow-medium);
+}
+
+.item-card-input:checked + .item-card {
+    background: var(--farm-green-light);
+    border-color: var(--farm-green);
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-3px) scale(1.03);
+}
+
+.item-card-image-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    border-radius: var(--radius-small);
+    overflow: hidden;
+    background: var(--soft-cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.item-card:hover .item-card-image {
+    transform: scale(1.1);
+}
+
+.item-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(116, 195, 101, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.item-card-input:checked + .item-card .item-card-overlay {
+    opacity: 1;
+}
+
+.item-card-check {
+    color: var(--clean-white);
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.item-card-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--wood-brown);
+    line-height: 1.3;
+    margin-top: 5px;
+}
+
+.item-card-input:checked + .item-card .item-card-label {
+    color: var(--farm-green-dark);
+    font-weight: 700;
+}
+
+.quantity-input-wrapper {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.quantity-input-wrapper label {
+    font-weight: 600;
+    color: var(--wood-brown);
+}
+
+.quantity-input {
+    padding: 10px 15px;
+    border: 2px solid var(--wood-brown-light);
+    border-radius: var(--radius-small);
+    font-size: 16px;
+    width: 100px;
+    transition: all 0.3s ease;
+}
+
+.quantity-input:focus {
+    outline: none;
+    border-color: var(--farm-green);
+    box-shadow: 0 0 0 3px rgba(116, 195, 101, 0.1);
+}
+
+.offer-quantities {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.offer-quantity-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: var(--hay-yellow-light);
+    border-radius: var(--radius-medium);
+    border: 2px solid var(--hay-yellow);
+}
+
+.offer-quantity-item label {
+    font-weight: 600;
+    color: var(--wood-brown);
+    min-width: 120px;
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--wood-brown);
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--wood-brown-light);
+    border-radius: var(--radius-small);
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--farm-green);
+    box-shadow: 0 0 0 3px rgba(116, 195, 101, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.btn-submit-trade {
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-icon {
+    font-size: 1.2em;
+}
+
+/* ============================================
+   RESPONSIVE: ITEM CARDS & FORM
+   ============================================ */
+@media (max-width: 768px) {
+    .create-trade-wrapper {
+        padding: 25px 20px;
+    }
+    
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 10px;
+    }
+    
+    .item-card {
+        padding: 10px;
+    }
+    
+    .item-card-image-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .item-card-label {
+        font-size: 11px;
+    }
+    
+    .form-section-title {
+        font-size: 1.2rem;
+    }
+    
+    .quantity-input-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .quantity-input {
+        width: 100%;
     }
 }
 
