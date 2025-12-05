@@ -123,6 +123,12 @@ require_once get_template_directory() . '/inc/create-trade-handler.php';
 // HDH: Include Trust/Rating System
 require_once get_template_directory() . '/inc/trust-system.php';
 
+// HDH: Include Registration Handler
+require_once get_template_directory() . '/inc/registration-handler.php';
+
+// HDH: Include Trade Settings
+require_once get_template_directory() . '/inc/trade-settings.php';
+
 // Enqueue styles and scripts
 function mi_enqueue_scripts() {
     // HDH: Main cartoon farm stylesheet

@@ -92,7 +92,7 @@ get_header();
                     </div>
                 </div>
                 
-                <!-- İlan Başlığı ve Açıklama -->
+                <!-- İlan Başlığı -->
                 <div class="form-section">
                     <div class="form-field">
                         <label for="trade_title">İlan Başlığı:</label>
@@ -102,14 +102,6 @@ get_header();
                                required
                                placeholder="Örn: 7 Bant arıyorum, 7 Cıvata verebilirim"
                                class="form-input">
-                    </div>
-                    <div class="form-field">
-                        <label for="trade_description">Açıklama (Opsiyonel):</label>
-                        <textarea id="trade_description" 
-                                  name="trade_description" 
-                                  rows="4"
-                                  placeholder="Ek bilgiler, notlar..."
-                                  class="form-textarea"></textarea>
                     </div>
                 </div>
                 

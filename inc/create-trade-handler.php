@@ -18,24 +18,49 @@ function hdh_handle_create_trade() {
         wp_die('Güvenlik kontrolü başarısız.');
     }
     
-    // Check if user is logged in (optional, can be removed if allowing anonymous)
+    // Check if user is logged in - redirect to registration if not
     if (!is_user_logged_in()) {
-        wp_redirect(home_url('/?trade_error=login_required'));
+        // Start session if not started
+        if (!session_id()) {
+            session_start();
+        }
+        
+        // Store form data in session/transient for after registration
+        $form_data = array(
+            'wanted_item' => isset($_POST['wanted_item']) ? sanitize_text_field($_POST['wanted_item']) : '',
+            'wanted_qty' => isset($_POST['wanted_qty']) ? absint($_POST['wanted_qty']) : 0,
+            'offer_item' => isset($_POST['offer_item']) ? $_POST['offer_item'] : array(),
+            'offer_qty' => isset($_POST['offer_qty']) ? $_POST['offer_qty'] : array(),
+            'trade_title' => isset($_POST['trade_title']) ? sanitize_text_field($_POST['trade_title']) : '',
+        );
+        
+        // Store in transient using unique identifier
+        $transient_key = 'hdh_pending_trade_' . md5($_SERVER['REMOTE_ADDR'] . time() . wp_generate_password(10, false));
+        set_transient($transient_key, $form_data, HOUR_IN_SECONDS);
+        
+        // Store transient key in cookie (will be read after registration)
+        if (!headers_sent()) {
+            setcookie('hdh_pending_trade_key', $transient_key, time() + HOUR_IN_SECONDS, '/', '', is_ssl(), true);
+        }
+        
+        // Redirect to registration page
+        wp_redirect(home_url('/?action=register&redirect=trade'));
         exit;
     }
     
-    // Get form data
+    // Get form data from POST
     $wanted_item = isset($_POST['wanted_item']) ? sanitize_text_field($_POST['wanted_item']) : '';
     $wanted_qty = isset($_POST['wanted_qty']) ? absint($_POST['wanted_qty']) : 0;
     $trade_title = isset($_POST['trade_title']) ? sanitize_text_field($_POST['trade_title']) : '';
-    $trade_description = isset($_POST['trade_description']) ? wp_kses_post($_POST['trade_description']) : '';
+    $offer_item_data = isset($_POST['offer_item']) ? $_POST['offer_item'] : array();
+    $offer_qty_data = isset($_POST['offer_qty']) ? $_POST['offer_qty'] : array();
     
     // Get offer items from new format: offer_item[slug] and offer_qty[slug]
     $offer_items_data = array();
-    if (isset($_POST['offer_item']) && is_array($_POST['offer_item'])) {
-        foreach ($_POST['offer_item'] as $slug => $item_slug) {
+    if (!empty($offer_item_data) && is_array($offer_item_data)) {
+        foreach ($offer_item_data as $slug => $item_slug) {
             $slug = sanitize_text_field($slug);
-            $qty = isset($_POST['offer_qty'][$slug]) ? absint($_POST['offer_qty'][$slug]) : 0;
+            $qty = isset($offer_qty_data[$slug]) ? absint($offer_qty_data[$slug]) : 0;
             if ($qty > 0) {
                 $offer_items_data[] = array(
                     'slug' => sanitize_text_field($item_slug),
@@ -76,11 +101,15 @@ function hdh_handle_create_trade() {
         exit;
     }
     
+    // Check if admin requires approval (default: auto-publish)
+    $require_approval = get_option('hdh_trade_require_approval', false);
+    $post_status = $require_approval ? 'pending' : 'publish';
+    
     // Create post
     $post_data = array(
         'post_title' => $trade_title,
-        'post_content' => $trade_description,
-        'post_status' => 'publish',
+        'post_content' => '', // No description field
+        'post_status' => $post_status,
         'post_type' => 'hayday_trade',
         'post_author' => get_current_user_id(),
     );
@@ -109,8 +138,12 @@ function hdh_handle_create_trade() {
         }
     }
     
-    // Redirect to the new trade offer
-    wp_redirect(get_permalink($post_id));
+    // Redirect based on approval status
+    if ($post_status === 'pending') {
+        wp_redirect(home_url('/?trade_success=pending'));
+    } else {
+        wp_redirect(get_permalink($post_id));
+    }
     exit;
 }
 add_action('admin_post_hdh_create_trade', 'hdh_handle_create_trade');
