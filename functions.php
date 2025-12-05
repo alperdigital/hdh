@@ -108,6 +108,13 @@ add_action('after_setup_theme', 'mi_theme_setup');
 require_once get_template_directory() . '/components/farm-card.php';
 require_once get_template_directory() . '/components/farm-banner.php';
 require_once get_template_directory() . '/components/cta-buttons.php';
+require_once get_template_directory() . '/components/trade-card.php';
+
+// HDH: Include Trade Offers System
+require_once get_template_directory() . '/inc/trade-offers.php';
+
+// HDH: Include Trust/Rating System
+require_once get_template_directory() . '/inc/trust-system.php';
 
 // Enqueue styles and scripts
 function mi_enqueue_scripts() {

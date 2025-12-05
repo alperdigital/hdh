@@ -1,212 +1,218 @@
 <?php
 /**
- * Front Page Template
- * Ana sayfa template'i - Seçilen bölümün içeriği ve görünümüyle bire bir aynı
+ * Front Page Template - Hay Day Trading Platform
+ * 
+ * DEV NOTES:
+ * - This homepage displays a feed of trade offers (hayday_trade CPT)
+ * - Includes filtering by wanted_item, status, and sorting
+ * - Shows 4 main CTA sections at top
+ * - Each trade card clearly shows "İSTEDİĞİ" vs "VEREBİLECEKLERİ"
+ * 
+ * TODO:
+ * - [x] Custom Post Type registered
+ * - [x] Trade card component created
+ * - [ ] Filtering system implemented
+ * - [ ] Single trade page template
+ * - [ ] Trust/rating system
  */
 
 get_header();
-
-// Admin panelinden seçilen section'ı al
-$front_page_section_id = get_option('mi_front_page_section', 0);
-
-// Eğer section seçilmemişse, default olarak Başyazı'yı bul
-if ($front_page_section_id == 0) {
-    $basyazi_section = get_posts(array(
-        'post_type' => 'mi_section',
-        'posts_per_page' => 1,
-        'meta_query' => array(
-            'relation' => 'AND',
-            array(
-                'key' => '_mi_section_active',
-                'value' => '1',
-                'compare' => '='
-            ),
-            array(
-                'key' => '_mi_section_type',
-                'value' => 'aciklama',
-                'compare' => '='
-            )
-        ),
-        'orderby' => 'menu_order',
-        'order' => 'ASC'
-    ));
-    
-    if (!empty($basyazi_section)) {
-        $front_page_section_id = $basyazi_section[0]->ID;
-    }
-}
-
-// Seçilen section'ı al
-$section = null;
-if ($front_page_section_id > 0) {
-    $section = get_post($front_page_section_id);
-}
-
-// Ana sayfa görünümü - single-mi_section.php ile bire bir aynı
 ?>
 
-<!-- HDH: Immersive Farm World Hero Section -->
+<!-- HDH: Hero Section with Updated CTAs -->
 <section class="farm-hero-world" id="farm-hero">
-    <!-- Floating Decorative Elements -->
     <div class="floating-cloud" style="top: 10%; left: 5%; animation-delay: 0s;">☁️</div>
     <div class="floating-cloud" style="top: 20%; right: 10%; animation-delay: 2s;">☁️</div>
-    <div class="floating-cloud" style="top: 15%; left: 50%; animation-delay: 4s;">☁️</div>
     <div class="floating-leaf" style="top: 30%; left: 20%; animation-delay: 1s;">🍃</div>
-    <div class="floating-leaf" style="top: 25%; right: 25%; animation-delay: 3s;">🍃</div>
-    <div class="sparkle" style="top: 40%; left: 15%; animation-delay: 0.5s;"></div>
-    <div class="sparkle" style="top: 35%; right: 20%; animation-delay: 1.5s;"></div>
-    <div class="sparkle" style="top: 50%; left: 60%; animation-delay: 2.5s;"></div>
     
     <div class="container">
         <div class="hero-content-wrapper">
-            <h1 class="hero-title-cartoon">Hay Day Yardım, Rehber ve Etkinlik Merkezi</h1>
-            <p class="hero-subtitle-cartoon">Çiftliğinizi geliştirmek, etkinlikleri kaçırmamak ve toplulukla bağlantıda kalmak için ihtiyacınız olan her şey burada!</p>
-            
-            <!-- HDH: Wooden Sign CTA Buttons -->
-            <div class="hero-buttons">
-                <?php
-                $cta_buttons = array(
-                    array(
-                        'text' => 'Güncel Çekilişler',
-                        'url' => '#events',
-                        'type' => 'primary',
-                        'icon' => '🎁'
-                    ),
-                    array(
-                        'text' => 'Başlangıç Rehberi',
-                        'url' => '#guides',
-                        'type' => 'secondary',
-                        'icon' => '📚'
-                    )
-                );
-                if (function_exists('hdh_cta_buttons')) {
-                    hdh_cta_buttons($cta_buttons);
-                } else {
-                    // Fallback
-                    echo '<a href="#events" class="btn-wooden-sign btn-primary">🎁 Güncel Çekilişler</a>';
-                    echo '<a href="#guides" class="btn-wooden-sign btn-secondary">📚 Başlangıç Rehberi</a>';
-                }
-                ?>
-            </div>
+            <h1 class="hero-title-cartoon">Hay Day Takas Merkezi</h1>
+            <p class="hero-subtitle-cartoon">İhtiyacınız olan ürünleri bulun, takas yapın, çiftliğinizi geliştirin!</p>
         </div>
     </div>
     
-    <!-- HDH: Animated Farm Background Elements -->
     <div class="farm-hero-background">
         <div class="farm-sun">☀️</div>
         <div class="farm-hills"></div>
     </div>
 </section>
 
-<!-- HDH: Feature Sections with Farm Board Cards -->
-<section class="farm-features-section" id="features">
+<!-- HDH: Main Feature CTAs -->
+<section class="main-features-section" id="main-features">
     <div class="container">
-        <h2 class="section-title-cartoon">Neler Sunuyoruz?</h2>
-        <div class="farm-features-grid">
-            <?php
-            $features = array(
-                array(
-                    'icon' => '📚',
-                    'title' => 'Detaylı Rehberler',
-                    'content' => 'Hay Day\'de başarılı olmak için ihtiyacınız olan tüm ipuçları ve stratejiler.'
-                ),
-                array(
-                    'icon' => '🎁',
-                    'title' => 'Güncel Etkinlikler',
-                    'content' => 'Hiçbir özel etkinliği kaçırmayın! Tüm güncel etkinlikler ve çekilişler burada.'
-                ),
-                array(
-                    'icon' => '👥',
-                    'title' => 'Aktif Topluluk',
-                    'content' => 'Binlerce oyuncu ile bilgi paylaşın, sorularınızı sorun ve deneyimlerinizi paylaşın.'
-                ),
-                array(
-                    'icon' => '🎉',
-                    'title' => 'Özel Çekilişler',
-                    'content' => 'Düzenli olarak düzenlenen özel çekilişler ve ödüller sizi bekliyor!'
-                )
-            );
+        <div class="main-features-grid">
+            <div class="main-feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">Ücretsiz Dekorasyonlar</h3>
+                <p class="feature-description">Çiftliğinizi süsleyin</p>
+                <a href="#" class="btn-wooden-sign btn-secondary">Keşfet →</a>
+            </div>
             
-            foreach ($features as $feature) {
-                if (function_exists('hdh_farm_card')) {
-                    hdh_farm_card(
-                        $feature['title'],
-                        '<p>' . esc_html($feature['content']) . '</p>',
-                        $feature['icon']
-                    );
-                } else {
-                    // Fallback
-                    echo '<div class="farm-board-card">';
-                    echo '<h3 class="farm-board-card-title">';
-                    echo '<span class="farm-board-card-icon">' . esc_html($feature['icon']) . '</span>';
-                    echo esc_html($feature['title']);
-                    echo '</h3>';
-                    echo '<div class="farm-board-card-content"><p>' . esc_html($feature['content']) . '</p></div>';
-                    echo '</div>';
-                }
-            }
-            ?>
+            <div class="main-feature-card">
+                <div class="feature-icon">🎁</div>
+                <h3 class="feature-title">Çekilişe Katıl</h3>
+                <p class="feature-description">Özel ödüller kazanın</p>
+                <a href="#" class="btn-wooden-sign btn-secondary">Katıl →</a>
+            </div>
+            
+            <div class="main-feature-card highlight">
+                <div class="feature-icon">🔄</div>
+                <h3 class="feature-title">Takas Yap</h3>
+                <p class="feature-description">İhtiyacınız olan ürünleri bulun</p>
+                <a href="#trade-feed" class="btn-wooden-sign btn-primary">Takas İlanları →</a>
+            </div>
+            
+            <div class="main-feature-card">
+                <div class="feature-icon">👥</div>
+                <h3 class="feature-title">Mahalleye Katıl</h3>
+                <p class="feature-description">Toplulukla bağlantıda kalın</p>
+                <a href="#" class="btn-wooden-sign btn-secondary">Katıl →</a>
+            </div>
         </div>
     </div>
 </section>
 
-<main>
+<!-- HDH: Trade Offer Feed Section -->
+<main class="trade-feed-main" id="trade-feed">
     <div class="container">
-        <?php if ($section && $section->post_type === 'mi_section') : ?>
-            <?php 
-            setup_postdata($section);
-            $section_type = mi_get_section_type($section->ID);
-            $section_name = mi_get_section_name($section->ID);
-            $ui_position = mi_get_ui_template_position($section->ID);
-            ?>
-            
-            <?php if ($section_type !== 'aciklama' && $section_type !== 'manset' && $section_type !== 'iletisim') : ?>
-                <div class="section-header">
-                    <h1 class="section-title"><?php echo esc_html($section_name); ?></h1>
-                    <?php if (get_the_excerpt()) : ?>
-                        <p class="section-description"><?php echo esc_html(get_the_excerpt()); ?></p>
-                    <?php endif; ?>
+        <h2 class="section-title-cartoon">Takas İlanları</h2>
+        
+        <!-- HDH: Filter Bar -->
+        <div class="trade-filter-bar">
+            <form method="get" action="<?php echo esc_url(home_url('/')); ?>" class="trade-filters">
+                <div class="filter-group">
+                    <label for="filter_wanted">İstediği Ürün:</label>
+                    <select name="wanted" id="filter_wanted">
+                        <option value="">Hepsi</option>
+                        <?php 
+                        $hayday_items = hdh_get_hayday_items();
+                        $selected_wanted = isset($_GET['wanted']) ? sanitize_text_field($_GET['wanted']) : '';
+                        foreach ($hayday_items as $key => $label) : ?>
+                            <option value="<?php echo esc_attr($key); ?>" <?php selected($selected_wanted, $key); ?>>
+                                <?php echo esc_html($label); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-            <?php endif; ?>
-            
-            <?php if ($ui_position === 'top' || $ui_position === 'default') : ?>
-                <?php if (function_exists('mi_render_ui_components')) : ?>
-                    <?php mi_render_ui_components($section_type, $section->ID); ?>
-                <?php endif; ?>
-            <?php endif; ?>
-            
-            <?php if ($section_type === 'aciklama') : ?>
-                <div class="section-content aciklama-content">
-                    <?php the_content(); ?>
+                
+                <div class="filter-group">
+                    <label for="filter_status">Durum:</label>
+                    <select name="status" id="filter_status">
+                        <?php 
+                        $selected_status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'open';
+                        ?>
+                        <option value="all" <?php selected($selected_status, 'all'); ?>>Hepsi</option>
+                        <option value="open" <?php selected($selected_status, 'open'); ?>>Açık</option>
+                        <option value="completed" <?php selected($selected_status, 'completed'); ?>>Tamamlandı</option>
+                    </select>
                 </div>
-            <?php elseif ($section_type !== 'default') : ?>
-                <?php if (function_exists('mi_render_section_template')) : ?>
-                    <?php mi_render_section_template($section); ?>
-                <?php endif; ?>
-            <?php else : ?>
-                <div class="section-content">
-                    <?php 
-                    $content = get_the_content();
-                    remove_filter('the_content', 'wpautop');
-                    $content = apply_filters('the_content', $content);
-                    add_filter('the_content', 'wpautop');
-                    echo $content;
+                
+                <div class="filter-group">
+                    <label for="filter_sort">Sıralama:</label>
+                    <select name="sort" id="filter_sort">
+                        <?php 
+                        $selected_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'newest';
+                        ?>
+                        <option value="newest" <?php selected($selected_sort, 'newest'); ?>>En yeni ilanlar</option>
+                        <option value="oldest" <?php selected($selected_sort, 'oldest'); ?>>En eski ilanlar</option>
+                    </select>
+                </div>
+                
+                <div class="filter-actions">
+                    <button type="submit" class="btn-filter btn-wooden-sign btn-primary">Filtrele</button>
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-clear-filters">Filtreleri Temizle</a>
+                </div>
+            </form>
+        </div>
+        
+        <!-- HDH: Trade Offers Feed -->
+        <div class="trade-feed-container">
+            <?php
+            // Build query based on filters
+            $args = array(
+                'post_type' => 'hayday_trade',
+                'posts_per_page' => 20,
+                'post_status' => 'publish',
+            );
+            
+            // Meta query for filters
+            $meta_query = array('relation' => 'AND');
+            
+            // Filter by wanted item
+            if (!empty($_GET['wanted'])) {
+                $meta_query[] = array(
+                    'key' => '_hdh_wanted_item',
+                    'value' => sanitize_text_field($_GET['wanted']),
+                    'compare' => '='
+                );
+            }
+            
+            // Filter by status
+            $status_filter = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'open';
+            if ($status_filter !== 'all') {
+                $meta_query[] = array(
+                    'key' => '_hdh_trade_status',
+                    'value' => $status_filter,
+                    'compare' => '='
+                );
+            } else {
+                // Show all, but default to open if no filter
+                if (empty($_GET['status'])) {
+                    $meta_query[] = array(
+                        'key' => '_hdh_trade_status',
+                        'value' => 'open',
+                        'compare' => '='
+                    );
+                }
+            }
+            
+            if (!empty($meta_query)) {
+                $args['meta_query'] = $meta_query;
+            }
+            
+            // Sorting
+            $sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'newest';
+            if ($sort === 'oldest') {
+                $args['orderby'] = 'date';
+                $args['order'] = 'ASC';
+            } else {
+                $args['orderby'] = 'date';
+                $args['order'] = 'DESC';
+            }
+            
+            $trade_query = new WP_Query($args);
+            
+            if ($trade_query->have_posts()) : ?>
+                <div class="trade-cards-grid">
+                    <?php while ($trade_query->have_posts()) : $trade_query->the_post(); ?>
+                        <?php hdh_render_trade_card(get_the_ID()); ?>
+                    <?php endwhile; ?>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="trade-pagination">
+                    <?php
+                    echo paginate_links(array(
+                        'total' => $trade_query->max_num_pages,
+                        'prev_text' => '← Önceki',
+                        'next_text' => 'Sonraki →',
+                        'mid_size' => 2,
+                    ));
                     ?>
                 </div>
-            <?php endif; ?>
-            
-            <?php if ($ui_position === 'bottom') : ?>
-                <?php if (function_exists('mi_render_ui_components')) : ?>
-                    <?php mi_render_ui_components($section_type, $section->ID); ?>
-                <?php endif; ?>
-            <?php endif; ?>
-            
-            <?php wp_reset_postdata(); ?>
-        <?php endif; ?>
+            <?php else : ?>
+                <div class="no-trades-message">
+                    <p>Henüz takas ilanı bulunmamaktadır.</p>
+                    <p>İlk ilanı siz oluşturun!</p>
+                </div>
+            <?php endif; 
+            wp_reset_postdata();
+            ?>
+        </div>
     </div>
 </main>
 
 <?php
 get_footer();
 ?>
-

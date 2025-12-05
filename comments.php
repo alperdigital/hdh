@@ -12,11 +12,21 @@ if (post_password_required()) {
     <?php if (have_comments()) : ?>
         <h3 class="comments-title">
             <?php
-            $comments_number = get_comments_number();
-            if ($comments_number == 1) {
-                echo __('1 Yorum', 'mi-theme');
+            // HDH: Custom title for trade offers
+            if (get_post_type() === 'hayday_trade') {
+                $comments_number = get_comments_number();
+                if ($comments_number == 1) {
+                    echo '1 Teklif / Yorum';
+                } else {
+                    printf('%s Teklif / Yorum', number_format_i18n($comments_number));
+                }
             } else {
-                printf(__('%s Yorum', 'mi-theme'), number_format_i18n($comments_number));
+                $comments_number = get_comments_number();
+                if ($comments_number == 1) {
+                    echo __('1 Yorum', 'hdh');
+                } else {
+                    printf(__('%s Yorum', 'hdh'), number_format_i18n($comments_number));
+                }
             }
             ?>
         </h3>

@@ -776,3 +776,657 @@ h6 { font-size: 1.1rem; }
     }
 }
 
+/* ============================================
+   TRADE OFFER CARDS
+   ============================================ */
+.trade-card {
+    margin-bottom: 30px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.trade-card:hover {
+    transform: translateY(-5px);
+}
+
+.trade-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--wood-brown);
+}
+
+.trade-card-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.5rem;
+    margin: 0;
+    flex: 1;
+}
+
+.trade-card-title a {
+    color: var(--wood-brown);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.trade-card-title a:hover {
+    color: var(--farm-green-dark);
+}
+
+.trade-status-badge {
+    padding: 6px 14px;
+    border-radius: var(--radius-round);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.trade-status-badge.status-open {
+    background: var(--farm-green-light);
+    color: var(--farm-green-dark);
+    border: 2px solid var(--farm-green);
+}
+
+.trade-status-badge.status-completed {
+    background: var(--light-beige);
+    color: var(--wood-brown);
+    border: 2px solid var(--wood-brown-light);
+}
+
+.trade-card-content {
+    margin: 20px 0;
+}
+
+.trade-wanted-section {
+    background: var(--farm-green-light);
+    padding: 20px;
+    border-radius: var(--radius-medium);
+    margin-bottom: 20px;
+    border: 3px solid var(--farm-green);
+    box-shadow: var(--shadow-soft);
+}
+
+.trade-wanted-label {
+    color: var(--farm-green-dark);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.trade-wanted-item {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--wood-brown);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.trade-offer-section {
+    background: var(--hay-yellow-light);
+    padding: 15px;
+    border-radius: var(--radius-medium);
+    border: 2px solid var(--hay-yellow);
+}
+
+.trade-offer-label {
+    color: var(--warm-orange-dark);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.trade-offer-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.trade-offer-item {
+    background: var(--clean-white);
+    padding: 8px 14px;
+    border-radius: var(--radius-small);
+    border: 2px solid var(--hay-yellow);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.trade-section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.label-icon {
+    font-size: 1.2rem;
+}
+
+.item-quantity {
+    font-weight: 700;
+    color: var(--warm-orange);
+}
+
+.item-name {
+    color: var(--wood-brown);
+}
+
+.trade-card-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid var(--wood-brown-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.trade-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--wood-brown-light);
+}
+
+.trade-author,
+.trade-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.trust-score {
+    font-size: 12px;
+    color: var(--farm-green-dark);
+    font-weight: 600;
+}
+
+.btn-trade-detail {
+    white-space: nowrap;
+}
+
+/* ============================================
+   TRADE FILTER BAR
+   ============================================ */
+.trade-filter-bar {
+    background: var(--soft-cream);
+    padding: 25px;
+    border-radius: var(--radius-large);
+    border: 3px solid var(--wood-brown);
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-medium);
+}
+
+.trade-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.filter-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--wood-brown);
+    font-size: 14px;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--wood-brown-light);
+    border-radius: var(--radius-small);
+    background: var(--clean-white);
+    color: var(--wood-brown);
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: var(--farm-green);
+    box-shadow: 0 0 0 3px rgba(116, 195, 101, 0.1);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-filter {
+    padding: 10px 20px;
+    font-size: 15px;
+}
+
+.btn-clear-filters {
+    color: var(--wood-brown);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: var(--radius-small);
+    transition: all 0.3s ease;
+}
+
+.btn-clear-filters:hover {
+    background: var(--wood-brown-light);
+    color: var(--clean-white);
+}
+
+/* ============================================
+   TRADE FEED CONTAINER
+   ============================================ */
+.trade-feed-main {
+    padding: 60px 0;
+}
+
+.trade-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.trade-pagination {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.no-trades-message {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--soft-cream);
+    border-radius: var(--radius-large);
+    border: 3px dashed var(--wood-brown-light);
+}
+
+.no-trades-message p {
+    font-size: 1.2rem;
+    color: var(--wood-brown-light);
+    margin: 10px 0;
+}
+
+/* ============================================
+   MAIN FEATURES SECTION (4 CTAs)
+   ============================================ */
+.main-features-section {
+    padding: 60px 0;
+    background: var(--gradient-grass);
+    position: relative;
+}
+
+.main-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.main-feature-card {
+    background: var(--soft-cream);
+    padding: 30px;
+    border-radius: var(--radius-large);
+    border: 4px solid var(--wood-brown);
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.main-feature-card:hover {
+    transform: translateY(-8px) rotate(1deg);
+    box-shadow: var(--shadow-strong);
+}
+
+.main-feature-card.highlight {
+    background: var(--hay-yellow-light);
+    border-color: var(--hay-yellow-dark);
+    transform: scale(1.05);
+}
+
+.main-feature-card.highlight:hover {
+    transform: scale(1.08) translateY(-8px);
+}
+
+.feature-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+    display: block;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.feature-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.5rem;
+    color: var(--wood-brown);
+    margin-bottom: 10px;
+}
+
+.feature-description {
+    color: var(--wood-brown-light);
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+/* ============================================
+   RESPONSIVE: TRADE CARDS & FILTERS
+   ============================================ */
+@media (max-width: 768px) {
+    .trade-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .trade-filters {
+        flex-direction: column;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .filter-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .btn-filter,
+    .btn-clear-filters {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .trade-card-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-trade-detail {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .main-features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-feature-card.highlight {
+        transform: scale(1);
+    }
+}
+
+/* ============================================
+   SINGLE TRADE OFFER PAGE
+   ============================================ */
+.single-trade-main {
+    padding: 40px 0;
+}
+
+.trade-offer-header {
+    margin-bottom: 40px;
+}
+
+.trade-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.trade-offer-title {
+    flex: 1;
+    margin: 0;
+}
+
+.trade-completed-banner {
+    background: var(--hay-yellow-light);
+    border: 3px solid var(--hay-yellow);
+    padding: 15px 20px;
+    border-radius: var(--radius-medium);
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--wood-brown);
+}
+
+.trade-explanation {
+    background: var(--sky-blue-light);
+    padding: 20px;
+    border-radius: var(--radius-medium);
+    border: 2px solid var(--sky-blue);
+    margin-top: 20px;
+}
+
+.trade-explanation h3 {
+    color: var(--wood-brown);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.trade-explanation p {
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+.trade-details-section {
+    margin-bottom: 40px;
+}
+
+.trade-detail-card {
+    background: var(--soft-cream);
+    padding: 25px;
+    border-radius: var(--radius-large);
+    border: 3px solid var(--wood-brown);
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-soft);
+}
+
+.trade-wanted-card {
+    background: var(--farm-green-light);
+    border-color: var(--farm-green);
+}
+
+.trade-offer-card {
+    background: var(--hay-yellow-light);
+    border-color: var(--hay-yellow);
+}
+
+.trade-info-card {
+    background: var(--clean-white);
+}
+
+.trade-description-card {
+    background: var(--soft-cream);
+}
+
+.trade-detail-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.5rem;
+    color: var(--wood-brown);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.title-icon {
+    font-size: 1.5rem;
+}
+
+.trade-detail-content {
+    margin-top: 15px;
+}
+
+.trade-item-large {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--wood-brown);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.item-quantity-large {
+    color: var(--warm-orange);
+    font-size: 2.5rem;
+}
+
+.item-name-large {
+    color: var(--wood-brown);
+}
+
+.trade-offer-items-large {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.trade-offer-item-large {
+    background: var(--clean-white);
+    padding: 15px 25px;
+    border-radius: var(--radius-medium);
+    border: 3px solid var(--hay-yellow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.trade-info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--wood-brown-light);
+}
+
+.trade-info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--wood-brown);
+}
+
+.info-value {
+    color: var(--wood-brown-light);
+}
+
+.trust-score-large {
+    color: var(--farm-green-dark);
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.trade-description {
+    line-height: 1.8;
+    color: var(--wood-brown);
+}
+
+.trade-offers-section {
+    margin-top: 50px;
+    padding-top: 40px;
+    border-top: 3px solid var(--wood-brown);
+}
+
+/* ============================================
+   COMMENT RATING BUTTONS
+   ============================================ */
+.comment-rating-buttons {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--wood-brown-light);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-rate {
+    padding: 8px 16px;
+    border: 2px solid var(--wood-brown-light);
+    border-radius: var(--radius-small);
+    background: var(--clean-white);
+    color: var(--wood-brown);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.btn-rate:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-rate-plus:hover {
+    background: var(--farm-green-light);
+    border-color: var(--farm-green);
+    color: var(--farm-green-dark);
+}
+
+.btn-rate-minus:hover {
+    background: var(--warm-orange-light);
+    border-color: var(--warm-orange);
+    color: var(--warm-orange-dark);
+}
+
+.btn-rate:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.rating-success {
+    color: var(--farm-green-dark);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* ============================================
+   RESPONSIVE: SINGLE TRADE PAGE
+   ============================================ */
+@media (max-width: 768px) {
+    .trade-header-top {
+        flex-direction: column;
+    }
+    
+    .trade-offer-title {
+        font-size: 1.8rem;
+    }
+    
+    .trade-item-large {
+        font-size: 1.5rem;
+    }
+    
+    .item-quantity-large {
+        font-size: 2rem;
+    }
+    
+    .trade-offer-item-large {
+        font-size: 1.1rem;
+        padding: 12px 18px;
+    }
+    
+    .trade-info-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
