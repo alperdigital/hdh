@@ -27,8 +27,7 @@ get_header();
     
     <div class="container">
         <div class="hero-content-wrapper">
-            <h1 class="hero-title-cartoon">Hay Day Takas Merkezi</h1>
-            <p class="hero-subtitle-cartoon">İhtiyacınız olan ürünleri bulun, takas yapın, çiftliğinizi geliştirin!</p>
+            <h1 class="hero-title-cartoon">Yılbaşı hediyeni seçtin mi?</h1>
         </div>
     </div>
     
@@ -42,7 +41,7 @@ get_header();
 <section class="create-trade-form-section" id="create-trade">
     <div class="container">
         <div class="create-trade-wrapper">
-            <h2 class="section-title-cartoon">Yeni Takas İlanı Oluştur</h2>
+            <h2 class="section-title-cartoon">Hediyeleşme Başlasın</h2>
             
             <form id="create-trade-form" class="trade-create-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                 <?php wp_nonce_field('hdh_create_trade', 'hdh_trade_nonce'); ?>
@@ -137,9 +136,9 @@ get_header();
             
             <div class="main-feature-card highlight">
                 <div class="feature-icon">🔄</div>
-                <h3 class="feature-title">Takas Yap</h3>
+                <h3 class="feature-title">Hediyeleşme</h3>
                 <p class="feature-description">İhtiyacınız olan ürünleri bulun</p>
-                <a href="#trade-feed" class="btn-wooden-sign btn-primary">Takas İlanları →</a>
+                <a href="#trade-feed" class="btn-wooden-sign btn-primary">Hediyeleşme →</a>
             </div>
             
             <div class="main-feature-card">
@@ -155,7 +154,7 @@ get_header();
 <!-- HDH: Trade Offer Feed Section -->
 <main class="trade-feed-main" id="trade-feed">
     <div class="container">
-        <h2 class="section-title-cartoon">Takas İlanları</h2>
+        <h2 class="section-title-cartoon">Hediyeni Seç</h2>
         
         <!-- HDH: Filter Bar -->
         <div class="trade-filter-bar">
