@@ -164,6 +164,15 @@ function mi_enqueue_scripts() {
         '2.0.0',
         true
     );
+    
+    // HDH: Mobile menu script
+    wp_enqueue_script(
+        'hdh-mobile-menu',
+        get_template_directory_uri() . '/assets/js/mobile-menu.js',
+        array(),
+        '1.0.0',
+        true
+    );
 }
 add_action('wp_enqueue_scripts', 'mi_enqueue_scripts');
 

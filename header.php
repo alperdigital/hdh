@@ -34,7 +34,8 @@
     <header class="cartoon-header" id="cartoon-header">
         <div class="header-wooden-board">
             <div class="container">
-                <div class="header-content">
+                <!-- Logo Section -->
+                <div class="header-top">
                     <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
                         <div class="site-logo-icon">🌾</div>
                         <h1 class="site-title">
@@ -49,57 +50,64 @@
                         </h1>
                     </a>
                     
-                    <!-- HDH: Cartoon Navigation Menu -->
-                    <nav class="cartoon-navigation">
-                        <?php
-                        $sections = mi_get_active_sections();
-                        $single_page_mode = get_option('mi_enable_single_page', 0) === 1;
-                        
-                        if (!empty($sections)) {
-                            echo '<ul class="cartoon-nav">';
-                            foreach ($sections as $section) {
-                                $section_name = mi_get_section_name($section->ID);
-                                $section_type = get_post_meta($section->ID, '_mi_section_type', true);
-                                
-                                if ($single_page_mode && is_front_page()) {
-                                    $section_url = '#' . 'section-' . $section->ID;
-                                } else {
-                                    $section_url = get_permalink($section->ID);
-                                }
-                                
-                                $current_class = '';
-                                if (is_singular('mi_section') && get_the_ID() == $section->ID) {
-                                    $current_class = 'current-menu-item';
-                                }
-                                
-                                // HDH: Icon mapping for sections
-                                $icons = array(
-                                    'aciklama' => '📝',
-                                    'manset' => '📰',
-                                    'kararlar' => '📋',
-                                    'iletisim' => '📞'
-                                );
-                                $icon = isset($icons[$section_type]) ? $icons[$section_type] : '🌾';
-                                
-                                echo '<li class="cartoon-nav-item ' . esc_attr($current_class) . '">';
-                                echo '<a href="' . esc_url($section_url) . '" class="cartoon-nav-link" data-section-id="' . esc_attr($section->ID) . '">';
-                                echo '<span class="nav-icon">' . esc_html($icon) . '</span>';
-                                echo '<span>' . esc_html($section_name) . '</span>';
-                                echo '</a></li>';
-                            }
-                            echo '</ul>';
-                        } else {
-                    // HDH: Default cartoon menu - Updated for trading platform
-                    wp_nav_menu(array(
-                        'theme_location' => 'primary',
-                        'menu_class' => 'cartoon-nav',
-                        'container' => false,
-                        'fallback_cb' => 'hdh_default_cartoon_menu',
-                    ));
-                        }
-                        ?>
-                    </nav>
+                    <!-- Mobile Menu Toggle Button -->
+                    <button class="mobile-menu-toggle" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
                 </div>
+                
+                <!-- HDH: Cartoon Navigation Menu -->
+                <nav class="cartoon-navigation" id="main-navigation">
+                    <?php
+                    $sections = mi_get_active_sections();
+                    $single_page_mode = get_option('mi_enable_single_page', 0) === 1;
+                    
+                    if (!empty($sections)) {
+                        echo '<ul class="cartoon-nav">';
+                        foreach ($sections as $section) {
+                            $section_name = mi_get_section_name($section->ID);
+                            $section_type = get_post_meta($section->ID, '_mi_section_type', true);
+                            
+                            if ($single_page_mode && is_front_page()) {
+                                $section_url = '#' . 'section-' . $section->ID;
+                            } else {
+                                $section_url = get_permalink($section->ID);
+                            }
+                            
+                            $current_class = '';
+                            if (is_singular('mi_section') && get_the_ID() == $section->ID) {
+                                $current_class = 'current-menu-item';
+                            }
+                            
+                            // HDH: Icon mapping for sections
+                            $icons = array(
+                                'aciklama' => '📝',
+                                'manset' => '📰',
+                                'kararlar' => '📋',
+                                'iletisim' => '📞'
+                            );
+                            $icon = isset($icons[$section_type]) ? $icons[$section_type] : '🌾';
+                            
+                            echo '<li class="cartoon-nav-item ' . esc_attr($current_class) . '">';
+                            echo '<a href="' . esc_url($section_url) . '" class="cartoon-nav-link" data-section-id="' . esc_attr($section->ID) . '">';
+                            echo '<span class="nav-icon">' . esc_html($icon) . '</span>';
+                            echo '<span>' . esc_html($section_name) . '</span>';
+                            echo '</a></li>';
+                        }
+                        echo '</ul>';
+                    } else {
+                        // HDH: Default cartoon menu - Updated for trading platform
+                        wp_nav_menu(array(
+                            'theme_location' => 'primary',
+                            'menu_class' => 'cartoon-nav',
+                            'container' => false,
+                            'fallback_cb' => 'hdh_default_cartoon_menu',
+                        ));
+                    }
+                    ?>
+                </nav>
             </div>
         </div>
     </header>
@@ -126,12 +134,4 @@
         echo '</ul>';
     }
     ?>
-            
-            <!-- HDH: Mobile Menu Toggle (if needed) -->
-            <?php if (function_exists('mi_mobile_menu_toggle')) : ?>
-                <?php mi_mobile_menu_toggle(); ?>
-            <?php endif; ?>
-        </div>
-    </div>
-</header>
 

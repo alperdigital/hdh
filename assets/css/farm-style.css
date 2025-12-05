@@ -195,6 +195,10 @@ h6 { font-size: 1.1rem; }
     box-shadow: var(--shadow-inset);
 }
 
+.cartoon-header {
+    position: relative;
+}
+
 .header-wooden-board::before {
     content: '';
     position: absolute;
@@ -206,11 +210,11 @@ h6 { font-size: 1.1rem; }
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.header-content {
+.header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    padding: 15px 0;
     gap: 20px;
 }
 
@@ -251,6 +255,12 @@ h6 { font-size: 1.1rem; }
 /* ============================================
    CARTOON NAVIGATION
    ============================================ */
+.cartoon-navigation {
+    padding: 15px 0;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    display: block;
+}
+
 .cartoon-nav {
     display: flex;
     gap: 10px;
@@ -258,6 +268,7 @@ h6 { font-size: 1.1rem; }
     margin: 0;
     padding: 0;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .cartoon-nav-item {
@@ -318,6 +329,56 @@ h6 { font-size: 1.1rem; }
     height: 20px;
     position: relative;
     z-index: 1;
+}
+
+/* ============================================
+   MOBILE MENU TOGGLE (Hamburger)
+   ============================================ */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 40px;
+    height: 40px;
+    background: var(--soft-cream);
+    border: 3px solid var(--wood-brown);
+    border-radius: var(--radius-small);
+    cursor: pointer;
+    padding: 8px;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    position: relative;
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--farm-green-light);
+    border-color: var(--farm-green);
+}
+
+.mobile-menu-toggle:focus {
+    outline: 2px solid var(--farm-green);
+    outline-offset: 2px;
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 3px;
+    background: var(--wood-brown);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
 }
 
 /* ============================================
@@ -738,18 +799,84 @@ h6 { font-size: 1.1rem; }
         font-size: 1.2rem;
     }
     
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    /* Hide navigation by default on mobile */
+    .cartoon-navigation {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--wood-brown);
+        padding: 80px 20px 20px;
+        box-shadow: var(--shadow-strong);
+        z-index: 1000;
+        overflow-y: auto;
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    /* Overlay behind menu */
+    .cartoon-navigation.menu-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Show navigation when menu is open */
+    .cartoon-navigation.menu-open {
+        display: block;
+    }
+    
     .cartoon-nav {
         flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .cartoon-nav-item {
         width: 100%;
     }
     
     .cartoon-nav-link {
         width: 100%;
-        justify-content: center;
+        justify-content: flex-start;
+        padding: 15px 20px;
+        font-size: 16px;
+        background: var(--soft-cream);
+        margin-bottom: 5px;
     }
     
-    .header-content {
-        flex-direction: column;
+    .cartoon-nav-link:hover {
+        background: var(--farm-green-light);
+    }
+    
+    .header-top {
+        position: relative;
+    }
+    
+    .header-wooden-board {
+        position: relative;
     }
     
     .site-title {
