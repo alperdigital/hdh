@@ -129,6 +129,9 @@ require_once get_template_directory() . '/inc/registration-handler.php';
 // HDH: Include Trade Settings
 require_once get_template_directory() . '/inc/trade-settings.php';
 
+// HDH: Include Terms Page Settings
+require_once get_template_directory() . '/inc/terms-page.php';
+
 // Enqueue styles and scripts
 function mi_enqueue_scripts() {
     // HDH: Main cartoon farm stylesheet
