@@ -222,17 +222,55 @@ function hdh_get_registration_modal_css() {
             .hdh-modal-content {
                 margin: 10px;
                 max-width: calc(100% - 20px);
+                max-height: 95vh;
+            }
+            .hdh-modal-header {
+                padding: 15px;
+            }
+            .hdh-modal-header h2 {
+                font-size: 1.2rem;
+            }
+            .hdh-modal-body {
+                padding: 15px;
             }
             .hdh-tabs {
-                flex-direction: column;
+                flex-direction: row;
+                overflow-x: auto;
             }
             .hdh-tab {
-                border-bottom: 1px solid var(--wood-brown-light);
-                border-right: none;
+                min-width: 120px;
+                padding: 10px 15px;
+                font-size: 14px;
+                white-space: nowrap;
             }
             .hdh-tab.active {
-                border-bottom: 1px solid var(--wood-brown-light);
-                border-left: 3px solid var(--farm-green);
+                border-bottom: 3px solid var(--farm-green);
+                border-left: none;
+            }
+            .hdh-registration-notice,
+            .hdh-error-message {
+                font-size: 13px;
+                padding: 12px;
+            }
+            .hdh-phone-note {
+                font-size: 12px;
+                padding: 8px;
+            }
+            .hdh-terms-checkbox {
+                padding: 12px;
+                font-size: 13px;
+            }
+            .hdh-terms-checkbox input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                flex-shrink: 0;
+            }
+            .form-row {
+                margin-bottom: 15px;
+            }
+            .button-primary {
+                padding: 14px 20px;
+                font-size: 16px;
             }
         }
     ';
