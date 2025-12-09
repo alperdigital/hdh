@@ -82,12 +82,78 @@
 body {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: var(--wood-brown);
-    background: var(--gradient-sky);
+    background: var(--gradient-newyear-sky);
     background-attachment: fixed;
     line-height: 1.7;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ============================================
+   YILBAŞI TEMALI ARKAPLAN - Kar Taneleri
+   ============================================ */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-newyear-sky);
+    background-attachment: fixed;
+    z-index: -2;
+    pointer-events: none;
+    background-image: 
+        var(--gradient-newyear-sky),
+        radial-gradient(1px 1px at 15% 25%, var(--newyear-gold) 0%, transparent 50%),
+        radial-gradient(1px 1px at 45% 15%, var(--newyear-gold-light) 0%, transparent 50%),
+        radial-gradient(1px 1px at 75% 35%, var(--newyear-gold) 0%, transparent 50%),
+        radial-gradient(1px 1px at 25% 65%, var(--newyear-gold-light) 0%, transparent 50%),
+        radial-gradient(1px 1px at 85% 75%, var(--newyear-gold) 0%, transparent 50%);
+    background-size: 100% 100%, 200% 200%;
+    animation: hdhTwinkle 3s ease-in-out infinite;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(2px 2px at 60% 20%, rgba(255, 255, 255, 0.85), transparent),
+        radial-gradient(3px 3px at 40% 70%, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 80% 50%, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(3px 3px at 10% 80%, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 90% 60%, rgba(255, 255, 255, 0.65), transparent),
+        radial-gradient(3px 3px at 30% 40%, rgba(255, 255, 255, 0.6), transparent);
+    animation: hdhSnowFall 20s linear infinite;
+    opacity: 0.6;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes hdhSnowFall {
+    0% {
+        transform: translateY(-100vh) translateX(0);
+    }
+    100% {
+        transform: translateY(100vh) translateX(50px);
+    }
+}
+
+@keyframes hdhTwinkle {
+    0%, 100% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1907,21 +1973,31 @@ h6 { font-size: 1.1rem; }
 }
 
 /* ============================================
-   YILBAŞI TEMALI EKSTRA DEKORASYONLAR
+   YILBAŞI TEMALI DEKORASYONLAR
    ============================================ */
 
-/* Yılbaşı renkli şeritler */
-body::before {
-    box-shadow: 
-        inset 0 0 100px rgba(220, 20, 60, 0.1),
-        inset 0 0 200px rgba(34, 139, 34, 0.1),
-        inset 0 0 300px rgba(255, 215, 0, 0.1);
+/* Header'a yılbaşı teması */
+.cartoon-header,
+header {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 248, 255, 0.9) 100%);
+    border-bottom: 3px solid var(--newyear-red);
+    box-shadow: 0 4px 20px rgba(220, 20, 60, 0.2);
 }
 
-/* Container'lara yılbaşı teması */
-.container {
-    position: relative;
-    z-index: 1;
+/* Butonlara yılbaşı renkleri */
+.btn-primary,
+.btn-wooden-sign,
+.btn-submit-trade {
+    background: linear-gradient(135deg, var(--newyear-red) 0%, var(--newyear-green) 100%);
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+}
+
+.btn-primary:hover,
+.btn-wooden-sign:hover,
+.btn-submit-trade:hover {
+    background: linear-gradient(135deg, var(--newyear-red-light) 0%, var(--newyear-green-light) 100%);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+    transform: translateY(-2px);
 }
 
 /* Kartlara yılbaşı gölgeleri */
@@ -1932,28 +2008,6 @@ body::before {
         0 4px 12px rgba(220, 20, 60, 0.15),
         0 2px 6px rgba(34, 139, 34, 0.1),
         0 1px 3px rgba(255, 215, 0, 0.1);
-}
-
-/* Butonlara yılbaşı renkleri */
-.btn-primary,
-.btn-wooden-sign {
-    background: linear-gradient(135deg, var(--newyear-red) 0%, var(--newyear-green) 100%);
-    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
-}
-
-.btn-primary:hover,
-.btn-wooden-sign:hover {
-    background: linear-gradient(135deg, var(--newyear-red-light) 0%, var(--newyear-green-light) 100%);
-    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
-    transform: translateY(-2px);
-}
-
-/* Header'a yılbaşı teması */
-.cartoon-header,
-header {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 248, 255, 0.9) 100%);
-    border-bottom: 3px solid var(--newyear-red);
-    box-shadow: 0 4px 20px rgba(220, 20, 60, 0.2);
 }
 
 /* Footer'a yılbaşı gece teması */
@@ -1980,6 +2034,7 @@ footer::before,
     animation: hdhFireworks 4s ease-in-out infinite;
     opacity: 0.6;
     pointer-events: none;
+    z-index: 0;
 }
 
 @keyframes hdhFireworks {
@@ -1992,3 +2047,4 @@ footer::before,
         transform: scale(1.1);
     }
 }
+
