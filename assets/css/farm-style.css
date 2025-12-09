@@ -242,7 +242,7 @@ h6 { font-size: 1.1rem; }
    CARTOON HEADER - Wooden Board Style
    ============================================ */
 .cartoon-header {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 248, 255, 0.9) 100%);
+    background: rgba(255, 255, 255, 0.98);
     border-bottom: 3px solid var(--newyear-red);
     padding: 0;
     position: sticky;
@@ -259,7 +259,7 @@ h6 { font-size: 1.1rem; }
 }
 
 .header-wooden-board {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 248, 255, 0.95) 100%);
+    background: rgba(255, 255, 255, 0.98);
     padding: 20px 0;
     position: relative;
     box-shadow: 0 2px 10px rgba(220, 20, 60, 0.15);
@@ -304,13 +304,13 @@ h6 { font-size: 1.1rem; }
 .site-logo-icon {
     width: 50px;
     height: 50px;
-    background: var(--farm-green);
+    background: var(--newyear-gold);
     border-radius: var(--radius-round);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 28px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
     animation: bounce 2s ease-in-out infinite;
 }
 
@@ -318,8 +318,8 @@ h6 { font-size: 1.1rem; }
     font-family: 'Baloo 2', sans-serif;
     font-size: 2rem;
     font-weight: 800;
-    color: var(--clean-white);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    color: #2C2C2C;
+    text-shadow: none;
     margin: 0;
 }
 
@@ -351,14 +351,14 @@ h6 { font-size: 1.1rem; }
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    background: var(--soft-cream);
-    color: var(--wood-brown);
+    background: rgba(255, 255, 255, 0.9);
+    color: #2C2C2C;
     text-decoration: none;
     border-radius: var(--radius-medium);
     font-weight: 600;
     font-size: 15px;
-    border: 3px solid var(--wood-brown);
-    box-shadow: var(--shadow-soft);
+    border: 2px solid rgba(220, 20, 60, 0.2);
+    box-shadow: 0 2px 8px rgba(220, 20, 60, 0.1);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     position: relative;
     overflow: hidden;
@@ -372,7 +372,7 @@ h6 { font-size: 1.1rem; }
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: var(--farm-green);
+    background: var(--newyear-red);
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
 }
@@ -384,9 +384,9 @@ h6 { font-size: 1.1rem; }
 
 .cartoon-nav-link:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: var(--shadow-medium);
-    border-color: var(--farm-green);
-    color: var(--clean-white);
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+    border-color: var(--newyear-red);
+    color: var(--newyear-snow);
     z-index: 1;
 }
 
@@ -536,9 +536,13 @@ h6 { font-size: 1.1rem; }
 }
 
 .btn-wooden-sign:hover {
-    transform: translateY(-5px) rotate(-2deg);
-    box-shadow: var(--shadow-strong), var(--shadow-inset);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4), 0 2px 8px rgba(34, 139, 34, 0.2);
     animation: bounce 0.6s ease;
+}
+
+.btn-wooden-sign.btn-primary:hover {
+    background: linear-gradient(135deg, var(--newyear-red-light) 0%, var(--newyear-green-light) 100%);
 }
 
 .btn-wooden-sign.btn-primary {
@@ -577,9 +581,9 @@ h6 { font-size: 1.1rem; }
 }
 
 .farm-board-card:hover {
-    transform: translateY(-8px) rotate(1deg);
-    box-shadow: var(--shadow-strong);
-    border-color: var(--farm-green);
+    transform: translateY(-8px);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.25), 0 3px 10px rgba(34, 139, 34, 0.15);
+    border-color: var(--newyear-red);
 }
 
 .farm-board-card-title {
@@ -788,8 +792,9 @@ h6 { font-size: 1.1rem; }
     font-family: 'Baloo 2', sans-serif;
     font-size: 3rem;
     text-align: center;
-    color: var(--wood-brown);
+    color: var(--newyear-red);
     margin-bottom: 50px;
+    text-shadow: 0 2px 4px rgba(220, 20, 60, 0.2);
 }
 
 .farm-features-grid {
@@ -968,7 +973,7 @@ h6 { font-size: 1.1rem; }
     align-items: flex-start;
     margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 3px solid var(--wood-brown);
+    border-bottom: 2px solid var(--newyear-gold);
 }
 
 .trade-card-title {
@@ -979,13 +984,13 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-card-title a {
-    color: var(--wood-brown);
+    color: #2C2C2C;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .trade-card-title a:hover {
-    color: var(--farm-green-dark);
+    color: var(--newyear-red);
 }
 
 .trade-status-badge {
@@ -998,15 +1003,15 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-status-badge.status-open {
-    background: var(--farm-green-light);
-    color: var(--farm-green-dark);
-    border: 2px solid var(--farm-green);
+    background: rgba(34, 139, 34, 0.15);
+    color: var(--newyear-green-dark);
+    border: 2px solid var(--newyear-green);
 }
 
 .trade-status-badge.status-completed {
-    background: var(--light-beige);
-    color: var(--wood-brown);
-    border: 2px solid var(--wood-brown-light);
+    background: rgba(200, 200, 200, 0.2);
+    color: #666;
+    border: 2px solid #999;
 }
 
 .trade-card-content {
@@ -1014,12 +1019,12 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-wanted-section {
-    background: var(--farm-green-light);
+    background: rgba(34, 139, 34, 0.1);
     padding: 20px;
     border-radius: var(--radius-medium);
     margin-bottom: 20px;
-    border: 3px solid var(--farm-green);
-    box-shadow: var(--shadow-soft);
+    border: 2px solid var(--newyear-green);
+    box-shadow: 0 2px 8px rgba(34, 139, 34, 0.15);
 }
 
 .trade-wanted-label {
@@ -1180,12 +1185,12 @@ h6 { font-size: 1.1rem; }
    TRADE FILTER BAR
    ============================================ */
 .trade-filter-bar {
-    background: var(--soft-cream);
+    background: var(--newyear-snow);
     padding: 25px;
     border-radius: var(--radius-large);
-    border: 3px solid var(--wood-brown);
+    border: 2px solid var(--newyear-red);
     margin-bottom: 40px;
-    box-shadow: var(--shadow-medium);
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.15);
 }
 
 .trade-filters {
@@ -1204,25 +1209,25 @@ h6 { font-size: 1.1rem; }
     display: block;
     font-weight: 600;
     margin-bottom: 8px;
-    color: var(--wood-brown);
+    color: #2C2C2C;
     font-size: 14px;
 }
 
 .filter-group select {
     width: 100%;
     padding: 10px 12px;
-    border: 2px solid var(--wood-brown-light);
+    border: 2px solid rgba(220, 20, 60, 0.3);
     border-radius: var(--radius-small);
     background: var(--clean-white);
-    color: var(--wood-brown);
+    color: #2C2C2C;
     font-size: 15px;
     transition: all 0.3s ease;
 }
 
 .filter-group select:focus {
     outline: none;
-    border-color: var(--farm-green);
-    box-shadow: 0 0 0 3px rgba(116, 195, 101, 0.1);
+    border-color: var(--newyear-red);
+    box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
 }
 
 .filter-actions {
@@ -1237,17 +1242,19 @@ h6 { font-size: 1.1rem; }
 }
 
 .btn-clear-filters {
-    color: var(--wood-brown);
+    color: var(--newyear-red);
     text-decoration: none;
     font-weight: 600;
     padding: 10px 15px;
     border-radius: var(--radius-small);
+    background: var(--newyear-ice);
+    border: 2px solid var(--newyear-red);
     transition: all 0.3s ease;
 }
 
 .btn-clear-filters:hover {
-    background: var(--wood-brown-light);
-    color: var(--clean-white);
+    background: var(--newyear-red);
+    color: var(--newyear-snow);
 }
 
 /* ============================================
@@ -1662,27 +1669,32 @@ h6 { font-size: 1.1rem; }
    ============================================ */
 .create-trade-form-section {
     padding: 60px 0;
-    background: var(--soft-cream);
+    background: var(--newyear-ice);
 }
 
 .create-trade-wrapper {
     max-width: 900px;
     margin: 0 auto;
-    background: var(--clean-white);
+    background: var(--newyear-snow);
     padding: 40px;
     border-radius: var(--radius-large);
-    border: 4px solid var(--wood-brown);
-    box-shadow: var(--shadow-strong);
+    border: 3px solid var(--newyear-gold);
+    box-shadow: 0 8px 25px rgba(220, 20, 60, 0.15), 0 2px 6px rgba(34, 139, 34, 0.1);
 }
 
 .form-section {
     margin-bottom: 40px;
+    background: var(--newyear-snow);
+    padding: 25px;
+    border-radius: var(--radius-medium);
+    border: 2px solid rgba(220, 20, 60, 0.15);
+    box-shadow: 0 2px 8px rgba(220, 20, 60, 0.1);
 }
 
 .form-section-title {
     font-family: 'Baloo 2', sans-serif;
     font-size: 1.5rem;
-    color: var(--wood-brown);
+    color: var(--newyear-red);
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -1712,7 +1724,7 @@ h6 { font-size: 1.1rem; }
     align-items: center;
     padding: 15px;
     background: var(--clean-white);
-    border: 3px solid var(--wood-brown-light);
+    border: 2px solid rgba(220, 20, 60, 0.3);
     border-radius: var(--radius-medium);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -1723,14 +1735,14 @@ h6 { font-size: 1.1rem; }
 
 .item-card:hover {
     transform: translateY(-5px) scale(1.05);
-    border-color: var(--farm-green);
-    box-shadow: var(--shadow-medium);
+    border-color: var(--newyear-red);
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.25);
 }
 
 .item-card-input:checked + .item-card {
-    background: var(--farm-green-light);
-    border-color: var(--farm-green);
-    box-shadow: var(--shadow-medium);
+    background: rgba(220, 20, 60, 0.1);
+    border-color: var(--newyear-red);
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.25);
     transform: translateY(-3px) scale(1.03);
 }
 
@@ -1810,22 +1822,23 @@ h6 { font-size: 1.1rem; }
 
 .quantity-input-wrapper label {
     font-weight: 600;
-    color: var(--wood-brown);
+    color: #2C2C2C;
 }
 
 .quantity-input {
     padding: 10px 15px;
-    border: 2px solid var(--wood-brown-light);
+    border: 2px solid rgba(220, 20, 60, 0.3);
     border-radius: var(--radius-small);
     font-size: 16px;
     width: 100px;
+    background: var(--clean-white);
     transition: all 0.3s ease;
 }
 
 .quantity-input:focus {
     outline: none;
-    border-color: var(--farm-green);
-    box-shadow: 0 0 0 3px rgba(116, 195, 101, 0.1);
+    border-color: var(--newyear-red);
+    box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
 }
 
 .offer-quantities {
