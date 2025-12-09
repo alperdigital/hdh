@@ -8,7 +8,7 @@ get_header();
 
 <main>
     <div class="container">
-        <div class="content-wrapper <?php echo function_exists('mi_has_sidebar') && mi_has_sidebar() ? 'has-sidebar' : 'no-sidebar'; ?>">
+        <div class="content-wrapper <?php echo mi_has_sidebar() ? 'has-sidebar' : 'no-sidebar'; ?>">
             <div class="main-content">
         <?php while (have_posts()) : the_post(); ?>
             <?php /* Breadcrumb kaldırıldı - UI'da gösterilmiyor */ ?>
@@ -66,9 +66,7 @@ get_header();
                 
                 <div class="post-share-section">
                     <h3 class="share-title">Bu Yazıyı Paylaş</h3>
-                    <?php if (function_exists('mi_render_social_share')) : ?>
-                        <?php mi_render_social_share(get_the_ID(), false); ?>
-                    <?php endif; ?>
+                    <?php mi_render_social_share(get_the_ID(), false); ?>
                 </div>
                 
                 <?php

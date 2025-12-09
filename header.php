@@ -6,7 +6,7 @@
     <link rel="icon" type="image/svg+xml" href="<?php echo esc_url(get_template_directory_uri() . '/assets/favicon.svg'); ?>">
     <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class('theme-hayday-winter'); ?>>
     <!-- HDH: SVG Icons Sprite -->
     <?php include get_template_directory() . '/assets/svg/farm-icons.svg'; ?>
     

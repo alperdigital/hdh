@@ -8,7 +8,6 @@ get_header();
 
 <main>
     <div class="container">
-        <?php mi_breadcrumbs(); ?>
         
         <div class="content-wrapper <?php echo mi_has_sidebar() ? 'has-sidebar' : 'no-sidebar'; ?>">
             <div class="main-content">
@@ -65,9 +64,6 @@ get_header();
                                                 ?>
                                             </span>
                                         <?php endif; ?>
-                                        <span class="post-views-meta">
-                                            <?php echo mi_display_post_views(); ?>
-                                        </span>
                                     </div>
                                     
                                     <div class="post-excerpt">
@@ -78,9 +74,11 @@ get_header();
                                         <div class="post-read-more">
                                             <a href="<?php the_permalink(); ?>" class="read-more-link"><?php _e('Devamını Oku →', 'mi-theme'); ?></a>
                                         </div>
-                                        <div class="post-share-inline">
-                                            <?php mi_render_social_share(get_the_ID(), true); ?>
-                                        </div>
+                                        <?php if (function_exists('mi_render_social_share')) : ?>
+                                            <div class="post-share-inline">
+                                                <?php mi_render_social_share(get_the_ID(), true); ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </article>

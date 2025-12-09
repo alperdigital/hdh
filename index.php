@@ -8,15 +8,9 @@ get_header();
 
 <main>
     <div class="container">
-        <div class="content-wrapper <?php echo function_exists('mi_has_sidebar') && mi_has_sidebar() ? 'has-sidebar' : 'no-sidebar'; ?>">
+        <div class="content-wrapper <?php echo mi_has_sidebar() ? 'has-sidebar' : 'no-sidebar'; ?>">
             <div class="main-content">
         <?php if (have_posts()) : ?>
-            <?php if (get_theme_mod('mi_enable_masonry', false) && function_exists('mi_render_masonry_grid')) : ?>
-                <?php 
-                $columns = get_theme_mod('mi_masonry_columns', '3');
-                mi_render_masonry_grid(null, $columns);
-                ?>
-            <?php else : ?>
             <div class="posts-container">
                 <?php while (have_posts()) : the_post(); ?>
                     <article id="post-<?php the_ID(); ?>" <?php post_class('post-item'); ?>>
@@ -75,7 +69,6 @@ get_header();
                     </article>
                 <?php endwhile; ?>
             </div>
-            <?php endif; ?>
             
             <?php if (have_posts()) : ?>
                 <div class="pagination">
@@ -95,7 +88,7 @@ get_header();
         <?php endif; ?>
             </div>
             
-            <?php if (function_exists('mi_has_sidebar') && mi_has_sidebar()) : ?>
+            <?php if (mi_has_sidebar()) : ?>
                 <?php get_sidebar(); ?>
             <?php endif; ?>
         </div>

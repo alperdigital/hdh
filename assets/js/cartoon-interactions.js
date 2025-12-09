@@ -24,22 +24,6 @@
             lastScroll = currentScroll;
         });
         
-        // HDH: Parallax for hero section
-        const heroSection = $('.farm-hero-world');
-        if (heroSection.length) {
-            $(window).on('scroll', function() {
-                const scrolled = $(this).scrollTop();
-                const heroOffset = heroSection.offset().top;
-                const heroHeight = heroSection.outerHeight();
-                
-                if (scrolled < heroOffset + heroHeight) {
-                    const parallaxSpeed = 0.3;
-                    const yPos = -(scrolled * parallaxSpeed);
-                    heroSection.find('.farm-hero-background').css('transform', 'translateY(' + yPos + 'px)');
-                }
-            });
-        }
-        
         // HDH: Animate farm board cards on scroll
         const observerOptions = {
             threshold: 0.1,
@@ -80,24 +64,6 @@
             }.bind(this), 300);
         });
         
-        // HDH: Floating elements random movement
-        $('.floating-cloud, .floating-leaf').each(function() {
-            const $el = $(this);
-            const delay = Math.random() * 2;
-            const duration = 8 + Math.random() * 4;
-            $el.css({
-                'animation-delay': delay + 's',
-                'animation-duration': duration + 's'
-            });
-        });
-        
-        // HDH: Sparkle random positions
-        $('.sparkle').each(function() {
-            const $el = $(this);
-            const delay = Math.random() * 2;
-            $el.css('animation-delay', delay + 's');
-        });
-        
         // HDH: Smooth scroll for anchor links
         $('a[href^="#"]').on('click', function(e) {
             const target = $(this.getAttribute('href'));
@@ -108,16 +74,6 @@
                 }, 800, 'swing');
             }
         });
-        
-        // HDH: Farm sun rotation
-        const sun = $('.farm-sun');
-        if (sun.length) {
-            let rotation = 0;
-            setInterval(function() {
-                rotation += 0.5;
-                sun.css('transform', 'rotate(' + rotation + 'deg)');
-            }, 50);
-        }
         
     });
     
