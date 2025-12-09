@@ -16,7 +16,7 @@
             <div class="container">
                 <p class="farm-announcement-text">
                     <?php 
-                    $announcement = get_theme_mod('hdh_announcement_text', '🌾 Hay Day Rehber, Etkinlik ve Çekiliş Merkezi!');
+                    $announcement = get_theme_mod('hdh_announcement_text', '🎁 Rehber, Hediyeleşme ve Çekiliş Merkezi!');
                     echo esc_html($announcement);
                     ?>
                 </p>
@@ -75,7 +75,7 @@
             array('icon' => '🏠', 'text' => 'Ana Sayfa', 'url' => home_url('/')),
             array('icon' => '🎨', 'text' => 'Ücretsiz Dekorasyonlar', 'url' => home_url('/')),
             array('icon' => '🎁', 'text' => 'Çekilişe Katıl', 'url' => home_url('/')),
-            array('icon' => '🔄', 'text' => 'Takas Yap', 'url' => home_url('/#trade-feed')),
+            array('icon' => '🔄', 'text' => 'Hediyeleşme', 'url' => home_url('/#trade-feed')),
             array('icon' => '👥', 'text' => 'Mahalleye Katıl', 'url' => home_url('/')),
         );
         

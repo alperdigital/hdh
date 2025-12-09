@@ -45,7 +45,7 @@ get_header();
             
             <?php if ($trade_data['trade_status'] === 'completed') : ?>
                 <div class="trade-completed-banner">
-                    <p>✅ Bu takas tamamlandı</p>
+                    <p>✅ Bu hediyeleşme tamamlandı</p>
                 </div>
             <?php endif; ?>
             

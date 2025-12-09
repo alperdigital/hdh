@@ -126,7 +126,7 @@ if (!function_exists('hdh_render_trade_card')) {
                     </span>
                 </div>
                 <a href="<?php echo esc_url($post_url); ?>" class="btn-trade-detail btn-wooden-sign btn-primary">
-                    Takas Detayına Git →
+                    Detayına Git →
                 </a>
             </div>
         </article>
