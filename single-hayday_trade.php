@@ -1,189 +1,165 @@
 <?php
 /**
  * Single Trade Offer Template
- * Template for displaying individual trade offers
+ * HDH: Detailed view for a single trade offer
  */
 
 get_header();
 ?>
 
-<main class="single-trade-main">
+<main id="primary" class="site-main">
     <div class="container">
-        <div class="content-wrapper">
-            <div class="main-content">
-                <?php while (have_posts()) : the_post(); 
-                    $trade_data = hdh_get_trade_data();
-                    $author_id = get_the_author_meta('ID');
-                    $author_name = get_the_author_meta('display_name', $author_id);
-                    
-                    // Trust score
-                    $trust_plus = (int) get_user_meta($author_id, 'hayday_trust_plus', true);
-                    $trust_minus = (int) get_user_meta($author_id, 'hayday_trust_minus', true);
-                    
-                    // Filter out empty offer items
-                    $offer_items = array_filter($trade_data['offer_items'], function($item) {
-                        return !empty($item['item']) && !empty($item['qty']);
-                    });
-                    
-                    // Status
-                    $is_completed = $trade_data['trade_status'] === 'completed';
-                ?>
-                
-                <!-- HDH: Trade Offer Header -->
-                <div class="trade-offer-header farm-board-card">
-                    <div class="trade-header-top">
-                        <h1 class="trade-offer-title cartoon-title"><?php the_title(); ?></h1>
-                        <span class="trade-status-badge <?php echo $is_completed ? 'status-completed' : 'status-open'; ?>">
-                            <?php echo $is_completed ? 'Tamamlandı ✅' : 'Açık'; ?>
-                        </span>
-                    </div>
-                    
-                    <?php if ($is_completed) : ?>
-                        <div class="trade-completed-banner">
-                            <p>✅ Bu takas tamamlandı. Yeni teklifler kabul edilmiyor.</p>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <!-- HDH: Explanation Text -->
-                    <div class="trade-explanation">
-                        <h3>📖 Nasıl Çalışır?</h3>
-                        <p>
-                            <strong>İlan sahibi</strong> "İSTEDİĞİ" ürünü belirtir. 
-                            Siz bu ürünü vererek karşılığında "VEREBİLECEKLERİ" listesindeki ürünlerden birini alabilirsiniz.
-                        </p>
-                        <p>
-                            <strong>Örnek:</strong> İlan sahibi "7 Bant istiyorum, 7 Cıvata veya 7 Kalas verebilirim" diyor.
-                            Siz "Ben 6 Bant veriyim, sen bana 6 Kalas ver" şeklinde teklif yapabilirsiniz.
-                        </p>
-                    </div>
+        <?php while (have_posts()) : the_post(); 
+            $trade_data = hdh_get_trade_data();
+            $author_id = get_post_field('post_author', get_the_ID());
+            $author_name = get_the_author_meta('display_name', $author_id);
+            
+            // Trust score
+            $trust_plus = (int) get_user_meta($author_id, 'hayday_trust_plus', true);
+            $trust_minus = (int) get_user_meta($author_id, 'hayday_trust_minus', true);
+            
+            // Status
+            $status_class = $trade_data['trade_status'] === 'completed' ? 'status-completed' : 'status-open';
+            $status_text = $trade_data['trade_status'] === 'completed' ? 'Tamamlandı ✅' : 'Açık';
+            
+            // Filter out empty offer items
+            $offer_items = array_filter($trade_data['offer_items'], function($item) {
+                return !empty($item['item']) && !empty($item['qty']);
+            });
+        ?>
+        
+        <article id="trade-<?php the_ID(); ?>" <?php post_class('single-trade-offer'); ?>>
+            <!-- Trade Header -->
+            <header class="trade-header">
+                <h1 class="trade-title"><?php the_title(); ?></h1>
+                <div class="trade-meta-header">
+                    <span class="trade-status-badge <?php echo esc_attr($status_class); ?>">
+                        <?php echo esc_html($status_text); ?>
+                    </span>
+                    <span class="trade-date">
+                        <span class="date-icon">📅</span>
+                        <?php echo get_the_date('d F Y, H:i'); ?>
+                    </span>
                 </div>
-                
-                <!-- HDH: Trade Details -->
-                <div class="trade-details-section">
-                    <!-- İSTEDİĞİ ÜRÜN -->
-                    <div class="trade-detail-card trade-wanted-card">
-                        <h2 class="trade-detail-title">
-                            <span class="title-icon">🔍</span>
-                            İSTEDİĞİ ÜRÜN
-                        </h2>
-                        <div class="trade-detail-content">
-                            <div class="trade-item-large">
-                                <span class="item-quantity-large"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
-                                <span class="item-name-large"><?php echo esc_html($trade_data['wanted_item']); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- VEREBİLECEKLERİ -->
-                    <?php if (!empty($offer_items)) : ?>
-                        <div class="trade-detail-card trade-offer-card">
-                            <h2 class="trade-detail-title">
-                                <span class="title-icon">🎁</span>
-                                VEREBİLECEKLERİ
-                            </h2>
-                            <div class="trade-detail-content">
-                                <div class="trade-offer-items-large">
-                                    <?php foreach ($offer_items as $offer) : ?>
-                                        <div class="trade-offer-item-large">
-                                            <span class="item-quantity-large"><?php echo esc_html($offer['qty']); ?>x</span>
-                                            <span class="item-name-large"><?php echo esc_html($offer['item']); ?></span>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <!-- İlan Detayları -->
-                    <div class="trade-detail-card trade-info-card">
-                        <h2 class="trade-detail-title">
-                            <span class="title-icon">📋</span>
-                            İlan Detayları
-                        </h2>
-                        <div class="trade-detail-content">
-                            <div class="trade-info-item">
-                                <span class="info-label">İlan Sahibi:</span>
-                                <span class="info-value">
-                                    <?php echo esc_html($author_name); ?>
-                                    <?php if ($trust_plus > 0 || $trust_minus > 0) : ?>
-                                        <span class="trust-score-large">
-                                            (Güven Skoru: +<?php echo esc_html($trust_plus); ?> / -<?php echo esc_html($trust_minus); ?>)
-                                        </span>
-                                    <?php endif; ?>
-                                </span>
-                            </div>
-                            <div class="trade-info-item">
-                                <span class="info-label">Yayınlanma Tarihi:</span>
-                                <span class="info-value"><?php echo mi_get_turkish_date('d F Y, H:i'); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- İlan Açıklaması -->
-                    <?php if (get_the_content()) : ?>
-                        <div class="trade-detail-card trade-description-card">
-                            <h2 class="trade-detail-title">
-                                <span class="title-icon">📝</span>
-                                Açıklama
-                            </h2>
-                            <div class="trade-detail-content trade-description">
-                                <?php the_content(); ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+            </header>
+            
+            <?php if ($trade_data['trade_status'] === 'completed') : ?>
+                <div class="trade-completed-banner">
+                    <p>✅ Bu takas tamamlandı</p>
                 </div>
-                
-                <!-- HDH: Teklifler ve Yorumlar Section -->
-                <div class="trade-offers-section">
-                    <h2 class="section-title-cartoon">
-                        <span class="title-icon">💬</span>
-                        Teklifler ve Yorumlar
+            <?php endif; ?>
+            
+            <!-- Trade Details -->
+            <div class="trade-details">
+                <!-- İSTEDİĞİ ÜRÜN -->
+                <div class="trade-wanted-section detailed">
+                    <h2 class="trade-section-title">
+                        <span class="title-icon">🔍</span>
+                        İSTEDİĞİ ÜRÜN
                     </h2>
-                    
-                    <?php
-                    // Enable comments for trade offers (form is customized in inc/comments.php)
-                    if (comments_open() || get_comments_number()) {
-                        comments_template();
-                    }
-                    ?>
+                    <div class="trade-item-display-large">
+                        <?php 
+                        $wanted_slug = $trade_data['wanted_item'];
+                        $wanted_image = hdh_get_item_image($wanted_slug);
+                        $wanted_label = hdh_get_item_label($wanted_slug);
+                        if ($wanted_image) : ?>
+                            <div class="trade-item-with-image-large">
+                                <img src="<?php echo esc_url($wanted_image); ?>" 
+                                     alt="<?php echo esc_attr($wanted_label); ?>" 
+                                     class="trade-item-icon-large"
+                                     loading="lazy"
+                                     decoding="async"
+                                     width="80"
+                                     height="80">
+                                <div class="trade-item-info-large">
+                                    <span class="item-quantity-large"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
+                                    <span class="item-name-large"><?php echo esc_html($wanted_label); ?></span>
+                                </div>
+                            </div>
+                        <?php else : ?>
+                            <div class="trade-item-info-large">
+                                <span class="item-quantity-large"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
+                                <span class="item-name-large"><?php echo esc_html($wanted_label ?: $trade_data['wanted_item']); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 
-                <!-- HDH: Post Navigation -->
-                <nav class="post-navigation farm-navigation">
-                    <?php
-                    $prev_post = get_previous_post(false, '', 'hayday_trade');
-                    $next_post = get_next_post(false, '', 'hayday_trade');
-                    ?>
-                    <?php if ($prev_post || $next_post) : ?>
-                        <div class="nav-links">
-                            <?php if ($prev_post) : ?>
-                                <div class="nav-previous">
-                                    <span class="nav-subtitle">← Önceki İlan</span>
-                                    <a href="<?php echo esc_url(get_permalink($prev_post->ID)); ?>" class="nav-link">
-                                        <?php echo esc_html(get_the_title($prev_post->ID)); ?>
-                                    </a>
+                <!-- VEREBİLECEKLERİ -->
+                <?php if (!empty($offer_items)) : ?>
+                    <div class="trade-offer-section detailed">
+                        <h2 class="trade-section-title">
+                            <span class="title-icon">🎁</span>
+                            VEREBİLECEKLERİ
+                        </h2>
+                        <div class="trade-offer-items-detailed">
+                            <?php foreach ($offer_items as $offer) : 
+                                $offer_slug = $offer['item'];
+                                $offer_image = hdh_get_item_image($offer_slug);
+                                $offer_label = hdh_get_item_label($offer_slug);
+                            ?>
+                                <div class="trade-offer-item-detailed">
+                                    <?php if ($offer_image) : ?>
+                                        <img src="<?php echo esc_url($offer_image); ?>" 
+                                             alt="<?php echo esc_attr($offer_label); ?>" 
+                                             class="trade-offer-item-icon-large"
+                                             loading="lazy"
+                                             decoding="async"
+                                             width="60"
+                                             height="60">
+                                    <?php endif; ?>
+                                    <div class="trade-offer-item-info-large">
+                                        <span class="item-quantity-large"><?php echo esc_html($offer['qty']); ?>x</span>
+                                        <span class="item-name-large"><?php echo esc_html($offer_label ?: $offer['item']); ?></span>
+                                    </div>
                                 </div>
-                            <?php endif; ?>
-                            
-                            <?php if ($next_post) : ?>
-                                <div class="nav-next">
-                                    <span class="nav-subtitle">Sonraki İlan →</span>
-                                    <a href="<?php echo esc_url(get_permalink($next_post->ID)); ?>" class="nav-link">
-                                        <?php echo esc_html(get_the_title($next_post->ID)); ?>
-                                    </a>
-                                </div>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
                         </div>
-                    <?php endif; ?>
-                </nav>
-                
-                <?php endwhile; ?>
+                    </div>
+                <?php endif; ?>
             </div>
-        </div>
+            
+            <!-- Author Info -->
+            <div class="trade-author-section">
+                <h3 class="author-section-title">İlan Sahibi</h3>
+                <div class="author-info">
+                    <span class="author-name">👤 <?php echo esc_html($author_name); ?></span>
+                    <?php if ($trust_plus > 0 || $trust_minus > 0) : ?>
+                        <span class="trust-score-detailed">
+                            Güven Skoru: +<?php echo esc_html($trust_plus); ?> / -<?php echo esc_html($trust_minus); ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </div>
+            
+            <!-- Explanation Text -->
+            <div class="trade-explanation">
+                <p><strong>Nasıl Çalışır?</strong></p>
+                <p>İlan sahibi yukarıda "İSTEDİĞİ" ürünü belirtmiştir. Siz bu ürünü vererek, karşılığında "VEREBİLECEKLERİ" listesindeki ürünlerden birini alabilirsiniz.</p>
+                <p>Örnek: İlan sahibi "7 Bant istiyorum, 7 Cıvata verebilirim" diyor. Siz 7 Bant verip, 7 Cıvata alabilirsiniz.</p>
+            </div>
+            
+            <!-- Comments Section: Teklifler ve Yorumlar -->
+            <div class="trade-comments-section">
+                <h2 class="comments-title">Teklifler ve Yorumlar</h2>
+                <?php
+                // Rename comment form labels
+                add_filter('comment_form_defaults', function($defaults) {
+                    $defaults['title_reply'] = 'Teklif yap / Mesaj bırak';
+                    $defaults['label_submit'] = 'Teklif Gönder';
+                    return $defaults;
+                });
+                
+                comments_template();
+                ?>
+            </div>
+            
+        </article>
+        
+        <?php endwhile; ?>
     </div>
 </main>
 
 <?php
 get_footer();
 ?>
-

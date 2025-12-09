@@ -83,7 +83,7 @@ get_header();
                     <div class="items-grid" id="offer-items-grid">
                         <?php 
                         foreach ($items as $slug => $item) {
-                            echo hdh_render_item_card($slug, 'offer_items[]', 'checkbox', '');
+                            echo hdh_render_item_card($slug, 'offer_item[' . esc_attr($slug) . ']', 'checkbox', '');
                         }
                         ?>
                     </div>
