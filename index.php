@@ -8,10 +8,10 @@ get_header();
 
 <main>
     <div class="container">
-        <div class="content-wrapper <?php echo mi_has_sidebar() ? 'has-sidebar' : 'no-sidebar'; ?>">
+        <div class="content-wrapper <?php echo function_exists('mi_has_sidebar') && mi_has_sidebar() ? 'has-sidebar' : 'no-sidebar'; ?>">
             <div class="main-content">
         <?php if (have_posts()) : ?>
-            <?php if (get_theme_mod('mi_enable_masonry', false)) : ?>
+            <?php if (get_theme_mod('mi_enable_masonry', false) && function_exists('mi_render_masonry_grid')) : ?>
                 <?php 
                 $columns = get_theme_mod('mi_masonry_columns', '3');
                 mi_render_masonry_grid(null, $columns);
@@ -70,9 +70,6 @@ get_header();
                                 <div class="post-read-more">
                                     <a href="<?php the_permalink(); ?>" class="read-more-link">Devamını Oku →</a>
                                 </div>
-                                <div class="post-share-inline">
-                                    <?php mi_render_social_share(get_the_ID(), true); ?>
-                                </div>
                             </div>
                         </div>
                     </article>
@@ -98,7 +95,7 @@ get_header();
         <?php endif; ?>
             </div>
             
-            <?php if (mi_has_sidebar()) : ?>
+            <?php if (function_exists('mi_has_sidebar') && mi_has_sidebar()) : ?>
                 <?php get_sidebar(); ?>
             <?php endif; ?>
         </div>
@@ -108,4 +105,3 @@ get_header();
 <?php
 get_footer();
 ?>
-
