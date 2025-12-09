@@ -107,41 +107,6 @@ get_header();
     </div>
 </section>
 
-<!-- HDH: Main Feature CTAs -->
-<section class="main-features-section" id="main-features">
-    <div class="container">
-        <div class="main-features-grid">
-            <div class="main-feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3 class="feature-title">Ücretsiz Dekorasyonlar</h3>
-                <p class="feature-description">Çiftliğinizi süsleyin</p>
-                <a href="#" class="btn-wooden-sign btn-secondary">Keşfet →</a>
-            </div>
-            
-            <div class="main-feature-card">
-                <div class="feature-icon">🎁</div>
-                <h3 class="feature-title">Çekilişe Katıl</h3>
-                <p class="feature-description">Özel ödüller kazanın</p>
-                <a href="#" class="btn-wooden-sign btn-secondary">Katıl →</a>
-            </div>
-            
-            <div class="main-feature-card highlight">
-                <div class="feature-icon">🔄</div>
-                <h3 class="feature-title">Hediyeleşme</h3>
-                <p class="feature-description">İhtiyacınız olan ürünleri bulun</p>
-                <a href="#trade-feed" class="btn-wooden-sign btn-primary">Hediyeni Seç →</a>
-            </div>
-            
-            <div class="main-feature-card">
-                <div class="feature-icon">👥</div>
-                <h3 class="feature-title">Mahalleye Katıl</h3>
-                <p class="feature-description">Toplulukla bağlantıda kalın</p>
-                <a href="#" class="btn-wooden-sign btn-secondary">Katıl →</a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- HDH: Trade Offer Feed Section -->
 <main class="trade-feed-main" id="trade-feed">
     <div class="container">
