@@ -239,6 +239,17 @@ h6 { font-size: 1.1rem; }
 }
 
 /* ============================================
+   CONTAINER - Responsive Container
+   ============================================ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ============================================
    CARTOON HEADER - Wooden Board Style
    ============================================ */
 .cartoon-header {
@@ -1831,8 +1842,10 @@ h6 { font-size: 1.1rem; }
     border-radius: var(--radius-small);
     font-size: 16px;
     width: 100px;
+    max-width: 100%;
     background: var(--clean-white);
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .quantity-input:focus {
@@ -1856,12 +1869,20 @@ h6 { font-size: 1.1rem; }
     background: rgba(220, 20, 60, 0.05);
     border-radius: var(--radius-medium);
     border: 2px solid rgba(220, 20, 60, 0.2);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .offer-quantity-item label {
     font-weight: 600;
     color: #2C2C2C;
     min-width: 120px;
+    flex-shrink: 0;
+}
+
+.offer-quantity-item input[type="number"] {
+    flex: 1;
+    min-width: 0;
 }
 
 .form-field {
@@ -1922,39 +1943,123 @@ h6 { font-size: 1.1rem; }
    RESPONSIVE: ITEM CARDS & FORM
    ============================================ */
 @media (max-width: 768px) {
+    /* Container overflow fix */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
     .create-trade-wrapper {
-        padding: 25px 20px;
+        padding: 20px 15px;
+        margin: 0 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .form-section {
+        padding: 20px 15px;
+        margin-bottom: 25px;
     }
     
     .items-grid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 8px;
+        margin-bottom: 15px;
     }
     
     .item-card {
-        padding: 10px;
+        padding: 8px;
     }
     
     .item-card-image-wrapper {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
     }
     
     .item-card-label {
-        font-size: 11px;
+        font-size: 10px;
+        line-height: 1.2;
+        word-break: break-word;
     }
     
     .form-section-title {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        flex-wrap: wrap;
+        gap: 5px;
     }
     
     .quantity-input-wrapper {
         flex-direction: column;
         align-items: flex-start;
+        width: 100%;
     }
     
     .quantity-input {
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Offer quantities mobile fix */
+    .offer-quantities {
+        width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .offer-quantity-item {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+    }
+    
+    .offer-quantity-item label {
+        min-width: auto;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .offer-quantity-item input[type="number"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    /* Form inputs mobile fix */
+    .form-input,
+    .form-textarea {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Form actions mobile fix */
+    .form-actions {
+        width: 100%;
+    }
+    
+    .btn-submit-trade {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+    }
+    
+    /* Trade filter bar mobile fix */
+    .trade-filter-bar {
+        padding: 15px;
+        margin: 0 -15px;
+    }
+    
+    .trade-filters {
+        gap: 10px;
+    }
+    
+    /* Trade cards grid mobile fix */
+    .trade-cards-grid {
+        gap: 15px;
+        padding: 0 5px;
     }
 }
 
