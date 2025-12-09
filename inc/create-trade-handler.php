@@ -42,8 +42,12 @@ function hdh_handle_create_trade() {
             setcookie('hdh_pending_trade_key', $transient_key, time() + HOUR_IN_SECONDS, '/', '', is_ssl(), true);
         }
         
-        // Redirect to registration page
-        wp_redirect(home_url('/?action=register&redirect=trade'));
+        // Redirect to registration page - ensure URL is properly encoded
+        $redirect_url = add_query_arg(array(
+            'action' => 'register',
+            'redirect' => 'trade'
+        ), home_url('/'));
+        wp_safe_redirect($redirect_url);
         exit;
     }
     

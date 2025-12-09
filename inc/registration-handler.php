@@ -10,81 +10,6 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Add custom fields to registration form
- */
-function hdh_add_registration_fields() {
-    ?>
-    <p class="form-row">
-        <label for="farm_code">Çiftlik Kodu <span class="required">*</span></label>
-        <input type="text" name="farm_code" id="farm_code" class="input" value="<?php echo isset($_POST['farm_code']) ? esc_attr($_POST['farm_code']) : ''; ?>" required />
-    </p>
-    
-    <p class="form-row">
-        <label for="farm_name">Çiftlik İsmi <span class="required">*</span></label>
-        <input type="text" name="farm_name" id="farm_name" class="input" value="<?php echo isset($_POST['farm_name']) ? esc_attr($_POST['farm_name']) : ''; ?>" required />
-    </p>
-    
-    <p class="form-row">
-        <label for="contact_info">E-posta veya Telefon Numarası <span class="required">*</span></label>
-        <input type="text" name="contact_info" id="contact_info" class="input" value="<?php echo isset($_POST['contact_info']) ? esc_attr($_POST['contact_info']) : ''; ?>" required />
-        <small>E-posta adresi veya telefon numarası girebilirsiniz</small>
-    </p>
-    <?php
-}
-add_action('register_form', 'hdh_add_registration_fields');
-
-/**
- * Validate custom registration fields
- */
-function hdh_validate_registration_fields($errors, $sanitized_user_login, $user_email) {
-    if (empty($_POST['farm_code'])) {
-        $errors->add('farm_code_error', '<strong>Hata:</strong> Çiftlik kodu gereklidir.');
-    }
-    
-    if (empty($_POST['farm_name'])) {
-        $errors->add('farm_name_error', '<strong>Hata:</strong> Çiftlik ismi gereklidir.');
-    }
-    
-    if (empty($_POST['contact_info'])) {
-        $errors->add('contact_info_error', '<strong>Hata:</strong> E-posta veya telefon numarası gereklidir.');
-    }
-    
-    // Check if farm code already exists
-    if (!empty($_POST['farm_code'])) {
-        $existing_user = get_users(array(
-            'meta_key' => 'farm_code',
-            'meta_value' => sanitize_text_field($_POST['farm_code']),
-            'number' => 1
-        ));
-        
-        if (!empty($existing_user)) {
-            $errors->add('farm_code_exists', '<strong>Hata:</strong> Bu çiftlik kodu zaten kullanılıyor.');
-        }
-    }
-    
-    return $errors;
-}
-add_filter('registration_errors', 'hdh_validate_registration_fields', 10, 3);
-
-/**
- * Save custom fields after registration
- */
-function hdh_save_registration_fields($user_id) {
-    if (isset($_POST['farm_code'])) {
-        update_user_meta($user_id, 'farm_code', sanitize_text_field($_POST['farm_code']));
-    }
-    
-    if (isset($_POST['farm_name'])) {
-        update_user_meta($user_id, 'farm_name', sanitize_text_field($_POST['farm_name']));
-    }
-    
-    if (isset($_POST['contact_info'])) {
-        update_user_meta($user_id, 'contact_info', sanitize_text_field($_POST['contact_info']));
-    }
-}
-add_action('user_register', 'hdh_save_registration_fields');
-
-/**
  * Custom registration page handler
  */
 function hdh_handle_custom_registration() {
@@ -118,6 +43,9 @@ function hdh_get_registration_modal_css() {
             z-index: 10000;
             display: none;
         }
+        .hdh-modal[style*="display: block"] {
+            display: block !important;
+        }
         .hdh-modal-overlay {
             position: absolute;
             top: 0;
@@ -128,8 +56,8 @@ function hdh_get_registration_modal_css() {
         }
         .hdh-modal-content {
             position: relative;
-            max-width: 500px;
-            margin: 50px auto;
+            max-width: 600px;
+            margin: 30px auto;
             background: var(--clean-white);
             border-radius: var(--radius-large);
             border: 4px solid var(--wood-brown);
@@ -163,6 +91,32 @@ function hdh_get_registration_modal_css() {
         .hdh-modal-body {
             padding: 20px;
         }
+        .hdh-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--wood-brown-light);
+            margin-bottom: 20px;
+        }
+        .hdh-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--wood-brown-light);
+            transition: all 0.3s ease;
+        }
+        .hdh-tab.active {
+            color: var(--wood-brown);
+            border-bottom-color: var(--farm-green);
+        }
+        .hdh-tab-content {
+            display: none;
+        }
+        .hdh-tab-content.active {
+            display: block;
+        }
         .hdh-registration-notice {
             background: var(--farm-green-light);
             padding: 15px;
@@ -193,6 +147,7 @@ function hdh_get_registration_modal_css() {
             border: 2px solid var(--wood-brown-light);
             border-radius: var(--radius-small);
             font-size: 15px;
+            box-sizing: border-box;
         }
         .hdh-modal-body .input:focus {
             outline: none;
@@ -203,6 +158,46 @@ function hdh_get_registration_modal_css() {
             margin-top: 5px;
             color: var(--wood-brown-light);
             font-size: 13px;
+        }
+        .hdh-phone-note {
+            background: var(--sky-blue-light);
+            padding: 10px;
+            border-radius: var(--radius-small);
+            margin-top: 5px;
+            border: 2px solid var(--sky-blue);
+            font-size: 13px;
+            color: var(--wood-brown);
+        }
+        .hdh-phone-note strong {
+            color: var(--farm-green-dark);
+        }
+        .hdh-terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--soft-cream);
+            border-radius: var(--radius-small);
+            border: 2px solid var(--wood-brown-light);
+        }
+        .hdh-terms-checkbox input[type="checkbox"] {
+            margin-top: 3px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .hdh-terms-checkbox label {
+            font-weight: normal;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+        .hdh-terms-checkbox a {
+            color: var(--farm-green-dark);
+            text-decoration: underline;
+        }
+        .hdh-terms-checkbox a:hover {
+            color: var(--farm-green);
         }
         .form-submit {
             margin-top: 25px;
@@ -216,10 +211,70 @@ function hdh_get_registration_modal_css() {
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%;
         }
-        .button-primary:hover {
+        .button-primary:hover:not(:disabled) {
             background: var(--farm-green-dark);
             transform: translateY(-2px);
+        }
+        .button-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        @media (max-width: 768px) {
+            .hdh-modal-content {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+                max-height: 95vh;
+            }
+            .hdh-modal-header {
+                padding: 15px;
+            }
+            .hdh-modal-header h2 {
+                font-size: 1.2rem;
+            }
+            .hdh-modal-body {
+                padding: 15px;
+            }
+            .hdh-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+            .hdh-tab {
+                min-width: 120px;
+                padding: 10px 15px;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+            .hdh-tab.active {
+                border-bottom: 3px solid var(--farm-green);
+                border-left: none;
+            }
+            .hdh-registration-notice,
+            .hdh-error-message {
+                font-size: 13px;
+                padding: 12px;
+            }
+            .hdh-phone-note {
+                font-size: 12px;
+                padding: 8px;
+            }
+            .hdh-terms-checkbox {
+                padding: 12px;
+                font-size: 13px;
+            }
+            .hdh-terms-checkbox input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                flex-shrink: 0;
+            }
+            .form-row {
+                margin-bottom: 15px;
+            }
+            .button-primary {
+                padding: 14px 20px;
+                font-size: 16px;
+            }
         }
     ';
 }
@@ -229,83 +284,190 @@ function hdh_get_registration_modal_css() {
  */
 function hdh_render_registration_modal() {
     $redirect_to_trade = isset($_GET['redirect']) && $_GET['redirect'] === 'trade';
+    $terms_page_id = get_option('hdh_terms_page_id', 0);
+    $terms_url = $terms_page_id ? get_permalink($terms_page_id) : home_url('/uyelik-sozlesmesi/');
     ?>
     <div id="hdh-registration-modal" class="hdh-modal" style="display: block;">
         <div class="hdh-modal-overlay"></div>
         <div class="hdh-modal-content">
             <div class="hdh-modal-header">
-                <h2>🌾 Hay Day Takas Merkezi - Üye Ol</h2>
+                <h2>🎁 Üye ol / Giriş yap</h2>
                 <button class="hdh-modal-close" onclick="document.getElementById('hdh-registration-modal').style.display='none';">×</button>
             </div>
             <div class="hdh-modal-body">
-                <p class="hdh-registration-notice">
-                    İlan oluşturmak için üye olmanız gerekiyor. Lütfen aşağıdaki bilgileri doldurun.
-                </p>
+                <!-- Tabs -->
+                <div class="hdh-tabs">
+                    <button type="button" class="hdh-tab active" data-tab="register">Üye Ol</button>
+                    <button type="button" class="hdh-tab" data-tab="login">Giriş Yap</button>
+                </div>
                 
-                <?php
-                $registration_errors = isset($_GET['registration_error']) ? $_GET['registration_error'] : '';
-                if ($registration_errors) {
-                    echo '<div class="hdh-error-message">';
-                    switch ($registration_errors) {
-                        case 'empty_fields':
-                            echo 'Lütfen tüm alanları doldurun.';
-                            break;
-                        case 'farm_code_exists':
-                            echo 'Bu çiftlik kodu zaten kullanılıyor.';
-                            break;
-                        case 'email_exists':
-                            echo 'Bu e-posta adresi zaten kayıtlı.';
-                            break;
-                        default:
-                            echo 'Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.';
+                <!-- Registration Tab -->
+                <div id="register-tab" class="hdh-tab-content active">
+                    <p class="hdh-registration-notice">
+                        İlan oluşturmak için üye olmanız gerekiyor. Lütfen aşağıdaki bilgileri doldurun.
+                    </p>
+                    
+                    <?php
+                    $registration_errors = isset($_GET['registration_error']) ? $_GET['registration_error'] : '';
+                    if ($registration_errors) {
+                        echo '<div class="hdh-error-message">';
+                        switch ($registration_errors) {
+                            case 'empty_fields':
+                                echo 'Lütfen tüm zorunlu alanları doldurun.';
+                                break;
+                            case 'farm_tag_exists':
+                                echo 'Bu çiftlik etiketi zaten kullanılıyor.';
+                                break;
+                            case 'email_exists':
+                                echo 'Bu e-posta adresi zaten kayıtlı.';
+                                break;
+                            case 'username_exists':
+                                echo 'Bu çiftlik adı zaten kullanılıyor.';
+                                break;
+                            case 'terms_not_accepted':
+                                echo 'Üyelik sözleşmesini kabul etmelisiniz.';
+                                break;
+                            default:
+                                echo 'Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.';
+                        }
+                        echo '</div>';
                     }
-                    echo '</div>';
-                }
-                ?>
+                    ?>
+                    
+                    <form name="hdh_registerform" id="hdh_registerform" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+                        <?php wp_nonce_field('hdh_custom_register', 'hdh_register_nonce'); ?>
+                        <input type="hidden" name="action" value="hdh_custom_register">
+                        <input type="hidden" name="redirect_to_trade" value="<?php echo $redirect_to_trade ? '1' : '0'; ?>">
+                        
+                        <p class="form-row">
+                            <label for="farm_name">Çiftlik Adı <span class="required">*</span></label>
+                            <input type="text" name="farm_name" id="farm_name" class="input" value="<?php echo isset($_POST['farm_name']) ? esc_attr($_POST['farm_name']) : ''; ?>" required />
+                            <small>Bu ad kullanıcı adınız olarak kullanılacaktır</small>
+                        </p>
+                        
+                        <p class="form-row">
+                            <label for="user_email">E-posta Adresi <span class="required">*</span></label>
+                            <input type="email" name="user_email" id="user_email" class="input" value="<?php echo isset($_POST['user_email']) ? esc_attr($_POST['user_email']) : ''; ?>" required />
+                        </p>
+                        
+                        <p class="form-row">
+                            <label for="farm_tag">Çiftlik Etiketi <span class="required">*</span></label>
+                            <input type="text" name="farm_tag" id="farm_tag" class="input" value="<?php echo isset($_POST['farm_tag']) ? esc_attr($_POST['farm_tag']) : ''; ?>" required />
+                            <small>Çiftliğinizin benzersiz etiketi (örnek: #ABC123)</small>
+                        </p>
+                        
+                        <p class="form-row">
+                            <label for="phone_number">Telefon Numarası</label>
+                            <input type="tel" name="phone_number" id="phone_number" class="input" value="<?php echo isset($_POST['phone_number']) ? esc_attr($_POST['phone_number']) : ''; ?>" />
+                            <div class="hdh-phone-note">
+                                <strong>💡 İpucu:</strong> Telefon numaranızı belirtirseniz hesabınız <strong>mavi tikli</strong> olacaktır ve diğer kullanıcılar size daha çok güvenecektir.
+                            </div>
+                        </p>
+                        
+                        <p class="form-row">
+                            <label for="user_pass">Şifre <span class="required">*</span></label>
+                            <input type="password" name="user_pass" id="user_pass" class="input" value="" required />
+                        </p>
+                        
+                        <div class="hdh-terms-checkbox">
+                            <input type="checkbox" name="accept_terms" id="accept_terms" required />
+                            <label for="accept_terms">
+                                <a href="<?php echo esc_url($terms_url); ?>" target="_blank">Üyelik sözleşmesini</a> okudum ve onaylıyorum. <span class="required">*</span>
+                            </label>
+                        </div>
+                        
+                        <p class="form-row form-submit">
+                            <input type="submit" name="hdh_submit" id="hdh_submit" class="button button-primary" value="Üye Ol" />
+                        </p>
+                    </form>
+                </div>
                 
-                <form name="hdh_registerform" id="hdh_registerform" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-                    <?php wp_nonce_field('hdh_custom_register', 'hdh_register_nonce'); ?>
-                    <input type="hidden" name="action" value="hdh_custom_register">
-                    <input type="hidden" name="redirect_to_trade" value="<?php echo $redirect_to_trade ? '1' : '0'; ?>">
-                    
-                    <p class="form-row">
-                        <label for="user_login">Kullanıcı Adı <span class="required">*</span></label>
-                        <input type="text" name="user_login" id="user_login" class="input" value="<?php echo isset($_POST['user_login']) ? esc_attr($_POST['user_login']) : ''; ?>" size="20" required />
+                <!-- Login Tab -->
+                <div id="login-tab" class="hdh-tab-content">
+                    <p class="hdh-registration-notice">
+                        Zaten üye misiniz? Giriş yaparak devam edin.
                     </p>
                     
-                    <p class="form-row">
-                        <label for="user_email">E-posta <span class="required">*</span></label>
-                        <input type="email" name="user_email" id="user_email" class="input" value="<?php echo isset($_POST['user_email']) ? esc_attr($_POST['user_email']) : ''; ?>" size="25" required />
-                    </p>
+                    <?php
+                    $login_errors = isset($_GET['login_error']) ? $_GET['login_error'] : '';
+                    if ($login_errors) {
+                        echo '<div class="hdh-error-message">';
+                        switch ($login_errors) {
+                            case 'invalid_credentials':
+                                echo 'Kullanıcı adı veya şifre hatalı.';
+                                break;
+                            default:
+                                echo 'Giriş yapılırken bir hata oluştu.';
+                        }
+                        echo '</div>';
+                    }
+                    ?>
                     
-                    <p class="form-row">
-                        <label for="farm_code">Çiftlik Kodu <span class="required">*</span></label>
-                        <input type="text" name="farm_code" id="farm_code" class="input" value="<?php echo isset($_POST['farm_code']) ? esc_attr($_POST['farm_code']) : ''; ?>" required />
-                    </p>
-                    
-                    <p class="form-row">
-                        <label for="farm_name">Çiftlik İsmi <span class="required">*</span></label>
-                        <input type="text" name="farm_name" id="farm_name" class="input" value="<?php echo isset($_POST['farm_name']) ? esc_attr($_POST['farm_name']) : ''; ?>" required />
-                    </p>
-                    
-                    <p class="form-row">
-                        <label for="contact_info">E-posta veya Telefon Numarası <span class="required">*</span></label>
-                        <input type="text" name="contact_info" id="contact_info" class="input" value="<?php echo isset($_POST['contact_info']) ? esc_attr($_POST['contact_info']) : ''; ?>" required />
-                        <small>E-posta adresi veya telefon numarası girebilirsiniz</small>
-                    </p>
-                    
-                    <p class="form-row">
-                        <label for="user_pass">Şifre <span class="required">*</span></label>
-                        <input type="password" name="user_pass" id="user_pass" class="input" value="" size="20" required />
-                    </p>
-                    
-                    <p class="form-row form-submit">
-                        <input type="submit" name="hdh_submit" id="hdh_submit" class="button button-primary" value="Üye Ol" />
-                    </p>
-                </form>
+                    <form name="hdh_loginform" id="hdh_loginform" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+                        <?php wp_nonce_field('hdh_custom_login', 'hdh_login_nonce'); ?>
+                        <input type="hidden" name="action" value="hdh_custom_login">
+                        <input type="hidden" name="redirect_to_trade" value="<?php echo $redirect_to_trade ? '1' : '0'; ?>">
+                        
+                        <p class="form-row">
+                            <label for="login_username">Çiftlik Adı veya E-posta <span class="required">*</span></label>
+                            <input type="text" name="log" id="login_username" class="input" value="<?php echo isset($_POST['log']) ? esc_attr($_POST['log']) : ''; ?>" required />
+                        </p>
+                        
+                        <p class="form-row">
+                            <label for="login_password">Şifre <span class="required">*</span></label>
+                            <input type="password" name="pwd" id="login_password" class="input" value="" required />
+                        </p>
+                        
+                        <p class="form-row">
+                            <label>
+                                <input type="checkbox" name="rememberme" value="forever" />
+                                Beni hatırla
+                            </label>
+                        </p>
+                        
+                        <p class="form-row form-submit">
+                            <input type="submit" name="hdh_login_submit" id="hdh_login_submit" class="button button-primary" value="Giriş Yap" />
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+    
+    <script>
+    // Tab switching
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.hdh-tab');
+        const tabContents = document.querySelectorAll('.hdh-tab-content');
+        
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                const targetTab = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and contents
+                tabs.forEach(function(t) { t.classList.remove('active'); });
+                tabContents.forEach(function(c) { c.classList.remove('active'); });
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                document.getElementById(targetTab + '-tab').classList.add('active');
+            });
+        });
+        
+        // Terms checkbox validation
+        const termsCheckbox = document.getElementById('accept_terms');
+        const submitButton = document.getElementById('hdh_submit');
+        
+        if (termsCheckbox && submitButton) {
+            function toggleSubmitButton() {
+                submitButton.disabled = !termsCheckbox.checked;
+            }
+            
+            termsCheckbox.addEventListener('change', toggleSubmitButton);
+            toggleSubmitButton(); // Initial check
+        }
+    });
+    </script>
     <?php
 }
 
@@ -319,29 +481,34 @@ function hdh_handle_custom_registration_submit() {
         exit;
     }
     
-    $user_login = isset($_POST['user_login']) ? sanitize_user($_POST['user_login']) : '';
+    $farm_name = isset($_POST['farm_name']) ? sanitize_user($_POST['farm_name']) : '';
     $user_email = isset($_POST['user_email']) ? sanitize_email($_POST['user_email']) : '';
     $user_pass = isset($_POST['user_pass']) ? $_POST['user_pass'] : '';
-    $farm_code = isset($_POST['farm_code']) ? sanitize_text_field($_POST['farm_code']) : '';
-    $farm_name = isset($_POST['farm_name']) ? sanitize_text_field($_POST['farm_name']) : '';
-    $contact_info = isset($_POST['contact_info']) ? sanitize_text_field($_POST['contact_info']) : '';
+    $farm_tag = isset($_POST['farm_tag']) ? sanitize_text_field($_POST['farm_tag']) : '';
+    $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
+    $accept_terms = isset($_POST['accept_terms']) ? true : false;
     $redirect_to_trade = isset($_POST['redirect_to_trade']) && $_POST['redirect_to_trade'] === '1';
     
     // Validation
-    if (empty($user_login) || empty($user_email) || empty($user_pass) || empty($farm_code) || empty($farm_name) || empty($contact_info)) {
+    if (empty($farm_name) || empty($user_email) || empty($user_pass) || empty($farm_tag)) {
         wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=empty_fields'));
         exit;
     }
     
-    // Check if farm code exists
+    if (!$accept_terms) {
+        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=terms_not_accepted'));
+        exit;
+    }
+    
+    // Check if farm tag exists
     $existing_user = get_users(array(
-        'meta_key' => 'farm_code',
-        'meta_value' => $farm_code,
+        'meta_key' => 'farm_tag',
+        'meta_value' => $farm_tag,
         'number' => 1
     ));
     
     if (!empty($existing_user)) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=farm_code_exists'));
+        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=farm_tag_exists'));
         exit;
     }
     
@@ -352,13 +519,13 @@ function hdh_handle_custom_registration_submit() {
     }
     
     // Check if username exists
-    if (username_exists($user_login)) {
+    if (username_exists($farm_name)) {
         wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=username_exists'));
         exit;
     }
     
-    // Create user
-    $user_id = wp_create_user($user_login, $user_pass, $user_email);
+    // Create user (farm_name as username)
+    $user_id = wp_create_user($farm_name, $user_pass, $user_email);
     
     if (is_wp_error($user_id)) {
         wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=creation_failed'));
@@ -366,9 +533,13 @@ function hdh_handle_custom_registration_submit() {
     }
     
     // Save custom fields
-    update_user_meta($user_id, 'farm_code', $farm_code);
+    update_user_meta($user_id, 'farm_tag', $farm_tag);
     update_user_meta($user_id, 'farm_name', $farm_name);
-    update_user_meta($user_id, 'contact_info', $contact_info);
+    
+    if (!empty($phone_number)) {
+        update_user_meta($user_id, 'phone_number', $phone_number);
+        update_user_meta($user_id, 'verified_account', true); // Mavi tikli hesap
+    }
     
     // Auto login
     wp_set_current_user($user_id);
@@ -394,6 +565,59 @@ function hdh_handle_custom_registration_submit() {
 }
 add_action('admin_post_hdh_custom_register', 'hdh_handle_custom_registration_submit');
 add_action('admin_post_nopriv_hdh_custom_register', 'hdh_handle_custom_registration_submit');
+
+/**
+ * Handle custom login form submission
+ */
+function hdh_handle_custom_login_submit() {
+    // Verify nonce
+    if (!isset($_POST['hdh_login_nonce']) || !wp_verify_nonce($_POST['hdh_login_nonce'], 'hdh_custom_login')) {
+        wp_redirect(home_url('/?action=register&login_error=security'));
+        exit;
+    }
+    
+    $username = isset($_POST['log']) ? sanitize_user($_POST['log']) : '';
+    $password = isset($_POST['pwd']) ? $_POST['pwd'] : '';
+    $remember = isset($_POST['rememberme']);
+    $redirect_to_trade = isset($_POST['redirect_to_trade']) && $_POST['redirect_to_trade'] === '1';
+    
+    if (empty($username) || empty($password)) {
+        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&login_error=empty_fields'));
+        exit;
+    }
+    
+    // Try to login
+    $user = wp_authenticate($username, $password);
+    
+    if (is_wp_error($user)) {
+        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&login_error=invalid_credentials'));
+        exit;
+    }
+    
+    // Login successful
+    wp_set_current_user($user->ID);
+    wp_set_auth_cookie($user->ID, $remember);
+    
+    // If redirect to trade, create trade from pending data
+    if ($redirect_to_trade) {
+        $transient_key = isset($_COOKIE['hdh_pending_trade_key']) ? $_COOKIE['hdh_pending_trade_key'] : '';
+        
+        if ($transient_key) {
+            $pending_trade = get_transient($transient_key);
+            
+            if ($pending_trade) {
+                hdh_create_trade_from_pending($pending_trade, $transient_key);
+                exit;
+            }
+        }
+    }
+    
+    // Redirect to homepage
+    wp_redirect(home_url('/'));
+    exit;
+}
+add_action('admin_post_hdh_custom_login', 'hdh_handle_custom_login_submit');
+add_action('admin_post_nopriv_hdh_custom_login', 'hdh_handle_custom_login_submit');
 
 /**
  * Create trade from pending data
@@ -473,4 +697,3 @@ function hdh_create_trade_from_pending($pending_trade, $transient_key = '') {
     }
     exit;
 }
-
