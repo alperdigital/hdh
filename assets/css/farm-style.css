@@ -1029,13 +1029,9 @@ h6 { font-size: 1.1rem; }
     margin: 20px 0;
 }
 
-.trade-wanted-section {
-    background: rgba(34, 139, 34, 0.1);
-    padding: 20px;
-    border-radius: var(--radius-medium);
-    margin-bottom: 20px;
-    border: 2px solid var(--newyear-green);
-    box-shadow: 0 2px 8px rgba(34, 139, 34, 0.15);
+/* Trade Wanted Wrapper - Label outside */
+.trade-wanted-wrapper {
+    margin-bottom: 25px;
 }
 
 .trade-wanted-label {
@@ -1046,6 +1042,64 @@ h6 { font-size: 1.1rem; }
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* Gift Box Design - Green for Wanted */
+.gift-box {
+    position: relative;
+    padding: 20px;
+    border-radius: var(--radius-medium);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.gift-box:hover {
+    transform: translateY(-3px) rotateX(2deg);
+}
+
+.gift-box-wanted {
+    background: linear-gradient(135deg, rgba(34, 139, 34, 0.15) 0%, rgba(50, 205, 50, 0.1) 100%);
+    border: 3px solid var(--newyear-green);
+    border-top: 4px solid var(--newyear-green-dark);
+}
+
+/* Gift Box Ribbon - Decorative top */
+.gift-box-ribbon {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 20px;
+    background: var(--newyear-green-dark);
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.gift-box-wanted .gift-box-ribbon {
+    background: linear-gradient(135deg, var(--newyear-green-dark) 0%, var(--newyear-green) 100%);
+}
+
+.gift-box-offer .gift-box-ribbon {
+    background: linear-gradient(135deg, var(--sky-blue-dark) 0%, var(--sky-blue) 100%);
+}
+
+.gift-box-ribbon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.gift-box-content {
+    position: relative;
+    z-index: 1;
 }
 
 .trade-wanted-item {
@@ -1083,21 +1137,26 @@ h6 { font-size: 1.1rem; }
     gap: 10px;
 }
 
-.trade-offer-section {
-    background: rgba(224, 246, 255, 0.5);
-    padding: 15px;
-    border-radius: var(--radius-medium);
-    border: 2px solid var(--newyear-ice);
+/* Trade Offer Wrapper - Label outside */
+.trade-offer-wrapper {
+    margin-bottom: 20px;
 }
 
 .trade-offer-label {
-    color: #2C2C2C;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    color: var(--sky-blue-dark);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* Gift Box Design - Blue for Offer */
+.gift-box-offer {
+    background: linear-gradient(135deg, rgba(173, 216, 255, 0.2) 0%, rgba(224, 246, 255, 0.15) 100%);
+    border: 3px solid var(--sky-blue);
+    border-top: 4px solid var(--sky-blue-dark);
 }
 
 .trade-offer-items {
@@ -1107,14 +1166,22 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-offer-item {
-    background: var(--clean-white);
-    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 16px;
     border-radius: var(--radius-small);
-    border: 2px solid var(--newyear-ice);
+    border: 2px solid rgba(173, 216, 255, 0.5);
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 10px;
+    box-shadow: 0 2px 6px rgba(173, 216, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.trade-offer-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(173, 216, 255, 0.3);
+    border-color: var(--sky-blue);
 }
 
 .trade-offer-item-icon {
@@ -1404,6 +1471,46 @@ h6 { font-size: 1.1rem; }
     .btn-trade-detail {
         width: 100%;
         text-align: center;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+    
+    /* Gift box mobile adjustments */
+    .gift-box {
+        padding: 15px;
+    }
+    
+    .gift-box-ribbon {
+        width: 50px;
+        height: 16px;
+        top: -6px;
+    }
+    
+    .trade-wanted-label,
+    .trade-offer-label {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+    
+    .trade-item-with-image {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .trade-item-icon {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .trade-offer-items {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .trade-offer-item {
+        width: 100%;
+        justify-content: center;
     }
     
     .main-features-grid {
