@@ -250,13 +250,13 @@ h6 { font-size: 1.1rem; }
    CARTOON HEADER - Wooden Board Style
    ============================================ */
 .cartoon-header {
-    background: var(--gradient-wood);
-    border-bottom: 4px solid var(--wood-brown-dark);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 248, 255, 0.9) 100%);
+    border-bottom: 3px solid var(--newyear-red);
     padding: 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: var(--shadow-medium);
+    box-shadow: 0 4px 20px rgba(220, 20, 60, 0.2);
     transition: all 0.3s ease;
 }
 
@@ -266,17 +266,11 @@ h6 { font-size: 1.1rem; }
 }
 
 .header-wooden-board {
-    background: 
-        repeating-linear-gradient(
-            90deg,
-            var(--wood-brown) 0px,
-            var(--wood-brown) 2px,
-            var(--wood-brown-light) 2px,
-            var(--wood-brown-light) 4px
-        );
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 248, 255, 0.95) 100%);
     padding: 20px 0;
     position: relative;
-    box-shadow: var(--shadow-inset);
+    box-shadow: 0 2px 10px rgba(220, 20, 60, 0.15);
+    border-bottom: 1px solid rgba(220, 20, 60, 0.2);
 }
 
 .cartoon-header {
