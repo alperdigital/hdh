@@ -43,7 +43,9 @@ function hdh_handle_create_trade() {
             'action' => 'register',
             'redirect' => 'trade'
         ), home_url('/'));
-        wp_safe_redirect($redirect_url);
+        
+        // Use wp_redirect instead of wp_safe_redirect for internal redirects
+        wp_redirect($redirect_url);
         exit;
     }
     

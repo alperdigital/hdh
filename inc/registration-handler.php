@@ -14,13 +14,13 @@ if (!defined('ABSPATH')) {
  */
 function hdh_handle_custom_registration() {
     if (isset($_GET['action']) && $_GET['action'] === 'register' && !is_user_logged_in()) {
-        // Show registration form
-        add_action('wp_footer', 'hdh_render_registration_modal');
+        // Show registration form - use priority to ensure it runs
+        add_action('wp_footer', 'hdh_render_registration_modal', 999);
         // Enqueue modal styles
-        add_action('wp_enqueue_scripts', 'hdh_enqueue_registration_modal_styles');
+        add_action('wp_enqueue_scripts', 'hdh_enqueue_registration_modal_styles', 999);
     }
 }
-add_action('template_redirect', 'hdh_handle_custom_registration');
+add_action('template_redirect', 'hdh_handle_custom_registration', 1);
 
 /**
  * Enqueue registration modal styles

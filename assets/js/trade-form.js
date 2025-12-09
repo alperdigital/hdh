@@ -31,6 +31,8 @@
             const itemLabelElement = itemCardWrapper ? itemCardWrapper.querySelector('.item-card-label') : null;
             const itemLabel = itemLabelElement ? itemLabelElement.textContent.trim() : itemSlug;
             
+            console.log('HDH Trade Form: Checkbox changed', { itemSlug, checked: checkbox.checked, itemLabel });
+            
             if (checkbox.checked) {
                 // Check if we've reached the limit
                 if (selectedOfferItems.length >= maxOfferItems) {
@@ -50,6 +52,7 @@
                         label: itemLabel
                     });
                     
+                    console.log('HDH Trade Form: Adding quantity input for', itemSlug);
                     // Add quantity input
                     addQuantityInput(itemSlug, itemLabel);
                 }
@@ -59,6 +62,7 @@
                     return item.slug !== itemSlug;
                 });
                 
+                console.log('HDH Trade Form: Removing quantity input for', itemSlug);
                 // Remove quantity input
                 removeQuantityInput(itemSlug);
             }
@@ -68,6 +72,7 @@
         function addQuantityInput(slug, label) {
             // Check if already exists
             if (document.getElementById('offer_qty_' + slug)) {
+                console.warn('HDH Trade Form: Quantity input already exists for', slug);
                 return;
             }
             
@@ -85,10 +90,10 @@
                        required
                        class="quantity-input"
                        style="width: 100%; max-width: 200px; padding: 10px; border: 2px solid #74C365; border-radius: 6px; font-size: 16px;">
-                <input type="hidden" name="offer_item[${slug}]" value="${slug}">
             `;
             
             offerQuantities.appendChild(quantityItem);
+            console.log('HDH Trade Form: Quantity input added for', slug, quantityItem);
             
             // Scroll to the new input
             quantityItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
