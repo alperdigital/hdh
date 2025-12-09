@@ -6,13 +6,7 @@
     <link rel="icon" type="image/svg+xml" href="<?php echo esc_url(get_template_directory_uri() . '/assets/favicon.svg'); ?>">
     <?php wp_head(); ?>
 </head>
-<body <?php 
-    body_class(); 
-    $single_page_mode = get_option('mi_enable_single_page', 0) === 1;
-    if ($single_page_mode) {
-        echo ' data-single-page-mode="1"';
-    }
-?>>
+<body <?php body_class(); ?>>
     <!-- HDH: SVG Icons Sprite -->
     <?php include get_template_directory() . '/assets/svg/farm-icons.svg'; ?>
     
@@ -41,8 +35,8 @@
                         <h1 class="site-title">
                             <?php 
                             $site_name = get_bloginfo('name');
-                            if (empty($site_name) || $site_name === 'HDH') {
-                                echo 'hayday.help';
+                            if (empty($site_name) || $site_name === 'HDH' || $site_name === "User's blog") {
+                                echo 'Hay Day Help';
                             } else {
                                 echo esc_html($site_name);
                             }
@@ -61,51 +55,13 @@
                 <!-- HDH: Cartoon Navigation Menu -->
                 <nav class="cartoon-navigation" id="main-navigation">
                     <?php
-                    $sections = mi_get_active_sections();
-                    $single_page_mode = get_option('mi_enable_single_page', 0) === 1;
-                    
-                    if (!empty($sections)) {
-                        echo '<ul class="cartoon-nav">';
-                        foreach ($sections as $section) {
-                            $section_name = mi_get_section_name($section->ID);
-                            $section_type = get_post_meta($section->ID, '_mi_section_type', true);
-                            
-                            if ($single_page_mode && is_front_page()) {
-                                $section_url = '#' . 'section-' . $section->ID;
-                            } else {
-                                $section_url = get_permalink($section->ID);
-                            }
-                            
-                            $current_class = '';
-                            if (is_singular('mi_section') && get_the_ID() == $section->ID) {
-                                $current_class = 'current-menu-item';
-                            }
-                            
-                            // HDH: Icon mapping for sections
-                            $icons = array(
-                                'aciklama' => '📝',
-                                'manset' => '📰',
-                                'kararlar' => '📋',
-                                'iletisim' => '📞'
-                            );
-                            $icon = isset($icons[$section_type]) ? $icons[$section_type] : '🌾';
-                            
-                            echo '<li class="cartoon-nav-item ' . esc_attr($current_class) . '">';
-                            echo '<a href="' . esc_url($section_url) . '" class="cartoon-nav-link" data-section-id="' . esc_attr($section->ID) . '">';
-                            echo '<span class="nav-icon">' . esc_html($icon) . '</span>';
-                            echo '<span>' . esc_html($section_name) . '</span>';
-                            echo '</a></li>';
-                        }
-                        echo '</ul>';
-                    } else {
-                        // HDH: Default cartoon menu - Updated for trading platform
-                        wp_nav_menu(array(
-                            'theme_location' => 'primary',
-                            'menu_class' => 'cartoon-nav',
-                            'container' => false,
-                            'fallback_cb' => 'hdh_default_cartoon_menu',
-                        ));
-                    }
+                    // HDH: Use WordPress menu system
+                    wp_nav_menu(array(
+                        'theme_location' => 'primary',
+                        'menu_class' => 'cartoon-nav',
+                        'container' => false,
+                        'fallback_cb' => 'hdh_default_cartoon_menu',
+                    ));
                     ?>
                 </nav>
             </div>
