@@ -19,15 +19,6 @@
 get_header();
 ?>
 
-<!-- HDH: Hero Section with Updated CTAs -->
-<section class="farm-hero-world" id="farm-hero">
-    <div class="container">
-        <div class="hero-content-wrapper">
-            <h1 class="hero-title-cartoon">Yılbaşı hediyeni seçtin mi?</h1>
-        </div>
-    </div>
-</section>
-
 <!-- HDH: Create Trade Offer Form -->
 <section class="create-trade-form-section" id="create-trade">
     <div class="container">
