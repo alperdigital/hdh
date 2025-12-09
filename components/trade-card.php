@@ -50,9 +50,6 @@ if (!function_exists('hdh_render_trade_card')) {
                         İstediği hediye:
                     </h4>
                     <div class="gift-box gift-box-wanted">
-                        <div class="gift-box-ribbon">
-                            <div class="gift-box-ribbon-horizontal"></div>
-                        </div>
                         <div class="gift-box-content">
                             <?php 
                             $wanted_slug = $trade_data['wanted_item'];
@@ -90,9 +87,6 @@ if (!function_exists('hdh_render_trade_card')) {
                             Vereceği hediye:
                         </h4>
                         <div class="gift-box gift-box-offer">
-                            <div class="gift-box-ribbon">
-                                <div class="gift-box-ribbon-horizontal"></div>
-                            </div>
                             <div class="gift-box-content">
                                 <div class="trade-offer-items">
                                     <?php foreach ($offer_items as $offer) : 
