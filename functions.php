@@ -47,6 +47,10 @@ require_once get_template_directory() . '/inc/trade-settings.php';
 require_once get_template_directory() . '/inc/registration-handler.php';
 require_once get_template_directory() . '/inc/trust-system.php';
 
+// HDH: Include Widgets and Social Share
+require_once get_template_directory() . '/inc/widgets.php';
+require_once get_template_directory() . '/social-share.php';
+
 // Enqueue styles and scripts
 function hdh_enqueue_scripts() {
     // Main Farm Styles
