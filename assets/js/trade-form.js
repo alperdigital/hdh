@@ -12,29 +12,39 @@
         const maxOfferItems = 3;
         
         if (!offerItemsGrid || !offerQuantities) {
+            console.warn('HDH Trade Form: offer-items-grid or offer-quantities not found');
             return;
         }
         
         // Track selected offer items
         let selectedOfferItems = [];
         
-        // Handle offer item checkbox changes
-        const offerCheckboxes = offerItemsGrid.querySelectorAll('input[type="checkbox"]');
-        offerCheckboxes.forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                const itemSlug = this.value;
-                const itemCardWrapper = this.closest('.item-card-wrapper');
-                const itemLabelElement = itemCardWrapper ? itemCardWrapper.querySelector('.item-card-label') : null;
-                const itemLabel = itemLabelElement ? itemLabelElement.textContent.trim() : itemSlug;
+        // Handle offer item checkbox changes - use event delegation for better reliability
+        offerItemsGrid.addEventListener('change', function(e) {
+            if (e.target.type !== 'checkbox') {
+                return;
+            }
+            
+            const checkbox = e.target;
+            const itemSlug = checkbox.value;
+            const itemCardWrapper = checkbox.closest('.item-card-wrapper');
+            const itemLabelElement = itemCardWrapper ? itemCardWrapper.querySelector('.item-card-label') : null;
+            const itemLabel = itemLabelElement ? itemLabelElement.textContent.trim() : itemSlug;
+            
+            if (checkbox.checked) {
+                // Check if we've reached the limit
+                if (selectedOfferItems.length >= maxOfferItems) {
+                    checkbox.checked = false;
+                    alert('En fazla ' + maxOfferItems + ' ürün seçebilirsiniz.');
+                    return;
+                }
                 
-                if (this.checked) {
-                    // Check if we've reached the limit
-                    if (selectedOfferItems.length >= maxOfferItems) {
-                        this.checked = false;
-                        alert('En fazla ' + maxOfferItems + ' ürün seçebilirsiniz.');
-                        return;
-                    }
-                    
+                // Check if already selected
+                const alreadySelected = selectedOfferItems.some(function(item) {
+                    return item.slug === itemSlug;
+                });
+                
+                if (!alreadySelected) {
                     selectedOfferItems.push({
                         slug: itemSlug,
                         label: itemLabel
@@ -42,16 +52,16 @@
                     
                     // Add quantity input
                     addQuantityInput(itemSlug, itemLabel);
-                } else {
-                    // Remove from selection
-                    selectedOfferItems = selectedOfferItems.filter(function(item) {
-                        return item.slug !== itemSlug;
-                    });
-                    
-                    // Remove quantity input
-                    removeQuantityInput(itemSlug);
                 }
-            });
+            } else {
+                // Remove from selection
+                selectedOfferItems = selectedOfferItems.filter(function(item) {
+                    return item.slug !== itemSlug;
+                });
+                
+                // Remove quantity input
+                removeQuantityInput(itemSlug);
+            }
         });
         
         // Add quantity input for selected offer item
@@ -64,12 +74,9 @@
             const quantityItem = document.createElement('div');
             quantityItem.className = 'offer-quantity-item';
             quantityItem.id = 'quantity-item-' + slug;
-            quantityItem.style.marginTop = '10px';
-            quantityItem.style.padding = '10px';
-            quantityItem.style.background = '#f9f9f9';
-            quantityItem.style.borderRadius = '8px';
+            quantityItem.style.cssText = 'margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 8px; border-left: 4px solid #74C365;';
             quantityItem.innerHTML = `
-                <label for="offer_qty_${slug}" style="display: block; margin-bottom: 5px; font-weight: 600;">${label} Miktarı:</label>
+                <label for="offer_qty_${slug}" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">${label} Miktarı:</label>
                 <input type="number" 
                        id="offer_qty_${slug}" 
                        name="offer_qty[${slug}]" 
@@ -77,11 +84,14 @@
                        value="1" 
                        required
                        class="quantity-input"
-                       style="width: 100%; max-width: 200px; padding: 8px; border: 2px solid #74C365; border-radius: 4px;">
+                       style="width: 100%; max-width: 200px; padding: 10px; border: 2px solid #74C365; border-radius: 6px; font-size: 16px;">
                 <input type="hidden" name="offer_item[${slug}]" value="${slug}">
             `;
             
             offerQuantities.appendChild(quantityItem);
+            
+            // Scroll to the new input
+            quantityItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
         
         // Remove quantity input
@@ -135,4 +145,3 @@
         }
     });
 })();
-
