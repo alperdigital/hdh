@@ -13,7 +13,12 @@ if (!defined('ABSPATH')) {
  * Handle trade creation form submission
  */
 function hdh_handle_create_trade() {
-    // Check if user is logged in FIRST - redirect to registration if not
+    // Verify nonce
+    if (!isset($_POST['hdh_trade_nonce']) || !wp_verify_nonce($_POST['hdh_trade_nonce'], 'hdh_create_trade')) {
+        wp_die('Güvenlik kontrolü başarısız.');
+    }
+    
+    // Check if user is logged in - redirect to registration if not
     if (!is_user_logged_in()) {
         // Start session if not started
         if (!session_id()) {
@@ -38,20 +43,9 @@ function hdh_handle_create_trade() {
             setcookie('hdh_pending_trade_key', $transient_key, time() + HOUR_IN_SECONDS, '/', '', is_ssl(), true);
         }
         
-        // Redirect to registration page - ensure URL is properly encoded
-        $redirect_url = add_query_arg(array(
-            'action' => 'register',
-            'redirect' => 'trade'
-        ), home_url('/'));
-        
-        // Use wp_redirect instead of wp_safe_redirect for internal redirects
-        wp_redirect($redirect_url);
+        // Redirect to registration page
+        wp_redirect(home_url('/?action=register&redirect=trade'));
         exit;
-    }
-    
-    // User is logged in - verify nonce
-    if (!isset($_POST['hdh_trade_nonce']) || !wp_verify_nonce($_POST['hdh_trade_nonce'], 'hdh_create_trade')) {
-        wp_die('Güvenlik kontrolü başarısız.');
     }
     
     // Get form data from POST
@@ -153,5 +147,4 @@ function hdh_handle_create_trade() {
     exit;
 }
 add_action('admin_post_hdh_create_trade', 'hdh_handle_create_trade');
-add_action('admin_post_nopriv_hdh_create_trade', 'hdh_handle_create_trade'); // For non-logged-in users - redirects to registration
-
+add_action('admin_post_nopriv_hdh_create_trade', 'hdh_handle_create_trade'); // For non-logged-in users if needed
