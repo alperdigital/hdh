@@ -23,7 +23,9 @@
         offerCheckboxes.forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
                 const itemSlug = this.value;
-                const itemLabel = this.closest('.item-card-wrapper').querySelector('.item-card-label').textContent;
+                const itemCardWrapper = this.closest('.item-card-wrapper');
+                const itemLabelElement = itemCardWrapper ? itemCardWrapper.querySelector('.item-card-label') : null;
+                const itemLabel = itemLabelElement ? itemLabelElement.textContent.trim() : itemSlug;
                 
                 if (this.checked) {
                     // Check if we've reached the limit
