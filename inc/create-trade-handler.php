@@ -15,10 +15,6 @@ if (!defined('ABSPATH')) {
 function hdh_handle_create_trade() {
     // Check if user is logged in FIRST - redirect to registration if not
     if (!is_user_logged_in()) {
-        // Verify nonce (but don't die if it fails, just redirect)
-        if (!isset($_POST['hdh_trade_nonce']) || !wp_verify_nonce($_POST['hdh_trade_nonce'], 'hdh_create_trade')) {
-            // Nonce failed, but still redirect to registration
-        }
         // Start session if not started
         if (!session_id()) {
             session_start();
