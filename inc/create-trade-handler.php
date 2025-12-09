@@ -47,6 +47,11 @@ function hdh_handle_create_trade() {
         exit;
     }
     
+    // User is logged in - verify nonce
+    if (!isset($_POST['hdh_trade_nonce']) || !wp_verify_nonce($_POST['hdh_trade_nonce'], 'hdh_create_trade')) {
+        wp_die('Güvenlik kontrolü başarısız.');
+    }
+    
     // Get form data from POST
     $wanted_item = isset($_POST['wanted_item']) ? sanitize_text_field($_POST['wanted_item']) : '';
     $wanted_qty = isset($_POST['wanted_qty']) ? absint($_POST['wanted_qty']) : 0;

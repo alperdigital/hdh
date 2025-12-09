@@ -64,15 +64,20 @@
             const quantityItem = document.createElement('div');
             quantityItem.className = 'offer-quantity-item';
             quantityItem.id = 'quantity-item-' + slug;
+            quantityItem.style.marginTop = '10px';
+            quantityItem.style.padding = '10px';
+            quantityItem.style.background = '#f9f9f9';
+            quantityItem.style.borderRadius = '8px';
             quantityItem.innerHTML = `
-                <label for="offer_qty_${slug}">${label}:</label>
+                <label for="offer_qty_${slug}" style="display: block; margin-bottom: 5px; font-weight: 600;">${label} Miktarı:</label>
                 <input type="number" 
                        id="offer_qty_${slug}" 
                        name="offer_qty[${slug}]" 
                        min="1" 
                        value="1" 
                        required
-                       class="quantity-input">
+                       class="quantity-input"
+                       style="width: 100%; max-width: 200px; padding: 8px; border: 2px solid #74C365; border-radius: 4px;">
                 <input type="hidden" name="offer_item[${slug}]" value="${slug}">
             `;
             
