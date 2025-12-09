@@ -82,8 +82,8 @@ function hdh_enqueue_scripts() {
         wp_enqueue_script(
             'hdh-trade-form',
             get_template_directory_uri() . '/assets/js/trade-form.js',
-            array('jquery'),
-            '1.0.0',
+            array(), // Remove jQuery dependency - using vanilla JS
+            '1.1.0', // Version bump to bypass cache
             true
         );
     }

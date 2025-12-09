@@ -6,13 +6,19 @@
 (function() {
     'use strict';
 
-    document.addEventListener('DOMContentLoaded', function() {
+    // Wait for DOM to be ready
+    function initTradeForm() {
         const offerItemsGrid = document.getElementById('offer-items-grid');
         const offerQuantities = document.getElementById('offer-quantities');
         const maxOfferItems = 3;
         
+        console.log('HDH Trade Form: Initializing...', { offerItemsGrid, offerQuantities });
+        
         if (!offerItemsGrid || !offerQuantities) {
-            console.warn('HDH Trade Form: offer-items-grid or offer-quantities not found');
+            console.error('HDH Trade Form: offer-items-grid or offer-quantities not found', {
+                offerItemsGrid: !!offerItemsGrid,
+                offerQuantities: !!offerQuantities
+            });
             return;
         }
         
@@ -149,5 +155,13 @@
                 }
             });
         }
-    });
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTradeForm);
+    } else {
+        // DOM is already ready
+        initTradeForm();
+    }
 })();

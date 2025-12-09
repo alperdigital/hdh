@@ -43,7 +43,8 @@ function hdh_get_registration_modal_css() {
             z-index: 10000;
             display: none;
         }
-        .hdh-modal[style*="display: block"] {
+        .hdh-modal[style*="display: block"],
+        .hdh-modal.show {
             display: block !important;
         }
         .hdh-modal-overlay {
