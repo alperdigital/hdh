@@ -1073,14 +1073,14 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-offer-section {
-    background: var(--hay-yellow-light);
+    background: rgba(224, 246, 255, 0.5);
     padding: 15px;
     border-radius: var(--radius-medium);
-    border: 2px solid var(--hay-yellow);
+    border: 2px solid var(--newyear-ice);
 }
 
 .trade-offer-label {
-    color: var(--warm-orange-dark);
+    color: #2C2C2C;
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 10px;
@@ -1099,7 +1099,7 @@ h6 { font-size: 1.1rem; }
     background: var(--clean-white);
     padding: 8px 14px;
     border-radius: var(--radius-small);
-    border: 2px solid var(--hay-yellow);
+    border: 2px solid var(--newyear-ice);
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -1853,14 +1853,14 @@ h6 { font-size: 1.1rem; }
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background: var(--hay-yellow-light);
+    background: rgba(220, 20, 60, 0.05);
     border-radius: var(--radius-medium);
-    border: 2px solid var(--hay-yellow);
+    border: 2px solid rgba(220, 20, 60, 0.2);
 }
 
 .offer-quantity-item label {
     font-weight: 600;
-    color: var(--wood-brown);
+    color: #2C2C2C;
     min-width: 120px;
 }
 
@@ -1872,25 +1872,27 @@ h6 { font-size: 1.1rem; }
     display: block;
     font-weight: 600;
     margin-bottom: 8px;
-    color: var(--wood-brown);
+    color: #2C2C2C;
 }
 
 .form-input,
 .form-textarea {
     width: 100%;
     padding: 12px 15px;
-    border: 2px solid var(--wood-brown-light);
+    border: 2px solid rgba(220, 20, 60, 0.3);
     border-radius: var(--radius-small);
     font-size: 15px;
     font-family: inherit;
+    background: var(--clean-white);
+    color: #2C2C2C;
     transition: all 0.3s ease;
 }
 
 .form-input:focus,
 .form-textarea:focus {
     outline: none;
-    border-color: var(--farm-green);
-    box-shadow: 0 0 0 3px rgba(116, 195, 101, 0.1);
+    border-color: var(--newyear-red);
+    box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
 }
 
 .form-textarea {
