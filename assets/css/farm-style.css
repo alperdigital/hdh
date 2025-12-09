@@ -1536,7 +1536,7 @@ h6 { font-size: 1.1rem; }
     background: var(--clean-white);
     padding: 15px 25px;
     border-radius: var(--radius-medium);
-    border: 3px solid var(--hay-yellow);
+    border: 2px solid var(--newyear-ice);
     display: flex;
     align-items: center;
     gap: 12px;
