@@ -90,6 +90,7 @@
                        required
                        class="quantity-input"
                        style="width: 100%; max-width: 200px; padding: 10px; border: 2px solid #74C365; border-radius: 6px; font-size: 16px;">
+                <input type="hidden" name="offer_item[${slug}]" value="${slug}">
             `;
             
             offerQuantities.appendChild(quantityItem);
