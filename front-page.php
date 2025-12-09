@@ -21,19 +21,10 @@ get_header();
 
 <!-- HDH: Hero Section with Updated CTAs -->
 <section class="farm-hero-world" id="farm-hero">
-    <div class="floating-cloud" style="top: 10%; left: 5%; animation-delay: 0s;">☁️</div>
-    <div class="floating-cloud" style="top: 20%; right: 10%; animation-delay: 2s;">☁️</div>
-    <div class="floating-leaf" style="top: 30%; left: 20%; animation-delay: 1s;">🍃</div>
-    
     <div class="container">
         <div class="hero-content-wrapper">
             <h1 class="hero-title-cartoon">Yılbaşı hediyeni seçtin mi?</h1>
         </div>
-    </div>
-    
-    <div class="farm-hero-background">
-        <div class="farm-sun">☀️</div>
-        <div class="farm-hills"></div>
     </div>
 </section>
 
