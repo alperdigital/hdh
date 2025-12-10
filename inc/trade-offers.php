@@ -49,7 +49,10 @@ function hdh_register_trade_offers_cpt() {
         'show_ui' => true,
         'show_in_menu' => true,
         'query_var' => true,
-        'rewrite' => array('slug' => 'takas'),
+        'rewrite' => array(
+            'slug' => 'hediye',
+            'with_front' => false,
+        ),
         'capability_type' => 'post',
         'has_archive' => true,
         'hierarchical' => false,
@@ -62,6 +65,49 @@ function hdh_register_trade_offers_cpt() {
     register_post_type('hayday_trade', $args);
 }
 add_action('init', 'hdh_register_trade_offers_cpt');
+
+/**
+ * Set post_name to date format when trade is created
+ * Format: YYYYMMDD-HHMMSS (e.g., 20251209-143025)
+ */
+function hdh_set_trade_post_name($post_id, $post) {
+    // Only for hayday_trade post type
+    if ($post->post_type !== 'hayday_trade') {
+        return;
+    }
+    
+    // Only if post_name is empty or default
+    if (!empty($post->post_name) && $post->post_name !== $post->ID) {
+        return;
+    }
+    
+    // Get post date
+    $post_date = get_post_time('Ymd-His', false, $post_id);
+    
+    // Update post_name
+    wp_update_post(array(
+        'ID' => $post_id,
+        'post_name' => $post_date
+    ));
+}
+add_action('wp_insert_post', 'hdh_set_trade_post_name', 10, 2);
+
+/**
+ * Custom permalink structure for trade offers: hediye/YYYYMMDD-HHMMSS
+ */
+function hdh_custom_trade_permalink($post_link, $post) {
+    if ($post->post_type === 'hayday_trade' && $post->post_status === 'publish') {
+        // Use post_name if it's in date format, otherwise generate from date
+        if (preg_match('/^\d{8}-\d{6}$/', $post->post_name)) {
+            $slug = $post->post_name;
+        } else {
+            $slug = get_post_time('Ymd-His', false, $post);
+        }
+        $post_link = home_url('hediye/' . $slug . '/');
+    }
+    return $post_link;
+}
+add_filter('post_type_link', 'hdh_custom_trade_permalink', 10, 2);
 
 /**
  * Add Meta Box for Trade Offer Fields

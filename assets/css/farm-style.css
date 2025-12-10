@@ -1535,7 +1535,62 @@ h6 { font-size: 1.1rem; }
 /* ============================================
    RESPONSIVE: TRADE CARDS & FILTERS
    ============================================ */
+/* Single Trade Page Mobile Styles */
 @media (max-width: 768px) {
+    .single-trade-offer {
+        padding: 20px 15px;
+    }
+    
+    .trade-title-single {
+        font-size: 1.5rem;
+    }
+    
+    .trade-wanted-wrapper-single .trade-wanted-label,
+    .trade-offer-wrapper-single .trade-offer-label {
+        font-size: 1.1rem;
+    }
+    
+    .gift-box-single {
+        padding: 20px 15px;
+        min-height: 120px;
+    }
+    
+    .gift-box-single .gift-box-content {
+        padding: 15px;
+        min-height: 100px;
+    }
+    
+    .gift-box-single .trade-item-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .gift-box-single .item-quantity {
+        font-size: 1.2rem;
+    }
+    
+    .gift-box-single .item-name {
+        font-size: 1rem;
+    }
+    
+    .explanation-box {
+        padding: 20px;
+    }
+    
+    .explanation-title {
+        font-size: 1.2rem;
+    }
+    
+    .trade-actions-single {
+        flex-direction: column;
+    }
+    
+    .btn-back-to-list,
+    .btn-contact-seller {
+        width: 100%;
+        justify-content: center;
+    }
+    
     .trade-cards-grid {
         grid-template-columns: 1fr;
     }
@@ -1810,6 +1865,65 @@ h6 { font-size: 1.1rem; }
 .btn-contact-seller:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+.trade-author-section-single {
+    margin: 30px 0;
+}
+
+.author-card {
+    background: var(--soft-cream);
+    padding: 20px;
+    border-radius: var(--radius-large);
+    border: 2px solid var(--wood-brown-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.author-section-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.3rem;
+    color: var(--wood-brown);
+    margin: 0 0 15px 0;
+}
+
+.author-info-single {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.author-name-single {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--wood-brown);
+}
+
+.trust-score-detailed {
+    font-size: 0.95rem;
+    color: var(--wood-brown-light);
+}
+
+.trust-plus {
+    color: var(--newyear-green);
+    font-weight: 700;
+}
+
+.trust-minus {
+    color: var(--newyear-red);
+    font-weight: 700;
+}
+
+.trade-comments-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 3px solid var(--wood-brown-light);
+}
+
+.comments-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.5rem;
+    color: var(--wood-brown);
+    margin-bottom: 20px;
 }
 
 .single-trade-main {

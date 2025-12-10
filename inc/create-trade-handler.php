@@ -105,6 +105,17 @@ function hdh_handle_create_trade() {
     $require_approval = get_option('hdh_trade_require_approval', false);
     $post_status = $require_approval ? 'pending' : 'publish';
     
+    // Generate post_name from current date/time: YYYYMMDD-HHMMSS
+    $date_slug = current_time('Ymd-His');
+    
+    // Ensure uniqueness by checking if slug exists
+    $original_slug = $date_slug;
+    $counter = 1;
+    while (get_page_by_path($date_slug, OBJECT, 'hayday_trade')) {
+        $date_slug = $original_slug . '-' . $counter;
+        $counter++;
+    }
+    
     // Create post
     $post_data = array(
         'post_title' => $trade_title,
@@ -112,6 +123,7 @@ function hdh_handle_create_trade() {
         'post_status' => $post_status,
         'post_type' => 'hayday_trade',
         'post_author' => get_current_user_id(),
+        'post_name' => $date_slug, // Set custom slug with date/time
     );
     
     $post_id = wp_insert_post($post_data);

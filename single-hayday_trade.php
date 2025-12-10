@@ -133,15 +133,17 @@ get_header();
             </div>
             
             <!-- Author Info -->
-            <div class="trade-author-section">
-                <h3 class="author-section-title">İlan Sahibi</h3>
-                <div class="author-info">
-                    <span class="author-name">👤 <?php echo esc_html($author_name); ?></span>
-                    <?php if ($trust_plus > 0 || $trust_minus > 0) : ?>
-                        <span class="trust-score-detailed">
-                            Güven Skoru: +<?php echo esc_html($trust_plus); ?> / -<?php echo esc_html($trust_minus); ?>
-                        </span>
-                    <?php endif; ?>
+            <div class="trade-author-section-single">
+                <div class="author-card">
+                    <h3 class="author-section-title">👤 İlan Sahibi</h3>
+                    <div class="author-info-single">
+                        <span class="author-name-single"><?php echo esc_html($author_name); ?></span>
+                        <?php if ($trust_plus > 0 || $trust_minus > 0) : ?>
+                            <span class="trust-score-detailed">
+                                Güven: <span class="trust-plus">+<?php echo esc_html($trust_plus); ?></span> / <span class="trust-minus">-<?php echo esc_html($trust_minus); ?></span>
+                            </span>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
             
