@@ -1685,14 +1685,205 @@ h6 { font-size: 1.1rem; }
         font-size: 1.2rem;
     }
     
+    /* Back button - Mobile */
+    .trade-back-button {
+        margin-bottom: 15px;
+    }
+    
+    .btn-back-link {
+        width: 100%;
+        padding: 12px 18px;
+        font-size: 0.95rem;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    /* Status badge - Mobile */
+    .trade-status-badge {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+    
+    /* Trade meta header - Mobile */
+    .trade-meta-header-single {
+        margin-top: 8px;
+        gap: 10px;
+    }
+    
+    /* Completed banner - Mobile */
+    .trade-completed-banner {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+        margin: 15px 0;
+    }
+    
+    /* Explanation box - Mobile */
+    .trade-explanation-single {
+        margin: 25px 0;
+    }
+    
+    .explanation-box {
+        padding: 15px;
+    }
+    
+    .explanation-title {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    
+    .explanation-content p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin: 10px 0;
+    }
+    
+    .example-text {
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+    
+    /* Action buttons - Mobile */
     .trade-actions-single {
         flex-direction: column;
+        gap: 12px;
+        margin: 25px 0;
     }
     
     .btn-back-to-list,
     .btn-contact-seller {
         width: 100%;
         justify-content: center;
+        padding: 14px 20px;
+        font-size: 0.95rem;
+    }
+    
+    /* Comments section - Mobile */
+    .trade-comments-section {
+        margin-top: 30px;
+        padding-top: 20px;
+    }
+    
+    .comments-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    /* Comment form - Mobile */
+    .comment-form textarea,
+    .comment-form input[type="text"],
+    .comment-form input[type="email"],
+    .comment-form input[type="url"] {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .comment-form textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .comment-form .form-submit {
+        width: 100%;
+    }
+    
+    .comment-form input[type="submit"] {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    
+    /* Comment list - Mobile */
+    .comment-list {
+        padding: 0;
+    }
+    
+    .comment {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .comment-author {
+        font-size: 0.95rem;
+    }
+    
+    .comment-meta {
+        font-size: 0.85rem;
+    }
+    
+    .comment-content {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-top: 10px;
+    }
+    
+    /* Rating buttons - Mobile */
+    .comment-rating-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .btn-rate {
+        flex: 1;
+        min-width: 120px;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    /* Error messages and empty states - Mobile */
+    .no-trade-found,
+    .error-message {
+        padding: 20px 15px;
+        margin: 20px 0;
+        text-align: center;
+    }
+    
+    .no-trade-found h1,
+    .error-message h2 {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+    }
+    
+    .no-trade-found p,
+    .error-message p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin: 8px 0;
+    }
+    
+    .no-trade-found .btn-back-to-list,
+    .error-message .btn-back-to-list {
+        margin-top: 15px;
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+    
+    /* Container - Mobile */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Header border - Mobile */
+    .trade-header-single {
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+    
+    /* Label icons - Mobile */
+    .label-icon {
+        font-size: 1rem;
+    }
+    
+    /* Trade section labels - Mobile */
+    .trade-section-label {
+        font-size: 0.9rem;
     }
     
     .trade-cards-grid {
