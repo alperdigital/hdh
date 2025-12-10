@@ -9,23 +9,68 @@ get_header();
 
 <main id="primary" class="site-main">
     <div class="container">
-        <?php while (have_posts()) : the_post(); 
-            $trade_data = hdh_get_trade_data();
-            $author_id = get_post_field('post_author', get_the_ID());
-            $author_name = get_the_author_meta('display_name', $author_id);
-            
-            // Trust score
-            $trust_plus = (int) get_user_meta($author_id, 'hayday_trust_plus', true);
-            $trust_minus = (int) get_user_meta($author_id, 'hayday_trust_minus', true);
-            
-            // Status
-            $status_class = $trade_data['trade_status'] === 'completed' ? 'status-completed' : 'status-open';
-            $status_text = $trade_data['trade_status'] === 'completed' ? 'Tamamlandı ✅' : 'Açık';
-            
-            // Filter out empty offer items
-            $offer_items = array_filter($trade_data['offer_items'], function($item) {
-                return !empty($item['item']) && !empty($item['qty']);
-            });
+        <?php 
+        // Debug: Check if we have posts
+        if (!have_posts()) : ?>
+            <div class="no-trade-found">
+                <h1>İlan Bulunamadı</h1>
+                <p>Bu ilan mevcut değil veya silinmiş olabilir.</p>
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-back-to-list">← İlanlara Dön</a>
+            </div>
+        <?php else :
+            while (have_posts()) : the_post(); 
+                // Check if functions exist
+                if (!function_exists('hdh_get_trade_data')) {
+                    ?>
+                    <div class="error-message">
+                        <h2>Hata: Fonksiyon Bulunamadı</h2>
+                        <p>hdh_get_trade_data fonksiyonu yüklenmemiş. Lütfen tema dosyalarını kontrol edin.</p>
+                        <p>Post ID: <?php echo get_the_ID(); ?></p>
+                        <p>Post Type: <?php echo get_post_type(); ?></p>
+                    </div>
+                    <?php
+                    break;
+                }
+                
+                $trade_data = hdh_get_trade_data();
+                
+                // Validate trade data
+                if (empty($trade_data) || empty($trade_data['wanted_item'])) {
+                    ?>
+                    <article id="trade-<?php the_ID(); ?>" <?php post_class('single-trade-offer'); ?>>
+                        <div class="trade-back-button">
+                            <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-back-link">← İlanlara Dön</a>
+                        </div>
+                        <header class="trade-header-single">
+                            <h1 class="trade-title-single"><?php the_title(); ?></h1>
+                        </header>
+                        <div class="error-message">
+                            <h2>Veri Eksik</h2>
+                            <p>Bu ilan için veri bulunamadı. İlan eksik bilgiler içeriyor olabilir.</p>
+                            <p><strong>Post ID:</strong> <?php echo get_the_ID(); ?></p>
+                            <p><strong>Wanted Item:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_hdh_wanted_item', true) ?: 'Boş'); ?></p>
+                            <p><strong>Wanted Qty:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_hdh_wanted_qty', true) ?: 'Boş'); ?></p>
+                        </div>
+                    </article>
+                    <?php
+                    break;
+                }
+                
+                $author_id = get_post_field('post_author', get_the_ID());
+                $author_name = get_the_author_meta('display_name', $author_id) ?: 'Bilinmeyen Kullanıcı';
+                
+                // Trust score
+                $trust_plus = (int) get_user_meta($author_id, 'hayday_trust_plus', true);
+                $trust_minus = (int) get_user_meta($author_id, 'hayday_trust_minus', true);
+                
+                // Status
+                $status_class = $trade_data['trade_status'] === 'completed' ? 'status-completed' : 'status-open';
+                $status_text = $trade_data['trade_status'] === 'completed' ? 'Tamamlandı ✅' : 'Açık';
+                
+                // Filter out empty offer items
+                $offer_items = array_filter($trade_data['offer_items'], function($item) {
+                    return !empty($item['item']) && !empty($item['qty']);
+                });
         ?>
         
         <article id="trade-<?php the_ID(); ?>" <?php post_class('single-trade-offer'); ?>>
@@ -188,7 +233,10 @@ get_header();
             
         </article>
         
-        <?php endwhile; ?>
+        <?php 
+            endwhile; 
+        endif; 
+        ?>
     </div>
 </main>
 
