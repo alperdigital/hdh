@@ -29,14 +29,21 @@ get_header();
         ?>
         
         <article id="trade-<?php the_ID(); ?>" <?php post_class('single-trade-offer'); ?>>
+            <!-- Back Button -->
+            <div class="trade-back-button">
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-back-link">
+                    ← İlanlara Dön
+                </a>
+            </div>
+            
             <!-- Trade Header -->
-            <header class="trade-header">
-                <h1 class="trade-title"><?php the_title(); ?></h1>
-                <div class="trade-meta-header">
+            <header class="trade-header-single">
+                <h1 class="trade-title-single"><?php the_title(); ?></h1>
+                <div class="trade-meta-header-single">
                     <span class="trade-status-badge <?php echo esc_attr($status_class); ?>">
                         <?php echo esc_html($status_text); ?>
                     </span>
-                    <span class="trade-date">
+                    <span class="trade-date-single">
                         <span class="date-icon">📅</span>
                         <?php echo get_the_date('d F Y, H:i'); ?>
                     </span>
@@ -49,71 +56,77 @@ get_header();
                 </div>
             <?php endif; ?>
             
-            <!-- Trade Details -->
-            <div class="trade-details">
-                <!-- İSTEDİĞİ ÜRÜN -->
-                <div class="trade-wanted-section detailed">
-                    <h2 class="trade-section-title">
-                        <span class="title-icon">🔍</span>
-                        İSTEDİĞİ ÜRÜN
+            <!-- Trade Details with Gift Box Design -->
+            <div class="trade-details-single">
+                <!-- İSTEDİĞİ HEDİYE - Green Gift Box -->
+                <div class="trade-wanted-wrapper-single">
+                    <h2 class="trade-section-label trade-wanted-label">
+                        <span class="label-icon">🔍</span>
+                        İstediği hediye:
                     </h2>
-                    <div class="trade-item-display-large">
-                        <?php 
-                        $wanted_slug = $trade_data['wanted_item'];
-                        $wanted_image = hdh_get_item_image($wanted_slug);
-                        $wanted_label = hdh_get_item_label($wanted_slug);
-                        if ($wanted_image) : ?>
-                            <div class="trade-item-with-image-large">
-                                <img src="<?php echo esc_url($wanted_image); ?>" 
-                                     alt="<?php echo esc_attr($wanted_label); ?>" 
-                                     class="trade-item-icon-large"
-                                     loading="lazy"
-                                     decoding="async"
-                                     width="80"
-                                     height="80">
-                                <div class="trade-item-info-large">
-                                    <span class="item-quantity-large"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
-                                    <span class="item-name-large"><?php echo esc_html($wanted_label); ?></span>
+                    <div class="gift-box gift-box-wanted gift-box-single">
+                        <div class="gift-box-content">
+                            <?php 
+                            $wanted_slug = $trade_data['wanted_item'];
+                            $wanted_image = hdh_get_item_image($wanted_slug);
+                            $wanted_label = hdh_get_item_label($wanted_slug);
+                            if ($wanted_image) : ?>
+                                <div class="trade-item-with-image">
+                                    <img src="<?php echo esc_url($wanted_image); ?>" 
+                                         alt="<?php echo esc_attr($wanted_label); ?>" 
+                                         class="trade-item-icon"
+                                         loading="lazy"
+                                         decoding="async"
+                                         width="80"
+                                         height="80">
+                                    <div class="trade-item-info">
+                                        <span class="item-quantity"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
+                                        <span class="item-name"><?php echo esc_html($wanted_label); ?></span>
+                                    </div>
                                 </div>
-                            </div>
-                        <?php else : ?>
-                            <div class="trade-item-info-large">
-                                <span class="item-quantity-large"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
-                                <span class="item-name-large"><?php echo esc_html($wanted_label ?: $trade_data['wanted_item']); ?></span>
-                            </div>
-                        <?php endif; ?>
+                            <?php else : ?>
+                                <div class="trade-item-info">
+                                    <span class="item-quantity"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
+                                    <span class="item-name"><?php echo esc_html($wanted_label ?: $trade_data['wanted_item']); ?></span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- VEREBİLECEKLERİ -->
+                <!-- VEREBİLECEKLERİ HEDİYE - Red Gift Box -->
                 <?php if (!empty($offer_items)) : ?>
-                    <div class="trade-offer-section detailed">
-                        <h2 class="trade-section-title">
-                            <span class="title-icon">🎁</span>
-                            VEREBİLECEKLERİ
+                    <div class="trade-offer-wrapper-single">
+                        <h2 class="trade-section-label trade-offer-label">
+                            <span class="label-icon">🎁</span>
+                            Vereceği hediye:
                         </h2>
-                        <div class="trade-offer-items-detailed">
-                            <?php foreach ($offer_items as $offer) : 
-                                $offer_slug = $offer['item'];
-                                $offer_image = hdh_get_item_image($offer_slug);
-                                $offer_label = hdh_get_item_label($offer_slug);
-                            ?>
-                                <div class="trade-offer-item-detailed">
-                                    <?php if ($offer_image) : ?>
-                                        <img src="<?php echo esc_url($offer_image); ?>" 
-                                             alt="<?php echo esc_attr($offer_label); ?>" 
-                                             class="trade-offer-item-icon-large"
-                                             loading="lazy"
-                                             decoding="async"
-                                             width="60"
-                                             height="60">
-                                    <?php endif; ?>
-                                    <div class="trade-offer-item-info-large">
-                                        <span class="item-quantity-large"><?php echo esc_html($offer['qty']); ?>x</span>
-                                        <span class="item-name-large"><?php echo esc_html($offer_label ?: $offer['item']); ?></span>
-                                    </div>
+                        <div class="gift-box gift-box-offer gift-box-single">
+                            <div class="gift-box-content">
+                                <div class="trade-offer-items">
+                                    <?php foreach ($offer_items as $offer) : 
+                                        $offer_slug = $offer['item'];
+                                        $offer_image = hdh_get_item_image($offer_slug);
+                                        $offer_label = hdh_get_item_label($offer_slug);
+                                    ?>
+                                        <div class="trade-offer-item">
+                                            <?php if ($offer_image) : ?>
+                                                <img src="<?php echo esc_url($offer_image); ?>" 
+                                                     alt="<?php echo esc_attr($offer_label); ?>" 
+                                                     class="trade-offer-item-icon"
+                                                     loading="lazy"
+                                                     decoding="async"
+                                                     width="50"
+                                                     height="50">
+                                            <?php endif; ?>
+                                            <div class="trade-offer-item-info">
+                                                <span class="item-quantity"><?php echo esc_html($offer['qty']); ?>x</span>
+                                                <span class="item-name"><?php echo esc_html($offer_label ?: $offer['item']); ?></span>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
                                 </div>
-                            <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -133,10 +146,27 @@ get_header();
             </div>
             
             <!-- Explanation Text -->
-            <div class="trade-explanation">
-                <p><strong>Nasıl Çalışır?</strong></p>
-                <p>İlan sahibi yukarıda "İSTEDİĞİ" ürünü belirtmiştir. Siz bu ürünü vererek, karşılığında "VEREBİLECEKLERİ" listesindeki ürünlerden birini alabilirsiniz.</p>
-                <p>Örnek: İlan sahibi "7 Bant istiyorum, 7 Cıvata verebilirim" diyor. Siz 7 Bant verip, 7 Cıvata alabilirsiniz.</p>
+            <div class="trade-explanation-single">
+                <div class="explanation-box">
+                    <h3 class="explanation-title">💡 Nasıl Çalışır?</h3>
+                    <div class="explanation-content">
+                        <p><strong>Yeşil hediye paketi:</strong> İlan sahibinin istediği hediyedir. Bu hediyeyi siz vereceksiniz.</p>
+                        <p><strong>Kırmızı hediye paketi:</strong> İlan sahibinin verebileceği hediyelerdir. Bunlardan birini siz alacaksınız.</p>
+                        <p class="example-text"><strong>Örnek:</strong> İlan sahibi "7 Bant istiyorum, 7 Cıvata verebilirim" diyor. Siz 7 Bant verip (yeşil paket), 7 Cıvata alabilirsiniz (kırmızı paket).</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="trade-actions-single">
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-back-to-list btn-wooden-sign">
+                    ← İlanlara Dön
+                </a>
+                <?php if ($trade_data['trade_status'] === 'open' && is_user_logged_in() && get_current_user_id() != $author_id) : ?>
+                    <button class="btn-contact-seller btn-wooden-sign btn-primary">
+                        💬 İlan Sahibiyle İletişime Geç
+                    </button>
+                <?php endif; ?>
             </div>
             
             <!-- Comments Section: Teklifler ve Yorumlar -->
