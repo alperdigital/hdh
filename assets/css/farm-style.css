@@ -1545,32 +1545,90 @@ h6 { font-size: 1.1rem; }
         font-size: 1.5rem;
     }
     
+    /* Trade details - side by side layout on mobile */
+    .trade-details-single {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        margin: 20px 0;
+    }
+    
+    .trade-wanted-wrapper-single,
+    .trade-offer-wrapper-single {
+        flex: 1;
+        margin-bottom: 0;
+        min-width: 0; /* Allow flex items to shrink */
+    }
+    
     .trade-wanted-wrapper-single .trade-wanted-label,
     .trade-offer-wrapper-single .trade-offer-label {
-        font-size: 1.1rem;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+        line-height: 1.2;
     }
     
     .gift-box-single {
-        padding: 20px 15px;
-        min-height: 120px;
+        padding: 12px 10px;
+        min-height: 90px;
+        transform: perspective(600px) rotateX(-1deg);
+    }
+    
+    .gift-box-single::before {
+        height: 16px;
+        top: -6px;
     }
     
     .gift-box-single .gift-box-content {
-        padding: 15px;
-        min-height: 100px;
+        padding: 10px 8px;
+        min-height: 70px;
     }
     
     .gift-box-single .trade-item-icon {
-        width: 60px;
-        height: 60px;
+        width: 35px;
+        height: 35px;
     }
     
     .gift-box-single .item-quantity {
-        font-size: 1.2rem;
+        font-size: 0.9rem;
     }
     
     .gift-box-single .item-name {
-        font-size: 1rem;
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
+    
+    .gift-box-single .trade-item-with-image {
+        gap: 6px;
+    }
+    
+    .gift-box-single .trade-item-info {
+        gap: 3px;
+    }
+    
+    /* Offer items in gift box - smaller on mobile */
+    .gift-box-single .trade-offer-items {
+        gap: 6px;
+    }
+    
+    .gift-box-single .trade-offer-item {
+        padding: 6px 8px;
+    }
+    
+    .gift-box-single .trade-offer-item-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .gift-box-single .trade-offer-item-info {
+        gap: 3px;
+    }
+    
+    .gift-box-single .trade-offer-item-info .item-quantity {
+        font-size: 0.8rem;
+    }
+    
+    .gift-box-single .trade-offer-item-info .item-name {
+        font-size: 0.7rem;
     }
     
     .explanation-box {
