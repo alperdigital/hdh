@@ -1545,6 +1545,52 @@ h6 { font-size: 1.1rem; }
         font-size: 1.5rem;
     }
     
+    /* Author Info Header - Mobile */
+    .trade-author-info-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .author-farm-name {
+        font-size: 1rem;
+        width: 100%;
+    }
+    
+    .farm-icon {
+        font-size: 1.1rem;
+    }
+    
+    .author-stats-header {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .trade-count-badge {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+    }
+    
+    .stars-rating {
+        gap: 3px;
+    }
+    
+    .star {
+        font-size: 1rem;
+    }
+    
+    .star.star-filled {
+        transform: scale(1.05);
+    }
+    
+    .stars-average {
+        font-size: 0.85rem;
+        margin-left: 6px;
+    }
+    
     /* Trade details - side by side layout on mobile */
     .trade-details-single {
         display: flex;
@@ -1794,11 +1840,88 @@ h6 { font-size: 1.1rem; }
     line-height: 1.3;
 }
 
+/* Author Info Header - Farm Name, Trade Count, Stars */
+.trade-author-info-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(255, 248, 220, 0.3) 0%, rgba(255, 250, 240, 0.2) 100%);
+    border-radius: var(--radius-medium);
+    border: 2px solid var(--wood-brown-light);
+    flex-wrap: wrap;
+}
+
+.author-farm-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--wood-brown);
+    font-size: 1.1rem;
+}
+
+.farm-icon {
+    font-size: 1.3rem;
+}
+
+.farm-name-text {
+    font-family: 'Baloo 2', sans-serif;
+}
+
+.author-stats-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.trade-count-badge {
+    background: var(--soft-cream);
+    padding: 6px 12px;
+    border-radius: var(--radius-small);
+    border: 2px solid var(--wood-brown-light);
+    font-weight: 700;
+    color: var(--wood-brown);
+    font-size: 0.95rem;
+}
+
+.stars-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.star {
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.star.star-filled {
+    filter: brightness(1.2) drop-shadow(0 2px 4px rgba(255, 215, 0, 0.5));
+    transform: scale(1.1);
+}
+
+.star.star-empty {
+    opacity: 0.3;
+    filter: grayscale(0.5);
+}
+
+.stars-average {
+    margin-left: 8px;
+    font-weight: 700;
+    color: var(--wood-brown);
+    font-size: 0.95rem;
+}
+
 .trade-meta-header-single {
     display: flex;
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
+    margin-top: 10px;
 }
 
 .trade-date-single {
@@ -1925,30 +2048,7 @@ h6 { font-size: 1.1rem; }
     box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
 }
 
-.trade-author-section-single {
-    margin: 30px 0;
-}
-
-.author-card {
-    background: var(--soft-cream);
-    padding: 20px;
-    border-radius: var(--radius-large);
-    border: 2px solid var(--wood-brown-light);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.author-section-title {
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 1.3rem;
-    color: var(--wood-brown);
-    margin: 0 0 15px 0;
-}
-
-.author-info-single {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+/* Author section removed - moved to header */
 
 .author-name-single {
     font-size: 1.2rem;

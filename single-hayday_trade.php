@@ -63,6 +63,36 @@ get_header();
                 $trust_plus = (int) get_user_meta($author_id, 'hayday_trust_plus', true);
                 $trust_minus = (int) get_user_meta($author_id, 'hayday_trust_minus', true);
                 
+                // Get completed trades count
+                $completed_trades_count = 0;
+                $completed_trades_query = new WP_Query(array(
+                    'post_type' => 'hayday_trade',
+                    'author' => $author_id,
+                    'post_status' => 'publish',
+                    'meta_query' => array(
+                        array(
+                            'key' => '_hdh_trade_status',
+                            'value' => 'completed',
+                            'compare' => '='
+                        )
+                    ),
+                    'posts_per_page' => -1,
+                    'fields' => 'ids'
+                ));
+                if ($completed_trades_query->have_posts()) {
+                    $completed_trades_count = $completed_trades_query->found_posts;
+                }
+                wp_reset_postdata();
+                
+                // Calculate average stars (based on trust_plus, max 5 stars)
+                // If no completed trades, show 0 stars
+                $average_stars = 0;
+                if ($completed_trades_count > 0) {
+                    // Use trust_plus as base, normalize to 5 stars
+                    // Simple approach: trust_plus directly represents stars (max 5)
+                    $average_stars = min(5, max(0, $trust_plus));
+                }
+                
                 // Status
                 $status_class = $trade_data['trade_status'] === 'completed' ? 'status-completed' : 'status-open';
                 $status_text = $trade_data['trade_status'] === 'completed' ? 'Tamamlandı ✅' : 'Açık';
@@ -84,13 +114,33 @@ get_header();
             <!-- Trade Header -->
             <header class="trade-header-single">
                 <h1 class="trade-title-single"><?php the_title(); ?></h1>
+                
+                <!-- Author Info with Farm Name, Trade Count, and Stars -->
+                <div class="trade-author-info-header">
+                    <div class="author-farm-name">
+                        <span class="farm-icon">🌾</span>
+                        <span class="farm-name-text"><?php echo esc_html($author_name); ?></span>
+                    </div>
+                    <div class="author-stats-header">
+                        <span class="trade-count-badge">
+                            (<?php echo esc_html($completed_trades_count); ?>)
+                        </span>
+                        <div class="stars-rating">
+                            <?php 
+                            // Display 5 stars - filled stars are bright, empty stars are dim
+                            for ($i = 1; $i <= 5; $i++) {
+                                $star_class = $i <= $average_stars ? 'star-filled' : 'star-empty';
+                                echo '<span class="star ' . esc_attr($star_class) . '">⭐</span>';
+                            }
+                            ?>
+                            <span class="stars-average"><?php echo number_format($average_stars, 1); ?>/5</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="trade-meta-header-single">
                     <span class="trade-status-badge <?php echo esc_attr($status_class); ?>">
                         <?php echo esc_html($status_text); ?>
-                    </span>
-                    <span class="trade-date-single">
-                        <span class="date-icon">📅</span>
-                        <?php echo get_the_date('d F Y, H:i'); ?>
                     </span>
                 </div>
             </header>
@@ -175,21 +225,6 @@ get_header();
                         </div>
                     </div>
                 <?php endif; ?>
-            </div>
-            
-            <!-- Author Info -->
-            <div class="trade-author-section-single">
-                <div class="author-card">
-                    <h3 class="author-section-title">👤 İlan Sahibi</h3>
-                    <div class="author-info-single">
-                        <span class="author-name-single"><?php echo esc_html($author_name); ?></span>
-                        <?php if ($trust_plus > 0 || $trust_minus > 0) : ?>
-                            <span class="trust-score-detailed">
-                                Güven: <span class="trust-plus">+<?php echo esc_html($trust_plus); ?></span> / <span class="trust-minus">-<?php echo esc_html($trust_minus); ?></span>
-                            </span>
-                        <?php endif; ?>
-                    </div>
-                </div>
             </div>
             
             <!-- Explanation Text -->
