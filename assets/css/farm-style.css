@@ -1963,17 +1963,9 @@ h6 { font-size: 1.1rem; }
         line-height: 1.3;
     }
     
+    /* Gift boxes side by side on mobile */
     .trade-card-content {
         margin: 12px 0;
-    }
-    
-    /* Gift boxes side by side on mobile */
-    .trade-wanted-wrapper,
-    .trade-offer-wrapper {
-        margin-bottom: 12px;
-    }
-    
-    .trade-card-content {
         display: flex;
         flex-direction: row;
         gap: 10px;
@@ -1984,6 +1976,7 @@ h6 { font-size: 1.1rem; }
     .trade-offer-wrapper {
         flex: 1;
         min-width: 0;
+        margin-bottom: 0;
     }
     
     .trade-wanted-label,
