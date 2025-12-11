@@ -422,33 +422,45 @@ h6 { font-size: 1.1rem; }
     justify-content: space-around;
     width: 40px;
     height: 40px;
-    background: var(--soft-cream);
-    border: 3px solid var(--wood-brown);
+    background: linear-gradient(135deg, var(--newyear-snow) 0%, var(--newyear-ice) 100%);
+    border: 3px solid var(--newyear-red);
     border-radius: var(--radius-small);
     cursor: pointer;
     padding: 8px;
     transition: all 0.3s ease;
     z-index: 1001;
     position: relative;
+    box-shadow: 0 2px 8px rgba(220, 20, 60, 0.2);
 }
 
 .mobile-menu-toggle:hover {
-    background: var(--farm-green-light);
-    border-color: var(--farm-green);
+    background: linear-gradient(135deg, var(--newyear-red-light) 0%, var(--newyear-red) 100%);
+    border-color: var(--newyear-red-dark);
+    box-shadow: 0 4px 12px rgba(220, 20, 60, 0.4);
 }
 
 .mobile-menu-toggle:focus {
-    outline: 2px solid var(--farm-green);
+    outline: 2px solid var(--newyear-red);
     outline-offset: 2px;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] {
+    background: linear-gradient(135deg, var(--newyear-red) 0%, var(--newyear-red-dark) 100%);
+    border-color: var(--newyear-red-dark);
 }
 
 .hamburger-line {
     width: 100%;
     height: 3px;
-    background: var(--wood-brown);
+    background: var(--newyear-red);
     border-radius: 2px;
     transition: all 0.3s ease;
     transform-origin: center;
+}
+
+.mobile-menu-toggle:hover .hamburger-line,
+.mobile-menu-toggle[aria-expanded="true"] .hamburger-line {
+    background: var(--newyear-snow);
 }
 
 .mobile-menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
@@ -875,12 +887,13 @@ h6 { font-size: 1.1rem; }
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--wood-brown);
+        background: var(--gradient-newyear-sky);
         padding: 80px 20px 20px;
-        box-shadow: var(--shadow-strong);
+        box-shadow: 0 8px 32px rgba(220, 20, 60, 0.3);
         z-index: 1000;
         overflow-y: auto;
         animation: slideDown 0.3s ease-out;
+        border-left: 4px solid var(--newyear-red);
     }
     
     /* Overlay behind menu */
@@ -891,7 +904,7 @@ h6 { font-size: 1.1rem; }
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(220, 20, 60, 0.2);
         z-index: -1;
     }
     
@@ -926,12 +939,17 @@ h6 { font-size: 1.1rem; }
         justify-content: flex-start;
         padding: 15px 20px;
         font-size: 16px;
-        background: var(--soft-cream);
-        margin-bottom: 5px;
+        background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 255, 255, 0.95) 100%);
+        margin-bottom: 8px;
+        border: 2px solid var(--newyear-red);
+        box-shadow: 0 2px 8px rgba(220, 20, 60, 0.15);
     }
     
     .cartoon-nav-link:hover {
-        background: var(--farm-green-light);
+        background: linear-gradient(135deg, var(--newyear-red-light) 0%, var(--newyear-red) 100%);
+        color: var(--newyear-snow);
+        border-color: var(--newyear-red-dark);
+        box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
     }
     
     .header-top {
