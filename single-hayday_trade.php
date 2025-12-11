@@ -84,13 +84,16 @@ get_header();
                 }
                 wp_reset_postdata();
                 
-                // Calculate average stars (based on trust_plus, max 5 stars)
+                // Calculate average stars (based on trust_plus and completed trades)
                 // If no completed trades, show 0 stars
                 $average_stars = 0;
                 if ($completed_trades_count > 0) {
-                    // Use trust_plus as base, normalize to 5 stars
-                    // Simple approach: trust_plus directly represents stars (max 5)
-                    $average_stars = min(5, max(0, $trust_plus));
+                    // Calculate average: trust_plus represents total positive ratings
+                    // Average = (trust_plus / completed_trades_count) normalized to 5 stars
+                    // If trust_plus equals completed_trades_count, that means all trades got +1 (average 5 stars)
+                    // If trust_plus is less, calculate proportion
+                    $average_rating = $trust_plus / $completed_trades_count;
+                    $average_stars = min(5, max(0, round($average_rating * 5, 1)));
                 }
                 
                 // Status
@@ -133,7 +136,7 @@ get_header();
                                 echo '<span class="star ' . esc_attr($star_class) . '">⭐</span>';
                             }
                             ?>
-                            <span class="stars-average"><?php echo number_format($average_stars, 1); ?>/5</span>
+                            <span class="stars-average"><?php echo number_format($average_stars, 1); ?>/5.0</span>
                         </div>
                     </div>
                 </div>
