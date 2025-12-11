@@ -30,12 +30,10 @@ if (!function_exists('hdh_render_trade_card')) {
             return !empty($item['item']) && !empty($item['qty']);
         });
         ?>
-        <article class="trade-card farm-board-card" data-post-id="<?php echo esc_attr($post_id); ?>">
+        <article class="trade-card farm-board-card trade-card-clickable" data-post-id="<?php echo esc_attr($post_id); ?>" data-post-url="<?php echo esc_url($post_url); ?>">
             <div class="trade-card-header">
                 <h3 class="trade-card-title">
-                    <a href="<?php echo esc_url($post_url); ?>">
-                        <?php echo esc_html(get_the_title($post_id)); ?>
-                    </a>
+                    <?php echo esc_html(get_the_title($post_id)); ?>
                 </h3>
                 <span class="trade-status-badge <?php echo esc_attr($status_class); ?>">
                     <?php echo esc_html($status_text); ?>
@@ -133,9 +131,6 @@ if (!function_exists('hdh_render_trade_card')) {
                         <?php echo esc_html($post_date); ?>
                     </span>
                 </div>
-                <a href="<?php echo esc_url($post_url); ?>" class="btn-trade-detail btn-wooden-sign btn-primary">
-                    Hediyeleş 🎁
-                </a>
             </div>
         </article>
         <?php

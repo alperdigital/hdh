@@ -75,6 +75,19 @@
             }
         });
         
+        // HDH: Make trade cards clickable
+        $('.trade-card-clickable').on('click', function(e) {
+            // Don't navigate if clicking on interactive elements
+            if ($(e.target).closest('a, button, input, select, textarea').length) {
+                return;
+            }
+            
+            const postUrl = $(this).data('post-url');
+            if (postUrl) {
+                window.location.href = postUrl;
+            }
+        });
+        
     });
     
 })(jQuery);

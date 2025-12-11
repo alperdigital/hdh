@@ -996,6 +996,27 @@ h6 { font-size: 1.1rem; }
     transform: translateY(-5px);
 }
 
+/* Make entire trade card clickable */
+.trade-card-clickable {
+    cursor: pointer;
+    position: relative;
+}
+
+.trade-card-clickable::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.trade-card-clickable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.2);
+}
+
 .trade-card-header {
     display: flex;
     justify-content: space-between;
@@ -1012,13 +1033,12 @@ h6 { font-size: 1.1rem; }
     flex: 1;
 }
 
-.trade-card-title a {
+.trade-card-title {
     color: #2C2C2C;
-    text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.trade-card-title a:hover {
+.trade-card-clickable:hover .trade-card-title {
     color: var(--newyear-red);
 }
 
@@ -1927,16 +1947,153 @@ h6 { font-size: 1.1rem; }
         text-align: center;
     }
     
-    .trade-card-footer {
-        flex-direction: column;
-        align-items: stretch;
+    /* Trade card - Mobile: Compact and clickable */
+    .trade-card {
+        margin-bottom: 20px;
+        padding: 15px;
     }
     
-    .btn-trade-detail {
+    .trade-card-header {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+    }
+    
+    .trade-card-title {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    
+    .trade-card-content {
+        margin: 12px 0;
+    }
+    
+    /* Gift boxes side by side on mobile */
+    .trade-wanted-wrapper,
+    .trade-offer-wrapper {
+        margin-bottom: 12px;
+    }
+    
+    .trade-card-content {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .trade-wanted-wrapper,
+    .trade-offer-wrapper {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .trade-wanted-label,
+    .trade-offer-label {
+        font-size: 0.75rem;
+        margin-bottom: 6px;
+        line-height: 1.2;
+    }
+    
+    .label-icon {
+        font-size: 0.9rem;
+    }
+    
+    /* Smaller gift boxes on mobile */
+    .gift-box {
+        padding: 10px 8px;
+        min-height: 70px;
+        margin: 0;
+        transform: perspective(500px) rotateX(-1deg);
+    }
+    
+    .gift-box::before {
+        height: 12px;
+        top: -4px;
+        left: -1px;
+        right: -1px;
+    }
+    
+    .gift-box-content {
+        padding: 8px 6px;
+        min-height: 55px;
+    }
+    
+    .gift-box-content .trade-item-icon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .gift-box-content .item-quantity {
+        font-size: 0.8rem;
+    }
+    
+    .gift-box-content .item-name {
+        font-size: 0.7rem;
+        line-height: 1.2;
+    }
+    
+    .gift-box-content .trade-item-with-image {
+        gap: 4px;
+    }
+    
+    .gift-box-content .trade-item-info {
+        gap: 2px;
+    }
+    
+    /* Offer items in gift box - smaller on mobile */
+    .gift-box-content .trade-offer-items {
+        gap: 4px;
+        flex-direction: column;
+    }
+    
+    .gift-box-content .trade-offer-item {
+        padding: 4px 6px;
+        font-size: 0.7rem;
+    }
+    
+    .gift-box-content .trade-offer-item-icon {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .gift-box-content .trade-offer-item-info {
+        gap: 2px;
+    }
+    
+    .gift-box-content .trade-offer-item-info .item-quantity {
+        font-size: 0.65rem;
+    }
+    
+    .gift-box-content .trade-offer-item-info .item-name {
+        font-size: 0.65rem;
+    }
+    
+    /* Trade card footer - Mobile */
+    .trade-card-footer {
+        margin-top: 12px;
+        padding-top: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .trade-card-meta {
+        font-size: 0.8rem;
+        gap: 6px;
         width: 100%;
-        text-align: center;
-        padding: 12px 20px;
-        font-size: 16px;
+    }
+    
+    .trade-author,
+    .trade-date {
+        font-size: 0.75rem;
+    }
+    
+    .trust-score {
+        font-size: 0.7rem;
+    }
+    
+    /* Remove button - already removed from HTML */
+    .btn-trade-detail {
+        display: none;
     }
     
     /* Gift box mobile adjustments */
