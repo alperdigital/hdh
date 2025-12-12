@@ -3386,6 +3386,231 @@ footer::before,
     text-align: center;
 }
 
+/* ============================================
+   BOTTOM NAVIGATION (Mobile-First)
+   ============================================ */
+.bottom-navigation {
+    display: none; /* Hidden on desktop by default */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 999;
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+    /* Safe area support for iOS notch */
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}
+
+.bottom-navigation {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 4px 8px;
+    text-decoration: none;
+    color: #9AA0A6;
+    transition: all 0.2s ease;
+    min-height: 44px; /* Touch-friendly minimum */
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-item:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+}
+
+.bottom-nav-icon {
+    font-size: 22px;
+    line-height: 1;
+    margin-bottom: 4px;
+    transition: all 0.2s ease;
+    display: block;
+}
+
+.bottom-nav-label {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+    transition: all 0.2s ease;
+    color: inherit;
+}
+
+/* Active state */
+.bottom-nav-item.active {
+    color: #228B22; /* Hay Day green */
+}
+
+.bottom-nav-item.active .bottom-nav-icon {
+    transform: scale(1.1);
+}
+
+.bottom-nav-item.active .bottom-nav-label {
+    font-weight: 600;
+    color: #228B22;
+}
+
+/* Active indicator dot */
+.bottom-nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #228B22;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+/* Center Button (İlan Ver) */
+.bottom-nav-center {
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    margin: -12px 8px 0;
+    background: #F2C94C; /* Hay Day yellow */
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    min-height: 64px;
+    position: relative;
+    z-index: 10;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bottom-nav-center:active {
+    transform: scale(0.92);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-nav-center-icon {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    color: #FFFFFF;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.bottom-nav-center-label {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    color: #FFFFFF;
+    text-align: center;
+    display: block;
+}
+
+.bottom-nav-center.active {
+    background: #E6B800; /* Darker yellow on active */
+    box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-nav-center.active::after {
+    display: none; /* No dot for center button */
+}
+
+/* Hide on desktop */
+@media (min-width: 769px) {
+    .bottom-navigation {
+        display: none !important;
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .bottom-navigation {
+        display: flex;
+    }
+    
+    /* Add padding to body to prevent content from being hidden behind nav */
+    body {
+        padding-bottom: 80px;
+    }
+    
+    /* Ensure footer doesn't overlap */
+    footer {
+        margin-bottom: 80px;
+    }
+}
+
+/* Small mobile devices (360-430px) */
+@media (max-width: 430px) {
+    .bottom-nav-icon {
+        font-size: 20px;
+    }
+    
+    .bottom-nav-label {
+        font-size: 10px;
+    }
+    
+    .bottom-nav-center {
+        width: 56px;
+        height: 56px;
+        margin: -10px 4px 0;
+        min-height: 56px;
+    }
+    
+    .bottom-nav-center-icon {
+        font-size: 24px;
+    }
+    
+    .bottom-nav-center-label {
+        font-size: 9px;
+    }
+}
+
+/* Very small devices */
+@media (max-width: 360px) {
+    .bottom-nav-item {
+        padding: 4px 2px 6px;
+    }
+    
+    .bottom-nav-icon {
+        font-size: 18px;
+    }
+    
+    .bottom-nav-label {
+        font-size: 9px;
+    }
+    
+    .bottom-nav-center {
+        width: 52px;
+        height: 52px;
+        margin: -8px 2px 0;
+        min-height: 52px;
+    }
+    
+    .bottom-nav-center-icon {
+        font-size: 22px;
+    }
+    
+    .bottom-nav-center-label {
+        font-size: 8px;
+    }
+}
+
 @keyframes hdhFireworks {
     0%, 100% {
         opacity: 0.4;

@@ -61,8 +61,8 @@ function hdh_enqueue_scripts() {
     );
     
     wp_enqueue_script(
-        'hdh-mobile-menu',
-        get_template_directory_uri() . '/assets/js/mobile-menu.js',
+        'hdh-bottom-navigation',
+        get_template_directory_uri() . '/assets/js/bottom-navigation.js',
         array(),
         '1.0.0',
         true

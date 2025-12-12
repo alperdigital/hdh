@@ -44,12 +44,6 @@
                         </h1>
                     </a>
                     
-                    <!-- Mobile Menu Toggle Button -->
-                    <button class="mobile-menu-toggle" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
-                        <span class="hamburger-line"></span>
-                        <span class="hamburger-line"></span>
-                        <span class="hamburger-line"></span>
-                    </button>
                 </div>
                 
                 <!-- HDH: Cartoon Navigation Menu -->

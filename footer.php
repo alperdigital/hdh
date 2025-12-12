@@ -40,6 +40,30 @@
         </div>
     </footer>
     
+    <!-- HDH: Bottom Navigation (Mobile Only) -->
+    <nav class="bottom-navigation" id="bottom-navigation" role="navigation" aria-label="Ana Navigasyon">
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="search">
+            <span class="bottom-nav-icon">🔍</span>
+            <span class="bottom-nav-label">Ara</span>
+        </a>
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="decorations">
+            <span class="bottom-nav-icon">🎨</span>
+            <span class="bottom-nav-label">Dekorlar</span>
+        </a>
+        <a href="<?php echo esc_url(home_url('/#create-trade')); ?>" class="bottom-nav-item bottom-nav-center" data-nav="create">
+            <span class="bottom-nav-center-icon">+</span>
+            <span class="bottom-nav-center-label">İlan Ver</span>
+        </a>
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="raffle">
+            <span class="bottom-nav-icon">🎫</span>
+            <span class="bottom-nav-label">Çekiliş</span>
+        </a>
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="profile">
+            <span class="bottom-nav-icon">👤</span>
+            <span class="bottom-nav-label">Profil</span>
+        </a>
+    </nav>
+    
     <?php wp_footer(); ?>
 </body>
 </html>
