@@ -3510,7 +3510,7 @@ footer::before,
 @media (max-width: 768px) {
     .listing-feed-sticky-header {
         top: 0;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
     }
 }
 
@@ -3535,6 +3535,18 @@ footer::before,
     line-height: 1;
 }
 
+.sticky-header-divider {
+    width: 1px;
+    height: 18px;
+    background: var(--newspaper-divider);
+    opacity: 0.35;
+    flex-shrink: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
 .sticky-header-label {
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
     font-size: 13px;
@@ -3542,14 +3554,16 @@ footer::before,
     color: var(--newspaper-text);
 }
 
-/* Unified Listing Block (No Card Container) */
+/* Unified Listing Block (Card with Border) */
 .listing-unified-block {
     display: block;
     text-decoration: none;
     color: inherit;
-    padding: 10px 16px;
-    padding-bottom: 0;
-    background: transparent;
+    padding: 12px 16px;
+    background: var(--newspaper-bg);
+    border: 2px solid rgba(201, 184, 138, 0.6);
+    border-radius: 8px;
+    margin-bottom: 8px;
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.15s ease;
 }
@@ -3558,27 +3572,23 @@ footer::before,
     background-color: rgba(0, 0, 0, 0.015);
 }
 
-.listing-unified-block:not(:last-child) {
-    padding-bottom: 10px;
+.listing-unified-block:last-child {
+    margin-bottom: 0;
 }
 
-/* Meta Row: Blue Star + Farm Name + Time (No Background, Blends into Paper) */
+/* Meta Row: Blue Star + Farm Name + Time (Bottom, Left Aligned) */
 .listing-meta-row-unified {
     display: flex;
-    justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 6px;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 8px;
     padding: 0;
     background: transparent;
     border: none;
-}
-
-.listing-meta-left {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    flex: 1;
-    min-width: 0;
+    border-top: 1px solid rgba(201, 184, 138, 0.3);
+    padding-top: 8px;
+    margin-top: 10px;
 }
 
 .listing-meta-star {
@@ -3705,14 +3715,7 @@ footer::before,
     margin-left: 2px;
 }
 
-/* Subtle Divider Between Listings */
-.listing-divider-between {
-    height: 1px;
-    background: var(--newspaper-divider);
-    margin: 0;
-    padding: 0;
-    opacity: 0.3;
-}
+/* Divider removed - using card borders instead */
 
 .listing-item-empty {
     font-size: 11px;
@@ -3727,15 +3730,10 @@ footer::before,
     display: flex;
     flex-direction: column;
     gap: 0;
-    background: var(--newspaper-bg);
-    border: 1px solid var(--newspaper-border);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-/* Remove divider from last listing */
-.trade-cards-grid .listing-unified-block:last-child .listing-divider-between {
-    display: none;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
 }
 
 /* Mobile Optimizations */
@@ -3773,16 +3771,16 @@ footer::before,
     }
     
     .listing-unified-block {
-        padding: 8px 14px;
-        padding-bottom: 0;
-    }
-    
-    .listing-unified-block:not(:last-child) {
-        padding-bottom: 8px;
+        padding: 10px 12px;
+        margin-bottom: 6px;
+        border-width: 2px;
+        border-radius: 6px;
     }
     
     .listing-meta-row-unified {
-        margin-bottom: 5px;
+        margin-top: 8px;
+        padding-top: 6px;
+        gap: 6px;
     }
     
     .listing-meta-star {

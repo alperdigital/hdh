@@ -49,22 +49,6 @@ if (!function_exists('hdh_render_trade_card')) {
         }
         ?>
         <a href="<?php echo esc_url($post_url); ?>" class="listing-unified-block">
-            <!-- Meta Row: Blue Star + Farm Name + Time (No background, blends into paper) -->
-            <header class="listing-meta-row-unified">
-                <div class="listing-meta-left">
-                    <span class="listing-meta-star">
-                        <span class="star-icon">★</span>
-                        <?php if ($completed_gift_count > 0) : ?>
-                            <span class="star-number"><?php echo esc_html($completed_gift_count); ?></span>
-                        <?php endif; ?>
-                    </span>
-                    <span class="listing-meta-farm-name"><?php echo esc_html($author_name); ?></span>
-                </div>
-                <div class="listing-meta-right">
-                    <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
-                </div>
-            </header>
-            
             <!-- Two-Column Layout: Gifted (Left) | Requested (Right) -->
             <div class="listing-content-columns-unified">
                 <!-- Left Column: Hediye Ediyor Items -->
@@ -124,8 +108,17 @@ if (!function_exists('hdh_render_trade_card')) {
                 </div>
             </div>
             
-            <!-- Subtle Divider Between Listings -->
-            <div class="listing-divider-between"></div>
+            <!-- Meta Row: Blue Star + Farm Name + Time (Bottom, Left Aligned) -->
+            <footer class="listing-meta-row-unified">
+                <span class="listing-meta-star">
+                    <span class="star-icon">★</span>
+                    <?php if ($completed_gift_count > 0) : ?>
+                        <span class="star-number"><?php echo esc_html($completed_gift_count); ?></span>
+                    <?php endif; ?>
+                </span>
+                <span class="listing-meta-farm-name"><?php echo esc_html($author_name); ?></span>
+                <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
+            </footer>
         </a>
         <?php
     }
