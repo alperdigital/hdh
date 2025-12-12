@@ -579,44 +579,54 @@ h6 { font-size: 1.1rem; }
 }
 
 /* ============================================
-   FARM BOARD CARDS
+   FARM BOARD CARDS - New Year Theme
    ============================================ */
 .farm-board-card {
-    background: var(--soft-cream);
-    border: 4px solid var(--wood-brown);
+    background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 255, 255, 0.98) 50%, var(--newyear-ice) 100%);
+    border: 3px solid var(--newyear-red);
     border-radius: var(--radius-large);
     padding: 30px;
-    box-shadow: var(--shadow-medium);
+    box-shadow: 
+        0 6px 20px rgba(220, 20, 60, 0.2),
+        0 2px 8px rgba(220, 20, 60, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
     position: relative;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     overflow: hidden;
 }
 
 .farm-board-card::before {
-    content: '';
+    content: '🎄';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: var(--gradient-wood);
-    border-bottom: 2px solid var(--wood-brown-dark);
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    opacity: 0.15;
+    z-index: 0;
+    animation: float 3s ease-in-out infinite;
 }
 
 .farm-board-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.25), 0 3px 10px rgba(34, 139, 34, 0.15);
-    border-color: var(--newyear-red);
+    box-shadow: 
+        0 10px 30px rgba(220, 20, 60, 0.3),
+        0 4px 12px rgba(220, 20, 60, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border-color: var(--newyear-red-dark);
+    background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 250, 250, 0.98) 50%, var(--newyear-ice) 100%);
 }
 
 .farm-board-card-title {
     font-family: 'Baloo 2', sans-serif;
     font-size: 1.8rem;
-    color: var(--wood-brown);
+    color: var(--newyear-red);
     margin-bottom: 15px;
     display: flex;
     align-items: center;
     gap: 12px;
+    text-shadow: 1px 1px 2px rgba(220, 20, 60, 0.1);
+    position: relative;
+    z-index: 1;
 }
 
 .farm-board-card-icon {
@@ -1038,7 +1048,13 @@ h6 { font-size: 1.1rem; }
     align-items: flex-start;
     margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 2px solid var(--newyear-gold);
+    border-bottom: 3px solid var(--newyear-red);
+    background: linear-gradient(to right, transparent, rgba(220, 20, 60, 0.05), transparent);
+    padding: 15px;
+    margin: -30px -30px 20px -30px;
+    border-radius: var(--radius-large) var(--radius-large) 0 0;
+    position: relative;
+    z-index: 1;
 }
 
 .trade-card-title {
@@ -1049,12 +1065,15 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-card-title {
-    color: #2C2C2C;
+    color: var(--newyear-red);
     transition: color 0.3s ease;
+    text-shadow: 1px 1px 2px rgba(220, 20, 60, 0.1);
+    font-weight: 700;
 }
 
 .trade-card-clickable:hover .trade-card-title {
-    color: var(--newyear-red);
+    color: var(--newyear-red-dark);
+    text-shadow: 2px 2px 4px rgba(220, 20, 60, 0.2);
 }
 
 .trade-status-badge {
@@ -1067,15 +1086,18 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-status-badge.status-open {
-    background: rgba(34, 139, 34, 0.15);
-    color: var(--newyear-green-dark);
-    border: 2px solid var(--newyear-green);
+    background: linear-gradient(135deg, var(--newyear-green-light) 0%, var(--newyear-green) 100%);
+    color: var(--newyear-snow);
+    border: 2px solid var(--newyear-green-dark);
+    box-shadow: 0 2px 8px rgba(34, 139, 34, 0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .trade-status-badge.status-completed {
-    background: rgba(200, 200, 200, 0.2);
-    color: #666;
+    background: linear-gradient(135deg, rgba(200, 200, 200, 0.4) 0%, rgba(150, 150, 150, 0.4) 100%);
+    color: #555;
     border: 2px solid #999;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .trade-card-content {
@@ -1088,13 +1110,14 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-wanted-label {
-    color: var(--farm-green-dark);
+    color: var(--newyear-green-dark);
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
+    text-shadow: 1px 1px 2px rgba(34, 139, 34, 0.1);
 }
 
 /* Gift Box Design - Realistic 3D Gift Box */
@@ -1204,7 +1227,7 @@ h6 { font-size: 1.1rem; }
 .trade-wanted-item {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--wood-brown);
+    color: var(--newyear-red-dark);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1221,9 +1244,10 @@ h6 { font-size: 1.1rem; }
     height: 50px;
     object-fit: contain;
     border-radius: var(--radius-small);
-    background: var(--clean-white);
+    background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 255, 255, 0.95) 100%);
     padding: 5px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 2px 8px rgba(220, 20, 60, 0.15);
+    border: 2px solid rgba(220, 20, 60, 0.1);
     /* SVG Optimization */
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
@@ -1242,13 +1266,14 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-offer-label {
-    color: var(--sky-blue-dark);
+    color: var(--newyear-red-dark);
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
+    text-shadow: 1px 1px 2px rgba(220, 20, 60, 0.1);
 }
 
 /* Trade Item Icon inside Gift Box */
@@ -1280,14 +1305,14 @@ h6 { font-size: 1.1rem; }
 .gift-box-content .item-quantity {
     font-size: 1.2rem;
     font-weight: 800;
-    color: var(--warm-orange);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: var(--newyear-red);
+    text-shadow: 0 2px 4px rgba(220, 20, 60, 0.2);
 }
 
 .gift-box-content .item-name {
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--wood-brown);
+    color: var(--newyear-red-dark);
 }
 
 /* Offer Items inside Red Gift Box */
@@ -1365,22 +1390,28 @@ h6 { font-size: 1.1rem; }
 
 .item-quantity {
     font-weight: 700;
-    color: var(--warm-orange);
+    color: var(--newyear-red);
 }
 
 .item-name {
-    color: var(--wood-brown);
+    color: var(--newyear-red-dark);
 }
 
 .trade-card-footer {
     margin-top: 20px;
     padding-top: 15px;
-    border-top: 2px solid var(--wood-brown-light);
+    border-top: 2px solid var(--newyear-red);
+    background: linear-gradient(to right, transparent, rgba(220, 20, 60, 0.03), transparent);
+    padding: 15px;
+    margin: 20px -30px -30px -30px;
+    border-radius: 0 0 var(--radius-large) var(--radius-large);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
+    position: relative;
+    z-index: 1;
 }
 
 .trade-card-meta {
@@ -1388,7 +1419,8 @@ h6 { font-size: 1.1rem; }
     flex-direction: column;
     gap: 8px;
     font-size: 14px;
-    color: var(--wood-brown-light);
+    color: var(--newyear-red-dark);
+    font-weight: 500;
 }
 
 .trade-author,
@@ -1396,6 +1428,18 @@ h6 { font-size: 1.1rem; }
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.trade-author .author-icon,
+.trade-date .date-icon {
+    font-size: 1.1rem;
+    opacity: 0.8;
+}
+
+.trust-score {
+    color: var(--newyear-green-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
 .trust-score {
@@ -1598,15 +1642,17 @@ h6 { font-size: 1.1rem; }
 .no-trades-message {
     text-align: center;
     padding: 60px 20px;
-    background: var(--soft-cream);
+    background: linear-gradient(135deg, var(--newyear-snow) 0%, var(--newyear-ice) 100%);
     border-radius: var(--radius-large);
-    border: 3px dashed var(--wood-brown-light);
+    border: 3px dashed var(--newyear-red);
+    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.1);
 }
 
 .no-trades-message p {
     font-size: 1.2rem;
-    color: var(--wood-brown-light);
+    color: var(--newyear-red-dark);
     margin: 10px 0;
+    font-weight: 600;
 }
 
 /* ============================================
