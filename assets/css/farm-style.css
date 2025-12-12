@@ -3487,22 +3487,23 @@ footer::before,
     --newspaper-star-blue-dark: #357ABD;
 }
 
-/* Sticky Header: Hediye Ediyor / Hediye İstiyor */
+/* Sticky Header: Hediye Ediyor / Hediye İstiyor (Centered with Divider) */
 .listing-feed-sticky-header {
     position: sticky;
     top: 0;
     z-index: 10;
     background: var(--newspaper-bg);
-    border: 1px solid var(--newspaper-border);
-    border-radius: 8px;
-    padding: 10px 16px;
-    margin-bottom: 12px;
+    padding: 8px 16px;
+    margin-bottom: 6px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(8px);
-    background: rgba(255, 246, 216, 0.98);
+    gap: 0;
+    backdrop-filter: blur(4px);
+    background: rgba(255, 246, 216, 0.95);
+    border-bottom: 1px solid rgba(212, 197, 160, 0.3);
+    border-radius: 0;
+    position: relative;
 }
 
 /* Ensure sticky header doesn't conflict with bottom nav on mobile */
@@ -3516,16 +3517,17 @@ footer::before,
 .sticky-header-column {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     flex: 1;
 }
 
 .sticky-header-left {
-    justify-content: flex-start;
+    padding-right: 8px;
 }
 
 .sticky-header-right {
-    justify-content: flex-end;
+    padding-left: 8px;
 }
 
 .sticky-header-icon {
@@ -3546,6 +3548,7 @@ footer::before,
     text-decoration: none;
     color: inherit;
     padding: 10px 16px;
+    padding-bottom: 0;
     background: transparent;
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.15s ease;
@@ -3553,6 +3556,10 @@ footer::before,
 
 .listing-unified-block:active {
     background-color: rgba(0, 0, 0, 0.015);
+}
+
+.listing-unified-block:not(:last-child) {
+    padding-bottom: 10px;
 }
 
 /* Meta Row: Blue Star + Farm Name + Time (No Background, Blends into Paper) */
@@ -3577,11 +3584,12 @@ footer::before,
 .listing-meta-star {
     position: relative;
     display: inline-flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: center;
     flex-shrink: 0;
     width: 28px;
-    height: 28px;
+    height: 20px;
+    vertical-align: baseline;
 }
 
 .star-icon {
@@ -3591,9 +3599,9 @@ footer::before,
     line-height: 1;
     text-shadow: 0 1px 3px rgba(74, 144, 226, 0.4);
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     z-index: 1;
 }
 
@@ -3609,6 +3617,7 @@ footer::before,
     z-index: 2;
     line-height: 1;
     letter-spacing: -0.5px;
+    margin-top: 1px;
 }
 
 .listing-meta-farm-name {
@@ -3701,6 +3710,7 @@ footer::before,
     height: 1px;
     background: var(--newspaper-divider);
     margin: 0;
+    padding: 0;
     opacity: 0.3;
 }
 
@@ -3733,8 +3743,20 @@ footer::before,
     .listing-feed-sticky-header {
         padding: 6px 12px;
         margin-bottom: 6px;
-        gap: 12px;
+        gap: 0;
         border-radius: 0;
+    }
+    
+    .sticky-header-column {
+        flex: 1;
+    }
+    
+    .sticky-header-left {
+        padding-right: 6px;
+    }
+    
+    .sticky-header-right {
+        padding-left: 6px;
     }
     
     .sticky-header-label {
@@ -3752,6 +3774,11 @@ footer::before,
     
     .listing-unified-block {
         padding: 8px 14px;
+        padding-bottom: 0;
+    }
+    
+    .listing-unified-block:not(:last-child) {
+        padding-bottom: 8px;
     }
     
     .listing-meta-row-unified {
@@ -3760,7 +3787,7 @@ footer::before,
     
     .listing-meta-star {
         width: 26px;
-        height: 26px;
+        height: 18px;
     }
     
     .star-icon {
@@ -3809,6 +3836,7 @@ footer::before,
     
     .listing-divider-between {
         opacity: 0.25;
+        margin: 0;
     }
     
     .trade-cards-grid {
