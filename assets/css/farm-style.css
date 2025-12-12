@@ -935,14 +935,17 @@ h6 { font-size: 1.1rem; }
     }
     
     .cartoon-nav-link {
-        width: 100%;
-        justify-content: flex-start;
-        padding: 15px 20px;
-        font-size: 16px;
+        width: auto;
+        max-width: 90%;
+        margin: 0 auto 10px auto;
+        justify-content: center;
+        padding: 12px 24px;
+        font-size: 15px;
         background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 255, 255, 0.95) 100%);
-        margin-bottom: 8px;
         border: 2px solid var(--newyear-red);
         box-shadow: 0 2px 8px rgba(220, 20, 60, 0.15);
+        border-radius: var(--radius-medium);
+        text-align: center;
     }
     
     .cartoon-nav-link:hover {
@@ -950,6 +953,18 @@ h6 { font-size: 1.1rem; }
         color: var(--newyear-snow);
         border-color: var(--newyear-red-dark);
         box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        transform: translateY(-2px) scale(1.02);
+    }
+    
+    .cartoon-nav-link span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+    
+    .nav-icon {
+        font-size: 1.1rem;
     }
     
     .header-top {
