@@ -24,6 +24,38 @@ function hdh_get_hayday_items() {
 }
 
 /**
+ * Get completed gift count for a user
+ * 
+ * @param int $user_id User ID
+ * @return int Number of completed gifts
+ */
+function hdh_get_completed_gift_count($user_id) {
+    if (!$user_id) {
+        return 0;
+    }
+    
+    $query = new WP_Query(array(
+        'post_type' => 'hayday_trade',
+        'author' => $user_id,
+        'post_status' => 'publish',
+        'meta_query' => array(
+            array(
+                'key' => '_hdh_trade_status',
+                'value' => 'completed',
+                'compare' => '='
+            )
+        ),
+        'posts_per_page' => -1,
+        'fields' => 'ids'
+    ));
+    
+    $count = $query->found_posts;
+    wp_reset_postdata();
+    
+    return $count;
+}
+
+/**
  * Register Custom Post Type: hayday_trade
  */
 function hdh_register_trade_offers_cpt() {

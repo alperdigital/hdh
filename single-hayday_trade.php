@@ -118,25 +118,29 @@ get_header();
             <header class="trade-header-single">
                 <h1 class="trade-title-single"><?php the_title(); ?></h1>
                 
-                <!-- Author Info with Farm Name, Trade Count, and Stars -->
-                <div class="trade-author-info-header">
-                    <div class="author-farm-name">
-                        <span class="farm-icon">🌾</span>
-                        <span class="farm-name-text"><?php echo esc_html($author_name); ?></span>
-                    </div>
-                    <div class="author-stats-header">
-                        <span class="trade-count-badge">
-                            (<?php echo esc_html($completed_trades_count); ?>)
-                        </span>
-                        <div class="stars-rating">
-                            <?php 
-                            // Display 5 stars - filled stars are bright, empty stars are dim
-                            for ($i = 1; $i <= 5; $i++) {
-                                $star_class = $i <= $average_stars ? 'star-filled' : 'star-empty';
-                                echo '<span class="star ' . esc_attr($star_class) . '">⭐</span>';
-                            }
-                            ?>
-                            <span class="stars-average"><?php echo number_format($average_stars, 1); ?>/5.0</span>
+                <!-- Author Info with Blue Star Trust Indicator -->
+                <div class="trade-author-info-header-newspaper">
+                    <div class="author-info-newspaper">
+                        <div class="author-star-section">
+                            <span class="trust-star-large">
+                                <?php if ($completed_trades_count > 0) : ?>
+                                    ★<?php echo esc_html($completed_trades_count); ?>
+                                <?php else : ?>
+                                    ★
+                                <?php endif; ?>
+                            </span>
+                            <div class="author-name-newspaper"><?php echo esc_html($author_name); ?></div>
+                        </div>
+                        <div class="star-explanation">
+                            <?php if ($completed_trades_count > 0) : ?>
+                                <p class="star-explanation-text">
+                                    Bu kullanıcı <?php echo esc_html($completed_trades_count); ?> başarılı hediyeleşme yapmıştır.
+                                </p>
+                            <?php else : ?>
+                                <p class="star-explanation-text">
+                                    Bu kullanıcı henüz hediyeleşme yapmamış olabilir.
+                                </p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -159,8 +163,8 @@ get_header();
                 <!-- İSTEDİĞİ HEDİYE - Green Gift Box -->
                 <div class="trade-wanted-wrapper-single">
                     <h2 class="trade-section-label trade-wanted-label">
-                        <span class="label-icon">🔍</span>
-                        İstediği hediye:
+                        <span class="label-icon">🤍</span>
+                        Hediye İstiyor:
                     </h2>
                     <div class="gift-box gift-box-wanted gift-box-single">
                         <div class="gift-box-content">
@@ -197,7 +201,7 @@ get_header();
                     <div class="trade-offer-wrapper-single">
                         <h2 class="trade-section-label trade-offer-label">
                             <span class="label-icon">🎁</span>
-                            Vereceği hediye:
+                            Hediye Ediyor:
                         </h2>
                         <div class="gift-box gift-box-offer gift-box-single">
                             <div class="gift-box-content">
