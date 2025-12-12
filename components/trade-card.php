@@ -53,10 +53,9 @@ if (!function_exists('hdh_render_trade_card')) {
             <header class="listing-meta-row-unified">
                 <div class="listing-meta-left">
                     <span class="listing-meta-star">
+                        <span class="star-icon">★</span>
                         <?php if ($completed_gift_count > 0) : ?>
-                            ★<?php echo esc_html($completed_gift_count); ?>
-                        <?php else : ?>
-                            ★
+                            <span class="star-number"><?php echo esc_html($completed_gift_count); ?></span>
                         <?php endif; ?>
                     </span>
                     <span class="listing-meta-farm-name"><?php echo esc_html($author_name); ?></span>

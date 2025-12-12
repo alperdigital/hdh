@@ -3545,22 +3545,22 @@ footer::before,
     display: block;
     text-decoration: none;
     color: inherit;
-    padding: 12px 16px;
+    padding: 10px 16px;
     background: transparent;
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.15s ease;
 }
 
 .listing-unified-block:active {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(0, 0, 0, 0.015);
 }
 
 /* Meta Row: Blue Star + Farm Name + Time (No Background, Blends into Paper) */
 .listing-meta-row-unified {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
+    align-items: baseline;
+    margin-bottom: 6px;
     padding: 0;
     background: transparent;
     border: none;
@@ -3568,19 +3568,47 @@ footer::before,
 
 .listing-meta-left {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    align-items: baseline;
+    gap: 6px;
     flex: 1;
     min-width: 0;
 }
 
 .listing-meta-star {
-    font-size: 18px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+}
+
+.star-icon {
+    font-size: 22px;
     color: var(--newspaper-star-blue);
     font-weight: 700;
     line-height: 1;
-    text-shadow: 0 1px 2px rgba(74, 144, 226, 0.3);
-    flex-shrink: 0;
+    text-shadow: 0 1px 3px rgba(74, 144, 226, 0.4);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.star-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    line-height: 1;
+    letter-spacing: -0.5px;
 }
 
 .listing-meta-farm-name {
@@ -3620,6 +3648,7 @@ footer::before,
 .listing-column-divider {
     width: 1px;
     background: var(--newspaper-divider);
+    opacity: 0.4;
     flex-shrink: 0;
     align-self: stretch;
 }
@@ -3634,7 +3663,7 @@ footer::before,
 .listing-item-row {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     font-size: 12px;
     color: var(--newspaper-text);
     line-height: 1.4;
@@ -3664,7 +3693,7 @@ footer::before,
     color: var(--newspaper-text);
     flex-shrink: 0;
     font-size: 12px;
-    margin-left: 3px;
+    margin-left: 2px;
 }
 
 /* Subtle Divider Between Listings */
@@ -3672,7 +3701,7 @@ footer::before,
     height: 1px;
     background: var(--newspaper-divider);
     margin: 0;
-    opacity: 0.5;
+    opacity: 0.3;
 }
 
 .listing-item-empty {
@@ -3702,9 +3731,10 @@ footer::before,
 /* Mobile Optimizations */
 @media (max-width: 768px) {
     .listing-feed-sticky-header {
-        padding: 8px 12px;
-        margin-bottom: 8px;
+        padding: 6px 12px;
+        margin-bottom: 6px;
         gap: 12px;
+        border-radius: 0;
     }
     
     .sticky-header-label {
@@ -3716,19 +3746,29 @@ footer::before,
     }
     
     .sticky-header-divider {
-        height: 18px;
+        height: 16px;
+        opacity: 0.3;
     }
     
     .listing-unified-block {
-        padding: 10px 14px;
+        padding: 8px 14px;
     }
     
     .listing-meta-row-unified {
-        margin-bottom: 6px;
+        margin-bottom: 5px;
     }
     
     .listing-meta-star {
-        font-size: 16px;
+        width: 26px;
+        height: 26px;
+    }
+    
+    .star-icon {
+        font-size: 20px;
+    }
+    
+    .star-number {
+        font-size: 9px;
     }
     
     .listing-meta-farm-name {
@@ -3745,10 +3785,11 @@ footer::before,
     
     .listing-column-divider {
         width: 1px;
+        opacity: 0.35;
     }
     
     .listing-item-row {
-        gap: 4px;
+        gap: 3px;
         font-size: 11px;
     }
     
@@ -3763,7 +3804,11 @@ footer::before,
     
     .listing-item-quantity {
         font-size: 11px;
-        margin-left: 2px;
+        margin-left: 1px;
+    }
+    
+    .listing-divider-between {
+        opacity: 0.25;
     }
     
     .trade-cards-grid {
