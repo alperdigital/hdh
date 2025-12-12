@@ -48,7 +48,7 @@ require_once get_template_directory() . '/social-share.php';
 
 // Enqueue styles and scripts
 function hdh_enqueue_scripts() {
-    wp_enqueue_style('hdh-farm-style', get_template_directory_uri() . '/assets/css/farm-style.css', array(), '3.13.0');
+    wp_enqueue_style('hdh-farm-style', get_template_directory_uri() . '/assets/css/farm-style.css', array(), '3.14.0');
     
     wp_enqueue_script('jquery');
     

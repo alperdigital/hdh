@@ -133,6 +133,18 @@ get_header();
         
         <!-- HDH: Trade Offers Feed -->
         <div class="trade-feed-container" id="trade-feed-container">
+            <!-- Sticky Header: Hediye Ediyor / Hediye İstiyor Labels -->
+            <div class="listing-feed-sticky-header">
+                <div class="sticky-header-column sticky-header-left">
+                    <span class="sticky-header-icon">🎁</span>
+                    <span class="sticky-header-label">Hediye Ediyor</span>
+                </div>
+                <div class="sticky-header-column sticky-header-right">
+                    <span class="sticky-header-icon">🤍</span>
+                    <span class="sticky-header-label">Hediye İstiyor</span>
+                </div>
+            </div>
+            
             <div class="trade-loading" id="trade-loading" style="display: none;">
                 <div class="loading-spinner">⏳</div>
                 <p>İlanlar yükleniyor...</p>
