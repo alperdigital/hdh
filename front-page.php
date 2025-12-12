@@ -133,12 +133,13 @@ get_header();
         
         <!-- HDH: Trade Offers Feed -->
         <div class="trade-feed-container" id="trade-feed-container">
-            <!-- Sticky Header: Hediye Ediyor / Hediye İstiyor Labels -->
+            <!-- Sticky Header: Hediye Ediyor / Hediye İstiyor Labels (Centered with Divider) -->
             <div class="listing-feed-sticky-header">
                 <div class="sticky-header-column sticky-header-left">
                     <span class="sticky-header-icon">🎁</span>
                     <span class="sticky-header-label">Hediye Ediyor</span>
                 </div>
+                <div class="sticky-header-divider"></div>
                 <div class="sticky-header-column sticky-header-right">
                     <span class="sticky-header-icon">🤍</span>
                     <span class="sticky-header-label">Hediye İstiyor</span>

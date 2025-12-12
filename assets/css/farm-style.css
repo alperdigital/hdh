@@ -3505,6 +3505,14 @@ footer::before,
     background: rgba(255, 246, 216, 0.98);
 }
 
+/* Ensure sticky header doesn't conflict with bottom nav on mobile */
+@media (max-width: 768px) {
+    .listing-feed-sticky-header {
+        top: 0;
+        margin-bottom: 10px;
+    }
+}
+
 .sticky-header-column {
     display: flex;
     align-items: center;
@@ -3532,47 +3540,30 @@ footer::before,
     color: var(--newspaper-text);
 }
 
-/* Listing Card Link (Clickable) */
-.listing-card-newspaper-link {
+/* Unified Listing Block (No Card Container) */
+.listing-unified-block {
     display: block;
     text-decoration: none;
     color: inherit;
-    margin-bottom: 12px;
+    padding: 12px 16px;
+    background: transparent;
     -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.15s ease;
 }
 
-.listing-card-newspaper-link:active .listing-card-newspaper {
-    border-color: var(--newspaper-border);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    transform: scale(0.998);
+.listing-unified-block:active {
+    background-color: rgba(0, 0, 0, 0.02);
 }
 
-/* Listing Card Container (Newspaper Style) */
-.listing-card-newspaper {
-    background: var(--newspaper-bg);
-    border: 1px solid var(--newspaper-border);
-    border-radius: 9px;
-    padding: 12px 14px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    position: relative;
-    transition: all 0.2s ease;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.listing-card-newspaper-link:hover .listing-card-newspaper {
-    border-color: #B8A67A;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-}
-
-/* Meta Row: Blue Star + Farm Name + Time */
-.listing-card-meta-row {
+/* Meta Row: Blue Star + Farm Name + Time (No Background, Blends into Paper) */
+.listing-meta-row-unified {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--newspaper-divider);
+    margin-bottom: 8px;
+    padding: 0;
+    background: transparent;
+    border: none;
 }
 
 .listing-meta-left {
@@ -3613,11 +3604,12 @@ footer::before,
     font-weight: 500;
 }
 
-/* Two-Column Layout */
-.listing-card-content-columns {
+/* Two-Column Layout (Unified) */
+.listing-content-columns-unified {
     display: flex;
     gap: 12px;
     align-items: flex-start;
+    padding: 0;
 }
 
 .listing-column {
@@ -3642,7 +3634,7 @@ footer::before,
 .listing-item-row {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     font-size: 12px;
     color: var(--newspaper-text);
     line-height: 1.4;
@@ -3657,7 +3649,7 @@ footer::before,
 }
 
 .listing-item-name {
-    flex: 1;
+    flex: 0 1 auto;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
     color: var(--newspaper-text);
     min-width: 0;
@@ -3672,7 +3664,15 @@ footer::before,
     color: var(--newspaper-text);
     flex-shrink: 0;
     font-size: 12px;
-    margin-left: 2px;
+    margin-left: 3px;
+}
+
+/* Subtle Divider Between Listings */
+.listing-divider-between {
+    height: 1px;
+    background: var(--newspaper-divider);
+    margin: 0;
+    opacity: 0.5;
 }
 
 .listing-item-empty {
@@ -3683,19 +3683,28 @@ footer::before,
     padding: 4px 0;
 }
 
-/* Grid Layout */
+/* Unified Newspaper Panel Layout */
 .trade-cards-grid {
     display: flex;
     flex-direction: column;
     gap: 0;
+    background: var(--newspaper-bg);
+    border: 1px solid var(--newspaper-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Remove divider from last listing */
+.trade-cards-grid .listing-unified-block:last-child .listing-divider-between {
+    display: none;
 }
 
 /* Mobile Optimizations */
 @media (max-width: 768px) {
     .listing-feed-sticky-header {
         padding: 8px 12px;
-        margin-bottom: 10px;
-        border-radius: 6px;
+        margin-bottom: 8px;
+        gap: 12px;
     }
     
     .sticky-header-label {
@@ -3706,14 +3715,16 @@ footer::before,
         font-size: 14px;
     }
     
-    .listing-card-newspaper {
-        padding: 10px 12px;
-        border-radius: 8px;
+    .sticky-header-divider {
+        height: 18px;
     }
     
-    .listing-card-meta-row {
-        margin-bottom: 8px;
-        padding-bottom: 6px;
+    .listing-unified-block {
+        padding: 10px 14px;
+    }
+    
+    .listing-meta-row-unified {
+        margin-bottom: 6px;
     }
     
     .listing-meta-star {
@@ -3728,7 +3739,7 @@ footer::before,
         font-size: 10px;
     }
     
-    .listing-card-content-columns {
+    .listing-content-columns-unified {
         gap: 10px;
     }
     
@@ -3737,7 +3748,7 @@ footer::before,
     }
     
     .listing-item-row {
-        gap: 5px;
+        gap: 4px;
         font-size: 11px;
     }
     
@@ -3752,12 +3763,17 @@ footer::before,
     
     .listing-item-quantity {
         font-size: 11px;
+        margin-left: 2px;
+    }
+    
+    .trade-cards-grid {
+        border-radius: 6px;
     }
 }
 
 /* Very small screens: Stack columns */
 @media (max-width: 340px) {
-    .listing-card-content-columns {
+    .listing-content-columns-unified {
         flex-direction: column;
         gap: 8px;
     }
@@ -3769,16 +3785,22 @@ footer::before,
     }
 }
 
-/* Desktop: 2-column grid */
+/* Desktop: Keep unified panel (no grid) */
 @media (min-width: 769px) {
     .trade-cards-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        max-width: 800px;
+        margin: 0 auto;
     }
     
-    .listing-feed-sticky-header {
-        grid-column: 1 / -1;
+    .listing-unified-block {
+        padding: 14px 20px;
+    }
+    
+    .listing-content-columns-unified {
+        gap: 16px;
     }
 }
 

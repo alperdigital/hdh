@@ -48,84 +48,85 @@ if (!function_exists('hdh_render_trade_card')) {
             $relative_time = floor($time_diff / 86400) . 'g';
         }
         ?>
-        <a href="<?php echo esc_url($post_url); ?>" class="listing-card-newspaper-link">
-            <article class="listing-card-newspaper" data-post-id="<?php echo esc_attr($post_id); ?>" data-post-url="<?php echo esc_url($post_url); ?>">
-                <!-- Meta Row: Blue Star + Farm Name + Time -->
-                <header class="listing-card-meta-row">
-                    <div class="listing-meta-left">
-                        <span class="listing-meta-star">
-                            <?php if ($completed_gift_count > 0) : ?>
-                                ★<?php echo esc_html($completed_gift_count); ?>
-                            <?php else : ?>
-                                ★
-                            <?php endif; ?>
-                        </span>
-                        <span class="listing-meta-farm-name"><?php echo esc_html($author_name); ?></span>
-                    </div>
-                    <div class="listing-meta-right">
-                        <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
-                    </div>
-                </header>
-                
-                <!-- Two-Column Layout: Gifted (Left) | Requested (Right) -->
-                <div class="listing-card-content-columns">
-                    <!-- Left Column: Hediye Ediyor Items -->
-                    <div class="listing-column listing-column-gifting">
-                        <div class="listing-items-list">
-                            <?php 
-                            foreach ($offer_items as $offer) : 
-                                $offer_slug = $offer['item'];
-                                $offer_image = hdh_get_item_image($offer_slug);
-                                $offer_label = hdh_get_item_label($offer_slug);
-                            ?>
-                                <div class="listing-item-row">
-                                    <?php if ($offer_image) : ?>
-                                        <img src="<?php echo esc_url($offer_image); ?>" 
-                                             alt="<?php echo esc_attr($offer_label); ?>" 
-                                             class="listing-item-icon"
-                                             loading="lazy"
-                                             decoding="async"
-                                             width="20"
-                                             height="20">
-                                    <?php endif; ?>
-                                    <span class="listing-item-name"><?php echo esc_html($offer_label ?: $offer_slug); ?></span>
-                                    <span class="listing-item-quantity">×<?php echo esc_html($offer['qty']); ?></span>
-                                </div>
-                            <?php endforeach; ?>
-                            
-                            <?php if (empty($offer_items)) : ?>
-                                <div class="listing-item-empty">—</div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                    
-                    <!-- Vertical Divider -->
-                    <div class="listing-column-divider"></div>
-                    
-                    <!-- Right Column: Hediye İstiyor Items -->
-                    <div class="listing-column listing-column-requesting">
-                        <div class="listing-items-list">
-                            <?php 
-                            $wanted_image = hdh_get_item_image($wanted_slug);
-                            $wanted_label = hdh_get_item_label($wanted_slug);
-                            ?>
+        <a href="<?php echo esc_url($post_url); ?>" class="listing-unified-block">
+            <!-- Meta Row: Blue Star + Farm Name + Time (No background, blends into paper) -->
+            <header class="listing-meta-row-unified">
+                <div class="listing-meta-left">
+                    <span class="listing-meta-star">
+                        <?php if ($completed_gift_count > 0) : ?>
+                            ★<?php echo esc_html($completed_gift_count); ?>
+                        <?php else : ?>
+                            ★
+                        <?php endif; ?>
+                    </span>
+                    <span class="listing-meta-farm-name"><?php echo esc_html($author_name); ?></span>
+                </div>
+                <div class="listing-meta-right">
+                    <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
+                </div>
+            </header>
+            
+            <!-- Two-Column Layout: Gifted (Left) | Requested (Right) -->
+            <div class="listing-content-columns-unified">
+                <!-- Left Column: Hediye Ediyor Items -->
+                <div class="listing-column listing-column-gifting">
+                    <div class="listing-items-list">
+                        <?php 
+                        foreach ($offer_items as $offer) : 
+                            $offer_slug = $offer['item'];
+                            $offer_image = hdh_get_item_image($offer_slug);
+                            $offer_label = hdh_get_item_label($offer_slug);
+                        ?>
                             <div class="listing-item-row">
-                                <?php if ($wanted_image) : ?>
-                                    <img src="<?php echo esc_url($wanted_image); ?>" 
-                                         alt="<?php echo esc_attr($wanted_label); ?>" 
+                                <?php if ($offer_image) : ?>
+                                    <img src="<?php echo esc_url($offer_image); ?>" 
+                                         alt="<?php echo esc_attr($offer_label); ?>" 
                                          class="listing-item-icon"
                                          loading="lazy"
                                          decoding="async"
                                          width="20"
                                          height="20">
                                 <?php endif; ?>
-                                <span class="listing-item-name"><?php echo esc_html($wanted_label ?: $wanted_slug); ?></span>
-                                <span class="listing-item-quantity">×<?php echo esc_html($wanted_item['qty']); ?></span>
+                                <span class="listing-item-name"><?php echo esc_html($offer_label ?: $offer_slug); ?></span>
+                                <span class="listing-item-quantity">×<?php echo esc_html($offer['qty']); ?></span>
                             </div>
+                        <?php endforeach; ?>
+                        
+                        <?php if (empty($offer_items)) : ?>
+                            <div class="listing-item-empty">—</div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                
+                <!-- Vertical Divider -->
+                <div class="listing-column-divider"></div>
+                
+                <!-- Right Column: Hediye İstiyor Items -->
+                <div class="listing-column listing-column-requesting">
+                    <div class="listing-items-list">
+                        <?php 
+                        $wanted_image = hdh_get_item_image($wanted_slug);
+                        $wanted_label = hdh_get_item_label($wanted_slug);
+                        ?>
+                        <div class="listing-item-row">
+                            <?php if ($wanted_image) : ?>
+                                <img src="<?php echo esc_url($wanted_image); ?>" 
+                                     alt="<?php echo esc_attr($wanted_label); ?>" 
+                                     class="listing-item-icon"
+                                     loading="lazy"
+                                     decoding="async"
+                                     width="20"
+                                     height="20">
+                            <?php endif; ?>
+                            <span class="listing-item-name"><?php echo esc_html($wanted_label ?: $wanted_slug); ?></span>
+                            <span class="listing-item-quantity">×<?php echo esc_html($wanted_item['qty']); ?></span>
                         </div>
                     </div>
                 </div>
-            </article>
+            </div>
+            
+            <!-- Subtle Divider Between Listings -->
+            <div class="listing-divider-between"></div>
         </a>
         <?php
     }
