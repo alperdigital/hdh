@@ -103,137 +103,76 @@ get_header();
     <div class="container">
         <h2 class="section-title-cartoon">Hediyeni Seç</h2>
         
-        <!-- HDH: Filter Bar -->
-        <div class="trade-filter-bar">
-            <form method="get" action="<?php echo esc_url(home_url('/')); ?>" class="trade-filters">
-                <div class="filter-group">
-                    <label for="filter_wanted">İstediği Ürün:</label>
-                    <select name="wanted" id="filter_wanted">
-                        <option value="">Hepsi</option>
-                        <?php 
-                        $hayday_items = hdh_get_hayday_items();
-                        $selected_wanted = isset($_GET['wanted']) ? sanitize_text_field($_GET['wanted']) : '';
-                        foreach ($hayday_items as $key => $label) : ?>
-                            <option value="<?php echo esc_attr($key); ?>" <?php selected($selected_wanted, $key); ?>>
-                                <?php echo esc_html($label); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <label for="filter_status">Durum:</label>
-                    <select name="status" id="filter_status">
-                        <?php 
-                        $selected_status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'open';
-                        ?>
-                        <option value="all" <?php selected($selected_status, 'all'); ?>>Hepsi</option>
-                        <option value="open" <?php selected($selected_status, 'open'); ?>>Açık</option>
-                        <option value="completed" <?php selected($selected_status, 'completed'); ?>>Tamamlandı</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <label for="filter_sort">Sıralama:</label>
-                    <select name="sort" id="filter_sort">
-                        <?php 
-                        $selected_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'newest';
-                        ?>
-                        <option value="newest" <?php selected($selected_sort, 'newest'); ?>>En yeni ilanlar</option>
-                        <option value="oldest" <?php selected($selected_sort, 'oldest'); ?>>En eski ilanlar</option>
-                    </select>
-                </div>
-                
-                <div class="filter-actions">
-                    <button type="submit" class="btn-filter btn-wooden-sign btn-primary">Filtrele</button>
-                    <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-clear-filters">Filtreleri Temizle</a>
-                </div>
-            </form>
+        <!-- HDH: Visual Filter Grid (9 Items) -->
+        <div class="trade-filter-visual-grid">
+            <h3 class="filter-grid-title">Vereceği Hediyeye Göre Filtrele</h3>
+            <div class="filter-items-grid" id="filter-items-grid">
+                <?php 
+                $items = hdh_get_items_config();
+                $filter_items = array_slice($items, 0, 9, true); // Get first 9 items
+                foreach ($filter_items as $slug => $item) : 
+                    $item_image = hdh_get_item_image($slug);
+                    $item_label = hdh_get_item_label($slug);
+                ?>
+                    <button type="button" 
+                            class="filter-item-btn" 
+                            data-item-slug="<?php echo esc_attr($slug); ?>"
+                            aria-label="Filtrele: <?php echo esc_attr($item_label); ?>">
+                        <img src="<?php echo esc_url($item_image); ?>" 
+                             alt="<?php echo esc_attr($item_label); ?>" 
+                             class="filter-item-image">
+                        <span class="filter-item-label"><?php echo esc_html($item_label); ?></span>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+            <button type="button" class="btn-clear-filter-visual" id="btn-clear-filter-visual" style="display: none;">
+                <span class="btn-icon">🔄</span>
+                Filtreyi Temizle
+            </button>
         </div>
         
         <!-- HDH: Trade Offers Feed -->
-        <div class="trade-feed-container">
-            <?php
-            // Build query based on filters
-            $args = array(
-                'post_type' => 'hayday_trade',
-                'posts_per_page' => 20,
-                'post_status' => 'publish',
-            );
-            
-            // Meta query for filters
-            $meta_query = array('relation' => 'AND');
-            
-            // Filter by wanted item
-            if (!empty($_GET['wanted'])) {
-                $meta_query[] = array(
-                    'key' => '_hdh_wanted_item',
-                    'value' => sanitize_text_field($_GET['wanted']),
-                    'compare' => '='
+        <div class="trade-feed-container" id="trade-feed-container">
+            <div class="trade-loading" id="trade-loading" style="display: none;">
+                <div class="loading-spinner">⏳</div>
+                <p>İlanlar yükleniyor...</p>
+            </div>
+            <div class="trade-cards-grid" id="trade-cards-grid">
+                <?php
+                // Build query - default: show only open trades
+                $args = array(
+                    'post_type' => 'hayday_trade',
+                    'posts_per_page' => 20,
+                    'post_status' => 'publish',
+                    'meta_query' => array(
+                        array(
+                            'key' => '_hdh_trade_status',
+                            'value' => 'open',
+                            'compare' => '='
+                        )
+                    ),
+                    'orderby' => 'date',
+                    'order' => 'DESC',
                 );
-            }
-            
-            // Filter by status
-            $status_filter = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'open';
-            if ($status_filter !== 'all') {
-                $meta_query[] = array(
-                    'key' => '_hdh_trade_status',
-                    'value' => $status_filter,
-                    'compare' => '='
-                );
-            } else {
-                // Show all, but default to open if no filter
-                if (empty($_GET['status'])) {
-                    $meta_query[] = array(
-                        'key' => '_hdh_trade_status',
-                        'value' => 'open',
-                        'compare' => '='
-                    );
-                }
-            }
-            
-            if (!empty($meta_query)) {
-                $args['meta_query'] = $meta_query;
-            }
-            
-            // Sorting
-            $sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'newest';
-            if ($sort === 'oldest') {
-                $args['orderby'] = 'date';
-                $args['order'] = 'ASC';
-            } else {
-                $args['orderby'] = 'date';
-                $args['order'] = 'DESC';
-            }
-            
-            $trade_query = new WP_Query($args);
-            
-            if ($trade_query->have_posts()) : ?>
-                <div class="trade-cards-grid">
+                
+                $trade_query = new WP_Query($args);
+                
+                if ($trade_query->have_posts()) : ?>
                     <?php while ($trade_query->have_posts()) : $trade_query->the_post(); ?>
                         <?php hdh_render_trade_card(get_the_ID()); ?>
                     <?php endwhile; ?>
-                </div>
-                
-                <!-- Pagination -->
-                <div class="trade-pagination">
-                    <?php
-                    echo paginate_links(array(
-                        'total' => $trade_query->max_num_pages,
-                        'prev_text' => '← Önceki',
-                        'next_text' => 'Sonraki →',
-                        'mid_size' => 2,
-                    ));
-                    ?>
-                </div>
-            <?php else : ?>
-                <div class="no-trades-message">
-                    <p>Henüz hediye ilanı bulunmamaktadır.</p>
-                    <p>İlk ilanı siz oluşturun!</p>
-                </div>
-            <?php endif; 
-            wp_reset_postdata();
-            ?>
+                <?php else : ?>
+                    <div class="no-trades-message">
+                        <p>Henüz hediye ilanı bulunmamaktadır.</p>
+                        <p>İlk ilanı siz oluşturun!</p>
+                    </div>
+                <?php endif; 
+                wp_reset_postdata();
+                ?>
+            </div>
+            
+            <!-- Pagination (will be updated via AJAX) -->
+            <div class="trade-pagination" id="trade-pagination"></div>
         </div>
     </div>
 </main>

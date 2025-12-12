@@ -1409,79 +1409,171 @@ h6 { font-size: 1.1rem; }
 }
 
 /* ============================================
-   TRADE FILTER BAR
+   TRADE FILTER VISUAL GRID
    ============================================ */
-.trade-filter-bar {
-    background: var(--newyear-snow);
-    padding: 25px;
+.trade-filter-visual-grid {
+    background: linear-gradient(135deg, var(--newyear-snow) 0%, var(--newyear-ice) 100%);
+    padding: 30px;
     border-radius: var(--radius-large);
-    border: 2px solid var(--newyear-red);
+    border: 3px solid var(--newyear-red);
     margin-bottom: 40px;
-    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.15);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
-.trade-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: flex-end;
+.trade-filter-visual-grid::before {
+    content: '🎄';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: float 3s ease-in-out infinite;
 }
 
-.filter-group {
-    flex: 1;
-    min-width: 150px;
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
-.filter-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #2C2C2C;
-    font-size: 14px;
-}
-
-.filter-group select {
-    width: 100%;
-    padding: 10px 12px;
-    border: 2px solid rgba(220, 20, 60, 0.3);
-    border-radius: var(--radius-small);
-    background: var(--clean-white);
-    color: #2C2C2C;
-    font-size: 15px;
-    transition: all 0.3s ease;
-}
-
-.filter-group select:focus {
-    outline: none;
-    border-color: var(--newyear-red);
-    box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
-}
-
-.filter-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.btn-filter {
-    padding: 10px 20px;
-    font-size: 15px;
-}
-
-.btn-clear-filters {
+.filter-grid-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: var(--newyear-red);
-    text-decoration: none;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 4px rgba(220, 20, 60, 0.1);
+}
+
+.filter-items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.filter-item-btn {
+    background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 255, 255, 0.95) 100%);
+    border: 3px solid var(--newyear-red);
+    border-radius: var(--radius-medium);
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(220, 20, 60, 0.15);
+}
+
+.filter-item-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--newyear-red);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+    opacity: 0.1;
+}
+
+.filter-item-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    border-color: var(--newyear-red-dark);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.3);
+    background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 240, 245, 0.95) 100%);
+}
+
+.filter-item-btn:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+.filter-item-btn.active {
+    background: linear-gradient(135deg, var(--newyear-red-light) 0%, var(--newyear-red) 100%);
+    border-color: var(--newyear-red-dark);
+    box-shadow: 0 6px 25px rgba(220, 20, 60, 0.4);
+    transform: translateY(-3px) scale(1.03);
+}
+
+.filter-item-btn.active .filter-item-label {
+    color: var(--newyear-snow);
+    font-weight: 700;
+}
+
+.filter-item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+}
+
+.filter-item-btn:hover .filter-item-image {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.filter-item-btn.active .filter-item-image {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2)) brightness(1.1);
+    transform: scale(1.15);
+}
+
+.filter-item-label {
+    font-size: 0.9rem;
     font-weight: 600;
-    padding: 10px 15px;
-    border-radius: var(--radius-small);
-    background: var(--newyear-ice);
-    border: 2px solid var(--newyear-red);
+    color: var(--newyear-red);
+    text-align: center;
     transition: all 0.3s ease;
 }
 
-.btn-clear-filters:hover {
-    background: var(--newyear-red);
+.btn-clear-filter-visual {
+    display: block;
+    margin: 20px auto 0;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--newyear-ice) 0%, var(--newyear-snow) 100%);
+    border: 3px solid var(--newyear-red);
+    border-radius: var(--radius-medium);
+    color: var(--newyear-red);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 3px 10px rgba(220, 20, 60, 0.15);
+}
+
+.btn-clear-filter-visual:hover {
+    background: linear-gradient(135deg, var(--newyear-red) 0%, var(--newyear-red-dark) 100%);
     color: var(--newyear-snow);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.3);
+}
+
+.btn-clear-filter-visual .btn-icon {
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.trade-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--newyear-red);
+}
+
+.loading-spinner {
+    font-size: 3rem;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* ============================================
@@ -1943,23 +2035,51 @@ h6 { font-size: 1.1rem; }
         grid-template-columns: 1fr;
     }
     
-    .trade-filters {
-        flex-direction: column;
+    /* Visual Filter Grid - Mobile */
+    .trade-filter-visual-grid {
+        padding: 20px 15px;
+        margin-bottom: 30px;
     }
     
-    .filter-group {
-        width: 100%;
+    .filter-grid-title {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
     }
     
-    .filter-actions {
-        width: 100%;
-        flex-direction: column;
+    .filter-items-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 15px;
     }
     
-    .btn-filter,
-    .btn-clear-filters {
+    .filter-item-btn {
+        padding: 10px 8px;
+        gap: 6px;
+    }
+    
+    .filter-item-image {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .filter-item-label {
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
+    
+    .btn-clear-filter-visual {
+        padding: 10px 20px;
+        font-size: 0.9rem;
         width: 100%;
-        text-align: center;
+        max-width: 300px;
+    }
+    
+    .trade-loading {
+        padding: 30px 15px;
+    }
+    
+    .loading-spinner {
+        font-size: 2.5rem;
     }
     
     /* Trade card - Mobile: Compact and clickable */

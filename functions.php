@@ -43,11 +43,12 @@ require_once get_template_directory() . '/inc/registration-handler.php';
 require_once get_template_directory() . '/inc/trust-system.php';
 require_once get_template_directory() . '/inc/widgets.php';
 require_once get_template_directory() . '/inc/social-functions.php';
+require_once get_template_directory() . '/inc/ajax-handlers.php';
 require_once get_template_directory() . '/social-share.php';
 
 // Enqueue styles and scripts
 function hdh_enqueue_scripts() {
-    wp_enqueue_style('hdh-farm-style', get_template_directory_uri() . '/assets/css/farm-style.css', array(), '3.10.0');
+    wp_enqueue_style('hdh-farm-style', get_template_directory_uri() . '/assets/css/farm-style.css', array(), '3.11.0');
     
     wp_enqueue_script('jquery');
     
@@ -75,6 +76,20 @@ function hdh_enqueue_scripts() {
             '1.1.0',
             true
         );
+        
+        wp_enqueue_script(
+            'hdh-trade-filter',
+            get_template_directory_uri() . '/assets/js/trade-filter.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+        
+        // Localize script for AJAX
+        wp_localize_script('hdh-trade-filter', 'hdhFilter', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_filter_trades'),
+        ));
     }
 }
 add_action('wp_enqueue_scripts', 'hdh_enqueue_scripts');
