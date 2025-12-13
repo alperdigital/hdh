@@ -184,6 +184,12 @@
 
 .trade-item-icon {
     font-size: 1.2rem;
+    line-height: 1;
+    display: inline;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .trade-item-box {
@@ -206,7 +212,7 @@
 
 .offer-box {
     border-color: rgba(201, 184, 138, 0.4);
-    background: #FFFFFF;
+    background: #FFF6D8;
     display: flex;
     flex-direction: column;
     gap: 12px;
