@@ -68,7 +68,8 @@ function hdh_enqueue_scripts() {
         true
     );
     
-    if (is_front_page()) {
+    // Enqueue trade form script on ilan-ver page
+    if (is_page_template('page-ilan-ver.php')) {
         wp_enqueue_script(
             'hdh-trade-form',
             get_template_directory_uri() . '/assets/js/trade-form.js',
@@ -76,7 +77,10 @@ function hdh_enqueue_scripts() {
             '1.1.0',
             true
         );
-        
+    }
+    
+    // Enqueue trade filter script on ara page
+    if (is_page_template('page-ara.php')) {
         wp_enqueue_script(
             'hdh-trade-filter',
             get_template_directory_uri() . '/assets/js/trade-filter.js',
@@ -96,7 +100,7 @@ add_action('wp_enqueue_scripts', 'hdh_enqueue_scripts');
 
 // Preload critical assets
 function hdh_preload_assets() {
-    if (is_front_page()) {
+    if (is_front_page() || is_page_template('page-ara.php') || is_page_template('page-ilan-ver.php')) {
         $items = hdh_get_items_config();
         foreach ($items as $item) {
             echo '<link rel="preload" as="image" href="' . esc_url($item['image']) . '" type="image/svg+xml">' . "\n";
