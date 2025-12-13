@@ -362,7 +362,7 @@ h6 { font-size: 1.1rem; }
 .cartoon-nav-link:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
-    border-color: var(--newyear-red);
+    border-color: var(--newspaper-text);
     color: var(--newyear-snow);
     z-index: 1;
 }
@@ -520,14 +520,14 @@ h6 { font-size: 1.1rem; }
         0 10px 30px rgba(220, 20, 60, 0.3),
         0 4px 12px rgba(220, 20, 60, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    border-color: var(--newyear-red-dark);
+    border-color: var(--newspaper-text);
     background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 250, 250, 0.98) 50%, var(--newyear-ice) 100%);
 }
 
 .farm-board-card-title {
     font-family: 'Baloo 2', sans-serif;
     font-size: 1.8rem;
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -733,7 +733,7 @@ h6 { font-size: 1.1rem; }
     font-family: 'Baloo 2', sans-serif;
     font-size: 3rem;
     text-align: center;
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
     margin-bottom: 50px;
     text-shadow: 0 2px 4px rgba(220, 20, 60, 0.2);
 }
@@ -890,14 +890,14 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-card-title {
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
     transition: color 0.3s ease;
     text-shadow: 1px 1px 2px rgba(220, 20, 60, 0.1);
     font-weight: 700;
 }
 
 .trade-card-clickable:hover .trade-card-title {
-    color: var(--newyear-red-dark);
+    color: var(--newspaper-text);
     text-shadow: 2px 2px 4px rgba(220, 20, 60, 0.2);
 }
 
@@ -1052,7 +1052,7 @@ h6 { font-size: 1.1rem; }
 .trade-wanted-item {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--newyear-red-dark);
+    color: var(--newspaper-text);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1091,7 +1091,7 @@ h6 { font-size: 1.1rem; }
 }
 
 .trade-offer-label {
-    color: var(--newyear-red-dark);
+    color: var(--newspaper-text);
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 12px;
@@ -1128,16 +1128,16 @@ h6 { font-size: 1.1rem; }
 }
 
 .gift-box-content .item-quantity {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--newyear-red);
-    text-shadow: 0 2px 4px rgba(220, 20, 60, 0.2);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    text-shadow: none;
 }
 
 .gift-box-content .item-name {
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--newyear-red-dark);
+    color: var(--newspaper-text);
 }
 
 /* Offer Items inside Red Gift Box */
@@ -1215,11 +1215,11 @@ h6 { font-size: 1.1rem; }
 
 .item-quantity {
     font-weight: 700;
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
 }
 
 .item-name {
-    color: var(--newyear-red-dark);
+    color: var(--newspaper-text);
 }
 
 .trade-card-footer {
@@ -1244,7 +1244,7 @@ h6 { font-size: 1.1rem; }
     flex-direction: column;
     gap: 8px;
     font-size: 14px;
-    color: var(--newyear-red-dark);
+    color: var(--newspaper-text);
     font-weight: 500;
 }
 
@@ -1308,9 +1308,9 @@ h6 { font-size: 1.1rem; }
 
 .filter-grid-title {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
     margin-bottom: 25px;
     text-shadow: 2px 2px 4px rgba(220, 20, 60, 0.1);
 }
@@ -1354,7 +1354,7 @@ h6 { font-size: 1.1rem; }
 
 .filter-item-btn:hover {
     transform: translateY(-5px) scale(1.05);
-    border-color: var(--newyear-red-dark);
+    border-color: var(--newspaper-text);
     box-shadow: 0 6px 20px rgba(220, 20, 60, 0.3);
     background: #FFF6D8;
 }
@@ -1366,7 +1366,7 @@ h6 { font-size: 1.1rem; }
 
 .filter-item-btn.active {
     background: linear-gradient(135deg, var(--newyear-red-light) 0%, var(--newyear-red) 100%);
-    border-color: var(--newyear-red-dark);
+    border-color: var(--newspaper-text);
     box-shadow: 0 6px 25px rgba(220, 20, 60, 0.4);
     transform: translateY(-3px) scale(1.03);
 }
@@ -1396,7 +1396,7 @@ h6 { font-size: 1.1rem; }
 .filter-item-label {
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
     text-align: center;
     transition: all 0.3s ease;
 }
@@ -1408,7 +1408,7 @@ h6 { font-size: 1.1rem; }
     background: linear-gradient(135deg, var(--newyear-ice) 0%, var(--newyear-snow) 100%);
     border: 3px solid var(--newyear-red);
     border-radius: var(--radius-medium);
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
     font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
@@ -1431,7 +1431,7 @@ h6 { font-size: 1.1rem; }
 .trade-loading {
     text-align: center;
     padding: 40px 20px;
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
 }
 
 .loading-spinner {
@@ -1475,8 +1475,8 @@ h6 { font-size: 1.1rem; }
 }
 
 .no-trades-message p {
-    font-size: 1.2rem;
-    color: var(--newyear-red-dark);
+    font-size: 1.1rem;
+    color: var(--newspaper-text);
     margin: 10px 0;
     font-weight: 600;
 }
@@ -1510,7 +1510,7 @@ h6 { font-size: 1.1rem; }
 
 .main-feature-card:hover {
     transform: translateY(-8px);
-    border-color: var(--newyear-red);
+    border-color: var(--newspaper-text);
     box-shadow: 
         0 6px 20px rgba(220, 20, 60, 0.25),
         0 3px 10px rgba(34, 139, 34, 0.15);
@@ -1914,7 +1914,7 @@ h6 { font-size: 1.1rem; }
     }
     
     .filter-grid-title {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         margin-bottom: 20px;
     }
     
@@ -2439,7 +2439,7 @@ h6 { font-size: 1.1rem; }
 }
 
 .trust-minus {
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
     font-weight: 700;
 }
 
@@ -2748,7 +2748,7 @@ main {
 .form-section-title {
     font-family: 'Baloo 2', sans-serif;
     font-size: 1.5rem;
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -2789,13 +2789,13 @@ main {
 
 .item-card:hover {
     transform: translateY(-5px) scale(1.05);
-    border-color: var(--newyear-red);
+    border-color: var(--newspaper-text);
     box-shadow: 0 4px 15px rgba(220, 20, 60, 0.25);
 }
 
 .item-card-input:checked + .item-card {
     background: rgba(220, 20, 60, 0.1);
-    border-color: var(--newyear-red);
+    border-color: var(--newspaper-text);
     box-shadow: 0 4px 15px rgba(220, 20, 60, 0.25);
     transform: translateY(-3px) scale(1.03);
 }
@@ -2893,7 +2893,7 @@ main {
 
 .quantity-input:focus {
     outline: none;
-    border-color: var(--newyear-red);
+    border-color: var(--newspaper-text);
     box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
 }
 
@@ -2955,7 +2955,7 @@ main {
 .form-input:focus,
 .form-textarea:focus {
     outline: none;
-    border-color: var(--newyear-red);
+    border-color: var(--newspaper-text);
     box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
 }
 
@@ -3192,7 +3192,7 @@ footer,
 }
 
 .footer-menu a:hover {
-    color: var(--newyear-red);
+    color: var(--newspaper-text);
 }
 
 .footer-social {
