@@ -4096,13 +4096,13 @@ footer,
 .my-listings-section { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
 .my-listings-title { font-size: 20px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 20px 0; }
 .my-listings-list { display: flex; flex-direction: column; gap: 16px; }
-.my-listing-item { background: #FFFFFF; border: 2px solid rgba(201, 184, 138, 0.3); border-radius: 10px; padding: 16px; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: all 0.2s ease; }
+.my-listing-item { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.3); border-radius: 10px; padding: 16px; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: all 0.2s ease; }
 .my-listing-item.listing-inactive { opacity: 0.6; background: rgba(201, 184, 138, 0.05); }
 .listing-info { flex: 1; min-width: 0; }
-.listing-title { font-size: 16px; font-weight: 600; color: var(--newspaper-text); margin: 0 0 8px 0; }
+.listing-title { font-size: 16px; font-weight: 600; color: var(--newspaper-text); margin: 0; }
 .listing-title a { color: var(--newspaper-text); text-decoration: none; }
 .listing-title a:hover { color: var(--farm-green); text-decoration: underline; }
-.listing-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--newspaper-text-light); }
+.listing-meta { display: none; }
 .listing-wanted { font-weight: 600; color: var(--farm-green-dark); }
 .listing-date { opacity: 0.7; }
 .listing-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
