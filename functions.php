@@ -132,13 +132,16 @@ function hdh_create_required_pages() {
             'post_name' => 'ara',
             'post_status' => 'publish',
             'post_type' => 'page',
-            'post_content' => '',
-            'page_template' => 'page-ara.php'
+            'post_content' => ''
         ));
         
-        if ($ara_page_id) {
+        if ($ara_page_id && !is_wp_error($ara_page_id)) {
+            // Set template using template name (not file name)
             update_post_meta($ara_page_id, '_wp_page_template', 'page-ara.php');
         }
+    } else {
+        // Update existing page template if needed
+        update_post_meta($ara_page->ID, '_wp_page_template', 'page-ara.php');
     }
     
     // Create "İlan Ver" page if it doesn't exist
@@ -148,13 +151,16 @@ function hdh_create_required_pages() {
             'post_name' => 'ilan-ver',
             'post_status' => 'publish',
             'post_type' => 'page',
-            'post_content' => '',
-            'page_template' => 'page-ilan-ver.php'
+            'post_content' => ''
         ));
         
-        if ($ilan_ver_page_id) {
+        if ($ilan_ver_page_id && !is_wp_error($ilan_ver_page_id)) {
+            // Set template using template name (not file name)
             update_post_meta($ilan_ver_page_id, '_wp_page_template', 'page-ilan-ver.php');
         }
+    } else {
+        // Update existing page template if needed
+        update_post_meta($ilan_ver_page->ID, '_wp_page_template', 'page-ilan-ver.php');
     }
 }
 add_action('after_switch_theme', 'hdh_create_required_pages');
@@ -163,6 +169,26 @@ add_action('after_switch_theme', 'hdh_create_required_pages');
 function hdh_check_required_pages() {
     if (is_admin() && current_user_can('manage_options')) {
         hdh_create_required_pages();
+        // Flush rewrite rules to ensure permalinks work
+        flush_rewrite_rules(false);
     }
 }
 add_action('admin_init', 'hdh_check_required_pages');
+
+// Force create pages on any page load (one-time check)
+function hdh_ensure_required_pages() {
+    static $pages_checked = false;
+    if ($pages_checked) {
+        return;
+    }
+    $pages_checked = true;
+    
+    $ara_page = get_page_by_path('ara');
+    $ilan_ver_page = get_page_by_path('ilan-ver');
+    
+    if (!$ara_page || !$ilan_ver_page) {
+        hdh_create_required_pages();
+        flush_rewrite_rules(false);
+    }
+}
+add_action('init', 'hdh_ensure_required_pages', 1);
