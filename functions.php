@@ -118,3 +118,51 @@ function hdh_body_classes($classes) {
     return $classes;
 }
 add_filter('body_class', 'hdh_body_classes');
+
+// Auto-create required pages on theme activation
+function hdh_create_required_pages() {
+    // Check if pages already exist
+    $ara_page = get_page_by_path('ara');
+    $ilan_ver_page = get_page_by_path('ilan-ver');
+    
+    // Create "Ara" page if it doesn't exist
+    if (!$ara_page) {
+        $ara_page_id = wp_insert_post(array(
+            'post_title' => 'Hediye Ara',
+            'post_name' => 'ara',
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_content' => '',
+            'page_template' => 'page-ara.php'
+        ));
+        
+        if ($ara_page_id) {
+            update_post_meta($ara_page_id, '_wp_page_template', 'page-ara.php');
+        }
+    }
+    
+    // Create "İlan Ver" page if it doesn't exist
+    if (!$ilan_ver_page) {
+        $ilan_ver_page_id = wp_insert_post(array(
+            'post_title' => 'İlan Ver',
+            'post_name' => 'ilan-ver',
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_content' => '',
+            'page_template' => 'page-ilan-ver.php'
+        ));
+        
+        if ($ilan_ver_page_id) {
+            update_post_meta($ilan_ver_page_id, '_wp_page_template', 'page-ilan-ver.php');
+        }
+    }
+}
+add_action('after_switch_theme', 'hdh_create_required_pages');
+
+// Also run on admin init to ensure pages exist
+function hdh_check_required_pages() {
+    if (is_admin() && current_user_can('manage_options')) {
+        hdh_create_required_pages();
+    }
+}
+add_action('admin_init', 'hdh_check_required_pages');
