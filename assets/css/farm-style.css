@@ -2777,8 +2777,8 @@ main {
     flex-direction: column;
     align-items: center;
     padding: 15px;
-    background: var(--clean-white);
-    border: 2px solid rgba(220, 20, 60, 0.3);
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
     border-radius: var(--radius-medium);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -2789,14 +2789,14 @@ main {
 
 .item-card:hover {
     transform: translateY(-5px) scale(1.05);
-    border-color: var(--newspaper-text);
-    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.25);
+    border-color: var(--farm-green);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.25);
 }
 
 .item-card-input:checked + .item-card {
-    background: rgba(220, 20, 60, 0.1);
-    border-color: var(--newspaper-text);
-    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.25);
+    background: rgba(201, 184, 138, 0.15);
+    border-color: var(--farm-green);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.25);
     transform: translateY(-3px) scale(1.03);
 }
 
@@ -3139,9 +3139,8 @@ header {
 .trade-card,
 .item-card {
     box-shadow: 
-        0 4px 12px rgba(220, 20, 60, 0.15),
-        0 2px 6px rgba(34, 139, 34, 0.1),
-        0 1px 3px rgba(255, 215, 0, 0.1);
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 1px 4px rgba(201, 184, 138, 0.15);
 }
 
 /* Footer - Unified background */
