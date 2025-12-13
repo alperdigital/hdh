@@ -98,6 +98,16 @@ function hdh_enqueue_scripts() {
     
     // Enqueue profile page script on profil page
     if (is_page_template('page-profil.php')) {
+        // Auth screen (for logged-out users)
+        wp_enqueue_script(
+            'hdh-auth-screen',
+            get_template_directory_uri() . '/assets/js/auth-screen.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        
+        // Profile page interactions (for logged-in users)
         wp_enqueue_script(
             'hdh-profile-page',
             get_template_directory_uri() . '/assets/js/profile-page.js',
@@ -105,6 +115,8 @@ function hdh_enqueue_scripts() {
             '1.0.0',
             true
         );
+        
+        // Tasks panel (for logged-in users)
         wp_enqueue_script(
             'hdh-tasks-panel',
             get_template_directory_uri() . '/assets/js/tasks-panel.js',

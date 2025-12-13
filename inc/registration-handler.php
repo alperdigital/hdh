@@ -478,7 +478,7 @@ function hdh_render_registration_modal() {
 function hdh_handle_custom_registration_submit() {
     // Verify nonce
     if (!isset($_POST['hdh_register_nonce']) || !wp_verify_nonce($_POST['hdh_register_nonce'], 'hdh_custom_register')) {
-        wp_redirect(home_url('/?action=register&registration_error=security'));
+        wp_redirect(home_url('/profil?registration_error=security'));
         exit;
     }
     
@@ -488,16 +488,17 @@ function hdh_handle_custom_registration_submit() {
     $farm_tag = isset($_POST['farm_tag']) ? sanitize_text_field($_POST['farm_tag']) : '';
     $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
     $accept_terms = isset($_POST['accept_terms']) ? true : false;
+    $redirect_to = isset($_POST['redirect_to']) ? esc_url_raw($_POST['redirect_to']) : home_url('/');
     $redirect_to_trade = isset($_POST['redirect_to_trade']) && $_POST['redirect_to_trade'] === '1';
     
     // Validation
     if (empty($farm_name) || empty($user_email) || empty($user_pass) || empty($farm_tag)) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=empty_fields'));
+        wp_redirect(add_query_arg('registration_error', 'empty_fields', $redirect_to));
         exit;
     }
     
     if (!$accept_terms) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=terms_not_accepted'));
+        wp_redirect(add_query_arg('registration_error', 'terms_not_accepted', $redirect_to));
         exit;
     }
     
@@ -509,19 +510,19 @@ function hdh_handle_custom_registration_submit() {
     ));
     
     if (!empty($existing_user)) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=farm_tag_exists'));
+        wp_redirect(add_query_arg('registration_error', 'farm_tag_exists', $redirect_to));
         exit;
     }
     
     // Check if email exists
     if (email_exists($user_email)) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=email_exists'));
+        wp_redirect(add_query_arg('registration_error', 'email_exists', $redirect_to));
         exit;
     }
     
     // Check if username exists
     if (username_exists($farm_name)) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=username_exists'));
+        wp_redirect(add_query_arg('registration_error', 'username_exists', $redirect_to));
         exit;
     }
     
@@ -529,7 +530,7 @@ function hdh_handle_custom_registration_submit() {
     $user_id = wp_create_user($farm_name, $user_pass, $user_email);
     
     if (is_wp_error($user_id)) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&registration_error=creation_failed'));
+        wp_redirect(add_query_arg('registration_error', 'creation_failed', $redirect_to));
         exit;
     }
     
@@ -560,8 +561,8 @@ function hdh_handle_custom_registration_submit() {
         }
     }
     
-    // Redirect to homepage
-    wp_redirect(home_url('/'));
+    // Redirect to specified URL or homepage
+    wp_redirect($redirect_to);
     exit;
 }
 add_action('admin_post_hdh_custom_register', 'hdh_handle_custom_registration_submit');
@@ -573,17 +574,18 @@ add_action('admin_post_nopriv_hdh_custom_register', 'hdh_handle_custom_registrat
 function hdh_handle_custom_login_submit() {
     // Verify nonce
     if (!isset($_POST['hdh_login_nonce']) || !wp_verify_nonce($_POST['hdh_login_nonce'], 'hdh_custom_login')) {
-        wp_redirect(home_url('/?action=register&login_error=security'));
+        wp_redirect(home_url('/profil?login_error=security'));
         exit;
     }
     
     $username = isset($_POST['log']) ? sanitize_user($_POST['log']) : '';
     $password = isset($_POST['pwd']) ? $_POST['pwd'] : '';
     $remember = isset($_POST['rememberme']);
+    $redirect_to = isset($_POST['redirect_to']) ? esc_url_raw($_POST['redirect_to']) : home_url('/');
     $redirect_to_trade = isset($_POST['redirect_to_trade']) && $_POST['redirect_to_trade'] === '1';
     
     if (empty($username) || empty($password)) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&login_error=empty_fields'));
+        wp_redirect(add_query_arg('login_error', 'empty_fields', $redirect_to));
         exit;
     }
     
@@ -591,7 +593,7 @@ function hdh_handle_custom_login_submit() {
     $user = wp_authenticate($username, $password);
     
     if (is_wp_error($user)) {
-        wp_redirect(home_url('/?action=register&redirect=' . ($redirect_to_trade ? 'trade' : '') . '&login_error=invalid_credentials'));
+        wp_redirect(add_query_arg('login_error', 'invalid_credentials', $redirect_to));
         exit;
     }
     
@@ -613,8 +615,8 @@ function hdh_handle_custom_login_submit() {
         }
     }
     
-    // Redirect to homepage
-    wp_redirect(home_url('/'));
+    // Redirect to specified URL or homepage
+    wp_redirect($redirect_to);
     exit;
 }
 add_action('admin_post_hdh_custom_login', 'hdh_handle_custom_login_submit');
