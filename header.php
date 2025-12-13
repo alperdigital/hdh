@@ -32,16 +32,6 @@
                 <div class="header-top">
                     <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
                         <div class="site-logo-icon">🌾</div>
-                        <h1 class="site-title">
-                            <?php 
-                            $site_name = get_bloginfo('name');
-                            if (empty($site_name) || $site_name === 'HDH' || $site_name === "User's blog") {
-                                echo 'Hay Day Help';
-                            } else {
-                                echo esc_html($site_name);
-                            }
-                            ?>
-                        </h1>
                     </a>
                     
                 </div>
