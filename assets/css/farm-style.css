@@ -81,6 +81,7 @@
 
 html {
     background: #FFF6D8;
+    height: 100%;
 }
 
 body {
@@ -95,6 +96,9 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Removed blue background pseudo-elements - using unified newspaper background */
@@ -1277,7 +1281,7 @@ h6 { font-size: 1.1rem; }
    TRADE FILTER VISUAL GRID
    ============================================ */
 .trade-filter-visual-grid {
-    background: linear-gradient(135deg, var(--newyear-snow) 0%, var(--newyear-ice) 100%);
+    background: #FFF6D8;
     padding: 30px;
     border-radius: var(--radius-large);
     border: 3px solid var(--newyear-red);
@@ -1319,7 +1323,7 @@ h6 { font-size: 1.1rem; }
 }
 
 .filter-item-btn {
-    background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 255, 255, 0.95) 100%);
+    background: #FFF6D8;
     border: 3px solid var(--newyear-red);
     border-radius: var(--radius-medium);
     padding: 15px;
@@ -1352,7 +1356,7 @@ h6 { font-size: 1.1rem; }
     transform: translateY(-5px) scale(1.05);
     border-color: var(--newyear-red-dark);
     box-shadow: 0 6px 20px rgba(220, 20, 60, 0.3);
-    background: linear-gradient(135deg, var(--newyear-snow) 0%, rgba(255, 240, 245, 0.95) 100%);
+    background: #FFF6D8;
 }
 
 .filter-item-btn:hover::before {
@@ -2452,6 +2456,10 @@ h6 { font-size: 1.1rem; }
     margin-bottom: 20px;
 }
 
+main {
+    background: transparent;
+}
+
 .single-trade-main {
     padding: 40px 0;
 }
@@ -2714,13 +2722,13 @@ h6 { font-size: 1.1rem; }
    ============================================ */
 .create-trade-form-section {
     padding: 60px 0;
-    background: var(--newyear-ice);
+    background: #FFF6D8;
 }
 
 .create-trade-wrapper {
     max-width: 900px;
     margin: 0 auto;
-    background: var(--newyear-snow);
+    background: #FFF6D8;
     padding: 40px;
     border-radius: var(--radius-large);
     border: 3px solid var(--newyear-gold);
@@ -2729,7 +2737,7 @@ h6 { font-size: 1.1rem; }
 
 .form-section {
     margin-bottom: 40px;
-    background: var(--newyear-snow);
+    background: #FFF6D8;
     padding: 25px;
     border-radius: var(--radius-medium);
     border: 2px solid rgba(220, 20, 60, 0.15);
@@ -3135,37 +3143,19 @@ header {
         0 1px 3px rgba(255, 215, 0, 0.1);
 }
 
-/* Footer'a yılbaşı gece teması */
+/* Footer - Unified background */
 footer,
 .footer {
-    background: var(--gradient-newyear-sky);
+    background: #FFF6D8;
     color: #2C2C2C;
     position: relative;
-    border-top: 2px solid rgba(220, 20, 60, 0.2);
-}
-
-footer::before,
-.footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(3px 3px at 20% 30%, var(--newyear-gold) 0%, transparent 50%),
-        radial-gradient(2px 2px at 60% 20%, var(--newyear-gold-light) 0%, transparent 50%),
-        radial-gradient(3px 3px at 80% 50%, var(--newyear-red-light) 0%, transparent 50%),
-        radial-gradient(2px 2px at 40% 70%, var(--newyear-green-light) 0%, transparent 50%);
-    animation: hdhFireworks 4s ease-in-out infinite;
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: 0;
+    margin-top: auto;
+    padding: 30px 0;
 }
 
 /* Footer içerik stilleri */
 .footer-content {
-    padding: 30px 0;
+    padding: 0;
 }
 
 .footer-info {
@@ -3980,7 +3970,7 @@ footer::before,
 /* 2. MIDDLE SECTION - SOCIAL PROOF */
 .homepage-recent-listings {
     padding: 40px 20px;
-    background: var(--newspaper-bg);
+    background: #FFF6D8;
 }
 
 .homepage-section-title {
@@ -3997,7 +3987,7 @@ footer::before,
 .homepage-trust-indicator {
     padding: 24px 20px;
     text-align: center;
-    background: var(--newspaper-bg);
+    background: #FFF6D8;
 }
 
 .trust-indicator-text {
@@ -4013,7 +4003,7 @@ footer::before,
 .homepage-secondary-action {
     padding: 40px 20px 60px;
     text-align: center;
-    background: var(--newspaper-bg);
+    background: #FFF6D8;
 }
 
 .secondary-action-text {
