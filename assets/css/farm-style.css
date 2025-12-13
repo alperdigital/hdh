@@ -2495,10 +2495,10 @@ main {
 }
 
 .trade-explanation {
-    background: var(--sky-blue-light);
+    background: #FFF6D8;
     padding: 20px;
     border-radius: var(--radius-medium);
-    border: 2px solid var(--sky-blue);
+    border: 2px solid var(--wood-brown-light);
     margin-top: 20px;
 }
 
@@ -4065,3 +4065,495 @@ footer,
     }
 }
 
+
+/* ============================================
+   PROFILE PAGE (STEP 1)
+   ============================================ */
+.profile-page-main { padding: 40px 20px 100px; background: #FFF6D8; min-height: calc(100vh - 200px); }
+.profile-title { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 28px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 20px 0; text-align: center; }
+.profile-subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 14px; color: var(--newspaper-text-light); margin: 0 0 30px 0; text-align: center; opacity: 0.7; }
+.profile-logged-out { text-align: center; padding: 60px 20px; }
+.btn-open-login { background: var(--farm-green); color: #FFFFFF; font-size: 16px; font-weight: 600; padding: 14px 32px; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+.btn-open-login:active { transform: scale(0.98); background: var(--farm-green-dark); }
+.profile-card { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+.profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(201, 184, 138, 0.3); }
+.profile-avatar { width: 60px; height: 60px; border-radius: 50%; background: rgba(201, 184, 138, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.avatar-icon { font-size: 32px; }
+.profile-name-section { flex: 1; min-width: 0; }
+.profile-farm-name { font-size: 20px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 4px 0; }
+.profile-hayday-username { font-size: 14px; color: var(--newspaper-text-light); margin: 0; opacity: 0.7; }
+.profile-trust-section { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(201, 184, 138, 0.3); }
+.trust-star-large { font-size: 48px; color: var(--newspaper-star-blue); font-weight: 700; line-height: 1; margin-bottom: 8px; text-shadow: 0 1px 3px rgba(74, 144, 226, 0.4); }
+.trust-explanation { font-size: 13px; color: var(--newspaper-text); margin: 0; opacity: 0.8; }
+.profile-jeton-section { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(201, 184, 138, 0.3); }
+.jeton-display { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.jeton-icon { font-size: 40px; line-height: 1; }
+.jeton-balance { font-size: 32px; font-weight: 700; color: var(--newspaper-text); line-height: 1; }
+.jeton-label { font-size: 14px; color: var(--newspaper-text-light); opacity: 0.7; }
+.profile-actions { text-align: center; }
+.btn-edit-profile { background: transparent; color: var(--farm-green); font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid var(--farm-green); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+.btn-edit-profile:active { background: var(--farm-green); color: #FFFFFF; transform: scale(0.98); }
+.profile-edit-form { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+.edit-form-title { font-size: 20px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 20px 0; }
+.profile-edit-form .form-field { margin-bottom: 20px; }
+.profile-edit-form label { display: block; font-size: 14px; font-weight: 600; color: var(--newspaper-text); margin-bottom: 8px; }
+.profile-edit-form .form-input { width: 100%; padding: 12px; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 8px; font-size: 15px; background: #FFFFFF; color: var(--newspaper-text); box-sizing: border-box; }
+.profile-edit-form .form-input:focus { outline: none; border-color: var(--farm-green); }
+.profile-edit-form .form-actions { display: flex; gap: 12px; margin-top: 24px; }
+.btn-save-profile { flex: 1; background: var(--farm-green); color: #FFFFFF; font-size: 15px; font-weight: 600; padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+.btn-save-profile:active { background: var(--farm-green-dark); transform: scale(0.98); }
+.btn-cancel-edit { flex: 1; background: transparent; color: var(--newspaper-text); font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+.btn-cancel-edit:active { background: rgba(201, 184, 138, 0.1); transform: scale(0.98); }
+
+/* ============================================
+   DECORATIONS PAGE (STEP 6)
+   ============================================ */
+.decorations-page-main { padding: 40px 20px 100px; background: #FFF6D8; min-height: calc(100vh - 200px); }
+.decorations-page-title { font-size: 28px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 12px 0; text-align: center; }
+.decorations-page-subtitle { font-size: 14px; color: var(--newspaper-text-light); margin: 0 0 32px 0; text-align: center; opacity: 0.7; }
+.decorations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; }
+.decoration-card { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; overflow: hidden; transition: all 0.2s ease; }
+.decoration-card:active { transform: scale(0.98); border-color: rgba(201, 184, 138, 0.6); }
+.decoration-image-wrapper { width: 100%; height: 200px; background: rgba(201, 184, 138, 0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.decoration-image { width: 100%; height: 100%; object-fit: cover; }
+.decoration-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(201, 184, 138, 0.1); }
+.placeholder-icon { font-size: 64px; opacity: 0.5; }
+.decoration-content { padding: 20px; }
+.decoration-name { font-size: 18px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 8px 0; }
+.decoration-description { font-size: 13px; color: var(--newspaper-text-light); margin: 0 0 16px 0; opacity: 0.7; }
+.btn-get-decoration { display: block; background: var(--farm-green); color: #FFFFFF; font-size: 15px; font-weight: 600; padding: 12px 24px; border-radius: 10px; text-decoration: none; text-align: center; transition: all 0.2s ease; }
+.btn-get-decoration:active { background: var(--farm-green-dark); transform: scale(0.98); }
+.no-decorations-message { text-align: center; padding: 60px 20px; color: var(--newspaper-text-light); }
+
+/* ============================================
+   LOTTERY PAGE (STEP 4)
+   ============================================ */
+.lottery-page-main { padding: 40px 20px 100px; background: #FFF6D8; min-height: calc(100vh - 200px); }
+.lottery-page-title { font-size: 28px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 24px 0; text-align: center; }
+.lottery-balance-section { margin-bottom: 32px; }
+.jeton-balance-display { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 20px; background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; }
+.jeton-icon-large { font-size: 48px; line-height: 1; }
+.jeton-balance-info { display: flex; flex-direction: column; gap: 4px; }
+.jeton-balance-amount { font-size: 32px; font-weight: 700; color: var(--newspaper-text); line-height: 1; }
+.jeton-balance-label { font-size: 13px; color: var(--newspaper-text-light); opacity: 0.7; }
+.lottery-login-prompt { text-align: center; padding: 40px 20px; }
+.btn-login-for-lottery { display: inline-block; background: var(--farm-green); color: #FFFFFF; font-size: 16px; font-weight: 600; padding: 14px 32px; border-radius: 10px; text-decoration: none; transition: all 0.2s ease; }
+.btn-login-for-lottery:active { background: var(--farm-green-dark); transform: scale(0.98); }
+.lottery-countdown-section { margin-bottom: 32px; text-align: center; padding: 24px; background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; }
+.countdown-title { font-size: 18px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 16px 0; }
+.countdown-display { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
+.countdown-item { display: flex; flex-direction: column; align-items: center; }
+.countdown-value { font-size: 36px; font-weight: 700; color: var(--newspaper-text); line-height: 1; }
+.countdown-label { font-size: 12px; color: var(--newspaper-text-light); margin-top: 4px; opacity: 0.7; }
+.countdown-target { font-size: 13px; color: var(--newspaper-text-light); margin: 0; opacity: 0.7; }
+.lottery-card { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.lottery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.lottery-name { font-size: 18px; font-weight: 700; color: var(--newspaper-text); margin: 0; }
+.lottery-cost { font-size: 14px; font-weight: 600; color: var(--farm-green); }
+.lottery-info { margin-bottom: 16px; }
+.lottery-description { font-size: 14px; color: var(--newspaper-text); margin: 0 0 8px 0; }
+.lottery-entries-info { font-size: 13px; color: var(--newspaper-text-light); margin: 0; }
+.btn-join-lottery { width: 100%; background: var(--farm-green); color: #FFFFFF; font-size: 16px; font-weight: 600; padding: 14px 24px; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+.btn-join-lottery:active:not(:disabled) { background: var(--farm-green-dark); transform: scale(0.98); }
+.btn-join-lottery:disabled, .btn-join-lottery.disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ============================================
+   TASKS PANEL (STEP 5)
+   ============================================ */
+.tasks-panel { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-top: 24px; }
+.tasks-panel-title { font-size: 20px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 20px 0; }
+.tasks-list { display: flex; flex-direction: column; gap: 12px; }
+.task-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #FFFFFF; border: 1px solid rgba(201, 184, 138, 0.3); border-radius: 8px; }
+.task-item.task-completed { opacity: 0.6; }
+.task-info { display: flex; align-items: center; gap: 12px; flex: 1; }
+.task-icon { font-size: 24px; line-height: 1; }
+.task-details { display: flex; flex-direction: column; gap: 2px; }
+.task-name { font-size: 15px; font-weight: 600; color: var(--newspaper-text); }
+.task-reward { font-size: 12px; color: var(--farm-green); font-weight: 600; }
+.btn-claim-daily, .btn-do-task { background: var(--farm-green); color: #FFFFFF; font-size: 14px; font-weight: 600; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; text-decoration: none; transition: all 0.2s ease; }
+.btn-claim-daily:active, .btn-do-task:active { background: var(--farm-green-dark); transform: scale(0.98); }
+.task-status { font-size: 13px; color: var(--newspaper-text-light); font-weight: 600; }
+
+/* ============================================
+   TRADE OFFER / EXCHANGE FLOW (STEP 2)
+   ============================================ */
+.trade-actions-single { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+.btn-create-offer, .btn-login-to-offer, .btn-complete-exchange { background: var(--farm-green); color: #FFFFFF; font-size: 16px; font-weight: 600; padding: 14px 24px; border: none; border-radius: 10px; cursor: pointer; text-decoration: none; text-align: center; transition: all 0.2s ease; }
+.btn-create-offer:active, .btn-login-to-offer:active, .btn-complete-exchange:active { background: var(--farm-green-dark); transform: scale(0.98); }
+.btn-create-offer:disabled { opacity: 0.6; cursor: not-allowed; }
+.offer-status-message { background: rgba(116, 195, 101, 0.1); border: 2px solid var(--farm-green); border-radius: 10px; padding: 12px 16px; text-align: center; }
+.offer-status-message p { font-size: 14px; color: var(--farm-green-dark); margin: 0; font-weight: 600; }
+.listing-offers-section { margin-top: 32px; padding: 20px; background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; }
+.offers-section-title { font-size: 18px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 16px 0; }
+.offers-list { display: flex; flex-direction: column; gap: 12px; }
+.offer-item { background: #FFFFFF; border: 1px solid rgba(201, 184, 138, 0.3); border-radius: 8px; padding: 16px; }
+.offerer-info { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.offerer-star { font-size: 20px; color: var(--newspaper-star-blue); font-weight: 700; line-height: 1; }
+.offerer-name { font-size: 15px; font-weight: 600; color: var(--newspaper-text); flex: 1; }
+.offer-status-badge { font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 6px; }
+.offer-status-badge.status-pending { background: rgba(255, 193, 7, 0.2); color: #856404; }
+.offer-status-badge.status-accepted { background: rgba(116, 195, 101, 0.2); color: var(--farm-green-dark); }
+.offer-status-badge.status-rejected { background: rgba(220, 53, 69, 0.2); color: #721c24; }
+.offer-actions { display: flex; gap: 8px; }
+.btn-accept-offer, .btn-reject-offer { flex: 1; font-size: 14px; font-weight: 600; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+.btn-accept-offer { background: var(--farm-green); color: #FFFFFF; }
+.btn-accept-offer:active { background: var(--farm-green-dark); transform: scale(0.98); }
+.btn-reject-offer { background: rgba(220, 53, 69, 0.1); color: #721c24; }
+.btn-reject-offer:active { background: rgba(220, 53, 69, 0.2); transform: scale(0.98); }
+.exchange-completion-section { margin-top: 24px; padding: 20px; background: rgba(116, 195, 101, 0.1); border: 2px solid var(--farm-green); border-radius: 12px; text-align: center; }
+.completion-instruction { font-size: 14px; color: var(--newspaper-text); margin: 0 0 16px 0; }
+.completion-status { font-size: 14px; color: var(--farm-green-dark); margin: 0; font-weight: 600; }
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .profile-page-main, .decorations-page-main, .lottery-page-main { padding: 30px 16px 100px; }
+    .profile-title, .decorations-page-title, .lottery-page-title { font-size: 24px; }
+    .profile-card, .tasks-panel, .lottery-card { padding: 20px; }
+    .profile-header { gap: 12px; }
+    .profile-avatar { width: 50px; height: 50px; }
+    .avatar-icon { font-size: 28px; }
+    .profile-farm-name { font-size: 18px; }
+    .trust-star-large { font-size: 40px; }
+    .jeton-icon, .jeton-icon-large { font-size: 36px; }
+    .jeton-balance, .jeton-balance-amount { font-size: 28px; }
+    .decorations-grid { grid-template-columns: 1fr; gap: 20px; }
+    .decoration-image-wrapper { height: 180px; }
+    .decoration-content { padding: 16px; }
+    .decoration-name { font-size: 16px; }
+    .btn-get-decoration { padding: 14px 24px; font-size: 16px; }
+    .countdown-value { font-size: 32px; }
+    .profile-edit-form .form-actions, .offer-actions { flex-direction: column; }
+    .btn-save-profile, .btn-cancel-edit, .btn-accept-offer, .btn-reject-offer { width: 100%; }
+}
+
+/* ============================================
+   OFFER FLOW (STEP 2)
+   ============================================ */
+.offers-section, .make-offer-section, .exchange-completion-section, .login-prompt-section {
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+}
+
+.offers-section-title, .make-offer-title, .completion-title, .login-prompt-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 20px 0;
+}
+
+.offers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.offer-card {
+    background: #FFFFFF;
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.2s ease;
+}
+
+.offer-card:hover {
+    border-color: rgba(201, 184, 138, 0.5);
+}
+
+.offer-status-accepted {
+    border-left: 4px solid var(--farm-green);
+}
+
+.offer-status-rejected {
+    border-left: 4px solid #DC143C;
+    opacity: 0.7;
+}
+
+.offer-status-pending {
+    border-left: 4px solid var(--hay-yellow);
+}
+
+.offer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.offer-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.offer-user-avatar {
+    font-size: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(201, 184, 138, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.offer-user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.offer-user-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--newspaper-text);
+}
+
+.offer-user-trust {
+    font-size: 13px;
+    color: var(--newspaper-text-light);
+    opacity: 0.7;
+}
+
+.offer-status-badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.offer-badge-accepted {
+    background: rgba(76, 175, 80, 0.1);
+    color: var(--farm-green-dark);
+}
+
+.offer-badge-rejected {
+    background: rgba(220, 20, 60, 0.1);
+    color: #DC143C;
+}
+
+.offer-badge-pending {
+    background: rgba(255, 193, 7, 0.1);
+    color: #F57C00;
+}
+
+.offer-date {
+    font-size: 13px;
+    color: var(--newspaper-text-light);
+    margin-bottom: 16px;
+    opacity: 0.7;
+}
+
+.offer-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.btn-accept-offer, .btn-reject-offer, .btn-make-offer, .btn-confirm-exchange {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-accept-offer {
+    background: var(--farm-green);
+    color: #FFFFFF;
+}
+
+.btn-accept-offer:hover {
+    background: var(--farm-green-dark);
+}
+
+.btn-accept-offer:active {
+    transform: scale(0.98);
+}
+
+.btn-reject-offer {
+    background: transparent;
+    color: #DC143C;
+    border: 2px solid #DC143C;
+}
+
+.btn-reject-offer:hover {
+    background: rgba(220, 20, 60, 0.1);
+}
+
+.btn-reject-offer:active {
+    transform: scale(0.98);
+}
+
+.btn-make-offer {
+    background: var(--farm-green);
+    color: #FFFFFF;
+    width: 100%;
+}
+
+.btn-make-offer:hover {
+    background: var(--farm-green-dark);
+}
+
+.btn-make-offer:active {
+    transform: scale(0.98);
+}
+
+.btn-confirm-exchange {
+    background: var(--farm-green);
+    color: #FFFFFF;
+    width: 100%;
+}
+
+.btn-confirm-exchange:hover {
+    background: var(--farm-green-dark);
+}
+
+.btn-confirm-exchange:active {
+    transform: scale(0.98);
+}
+
+.no-offers-message, .offer-already-made {
+    text-align: center;
+    padding: 32px 20px;
+    color: var(--newspaper-text-light);
+    opacity: 0.7;
+}
+
+.offer-explanation {
+    background: rgba(201, 184, 138, 0.1);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.offer-explanation p {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: var(--newspaper-text);
+}
+
+.offer-explanation p:last-child {
+    margin-bottom: 0;
+}
+
+.exchange-completion-section {
+    background: rgba(76, 175, 80, 0.05);
+    border-color: var(--farm-green);
+}
+
+.completion-explanation {
+    font-size: 14px;
+    color: var(--newspaper-text);
+    margin: 0 0 20px 0;
+}
+
+.completion-status {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.completion-party {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 2px solid rgba(201, 184, 138, 0.3);
+}
+
+.completion-icon {
+    font-size: 24px;
+}
+
+.completion-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--newspaper-text);
+}
+
+.waiting-confirmation {
+    text-align: center;
+    padding: 16px;
+    background: rgba(255, 193, 7, 0.1);
+    border-radius: 8px;
+    color: var(--newspaper-text);
+    font-weight: 600;
+    margin: 0;
+}
+
+.login-prompt-section {
+    text-align: center;
+}
+
+.login-prompt-text {
+    font-size: 14px;
+    color: var(--newspaper-text-light);
+    margin: 0 0 20px 0;
+    opacity: 0.7;
+}
+
+.btn-open-login {
+    background: var(--farm-green);
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-open-login:hover {
+    background: var(--farm-green-dark);
+}
+
+.btn-open-login:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+    .offers-section, .make-offer-section, .exchange-completion-section, .login-prompt-section {
+        padding: 20px;
+    }
+    
+    .offer-card {
+        padding: 16px;
+    }
+    
+    .offer-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .offer-status-badge {
+        align-self: flex-start;
+    }
+    
+    .offer-actions {
+        flex-direction: column;
+    }
+    
+    .btn-accept-offer, .btn-reject-offer {
+        width: 100%;
+    }
+    
+    .completion-status {
+        gap: 8px;
+    }
+    
+    .completion-party {
+        padding: 10px;
+    }
+}

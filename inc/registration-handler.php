@@ -161,11 +161,11 @@ function hdh_get_registration_modal_css() {
             font-size: 13px;
         }
         .hdh-phone-note {
-            background: var(--sky-blue-light);
+            background: #FFF6D8;
             padding: 10px;
             border-radius: var(--radius-small);
             margin-top: 5px;
-            border: 2px solid var(--sky-blue);
+            border: 2px solid var(--wood-brown-light);
             font-size: 13px;
             color: var(--wood-brown);
         }

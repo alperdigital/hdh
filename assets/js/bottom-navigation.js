@@ -37,6 +37,13 @@
          * Determine which nav item should be active based on current page
          */
         function determineActiveItem() {
+            // Check if we're on homepage - NO active item
+            if (currentPath === '/' || currentPath === '' || currentPath === '/index.php') {
+                // Homepage - explicitly clear all active states
+                setActiveItem(null);
+                return;
+            }
+            
             // Check if we're on create trade page (ilan-ver)
             if (currentPath.includes('ilan-ver') || currentHash === '#create-trade') {
                 const createItem = bottomNav.querySelector('[data-nav="create"]');
@@ -55,16 +62,9 @@
                 }
             }
             
-            // Check if we're on homepage
-            if (currentPath === '/' || currentPath === '') {
-                // Homepage - no active item (or could set to first item)
-                return;
-            }
-            
-            // Default: set first item (Ara) as active
-            if (navItems.length > 0) {
-                setActiveItem(navItems[0]);
-            }
+            // For other pages, no active item by default
+            // Only specific pages should have active states
+            setActiveItem(null);
         }
         
         /**

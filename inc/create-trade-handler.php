@@ -150,6 +150,11 @@ function hdh_handle_create_trade() {
         }
     }
     
+    // Award +2 jetons for creating a listing (only if published)
+    if ($post_status === 'publish' && function_exists('hdh_add_jeton')) {
+        hdh_add_jeton(get_current_user_id(), 2, 'listing_created', array('post_id' => $post_id));
+    }
+    
     // Redirect based on approval status
     if ($post_status === 'pending') {
         wp_redirect(home_url('/?trade_success=pending'));

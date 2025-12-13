@@ -95,6 +95,65 @@ function hdh_enqueue_scripts() {
             'nonce' => wp_create_nonce('hdh_filter_trades'),
         ));
     }
+    
+    // Enqueue profile page script on profil page
+    if (is_page_template('page-profil.php')) {
+        wp_enqueue_script(
+            'hdh-profile-page',
+            get_template_directory_uri() . '/assets/js/profile-page.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        wp_enqueue_script(
+            'hdh-tasks-panel',
+            get_template_directory_uri() . '/assets/js/tasks-panel.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        wp_localize_script('hdh-tasks-panel', 'hdhTasks', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_claim_daily_jeton'),
+        ));
+    }
+    
+    // Enqueue trade offer script on single trade pages
+    if (is_singular('hayday_trade')) {
+        wp_enqueue_script(
+            'hdh-trade-offer',
+            get_template_directory_uri() . '/assets/js/trade-offer.js',
+            array(),
+            '1.1.0',
+            true
+        );
+        wp_localize_script('hdh-trade-offer', 'hdhOffer', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_create_offer'),
+        ));
+    }
+    
+    // Enqueue lottery scripts on lottery page
+    if (is_page_template('page-cekilis.php')) {
+        wp_enqueue_script(
+            'hdh-lottery-countdown',
+            get_template_directory_uri() . '/assets/js/lottery-countdown.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        wp_enqueue_script(
+            'hdh-lottery-page',
+            get_template_directory_uri() . '/assets/js/lottery-page.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        wp_localize_script('hdh-lottery-page', 'hdhLottery', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_join_lottery'),
+        ));
+    }
 }
 add_action('wp_enqueue_scripts', 'hdh_enqueue_scripts');
 
