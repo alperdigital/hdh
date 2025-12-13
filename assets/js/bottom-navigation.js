@@ -37,8 +37,8 @@
          * Determine which nav item should be active based on current page
          */
         function determineActiveItem() {
-            // Check if we're on create trade page
-            if (currentHash === '#create-trade' || currentPath.includes('create')) {
+            // Check if we're on create trade page (ilan-ver)
+            if (currentPath.includes('ilan-ver') || currentHash === '#create-trade') {
                 const createItem = bottomNav.querySelector('[data-nav="create"]');
                 if (createItem) {
                     setActiveItem(createItem);
@@ -46,13 +46,19 @@
                 }
             }
             
-            // Check if we're on search page
-            if (currentPath.includes('search') || currentPath === '/' && !currentHash) {
+            // Check if we're on search page (ara)
+            if (currentPath.includes('/ara') || currentPath.endsWith('/ara')) {
                 const searchItem = bottomNav.querySelector('[data-nav="search"]');
                 if (searchItem) {
                     setActiveItem(searchItem);
                     return;
                 }
+            }
+            
+            // Check if we're on homepage
+            if (currentPath === '/' || currentPath === '') {
+                // Homepage - no active item (or could set to first item)
+                return;
             }
             
             // Default: set first item (Ara) as active
@@ -69,28 +75,10 @@
                 // Set active state immediately for better UX
                 setActiveItem(item);
                 
-                // For center button, scroll to create trade section if on homepage
+                // For center button, navigate to ilan-ver page
                 if (item.classList.contains('bottom-nav-center')) {
-                    const href = item.getAttribute('href');
-                    if (href && href.includes('#create-trade')) {
-                        e.preventDefault();
-                        const targetElement = document.getElementById('create-trade');
-                        if (targetElement) {
-                            // Smooth scroll to create trade section
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                            // Update URL without reload
-                            if (history.pushState) {
-                                history.pushState(null, null, '#create-trade');
-                            }
-                        } else {
-                            // If element not found, navigate normally
-                            window.location.href = href;
-                        }
-                        return;
-                    }
+                    // Normal navigation - no special handling needed
+                    // The href will handle navigation to /ilan-ver
                 }
                 
                 // For other items, allow normal navigation
@@ -99,16 +87,15 @@
         });
         
         /**
-         * Handle hash changes (e.g., when scrolling to #create-trade)
+         * Handle hash changes and pathname changes
          */
         window.addEventListener('hashchange', function() {
-            const hash = window.location.hash;
-            if (hash === '#create-trade') {
-                const createItem = bottomNav.querySelector('[data-nav="create"]');
-                if (createItem) {
-                    setActiveItem(createItem);
-                }
-            }
+            determineActiveItem();
+        });
+        
+        // Also listen for popstate (back/forward navigation)
+        window.addEventListener('popstate', function() {
+            determineActiveItem();
         });
         
         /**

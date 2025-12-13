@@ -42,7 +42,7 @@
     
     <!-- HDH: Bottom Navigation (Mobile Only) -->
     <nav class="bottom-navigation" id="bottom-navigation" role="navigation" aria-label="Ana Navigasyon">
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="search">
+        <a href="<?php echo esc_url(home_url('/ara')); ?>" class="bottom-nav-item" data-nav="search">
             <span class="bottom-nav-icon">🔍</span>
             <span class="bottom-nav-label">Ara</span>
         </a>
@@ -50,7 +50,7 @@
             <span class="bottom-nav-icon">🎨</span>
             <span class="bottom-nav-label">Dekorlar</span>
         </a>
-        <a href="<?php echo esc_url(home_url('/#create-trade')); ?>" class="bottom-nav-item bottom-nav-center" data-nav="create">
+        <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="bottom-nav-item bottom-nav-center" data-nav="create">
             <span class="bottom-nav-center-icon">+</span>
             <span class="bottom-nav-center-label">İlan Ver</span>
         </a>
