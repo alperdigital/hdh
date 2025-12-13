@@ -241,9 +241,6 @@ if (!$is_logged_in) {
                 <!-- Profile Overview Card -->
                 <div class="profile-card">
                     <div class="profile-header">
-                        <div class="profile-avatar">
-                            <span class="avatar-icon">👤</span>
-                        </div>
                         <div class="profile-name-section">
                             <h2 class="profile-farm-name"><?php echo esc_html($farm_name); ?></h2>
                             <?php if ($hayday_username) : ?>
@@ -324,6 +321,71 @@ if (!$is_logged_in) {
                             <button type="button" class="btn-cancel-edit" id="btn-cancel-edit">❌ İptal</button>
                         </div>
                     </form>
+                </div>
+                
+                <!-- My Listings Section -->
+                <div class="my-listings-section">
+                    <h3 class="my-listings-title">📋 İlanlarım</h3>
+                    <?php
+                    // Get user's listings
+                    $user_listings = new WP_Query(array(
+                        'post_type' => 'hayday_trade',
+                        'author' => $user_id,
+                        'posts_per_page' => 20,
+                        'post_status' => array('publish', 'draft'),
+                        'orderby' => 'date',
+                        'order' => 'DESC'
+                    ));
+                    
+                    if ($user_listings->have_posts()) : ?>
+                        <div class="my-listings-list">
+                            <?php while ($user_listings->have_posts()) : $user_listings->the_post(); 
+                                $listing_id = get_the_ID();
+                                $trade_status = get_post_meta($listing_id, '_hdh_trade_status', true);
+                                $is_active = (get_post_status() === 'publish');
+                                $wanted_item = get_post_meta($listing_id, '_hdh_wanted_item', true);
+                                $wanted_qty = get_post_meta($listing_id, '_hdh_wanted_qty', true);
+                                $wanted_label = function_exists('hdh_get_item_label') ? hdh_get_item_label($wanted_item) : $wanted_item;
+                            ?>
+                                <div class="my-listing-item <?php echo $is_active ? 'listing-active' : 'listing-inactive'; ?>">
+                                    <div class="listing-info">
+                                        <h4 class="listing-title">
+                                            <a href="<?php echo esc_url(get_permalink()); ?>" target="_blank">
+                                                <?php the_title(); ?>
+                                            </a>
+                                        </h4>
+                                        <div class="listing-meta">
+                                            <span class="listing-wanted">İstiyor: <?php echo esc_html($wanted_qty . 'x ' . $wanted_label); ?></span>
+                                            <span class="listing-date">📅 <?php echo get_the_date(); ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="listing-actions">
+                                        <span class="listing-status <?php echo $is_active ? 'status-active' : 'status-inactive'; ?>">
+                                            <?php echo $is_active ? '✅ Aktif' : '⏸️ Pasif'; ?>
+                                        </span>
+                                        <?php if ($is_active) : ?>
+                                            <button 
+                                                class="btn-deactivate-listing" 
+                                                data-listing-id="<?php echo esc_attr($listing_id); ?>"
+                                                title="İlanı pasife al"
+                                            >
+                                                ⏸️ Pasife Al
+                                            </button>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endwhile; ?>
+                        </div>
+                    <?php else : ?>
+                        <div class="no-listings-message">
+                            <p>Henüz ilan oluşturmadınız.</p>
+                            <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-create-listing">
+                                ➕ İlk İlanını Oluştur
+                            </a>
+                        </div>
+                    <?php endif; 
+                    wp_reset_postdata();
+                    ?>
                 </div>
                 
                 <!-- Tasks Panel -->

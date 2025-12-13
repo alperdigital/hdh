@@ -66,19 +66,6 @@ get_header();
                     </div>
                 </div>
                 
-                <!-- İlan Başlığı -->
-                <div class="form-section">
-                    <div class="form-field">
-                        <label for="trade_title">İlan Başlığı:</label>
-                        <input type="text" 
-                               id="trade_title" 
-                               name="trade_title" 
-                               required
-                               placeholder="Örn: 7 Bant arıyorum, 7 Cıvata verebilirim"
-                               class="form-input">
-                    </div>
-                </div>
-                
                 <!-- Submit Button -->
                 <div class="form-actions">
                     <button type="submit" class="btn-submit-trade btn-wooden-sign btn-primary">

@@ -32,6 +32,13 @@ function hdh_theme_setup() {
 }
 add_action('after_setup_theme', 'hdh_theme_setup');
 
+// Hide WordPress admin bar for non-admin users
+add_action('after_setup_theme', function() {
+    if (!current_user_can('administrator')) {
+        show_admin_bar(false);
+    }
+});
+
 // Core includes - Only essential files
 require_once get_template_directory() . '/inc/items-config.php';
 require_once get_template_directory() . '/components/item-card.php';
@@ -41,6 +48,7 @@ require_once get_template_directory() . '/inc/create-trade-handler.php';
 require_once get_template_directory() . '/inc/trade-settings.php';
 require_once get_template_directory() . '/inc/registration-handler.php';
 require_once get_template_directory() . '/inc/trust-system.php';
+require_once get_template_directory() . '/inc/listing-actions-handler.php';
 require_once get_template_directory() . '/inc/widgets.php';
 require_once get_template_directory() . '/inc/social-functions.php';
 require_once get_template_directory() . '/inc/ajax-handlers.php';
@@ -164,6 +172,14 @@ function hdh_enqueue_scripts() {
         wp_localize_script('hdh-lottery-page', 'hdhLottery', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_join_lottery'),
+        ));
+    }
+    
+    // Enqueue profile page script with localized data
+    if (is_page_template('page-profil.php') && is_user_logged_in()) {
+        wp_localize_script('hdh-profile-page', 'hdhProfile', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_listing_actions'),
         ));
     }
 }

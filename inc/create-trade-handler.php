@@ -31,7 +31,6 @@ function hdh_handle_create_trade() {
             'wanted_qty' => isset($_POST['wanted_qty']) ? absint($_POST['wanted_qty']) : 0,
             'offer_item' => isset($_POST['offer_item']) ? $_POST['offer_item'] : array(),
             'offer_qty' => isset($_POST['offer_qty']) ? $_POST['offer_qty'] : array(),
-            'trade_title' => isset($_POST['trade_title']) ? sanitize_text_field($_POST['trade_title']) : '',
         );
         
         // Store in transient using unique identifier
@@ -51,7 +50,6 @@ function hdh_handle_create_trade() {
     // Get form data from POST
     $wanted_item = isset($_POST['wanted_item']) ? sanitize_text_field($_POST['wanted_item']) : '';
     $wanted_qty = isset($_POST['wanted_qty']) ? absint($_POST['wanted_qty']) : 0;
-    $trade_title = isset($_POST['trade_title']) ? sanitize_text_field($_POST['trade_title']) : '';
     $offer_item_data = isset($_POST['offer_item']) ? $_POST['offer_item'] : array();
     $offer_qty_data = isset($_POST['offer_qty']) ? $_POST['offer_qty'] : array();
     
@@ -96,10 +94,15 @@ function hdh_handle_create_trade() {
         }
     }
     
-    if (empty($trade_title)) {
-        wp_redirect(home_url('/?trade_error=no_title'));
-        exit;
+    // Auto-generate trade title from items
+    $wanted_label = isset($items_config[$wanted_item]['label']) ? $items_config[$wanted_item]['label'] : $wanted_item;
+    $offer_labels = array();
+    foreach ($offer_items_data as $offer_item) {
+        $offer_label = isset($items_config[$offer_item['slug']]['label']) ? $items_config[$offer_item['slug']]['label'] : $offer_item['slug'];
+        $offer_labels[] = $offer_item['qty'] . ' ' . $offer_label;
     }
+    $offer_text = implode(', ', $offer_labels);
+    $trade_title = $wanted_qty . ' ' . $wanted_label . ' arıyorum, ' . $offer_text . ' verebilirim';
     
     // Check if admin requires approval (default: auto-publish)
     $require_approval = get_option('hdh_trade_require_approval', false);

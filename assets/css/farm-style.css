@@ -4076,8 +4076,6 @@ footer,
 .btn-open-login:active { transform: scale(0.98); background: var(--farm-green-dark); }
 .profile-card { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
 .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(201, 184, 138, 0.3); }
-.profile-avatar { width: 60px; height: 60px; border-radius: 50%; background: rgba(201, 184, 138, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.avatar-icon { font-size: 32px; }
 .profile-name-section { flex: 1; min-width: 0; }
 .profile-farm-name { font-size: 20px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 4px 0; }
 .profile-hayday-username { font-size: 14px; color: var(--newspaper-text-light); margin: 0; opacity: 0.7; }
@@ -4103,6 +4101,50 @@ footer,
 .btn-save-profile:active { background: var(--farm-green-dark); transform: scale(0.98); }
 .btn-cancel-edit { flex: 1; background: transparent; color: var(--newspaper-text); font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
 .btn-cancel-edit:active { background: rgba(201, 184, 138, 0.1); transform: scale(0.98); }
+
+/* My Listings Section */
+.my-listings-section { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+.my-listings-title { font-size: 20px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 20px 0; }
+.my-listings-list { display: flex; flex-direction: column; gap: 16px; }
+.my-listing-item { background: #FFFFFF; border: 2px solid rgba(201, 184, 138, 0.3); border-radius: 10px; padding: 16px; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: all 0.2s ease; }
+.my-listing-item.listing-inactive { opacity: 0.6; background: rgba(201, 184, 138, 0.05); }
+.listing-info { flex: 1; min-width: 0; }
+.listing-title { font-size: 16px; font-weight: 600; color: var(--newspaper-text); margin: 0 0 8px 0; }
+.listing-title a { color: var(--newspaper-text); text-decoration: none; }
+.listing-title a:hover { color: var(--farm-green); text-decoration: underline; }
+.listing-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--newspaper-text-light); }
+.listing-wanted { font-weight: 600; color: var(--farm-green-dark); }
+.listing-date { opacity: 0.7; }
+.listing-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+.listing-status { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 6px; white-space: nowrap; }
+.listing-status.status-active { background: rgba(76, 175, 80, 0.1); color: var(--farm-green-dark); }
+.listing-status.status-inactive { background: rgba(201, 184, 138, 0.1); color: var(--newspaper-text-light); }
+.btn-deactivate-listing { background: transparent; color: var(--newspaper-text); font-size: 13px; font-weight: 600; padding: 6px 12px; border: 1px solid rgba(201, 184, 138, 0.4); border-radius: 6px; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+.btn-deactivate-listing:hover { background: rgba(201, 184, 138, 0.1); border-color: rgba(201, 184, 138, 0.6); }
+.btn-deactivate-listing:disabled { opacity: 0.5; cursor: not-allowed; }
+.no-listings-message { text-align: center; padding: 40px 20px; color: var(--newspaper-text-light); }
+.no-listings-message p { margin: 0 0 16px 0; font-size: 15px; }
+.btn-create-listing { display: inline-block; background: var(--farm-green); color: #FFFFFF; font-size: 15px; font-weight: 600; padding: 12px 24px; border-radius: 10px; text-decoration: none; transition: all 0.2s ease; }
+.btn-create-listing:hover { background: var(--farm-green-dark); transform: translateY(-2px); }
+
+/* Profile Toast Notifications */
+.profile-toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--newspaper-text); color: #FFFFFF; padding: 14px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; z-index: 10000; opacity: 0; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); max-width: 90%; text-align: center; }
+.profile-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.profile-toast.profile-toast-success { background: var(--farm-green); }
+.profile-toast.profile-toast-error { background: #FF6347; }
+
+/* Profile Stats */
+.profile-stats { display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(201, 184, 138, 0.3); }
+.profile-stat-item { flex: 1; display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(201, 184, 138, 0.08); border-radius: 10px; }
+.stat-icon { font-size: 32px; line-height: 1; }
+.stat-content { flex: 1; }
+.stat-value { font-size: 24px; font-weight: 700; color: var(--newspaper-text); line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 12px; color: var(--newspaper-text-light); opacity: 0.7; }
+
+/* Profile Actions */
+.profile-actions { display: flex; gap: 12px; }
+.btn-logout { flex: 1; background: transparent; color: var(--newspaper-text); font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 10px; text-decoration: none; display: inline-block; text-align: center; transition: all 0.2s ease; }
+.btn-logout:hover { background: rgba(201, 184, 138, 0.1); border-color: rgba(201, 184, 138, 0.6); color: var(--newspaper-text); }
 
 /* ============================================
    DECORATIONS PAGE (STEP 6)
@@ -4209,8 +4251,6 @@ footer,
     .profile-title, .decorations-page-title, .lottery-page-title { font-size: 24px; }
     .profile-card, .tasks-panel, .lottery-card { padding: 20px; }
     .profile-header { gap: 12px; }
-    .profile-avatar { width: 50px; height: 50px; }
-    .avatar-icon { font-size: 28px; }
     .profile-farm-name { font-size: 18px; }
     .trust-star-large { font-size: 40px; }
     .jeton-icon, .jeton-icon-large { font-size: 36px; }
@@ -4223,6 +4263,11 @@ footer,
     .countdown-value { font-size: 32px; }
     .profile-edit-form .form-actions, .offer-actions { flex-direction: column; }
     .btn-save-profile, .btn-cancel-edit, .btn-accept-offer, .btn-reject-offer { width: 100%; }
+    .my-listings-section { padding: 20px; }
+    .my-listing-item { flex-direction: column; align-items: flex-start; padding: 14px; }
+    .listing-actions { flex-direction: row; width: 100%; justify-content: space-between; align-items: center; }
+    .profile-stats { flex-direction: column; }
+    .profile-actions { flex-direction: column; }
 }
 
 /* ============================================
