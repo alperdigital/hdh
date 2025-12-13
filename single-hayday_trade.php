@@ -1,466 +1,381 @@
 <?php
 /**
- * Single Trade Offer Template
- * HDH: Detailed view for a single trade offer
+ * Single Trade Offer Template - Modern Design
+ * HDH: Detailed view for a single trade offer with messaging
  */
 
 get_header();
-?>
 
-<main id="primary" class="site-main">
-    <div class="container">
-        <?php 
-        // Debug: Check if we have posts
-        if (!have_posts()) : ?>
-            <div class="no-trade-found">
+if (!have_posts()) : ?>
+    <main class="single-trade-main">
+        <div class="container">
+            <div class="trade-not-found">
                 <h1>İlan Bulunamadı</h1>
                 <p>Bu ilan mevcut değil veya silinmiş olabilir.</p>
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-back-to-list">← İlanlara Dön</a>
+                <a href="<?php echo esc_url(home_url('/ara')); ?>" class="btn-back">← İlanlara Dön</a>
             </div>
-        <?php else :
-            while (have_posts()) : the_post(); 
-                // Check if functions exist
-                if (!function_exists('hdh_get_trade_data')) {
-                    ?>
-                    <div class="error-message">
-                        <h2>Hata: Fonksiyon Bulunamadı</h2>
-                        <p>hdh_get_trade_data fonksiyonu yüklenmemiş. Lütfen tema dosyalarını kontrol edin.</p>
-                        <p>Post ID: <?php echo get_the_ID(); ?></p>
-                        <p>Post Type: <?php echo get_post_type(); ?></p>
-                    </div>
-                    <?php
-                    break;
-                }
-                
-                $trade_data = hdh_get_trade_data();
-                
-                // Validate trade data
-                if (empty($trade_data) || empty($trade_data['wanted_item'])) {
-                    ?>
-                    <article id="trade-<?php the_ID(); ?>" <?php post_class('single-trade-offer'); ?>>
-                        <div class="trade-back-button">
-                            <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-back-link">← İlanlara Dön</a>
-                        </div>
-                        <header class="trade-header-single">
-                            <h1 class="trade-title-single"><?php the_title(); ?></h1>
-                        </header>
-                        <div class="error-message">
-                            <h2>Veri Eksik</h2>
-                            <p>Bu ilan için veri bulunamadı. İlan eksik bilgiler içeriyor olabilir.</p>
-                            <p><strong>Post ID:</strong> <?php echo get_the_ID(); ?></p>
-                            <p><strong>Wanted Item:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_hdh_wanted_item', true) ?: 'Boş'); ?></p>
-                            <p><strong>Wanted Qty:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_hdh_wanted_qty', true) ?: 'Boş'); ?></p>
-                        </div>
-                    </article>
-                    <?php
-                    break;
-                }
-                
-                $author_id = get_post_field('post_author', get_the_ID());
-                $author_name = get_the_author_meta('display_name', $author_id) ?: 'Bilinmeyen Kullanıcı';
-                
-                // Trust score
-                $trust_plus = (int) get_user_meta($author_id, 'hayday_trust_plus', true);
-                $trust_minus = (int) get_user_meta($author_id, 'hayday_trust_minus', true);
-                
-                // Get completed trades count
-                $completed_trades_count = 0;
-                $completed_trades_query = new WP_Query(array(
-                    'post_type' => 'hayday_trade',
-                    'author' => $author_id,
-                    'post_status' => 'publish',
-                    'meta_query' => array(
-                        array(
-                            'key' => '_hdh_trade_status',
-                            'value' => 'completed',
-                            'compare' => '='
-                        )
-                    ),
-                    'posts_per_page' => -1,
-                    'fields' => 'ids'
-                ));
-                if ($completed_trades_query->have_posts()) {
-                    $completed_trades_count = $completed_trades_query->found_posts;
+        </div>
+    </main>
+<?php else :
+    while (have_posts()) : the_post();
+        $post_id = get_the_ID();
+        $trade_data = hdh_get_trade_data();
+        $author_id = get_post_field('post_author', $post_id);
+        $current_user_id = get_current_user_id();
+        $is_owner = ($current_user_id == $author_id);
+        
+        // Get trade status and accepted offer
+        $trade_status = get_post_meta($post_id, '_hdh_trade_status', true) ?: 'open';
+        $accepted_offer_id = get_post_meta($post_id, '_hdh_accepted_offer_id', true);
+        $accepted_offerer_id = get_post_meta($post_id, '_hdh_accepted_offerer_id', true);
+        
+        // Check if current user is the accepted offerer
+        $is_accepted_offerer = ($current_user_id == $accepted_offerer_id);
+        
+        // Get author info
+        $author_name = get_the_author_meta('display_name', $author_id);
+        $author_farm_number = get_user_meta($author_id, 'hayday_farm_number', true);
+        $completed_count = function_exists('hdh_get_completed_gift_count') ? hdh_get_completed_gift_count($author_id) : 0;
+        
+        // Filter offer items
+        $offer_items = array_filter($trade_data['offer_items'], function($item) {
+            return !empty($item['item']) && !empty($item['qty']);
+        });
+        
+        // Get all offers for this listing (if owner)
+        $offers = array();
+        if ($is_owner && $trade_status !== 'completed') {
+            $offers_query = new WP_Query(array(
+                'post_type' => 'hayday_offer',
+                'posts_per_page' => -1,
+                'meta_query' => array(
+                    array(
+                        'key' => '_hdh_listing_id',
+                        'value' => $post_id,
+                        'compare' => '='
+                    )
+                ),
+                'orderby' => 'date',
+                'order' => 'DESC'
+            ));
+            
+            if ($offers_query->have_posts()) {
+                while ($offers_query->have_posts()) {
+                    $offers_query->the_post();
+                    $offer_id = get_the_ID();
+                    $offers[] = array(
+                        'id' => $offer_id,
+                        'offerer_id' => get_post_field('post_author', $offer_id),
+                        'offerer_name' => get_the_author_meta('display_name', get_post_field('post_author', $offer_id)),
+                        'status' => get_post_meta($offer_id, '_hdh_offer_status', true) ?: 'pending',
+                        'wanted_qty' => get_post_meta($offer_id, '_hdh_offer_wanted_qty', true),
+                        'offer_items' => get_post_meta($offer_id, '_hdh_offer_items', true),
+                        'date' => get_the_date('d M Y, H:i')
+                    );
                 }
                 wp_reset_postdata();
-                
-                // Calculate average stars (based on trust_plus and completed trades)
-                // If no completed trades, show 0 stars
-                $average_stars = 0;
-                if ($completed_trades_count > 0) {
-                    // Calculate average: trust_plus represents total positive ratings
-                    // Average = (trust_plus / completed_trades_count) normalized to 5 stars
-                    // If trust_plus equals completed_trades_count, that means all trades got +1 (average 5 stars)
-                    // If trust_plus is less, calculate proportion
-                    $average_rating = $trust_plus / $completed_trades_count;
-                    $average_stars = min(5, max(0, round($average_rating * 5, 1)));
-                }
-                
-                // Status
-                $status_class = $trade_data['trade_status'] === 'completed' ? 'status-completed' : 'status-open';
-                $status_text = $trade_data['trade_status'] === 'completed' ? 'Tamamlandı ✅' : 'Açık';
-                
-                // Filter out empty offer items
-                $offer_items = array_filter($trade_data['offer_items'], function($item) {
-                    return !empty($item['item']) && !empty($item['qty']);
-                });
+            }
+        }
         ?>
         
-        <article id="trade-<?php the_ID(); ?>" <?php post_class('single-trade-offer'); ?>>
-            <!-- Back Button -->
-            <div class="trade-back-button">
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-back-link">
+        <main class="single-trade-main">
+            <div class="container">
+                <!-- Back Button -->
+                <a href="<?php echo esc_url(home_url('/ara')); ?>" class="btn-back-single">
                     ← İlanlara Dön
                 </a>
-            </div>
-            
-            <!-- Trade Header -->
-            <header class="trade-header-single">
-                <h1 class="trade-title-single"><?php the_title(); ?></h1>
                 
-                <!-- Author Info with Blue Star Trust Indicator -->
-                <div class="trade-author-info-header-newspaper">
-                    <div class="author-info-newspaper">
-                        <div class="author-star-section">
-                            <span class="trust-star-large">
-                                <?php if ($completed_trades_count > 0) : ?>
-                                    ★<?php echo esc_html($completed_trades_count); ?>
-                                <?php else : ?>
-                                    ★
-                                <?php endif; ?>
-                            </span>
-                            <div class="author-name-newspaper"><?php echo esc_html($author_name); ?></div>
-                        </div>
-                        <div class="star-explanation">
-                            <?php if ($completed_trades_count > 0) : ?>
-                                <p class="star-explanation-text">
-                                    Bu kullanıcı <?php echo esc_html($completed_trades_count); ?> başarılı hediyeleşme yapmıştır.
-                                </p>
+                <!-- Trade Card -->
+                <div class="single-trade-card">
+                    <!-- Header -->
+                    <div class="single-trade-header">
+                        <h1 class="single-trade-title"><?php the_title(); ?></h1>
+                        <div class="single-trade-status">
+                            <?php if ($trade_status === 'completed') : ?>
+                                <span class="status-badge status-completed">✅ Tamamlandı</span>
+                            <?php elseif ($trade_status === 'accepted') : ?>
+                                <span class="status-badge status-accepted">🤝 Kabul Edildi</span>
                             <?php else : ?>
-                                <p class="star-explanation-text">
-                                    Bu kullanıcı henüz hediyeleşme yapmamış olabilir.
-                                </p>
+                                <span class="status-badge status-open">🟢 Açık</span>
                             <?php endif; ?>
                         </div>
                     </div>
-                </div>
-                
-                <div class="trade-meta-header-single">
-                    <span class="trade-status-badge <?php echo esc_attr($status_class); ?>">
-                        <?php echo esc_html($status_text); ?>
-                    </span>
-                </div>
-            </header>
-            
-            <?php if ($trade_data['trade_status'] === 'completed') : ?>
-                <div class="trade-completed-banner">
-                    <p>✅ Bu hediyeleşme tamamlandı</p>
-                </div>
-            <?php endif; ?>
-            
-            <!-- Trade Details with Gift Box Design -->
-            <div class="trade-details-single">
-                <!-- İSTEDİĞİ HEDİYE - Green Gift Box -->
-                <div class="trade-wanted-wrapper-single">
-                    <h2 class="trade-section-label trade-wanted-label">
-                        <span class="label-icon">🤍</span>
-                        Hediye İstiyor:
-                    </h2>
-                    <div class="gift-box gift-box-wanted gift-box-single">
-                        <div class="gift-box-content">
-                            <?php 
-                            $wanted_slug = $trade_data['wanted_item'];
-                            $wanted_image = hdh_get_item_image($wanted_slug);
-                            $wanted_label = hdh_get_item_label($wanted_slug);
-                            if ($wanted_image) : ?>
-                                <div class="trade-item-with-image">
-                                    <img src="<?php echo esc_url($wanted_image); ?>" 
-                                         alt="<?php echo esc_attr($wanted_label); ?>" 
-                                         class="trade-item-icon"
-                                         loading="lazy"
-                                         decoding="async"
-                                         width="80"
-                                         height="80">
-                                    <div class="trade-item-info">
-                                        <span class="item-quantity"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
-                                        <span class="item-name"><?php echo esc_html($wanted_label); ?></span>
+                    
+                    <!-- Author Info -->
+                    <div class="single-trade-author">
+                        <div class="author-info">
+                            <div class="author-star">
+                                ★<?php echo esc_html($completed_count); ?>
+                            </div>
+                            <div class="author-details">
+                                <div class="author-name"><?php echo esc_html($author_name); ?></div>
+                                <div class="author-stats">
+                                    <?php echo esc_html($completed_count); ?> başarılı hediyeleşme
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <?php if (($is_owner || $is_accepted_offerer) && $trade_status === 'accepted' && $author_farm_number) : ?>
+                            <div class="farm-number-display">
+                                <span class="farm-label">🏡 Çiftlik No:</span>
+                                <span class="farm-number"><?php echo esc_html($author_farm_number); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <!-- Trade Items -->
+                    <div class="single-trade-items">
+                        <!-- Wanted Item -->
+                        <div class="trade-item-section">
+                            <div class="trade-item-header">
+                                <span class="trade-item-icon">🤍</span>
+                                <span class="trade-item-label">Hediye İstiyor</span>
+                            </div>
+                            <div class="trade-item-box wanted-box">
+                                <?php 
+                                $wanted_slug = $trade_data['wanted_item'];
+                                $wanted_image = hdh_get_item_image($wanted_slug);
+                                $wanted_label = hdh_get_item_label($wanted_slug);
+                                ?>
+                                <img src="<?php echo esc_url($wanted_image); ?>" 
+                                     alt="<?php echo esc_attr($wanted_label); ?>" 
+                                     class="item-image">
+                                <div class="item-info">
+                                    <div class="item-qty"><?php echo esc_html($trade_data['wanted_qty']); ?>x</div>
+                                    <div class="item-name"><?php echo esc_html($wanted_label); ?></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Offer Items -->
+                        <div class="trade-item-section">
+                            <div class="trade-item-header">
+                                <span class="trade-item-icon">🎁</span>
+                                <span class="trade-item-label">Hediye Ediyor</span>
+                            </div>
+                            <div class="trade-item-box offer-box">
+                                <?php foreach ($offer_items as $offer) : 
+                                    $offer_slug = $offer['item'];
+                                    $offer_image = hdh_get_item_image($offer_slug);
+                                    $offer_label = hdh_get_item_label($offer_slug);
+                                ?>
+                                    <div class="offer-item">
+                                        <img src="<?php echo esc_url($offer_image); ?>" 
+                                             alt="<?php echo esc_attr($offer_label); ?>" 
+                                             class="offer-item-image">
+                                        <div class="offer-item-info">
+                                            <div class="offer-item-qty"><?php echo esc_html($offer['qty']); ?>x</div>
+                                            <div class="offer-item-name"><?php echo esc_html($offer_label); ?></div>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php else : ?>
-                                <div class="trade-item-info">
-                                    <span class="item-quantity"><?php echo esc_html($trade_data['wanted_qty']); ?>x</span>
-                                    <span class="item-name"><?php echo esc_html($wanted_label ?: $trade_data['wanted_item']); ?></span>
-                                </div>
-                            <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- VEREBİLECEKLERİ HEDİYE - Red Gift Box -->
-                <?php if (!empty($offer_items)) : ?>
-                    <div class="trade-offer-wrapper-single">
-                        <h2 class="trade-section-label trade-offer-label">
-                            <span class="label-icon">🎁</span>
-                            Hediye Ediyor:
-                        </h2>
-                        <div class="gift-box gift-box-offer gift-box-single">
-                            <div class="gift-box-content">
-                                <div class="trade-offer-items">
-                                    <?php foreach ($offer_items as $offer) : 
-                                        $offer_slug = $offer['item'];
-                                        $offer_image = hdh_get_item_image($offer_slug);
-                                        $offer_label = hdh_get_item_label($offer_slug);
-                                    ?>
-                                        <div class="trade-offer-item">
-                                            <?php if ($offer_image) : ?>
-                                                <img src="<?php echo esc_url($offer_image); ?>" 
-                                                     alt="<?php echo esc_attr($offer_label); ?>" 
-                                                     class="trade-offer-item-icon"
-                                                     loading="lazy"
-                                                     decoding="async"
-                                                     width="50"
-                                                     height="50">
-                                            <?php endif; ?>
-                                            <div class="trade-offer-item-info">
-                                                <span class="item-quantity"><?php echo esc_html($offer['qty']); ?>x</span>
-                                                <span class="item-name"><?php echo esc_html($offer_label ?: $offer['item']); ?></span>
+                    
+                    <?php if ($is_owner) : ?>
+                        <!-- Owner View: Manage Offers -->
+                        <?php if ($trade_status === 'open' && !empty($offers)) : ?>
+                            <div class="offers-section">
+                                <h3 class="section-title">📬 Gelen Teklifler</h3>
+                                <div class="offers-list">
+                                    <?php foreach ($offers as $offer) : ?>
+                                        <div class="offer-card offer-status-<?php echo esc_attr($offer['status']); ?>">
+                                            <div class="offer-header">
+                                                <div class="offer-user">
+                                                    <span class="offer-user-name"><?php echo esc_html($offer['offerer_name']); ?></span>
+                                                    <span class="offer-date"><?php echo esc_html($offer['date']); ?></span>
+                                                </div>
+                                                <div class="offer-status-badge">
+                                                    <?php if ($offer['status'] === 'accepted') : ?>
+                                                        ✅ Kabul Edildi
+                                                    <?php elseif ($offer['status'] === 'rejected') : ?>
+                                                        ❌ Reddedildi
+                                                    <?php else : ?>
+                                                        ⏳ Bekliyor
+                                                    <?php endif; ?>
+                                                </div>
                                             </div>
+                                            <div class="offer-items-display">
+                                                <div class="offer-gives">
+                                                    <span class="offer-label">Verecek:</span>
+                                                    <span class="offer-value"><?php echo esc_html($offer['wanted_qty']); ?>x <?php echo esc_html($wanted_label); ?></span>
+                                                </div>
+                                                <div class="offer-wants">
+                                                    <span class="offer-label">İsteyecek:</span>
+                                                    <div class="offer-wants-list">
+                                                        <?php if (!empty($offer['offer_items'])) : 
+                                                            foreach ($offer['offer_items'] as $item) : 
+                                                                $item_label = hdh_get_item_label($item['slug']);
+                                                        ?>
+                                                            <span class="offer-want-item"><?php echo esc_html($item['qty']); ?>x <?php echo esc_html($item_label); ?></span>
+                                                        <?php endforeach; endif; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php if ($offer['status'] === 'pending') : ?>
+                                                <div class="offer-actions">
+                                                    <button class="btn-accept-offer" data-offer-id="<?php echo esc_attr($offer['id']); ?>">
+                                                        ✅ Kabul Et
+                                                    </button>
+                                                    <button class="btn-reject-offer" data-offer-id="<?php echo esc_attr($offer['id']); ?>">
+                                                        ❌ Reddet
+                                                    </button>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-            
-            <!-- Explanation Text -->
-            <div class="trade-explanation-single">
-                <div class="explanation-box">
-                    <h3 class="explanation-title">💡 Nasıl Çalışır?</h3>
-                    <div class="explanation-content">
-                        <p><strong>Yeşil hediye paketi:</strong> İlan sahibinin istediği hediyedir. Bu hediyeyi siz vereceksiniz.</p>
-                        <p><strong>Kırmızı hediye paketi:</strong> İlan sahibinin verebileceği hediyelerdir. Bunlardan birini siz alacaksınız.</p>
-                        <p class="example-text"><strong>Örnek:</strong> İlan sahibi "7 Bant istiyorum, 7 Cıvata verebilirim" diyor. Siz 7 Bant verip (yeşil paket), 7 Cıvata alabilirsiniz (kırmızı paket).</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Offer Flow Section -->
-            <?php
-            $current_user_id = get_current_user_id();
-            $is_listing_owner = $current_user_id == $author_id;
-            $listing_status = get_post_meta(get_the_ID(), '_hdh_trade_status', true);
-            $accepted_offerer_id = get_post_meta(get_the_ID(), '_hdh_accepted_offerer_id', true);
-            $author_confirmed = get_post_meta(get_the_ID(), '_hdh_author_confirmed', true);
-            $offerer_confirmed = get_post_meta(get_the_ID(), '_hdh_offerer_confirmed', true);
-            
-            // Get all offers for this listing
-            $offers = function_exists('hdh_get_listing_offers') ? hdh_get_listing_offers(get_the_ID()) : array();
-            ?>
-            
-            <?php if (is_user_logged_in() && $trade_data['trade_status'] !== 'completed') : ?>
-                
-                <!-- If user is listing owner, show offers -->
-                <?php if ($is_listing_owner) : ?>
-                    <div class="offers-section">
-                        <h2 class="offers-section-title">📬 Gelen Teklifler</h2>
-                        <?php if (!empty($offers)) : ?>
-                            <div class="offers-list">
-                                <?php foreach ($offers as $index => $offer) : 
-                                    $offerer_id = $offer['offerer_id'];
-                                    $offerer_name = get_the_author_meta('display_name', $offerer_id) ?: 'Bilinmeyen';
-                                    $offerer_completed_count = function_exists('hdh_get_completed_gift_count') ? hdh_get_completed_gift_count($offerer_id) : 0;
-                                    $offer_status = isset($offer['status']) ? $offer['status'] : 'pending';
-                                    $offer_date = isset($offer['created_at']) ? $offer['created_at'] : '';
-                                ?>
-                                    <div class="offer-card offer-status-<?php echo esc_attr($offer_status); ?>">
-                                        <div class="offer-header">
-                                            <div class="offer-user-info">
-                                                <span class="offer-user-avatar">👤</span>
-                                                <div class="offer-user-details">
-                                                    <span class="offer-user-name"><?php echo esc_html($offerer_name); ?></span>
-                                                    <span class="offer-user-trust">
-                                                        <?php if ($offerer_completed_count > 0) : ?>
-                                                            ★<?php echo esc_html($offerer_completed_count); ?> başarılı hediyeleşme
-                                                        <?php else : ?>
-                                                            ★ Yeni kullanıcı
-                                                        <?php endif; ?>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <span class="offer-status-badge offer-badge-<?php echo esc_attr($offer_status); ?>">
-                                                <?php 
-                                                if ($offer_status === 'accepted') echo '✅ Kabul Edildi';
-                                                elseif ($offer_status === 'rejected') echo '❌ Reddedildi';
-                                                else echo '⏳ Bekliyor';
-                                                ?>
-                                            </span>
-                                        </div>
-                                        <?php if ($offer_date) : ?>
-                                            <div class="offer-date">
-                                                📅 <?php echo esc_html(human_time_diff(strtotime($offer_date), current_time('timestamp'))); ?> önce
-                                            </div>
-                                        <?php endif; ?>
-                                        
-                                        <?php if ($offer_status === 'pending' && $listing_status === 'open') : ?>
-                                            <div class="offer-actions">
-                                                <button class="btn-accept-offer" data-listing-id="<?php echo esc_attr(get_the_ID()); ?>" data-offer-index="<?php echo esc_attr($index); ?>">
-                                                    ✅ Kabul Et
-                                                </button>
-                                                <button class="btn-reject-offer" data-listing-id="<?php echo esc_attr(get_the_ID()); ?>" data-offer-index="<?php echo esc_attr($index); ?>">
-                                                    ❌ Reddet
-                                                </button>
-                                            </div>
-                                        <?php endif; ?>
-                                        
-                                        <?php if ($offer_status === 'accepted' && $listing_status === 'in_progress' && $accepted_offerer_id == $offerer_id) : ?>
-                                            <div class="exchange-completion-section">
-                                                <h3 class="completion-title">🎁 Hediyeleşmeyi Tamamla</h3>
-                                                <p class="completion-explanation">
-                                                    Hediyeleşme gerçekleştikten sonra, her iki tarafın da onaylaması gerekiyor.
-                                                </p>
-                                                <div class="completion-status">
-                                                    <div class="completion-party">
-                                                        <span class="completion-icon"><?php echo $author_confirmed === '1' ? '✅' : '⏳'; ?></span>
-                                                        <span class="completion-label">
-                                                            Sen <?php echo $author_confirmed === '1' ? '(Onayladın)' : '(Onay Bekleniyor)'; ?>
-                                                        </span>
-                                                    </div>
-                                                    <div class="completion-party">
-                                                        <span class="completion-icon"><?php echo $offerer_confirmed === '1' ? '✅' : '⏳'; ?></span>
-                                                        <span class="completion-label">
-                                                            <?php echo esc_html($offerer_name); ?> <?php echo $offerer_confirmed === '1' ? '(Onayladı)' : '(Onay Bekleniyor)'; ?>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <?php if ($author_confirmed !== '1') : ?>
-                                                    <button class="btn-confirm-exchange" data-listing-id="<?php echo esc_attr(get_the_ID()); ?>">
-                                                        ✅ Hediyeleşmeyi Onayla
-                                                    </button>
-                                                <?php else : ?>
-                                                    <p class="waiting-confirmation">⏳ Diğer tarafın onayını bekliyorsunuz...</p>
-                                                <?php endif; ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php else : ?>
+                        <?php elseif ($trade_status === 'open') : ?>
                             <div class="no-offers-message">
-                                <p>Henüz teklif gelmedi. İlanınız aktif, teklifler geldiğinde burada görünecek.</p>
+                                <p>Henüz teklif gelmedi. Teklif geldiğinde burada görünecek.</p>
                             </div>
                         <?php endif; ?>
-                    </div>
-                
-                <!-- If user is not listing owner and listing is open, show offer button -->
-                <?php elseif ($listing_status === 'open') : ?>
-                    <?php
-                    // Check if user already made an offer
-                    $user_already_offered = false;
-                    foreach ($offers as $offer) {
-                        if (isset($offer['offerer_id']) && $offer['offerer_id'] == $current_user_id) {
-                            $user_already_offered = true;
-                            break;
-                        }
-                    }
-                    ?>
-                    
-                    <div class="make-offer-section">
-                        <h2 class="make-offer-title">💬 Teklif Yap</h2>
-                        <?php if ($user_already_offered) : ?>
-                            <div class="offer-already-made">
-                                <p>✅ Bu ilana zaten teklif yaptınız. İlan sahibinin yanıtını bekliyorsunuz.</p>
-                            </div>
-                        <?php else : ?>
-                            <div class="offer-explanation">
-                                <p><strong>Nasıl çalışır?</strong></p>
-                                <p>1. Teklif yap butonuna tıklayın</p>
-                                <p>2. İlan sahibi teklifinizi değerlendirecek</p>
-                                <p>3. Kabul edilirse, hediyeleşme detayları için yorumlar bölümünden iletişime geçin</p>
-                            </div>
-                            <button class="btn-make-offer" data-listing-id="<?php echo esc_attr(get_the_ID()); ?>">
-                                💬 Teklif Yap
-                            </button>
-                        <?php endif; ?>
-                    </div>
-                
-                <!-- If user is the accepted offerer and exchange is in progress -->
-                <?php elseif ($listing_status === 'in_progress' && $accepted_offerer_id == $current_user_id) : ?>
-                    <div class="exchange-completion-section">
-                        <h2 class="completion-title">🎁 Hediyeleşmeyi Tamamla</h2>
-                        <p class="completion-explanation">
-                            Teklifiniz kabul edildi! Hediyeleşme gerçekleştikten sonra, her iki tarafın da onaylaması gerekiyor.
-                        </p>
-                        <div class="completion-status">
-                            <div class="completion-party">
-                                <span class="completion-icon"><?php echo $author_confirmed === '1' ? '✅' : '⏳'; ?></span>
-                                <span class="completion-label">
-                                    <?php echo esc_html($author_name); ?> <?php echo $author_confirmed === '1' ? '(Onayladı)' : '(Onay Bekleniyor)'; ?>
-                                </span>
-                            </div>
-                            <div class="completion-party">
-                                <span class="completion-icon"><?php echo $offerer_confirmed === '1' ? '✅' : '⏳'; ?></span>
-                                <span class="completion-label">
-                                    Sen <?php echo $offerer_confirmed === '1' ? '(Onayladın)' : '(Onay Bekleniyor)'; ?>
-                                </span>
-                            </div>
+                        
+                    <?php elseif (is_user_logged_in() && $trade_status === 'open') : ?>
+                        <!-- Non-owner View: Make Offer -->
+                        <div class="make-offer-section">
+                            <h3 class="section-title">💬 Teklif Yap</h3>
+                            <form id="make-offer-form" class="offer-form">
+                                <input type="hidden" name="listing_id" value="<?php echo esc_attr($post_id); ?>">
+                                
+                                <div class="offer-form-group">
+                                    <label class="offer-form-label">
+                                        <span class="label-icon">🤍</span>
+                                        Vereceğiniz: <?php echo esc_html($wanted_label); ?>
+                                    </label>
+                                    <div class="quantity-control">
+                                        <button type="button" class="qty-btn qty-minus" data-target="offer_wanted_qty">−</button>
+                                        <input type="number" 
+                                               name="offer_wanted_qty" 
+                                               id="offer_wanted_qty" 
+                                               value="<?php echo esc_attr($trade_data['wanted_qty']); ?>" 
+                                               min="1" 
+                                               max="999" 
+                                               class="qty-input">
+                                        <button type="button" class="qty-btn qty-plus" data-target="offer_wanted_qty">+</button>
+                                    </div>
+                                    <small class="form-help">İlan sahibi <?php echo esc_html($trade_data['wanted_qty']); ?>x istiyor, siz farklı miktar teklif edebilirsiniz.</small>
+                                </div>
+                                
+                                <div class="offer-form-group">
+                                    <label class="offer-form-label">
+                                        <span class="label-icon">🎁</span>
+                                        Almak İstediğiniz Hediyeler
+                                    </label>
+                                    <div class="offer-items-selection">
+                                        <?php foreach ($offer_items as $offer) : 
+                                            $offer_slug = $offer['item'];
+                                            $offer_image = hdh_get_item_image($offer_slug);
+                                            $offer_label = hdh_get_item_label($offer_slug);
+                                        ?>
+                                            <div class="offer-item-select">
+                                                <label class="offer-item-checkbox">
+                                                    <input type="checkbox" 
+                                                           name="offer_items[]" 
+                                                           value="<?php echo esc_attr($offer_slug); ?>" 
+                                                           class="offer-item-check"
+                                                           data-default-qty="<?php echo esc_attr($offer['qty']); ?>">
+                                                    <img src="<?php echo esc_url($offer_image); ?>" 
+                                                         alt="<?php echo esc_attr($offer_label); ?>" 
+                                                         class="offer-select-image">
+                                                    <span class="offer-select-name"><?php echo esc_html($offer_label); ?></span>
+                                                </label>
+                                                <div class="offer-qty-control" style="display: none;">
+                                                    <button type="button" class="qty-btn-small qty-minus-small" data-target="offer_qty_<?php echo esc_attr($offer_slug); ?>">−</button>
+                                                    <input type="number" 
+                                                           name="offer_qty[<?php echo esc_attr($offer_slug); ?>]" 
+                                                           id="offer_qty_<?php echo esc_attr($offer_slug); ?>" 
+                                                           value="<?php echo esc_attr($offer['qty']); ?>" 
+                                                           min="1" 
+                                                           max="999" 
+                                                           class="qty-input-small">
+                                                    <button type="button" class="qty-btn-small qty-plus-small" data-target="offer_qty_<?php echo esc_attr($offer_slug); ?>">+</button>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <small class="form-help">En az 1 hediye seçmelisiniz. Miktarları değiştirebilirsiniz.</small>
+                                </div>
+                                
+                                <button type="submit" class="btn-submit-offer">
+                                    📤 Teklif Gönder
+                                </button>
+                            </form>
                         </div>
-                        <?php if ($offerer_confirmed !== '1') : ?>
-                            <button class="btn-confirm-exchange" data-listing-id="<?php echo esc_attr(get_the_ID()); ?>">
-                                ✅ Hediyeleşmeyi Onayla
-                            </button>
-                        <?php else : ?>
-                            <p class="waiting-confirmation">⏳ İlan sahibinin onayını bekliyorsunuz...</p>
+                        
+                    <?php elseif (!is_user_logged_in()) : ?>
+                        <div class="login-required-message">
+                            <p>Teklif yapmak için giriş yapmalısınız.</p>
+                            <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-login">Giriş Yap</a>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <!-- Messaging Section (Only if offer accepted) -->
+                    <?php if ($trade_status === 'accepted' && ($is_owner || $is_accepted_offerer)) : ?>
+                        <div class="messaging-section">
+                            <h3 class="section-title">💬 Mesajlaşma</h3>
+                            <div class="messaging-info">
+                                <p>✅ Hediyeleşme kabul edildi! Artık mesajlaşabilirsiniz.</p>
+                                <?php if ($is_accepted_offerer && $author_farm_number) : ?>
+                                    <p class="farm-reminder">İlan sahibinin çiftlik numarası: <strong><?php echo esc_html($author_farm_number); ?></strong></p>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <div id="messages-container" class="messages-container">
+                                <!-- Messages will be loaded here via AJAX -->
+                                <div class="loading-messages">Mesajlar yükleniyor...</div>
+                            </div>
+                            
+                            <form id="send-message-form" class="message-form">
+                                <input type="hidden" name="listing_id" value="<?php echo esc_attr($post_id); ?>">
+                                <input type="hidden" name="offer_id" value="<?php echo esc_attr($accepted_offer_id); ?>">
+                                <div class="message-input-group">
+                                    <textarea name="message" 
+                                              id="message-input" 
+                                              placeholder="Mesajınızı yazın..." 
+                                              rows="3" 
+                                              required
+                                              class="message-textarea"></textarea>
+                                    <button type="submit" class="btn-send-message">📤 Gönder</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Complete Exchange Button -->
+                        <?php 
+                        $owner_confirmed = get_post_meta($post_id, '_hdh_owner_confirmed', true);
+                        $offerer_confirmed = get_post_meta($post_id, '_hdh_offerer_confirmed', true);
+                        ?>
+                        <?php if ($trade_status !== 'completed') : ?>
+                            <div class="complete-exchange-section">
+                                <h3 class="section-title">✅ Hediyeleşmeyi Tamamla</h3>
+                                <?php if ($is_owner && !$owner_confirmed) : ?>
+                                    <button id="btn-confirm-exchange" class="btn-confirm-exchange">
+                                        Hediyeleşmeyi Tamamladım
+                                    </button>
+                                    <p class="confirm-help">Hediyeleşme tamamlandıysa onaylayın. Her iki taraf da onayladığında ilan kapanacak.</p>
+                                <?php elseif ($is_owner && $owner_confirmed) : ?>
+                                    <p class="confirmed-message">✅ Siz onayladınız. Diğer tarafın onayı bekleniyor...</p>
+                                <?php elseif ($is_accepted_offerer && !$offerer_confirmed) : ?>
+                                    <button id="btn-confirm-exchange" class="btn-confirm-exchange">
+                                        Hediyeleşmeyi Tamamladım
+                                    </button>
+                                    <p class="confirm-help">Hediyeleşme tamamlandıysa onaylayın. Her iki taraf da onayladığında ilan kapanacak.</p>
+                                <?php elseif ($is_accepted_offerer && $offerer_confirmed) : ?>
+                                    <p class="confirmed-message">✅ Siz onayladınız. Diğer tarafın onayı bekleniyor...</p>
+                                <?php endif; ?>
+                            </div>
                         <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-                
-            <?php elseif (!is_user_logged_in() && $trade_data['trade_status'] !== 'completed') : ?>
-                <div class="login-prompt-section">
-                    <h2 class="login-prompt-title">💬 Teklif Yapmak İster misiniz?</h2>
-                    <p class="login-prompt-text">Teklif yapmak için giriş yapmanız gerekiyor.</p>
-                    <button class="btn-open-login" onclick="document.getElementById('hdh-registration-modal').style.display='block';">
-                        Giriş Yap / Üye Ol
-                    </button>
+                    <?php endif; ?>
                 </div>
-                <?php
-                add_action('wp_footer', 'hdh_render_registration_modal', 999);
-                add_action('wp_enqueue_scripts', 'hdh_enqueue_registration_modal_styles', 999);
-                ?>
-            <?php endif; ?>
-            
-            <!-- Action Buttons -->
-            <div class="trade-actions-single">
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-back-to-list btn-wooden-sign">
-                    ← İlanlara Dön
-                </a>
             </div>
-            
-            <!-- Comments Section: Teklifler ve Yorumlar -->
-            <div class="trade-comments-section">
-                <h2 class="comments-title">Teklifler ve Yorumlar</h2>
-                <?php
-                // Rename comment form labels
-                add_filter('comment_form_defaults', function($defaults) {
-                    $defaults['title_reply'] = 'Teklif yap / Mesaj bırak';
-                    $defaults['label_submit'] = 'Teklif Gönder';
-                    return $defaults;
-                });
-                
-                comments_template();
-                ?>
-            </div>
-            
-        </article>
+        </main>
         
-        <?php 
-            endwhile; 
-        endif; 
-        ?>
-    </div>
-</main>
+        <?php
+    endwhile;
+endif;
 
-<?php
 get_footer();
 ?>

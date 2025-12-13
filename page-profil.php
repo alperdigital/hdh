@@ -316,6 +316,19 @@ if (!$is_logged_in) {
                             <small class="form-help">Hay Day oyunundaki kullanıcı adınız (isteğe bağlı)</small>
                         </div>
                         
+                        <div class="form-field">
+                            <label for="hayday_farm_number" class="form-label">🏡 Çiftlik Numarası</label>
+                            <input 
+                                type="text" 
+                                id="hayday_farm_number" 
+                                name="hayday_farm_number" 
+                                value="<?php echo esc_attr(get_user_meta($user_id, 'hayday_farm_number', true)); ?>" 
+                                placeholder="Örn: #P8QVJY9CL" 
+                                class="form-input"
+                            >
+                            <small class="form-help">Hay Day çiftlik numaranız. Teklif kabul edildiğinde karşı tarafa gösterilir.</small>
+                        </div>
+                        
                         <div class="form-actions">
                             <button type="submit" class="btn-save-profile">💾 Kaydet</button>
                             <button type="button" class="btn-cancel-edit" id="btn-cancel-edit">❌ İptal</button>

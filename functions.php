@@ -49,6 +49,8 @@ require_once get_template_directory() . '/inc/trade-settings.php';
 require_once get_template_directory() . '/inc/registration-handler.php';
 require_once get_template_directory() . '/inc/trust-system.php';
 require_once get_template_directory() . '/inc/listing-actions-handler.php';
+require_once get_template_directory() . '/inc/offers-cpt.php';
+require_once get_template_directory() . '/inc/offers-handler.php';
 require_once get_template_directory() . '/inc/widgets.php';
 require_once get_template_directory() . '/inc/social-functions.php';
 require_once get_template_directory() . '/inc/ajax-handlers.php';
@@ -57,6 +59,11 @@ require_once get_template_directory() . '/social-share.php';
 // Enqueue styles and scripts
 function hdh_enqueue_scripts() {
     wp_enqueue_style('hdh-farm-style', get_template_directory_uri() . '/assets/css/farm-style.css', array(), '3.23.0');
+    
+    // Enqueue single trade CSS on single trade pages
+    if (is_singular('hayday_trade')) {
+        wp_enqueue_style('hdh-single-trade', get_template_directory_uri() . '/assets/css/single-trade.css', array('hdh-farm-style'), '1.0.0');
+    }
     
     wp_enqueue_script('jquery');
     
@@ -138,18 +145,21 @@ function hdh_enqueue_scripts() {
         ));
     }
     
-    // Enqueue trade offer script on single trade pages
+    // Enqueue single trade page script
     if (is_singular('hayday_trade')) {
         wp_enqueue_script(
-            'hdh-trade-offer',
-            get_template_directory_uri() . '/assets/js/trade-offer.js',
+            'hdh-single-trade',
+            get_template_directory_uri() . '/assets/js/single-trade.js',
             array(),
-            '1.1.0',
+            '2.0.0',
             true
         );
-        wp_localize_script('hdh-trade-offer', 'hdhOffer', array(
+        wp_localize_script('hdh-single-trade', 'hdhSingleTrade', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('hdh_create_offer'),
+            'makeOfferNonce' => wp_create_nonce('hdh_make_offer'),
+            'offerResponseNonce' => wp_create_nonce('hdh_offer_response'),
+            'messagingNonce' => wp_create_nonce('hdh_messaging'),
+            'confirmExchangeNonce' => wp_create_nonce('hdh_confirm_exchange'),
         ));
     }
     
