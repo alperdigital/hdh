@@ -46,7 +46,7 @@
             <span class="bottom-nav-icon">🔍</span>
             <span class="bottom-nav-label">Ara</span>
         </a>
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="decorations">
+        <a href="<?php echo esc_url(home_url('/dekorlar')); ?>" class="bottom-nav-item" data-nav="decorations">
             <span class="bottom-nav-icon">🎨</span>
             <span class="bottom-nav-label">Dekorlar</span>
         </a>
@@ -54,11 +54,11 @@
             <span class="bottom-nav-center-icon">+</span>
             <span class="bottom-nav-center-label">İlan Ver</span>
         </a>
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="raffle">
+        <a href="<?php echo esc_url(home_url('/cekilis')); ?>" class="bottom-nav-item" data-nav="raffle">
             <span class="bottom-nav-icon">🎫</span>
             <span class="bottom-nav-label">Çekiliş</span>
         </a>
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="profile">
+        <a href="<?php echo esc_url(home_url('/profil')); ?>" class="bottom-nav-item" data-nav="profile">
             <span class="bottom-nav-icon">👤</span>
             <span class="bottom-nav-label">Profil</span>
         </a>

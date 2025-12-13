@@ -62,6 +62,33 @@
                 }
             }
             
+            // Check if we're on decorations page (dekorlar)
+            if (currentPath.includes('/dekorlar') || currentPath.endsWith('/dekorlar')) {
+                const decorationsItem = bottomNav.querySelector('[data-nav="decorations"]');
+                if (decorationsItem) {
+                    setActiveItem(decorationsItem);
+                    return;
+                }
+            }
+            
+            // Check if we're on lottery page (cekilis)
+            if (currentPath.includes('/cekilis') || currentPath.endsWith('/cekilis')) {
+                const raffleItem = bottomNav.querySelector('[data-nav="raffle"]');
+                if (raffleItem) {
+                    setActiveItem(raffleItem);
+                    return;
+                }
+            }
+            
+            // Check if we're on profile page (profil)
+            if (currentPath.includes('/profil') || currentPath.endsWith('/profil')) {
+                const profileItem = bottomNav.querySelector('[data-nav="profile"]');
+                if (profileItem) {
+                    setActiveItem(profileItem);
+                    return;
+                }
+            }
+            
             // For other pages, no active item by default
             // Only specific pages should have active states
             setActiveItem(null);

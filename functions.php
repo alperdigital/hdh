@@ -180,46 +180,56 @@ add_filter('body_class', 'hdh_body_classes');
 
 // Auto-create required pages on theme activation
 function hdh_create_required_pages() {
-    // Check if pages already exist
-    $ara_page = get_page_by_path('ara');
-    $ilan_ver_page = get_page_by_path('ilan-ver');
+    // Define all required pages
+    $required_pages = array(
+        array(
+            'title' => 'Hediye Ara',
+            'slug' => 'ara',
+            'template' => 'page-ara.php'
+        ),
+        array(
+            'title' => 'İlan Ver',
+            'slug' => 'ilan-ver',
+            'template' => 'page-ilan-ver.php'
+        ),
+        array(
+            'title' => 'Profil',
+            'slug' => 'profil',
+            'template' => 'page-profil.php'
+        ),
+        array(
+            'title' => 'Çekiliş',
+            'slug' => 'cekilis',
+            'template' => 'page-cekilis.php'
+        ),
+        array(
+            'title' => 'Ücretsiz Dekorasyonlar',
+            'slug' => 'dekorlar',
+            'template' => 'page-dekorlar.php'
+        )
+    );
     
-    // Create "Ara" page if it doesn't exist
-    if (!$ara_page) {
-        $ara_page_id = wp_insert_post(array(
-            'post_title' => 'Hediye Ara',
-            'post_name' => 'ara',
-            'post_status' => 'publish',
-            'post_type' => 'page',
-            'post_content' => ''
-        ));
+    // Create or update each page
+    foreach ($required_pages as $page_data) {
+        $existing_page = get_page_by_path($page_data['slug']);
         
-        if ($ara_page_id && !is_wp_error($ara_page_id)) {
-            // Set template using template name (not file name)
-            update_post_meta($ara_page_id, '_wp_page_template', 'page-ara.php');
+        if (!$existing_page) {
+            // Create new page
+            $page_id = wp_insert_post(array(
+                'post_title' => $page_data['title'],
+                'post_name' => $page_data['slug'],
+                'post_status' => 'publish',
+                'post_type' => 'page',
+                'post_content' => ''
+            ));
+            
+            if ($page_id && !is_wp_error($page_id)) {
+                update_post_meta($page_id, '_wp_page_template', $page_data['template']);
+            }
+        } else {
+            // Update existing page template if needed
+            update_post_meta($existing_page->ID, '_wp_page_template', $page_data['template']);
         }
-    } else {
-        // Update existing page template if needed
-        update_post_meta($ara_page->ID, '_wp_page_template', 'page-ara.php');
-    }
-    
-    // Create "İlan Ver" page if it doesn't exist
-    if (!$ilan_ver_page) {
-        $ilan_ver_page_id = wp_insert_post(array(
-            'post_title' => 'İlan Ver',
-            'post_name' => 'ilan-ver',
-            'post_status' => 'publish',
-            'post_type' => 'page',
-            'post_content' => ''
-        ));
-        
-        if ($ilan_ver_page_id && !is_wp_error($ilan_ver_page_id)) {
-            // Set template using template name (not file name)
-            update_post_meta($ilan_ver_page_id, '_wp_page_template', 'page-ilan-ver.php');
-        }
-    } else {
-        // Update existing page template if needed
-        update_post_meta($ilan_ver_page->ID, '_wp_page_template', 'page-ilan-ver.php');
     }
 }
 add_action('after_switch_theme', 'hdh_create_required_pages');
@@ -242,10 +252,18 @@ function hdh_ensure_required_pages() {
     }
     $pages_checked = true;
     
-    $ara_page = get_page_by_path('ara');
-    $ilan_ver_page = get_page_by_path('ilan-ver');
+    // Check if all required pages exist
+    $required_slugs = array('ara', 'ilan-ver', 'profil', 'cekilis', 'dekorlar');
+    $missing_pages = false;
     
-    if (!$ara_page || !$ilan_ver_page) {
+    foreach ($required_slugs as $slug) {
+        if (!get_page_by_path($slug)) {
+            $missing_pages = true;
+            break;
+        }
+    }
+    
+    if ($missing_pages) {
         hdh_create_required_pages();
         flush_rewrite_rules(false);
     }
