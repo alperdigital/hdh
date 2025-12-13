@@ -864,7 +864,7 @@ h6 { font-size: 1.1rem; }
 
 .trade-card-clickable:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.2);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
 .trade-card-header {
@@ -892,13 +892,13 @@ h6 { font-size: 1.1rem; }
 .trade-card-title {
     color: var(--newspaper-text);
     transition: color 0.3s ease;
-    text-shadow: 1px 1px 2px rgba(220, 20, 60, 0.1);
+    text-shadow: none;
     font-weight: 700;
 }
 
 .trade-card-clickable:hover .trade-card-title {
     color: var(--newspaper-text);
-    text-shadow: 2px 2px 4px rgba(220, 20, 60, 0.2);
+    text-shadow: none;
 }
 
 .trade-status-badge {
@@ -1225,11 +1225,11 @@ h6 { font-size: 1.1rem; }
 .trade-card-footer {
     margin-top: 20px;
     padding-top: 15px;
-    border-top: 2px solid var(--newyear-red);
-    background: linear-gradient(to right, transparent, rgba(220, 20, 60, 0.03), transparent);
+    border-top: 2px solid rgba(201, 184, 138, 0.3);
+    background: transparent;
     padding: 15px;
     margin: 20px -30px -30px -30px;
-    border-radius: 0 0 var(--radius-large) var(--radius-large);
+    border-radius: 0 0 12px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1283,22 +1283,17 @@ h6 { font-size: 1.1rem; }
 .trade-filter-visual-grid {
     background: #FFF6D8;
     padding: 30px;
-    border-radius: var(--radius-large);
-    border: 3px solid var(--newyear-red);
+    border-radius: 12px;
+    border: 2px solid rgba(201, 184, 138, 0.4);
     margin-bottom: 40px;
-    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     position: relative;
     overflow: hidden;
 }
 
 .trade-filter-visual-grid::before {
-    content: '🎄';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 2rem;
-    opacity: 0.3;
-    animation: float 3s ease-in-out infinite;
+    content: '';
+    display: none;
 }
 
 @keyframes float {
@@ -1324,8 +1319,8 @@ h6 { font-size: 1.1rem; }
 
 .filter-item-btn {
     background: #FFF6D8;
-    border: 3px solid var(--newyear-red);
-    border-radius: var(--radius-medium);
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
     padding: 15px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -1346,7 +1341,7 @@ h6 { font-size: 1.1rem; }
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: var(--newyear-red);
+    background: transparent;
     transform: translate(-50%, -50%);
     transition: width 0.4s, height 0.4s;
     opacity: 0.1;
@@ -1354,8 +1349,8 @@ h6 { font-size: 1.1rem; }
 
 .filter-item-btn:hover {
     transform: translateY(-5px) scale(1.05);
-    border-color: var(--newspaper-text);
-    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.3);
+    border-color: var(--farm-green);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
     background: #FFF6D8;
 }
 
@@ -1365,14 +1360,14 @@ h6 { font-size: 1.1rem; }
 }
 
 .filter-item-btn.active {
-    background: linear-gradient(135deg, var(--newyear-red-light) 0%, var(--newyear-red) 100%);
-    border-color: var(--newspaper-text);
-    box-shadow: 0 6px 25px rgba(220, 20, 60, 0.4);
+    background: rgba(139, 195, 74, 0.1);
+    border-color: var(--farm-green);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
     transform: translateY(-3px) scale(1.03);
 }
 
 .filter-item-btn.active .filter-item-label {
-    color: var(--newyear-snow);
+    color: var(--farm-green-dark);
     font-weight: 700;
 }
 
@@ -1405,9 +1400,9 @@ h6 { font-size: 1.1rem; }
     display: block;
     margin: 20px auto 0;
     padding: 12px 24px;
-    background: linear-gradient(135deg, var(--newyear-ice) 0%, var(--newyear-snow) 100%);
-    border: 3px solid var(--newyear-red);
-    border-radius: var(--radius-medium);
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
     color: var(--newspaper-text);
     font-weight: 700;
     font-size: 1rem;
@@ -1417,10 +1412,11 @@ h6 { font-size: 1.1rem; }
 }
 
 .btn-clear-filter-visual:hover {
-    background: linear-gradient(135deg, var(--newyear-red) 0%, var(--newyear-red-dark) 100%);
-    color: var(--newyear-snow);
+    background: rgba(139, 195, 74, 0.1);
+    border-color: var(--farm-green);
+    color: var(--newspaper-text);
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.3);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
 .btn-clear-filter-visual .btn-icon {
@@ -1497,36 +1493,30 @@ h6 { font-size: 1.1rem; }
 }
 
 .main-feature-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: #FFF6D8;
     padding: 30px;
-    border-radius: var(--radius-large);
-    border: 2px solid rgba(220, 20, 60, 0.2);
+    border-radius: 12px;
+    border: 2px solid rgba(201, 184, 138, 0.4);
     text-align: center;
-    box-shadow: 
-        0 4px 12px rgba(220, 20, 60, 0.15),
-        0 2px 6px rgba(34, 139, 34, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .main-feature-card:hover {
     transform: translateY(-8px);
-    border-color: var(--newspaper-text);
-    box-shadow: 
-        0 6px 20px rgba(220, 20, 60, 0.25),
-        0 3px 10px rgba(34, 139, 34, 0.15);
+    border-color: var(--farm-green);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
 .main-feature-card.highlight {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 107, 107, 0.2) 100%);
-    border-color: var(--newyear-gold);
+    background: #FFF6D8;
+    border-color: var(--farm-green);
     transform: scale(1.05);
 }
 
 .main-feature-card.highlight:hover {
     transform: scale(1.08) translateY(-8px);
-    box-shadow: 
-        0 8px 25px rgba(255, 215, 0, 0.3),
-        0 4px 15px rgba(220, 20, 60, 0.2);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.25);
 }
 
 .feature-icon {
@@ -2740,9 +2730,9 @@ main {
     margin-bottom: 40px;
     background: #FFF6D8;
     padding: 25px;
-    border-radius: var(--radius-medium);
-    border: 2px solid rgba(220, 20, 60, 0.15);
-    box-shadow: 0 2px 8px rgba(220, 20, 60, 0.1);
+    border-radius: 12px;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .form-section-title {
