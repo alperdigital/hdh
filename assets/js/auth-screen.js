@@ -71,12 +71,22 @@
             toggleRegisterButton(); // Initial check
         }
         
-        // Auto-switch to register tab if registration error exists
+        // Auto-switch tabs based on errors
         const urlParams = new URLSearchParams(window.location.search);
+        
+        // Switch to register tab if registration error exists
         if (urlParams.get('registration_error')) {
             const registerTab = document.querySelector('.auth-tab[data-tab="register"]');
             if (registerTab) {
                 registerTab.click();
+            }
+        }
+        
+        // Switch to login tab if login error exists
+        if (urlParams.get('login_error')) {
+            const loginTab = document.querySelector('.auth-tab[data-tab="login"]');
+            if (loginTab) {
+                loginTab.click();
             }
         }
         

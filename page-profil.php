@@ -21,16 +21,16 @@ if (!$is_logged_in) {
                 
                 <!-- Tab Switcher -->
                 <div class="auth-tabs">
-                    <button type="button" class="auth-tab active" data-tab="login">
+                    <button type="button" class="auth-tab" data-tab="login">
                         Giriş Yap
                     </button>
-                    <button type="button" class="auth-tab" data-tab="register">
+                    <button type="button" class="auth-tab active" data-tab="register">
                         Üye Ol
                     </button>
                 </div>
                 
                 <!-- Login Form -->
-                <div id="login-form-container" class="auth-form-container active">
+                <div id="login-form-container" class="auth-form-container">
                     <?php
                     $login_error = isset($_GET['login_error']) ? $_GET['login_error'] : '';
                     if ($login_error) {
@@ -98,7 +98,7 @@ if (!$is_logged_in) {
                 </div>
                 
                 <!-- Register Form -->
-                <div id="register-form-container" class="auth-form-container">
+                <div id="register-form-container" class="auth-form-container active">
                     <?php
                     $register_error = isset($_GET['registration_error']) ? $_GET['registration_error'] : '';
                     if ($register_error) {

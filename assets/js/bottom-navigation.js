@@ -37,15 +37,20 @@
          * Determine which nav item should be active based on current page
          */
         function determineActiveItem() {
+            // Normalize path - remove trailing slash
+            const normalizedPath = currentPath.replace(/\/$/, '');
+            
             // Check if we're on homepage - NO active item
-            if (currentPath === '/' || currentPath === '' || currentPath === '/index.php') {
-                // Homepage - explicitly clear all active states
+            if (normalizedPath === '' || normalizedPath === '/index.php') {
                 setActiveItem(null);
                 return;
             }
             
+            // Check specific pages first (most specific to least specific)
+            // Order matters! Check longer/more specific paths first
+            
             // Check if we're on create trade page (ilan-ver)
-            if (currentPath.includes('ilan-ver') || currentHash === '#create-trade') {
+            if (normalizedPath === '/ilan-ver' || currentHash === '#create-trade') {
                 const createItem = bottomNav.querySelector('[data-nav="create"]');
                 if (createItem) {
                     setActiveItem(createItem);
@@ -53,17 +58,8 @@
                 }
             }
             
-            // Check if we're on search page (ara)
-            if (currentPath.includes('/ara') || currentPath.endsWith('/ara')) {
-                const searchItem = bottomNav.querySelector('[data-nav="search"]');
-                if (searchItem) {
-                    setActiveItem(searchItem);
-                    return;
-                }
-            }
-            
             // Check if we're on decorations page (dekorlar)
-            if (currentPath.includes('/dekorlar') || currentPath.endsWith('/dekorlar')) {
+            if (normalizedPath === '/dekorlar') {
                 const decorationsItem = bottomNav.querySelector('[data-nav="decorations"]');
                 if (decorationsItem) {
                     setActiveItem(decorationsItem);
@@ -72,7 +68,7 @@
             }
             
             // Check if we're on lottery page (cekilis)
-            if (currentPath.includes('/cekilis') || currentPath.endsWith('/cekilis')) {
+            if (normalizedPath === '/cekilis') {
                 const raffleItem = bottomNav.querySelector('[data-nav="raffle"]');
                 if (raffleItem) {
                     setActiveItem(raffleItem);
@@ -81,7 +77,7 @@
             }
             
             // Check if we're on profile page (profil)
-            if (currentPath.includes('/profil') || currentPath.endsWith('/profil')) {
+            if (normalizedPath === '/profil') {
                 const profileItem = bottomNav.querySelector('[data-nav="profile"]');
                 if (profileItem) {
                     setActiveItem(profileItem);
@@ -89,8 +85,17 @@
                 }
             }
             
-            // For other pages, no active item by default
-            // Only specific pages should have active states
+            // Check if we're on search page (ara) - check this LAST
+            // because "ara" might appear in other URLs
+            if (normalizedPath === '/ara') {
+                const searchItem = bottomNav.querySelector('[data-nav="search"]');
+                if (searchItem) {
+                    setActiveItem(searchItem);
+                    return;
+                }
+            }
+            
+            // For other pages (like single trade posts), no active item
             setActiveItem(null);
         }
         
