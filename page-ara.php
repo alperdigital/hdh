@@ -19,7 +19,6 @@ get_header();
         
         <!-- HDH: Visual Filter Grid (9 Items) -->
         <div class="trade-filter-visual-grid">
-            <h3 class="filter-grid-title">Hediye Edilecek Hediyeye Göre Filtrele</h3>
             <div class="filter-items-grid" id="filter-items-grid">
                 <?php 
                 $items = hdh_get_items_config();
