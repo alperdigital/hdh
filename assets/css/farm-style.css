@@ -3161,7 +3161,7 @@ footer,
 
 .footer-links {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .footer-menu {
@@ -3172,6 +3172,33 @@ footer,
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
+}
+
+/* Legal Links in Footer */
+.footer-legal-links {
+    text-align: center;
+    margin: 16px 0;
+    padding: 12px 0;
+    border-top: 1px solid rgba(201, 184, 138, 0.3);
+    border-bottom: 1px solid rgba(201, 184, 138, 0.3);
+}
+
+.footer-legal-link {
+    color: var(--newspaper-text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.footer-legal-link:hover {
+    color: var(--farm-green);
+    text-decoration: underline;
+}
+
+.footer-legal-separator {
+    margin: 0 12px;
+    color: var(--newspaper-text-light);
+    font-weight: 300;
 }
 
 .footer-menu a {

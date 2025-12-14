@@ -543,6 +543,15 @@ function hdh_handle_custom_registration_submit() {
         update_user_meta($user_id, 'verified_account', true); // Mavi tikli hesap
     }
     
+    // Save terms acceptance record (KVKK compliance)
+    $terms_acceptance = array(
+        'accepted_at' => current_time('mysql'),
+        'ip_hash' => hash('sha256', $_SERVER['REMOTE_ADDR']),
+        'version' => '1.0',
+        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 200) : ''
+    );
+    update_user_meta($user_id, 'hdh_terms_acceptance', $terms_acceptance);
+    
     // Auto login
     wp_set_current_user($user_id);
     wp_set_auth_cookie($user_id);

@@ -28,6 +28,14 @@
                     ));
                     ?>
                 </div>
+                
+                <!-- Legal Links -->
+                <div class="footer-legal-links">
+                    <a href="<?php echo esc_url(home_url('/uyelik-sozlesmesi')); ?>" class="footer-legal-link">Üyelik Sözleşmesi</a>
+                    <span class="footer-legal-separator">•</span>
+                    <a href="<?php echo esc_url(home_url('/gizlilik-politikasi')); ?>" class="footer-legal-link">Gizlilik Politikası & KVKK</a>
+                </div>
+                
                 <?php if (get_theme_mod('mi_show_social_footer', true)) : ?>
                     <div class="footer-social">
                         <?php mi_render_social_links(); ?>

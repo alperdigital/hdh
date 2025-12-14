@@ -65,6 +65,11 @@ function hdh_enqueue_scripts() {
         wp_enqueue_style('hdh-single-trade', get_template_directory_uri() . '/assets/css/single-trade.css', array('hdh-farm-style'), '1.0.0');
     }
     
+    // Enqueue legal pages CSS
+    if (is_page_template('page-uyelik-sozlesmesi.php') || is_page_template('page-gizlilik-politikasi.php')) {
+        wp_enqueue_style('hdh-legal-pages', get_template_directory_uri() . '/assets/css/legal-pages.css', array('hdh-farm-style'), '1.0.0');
+    }
+    
     wp_enqueue_script('jquery');
     
     wp_enqueue_script(
@@ -244,6 +249,16 @@ function hdh_create_required_pages() {
             'title' => 'Ücretsiz Dekorasyonlar',
             'slug' => 'dekorlar',
             'template' => 'page-dekorlar.php'
+        ),
+        array(
+            'title' => 'Üyelik Sözleşmesi',
+            'slug' => 'uyelik-sozlesmesi',
+            'template' => 'page-uyelik-sozlesmesi.php'
+        ),
+        array(
+            'title' => 'Gizlilik Politikası',
+            'slug' => 'gizlilik-politikasi',
+            'template' => 'page-gizlilik-politikasi.php'
         )
     );
     
@@ -291,7 +306,7 @@ function hdh_ensure_required_pages() {
     $pages_checked = true;
     
     // Check if all required pages exist
-    $required_slugs = array('ara', 'ilan-ver', 'profil', 'cekilis', 'dekorlar');
+    $required_slugs = array('ara', 'ilan-ver', 'profil', 'cekilis', 'dekorlar', 'uyelik-sozlesmesi', 'gizlilik-politikasi');
     $missing_pages = false;
     
     foreach ($required_slugs as $slug) {
