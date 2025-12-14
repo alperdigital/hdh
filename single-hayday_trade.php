@@ -357,10 +357,18 @@ if (!have_posts()) : ?>
                             </form>
                         </div>
                         
-                    <?php elseif (!is_user_logged_in()) : ?>
+                    <?php elseif (!is_user_logged_in()) : 
+                        $login_url = function_exists('hdh_get_login_url_with_return') 
+                            ? hdh_get_login_url_with_return(get_permalink($post_id))
+                            : home_url('/profil');
+                    ?>
                         <div class="login-required-message">
                             <p>Teklif yapmak için giriş yapmalısınız.</p>
-                            <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-login">Giriş Yap</a>
+                            <p class="login-hint">Giriş yaptıktan sonra bu ilana geri döneceksiniz.</p>
+                            <a href="<?php echo esc_url($login_url); ?>" class="btn-login">
+                                <span class="btn-icon">🔐</span>
+                                <span>Giriş Yap</span>
+                            </a>
                         </div>
                     <?php endif; ?>
                     

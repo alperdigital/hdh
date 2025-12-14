@@ -556,23 +556,28 @@ function hdh_handle_custom_registration_submit() {
     wp_set_current_user($user_id);
     wp_set_auth_cookie($user_id);
     
-    // If redirect to trade, create trade from pending data
-    if ($redirect_to_trade) {
-        $transient_key = isset($_COOKIE['hdh_pending_trade_key']) ? $_COOKIE['hdh_pending_trade_key'] : '';
-        
-        if ($transient_key) {
-            $pending_trade = get_transient($transient_key);
+    // Use new redirect system
+    if (function_exists('hdh_redirect_after_auth')) {
+        hdh_redirect_after_auth($user_id);
+    } else {
+        // Fallback: If redirect to trade, create trade from pending data
+        if ($redirect_to_trade) {
+            $transient_key = isset($_COOKIE['hdh_pending_trade_key']) ? $_COOKIE['hdh_pending_trade_key'] : '';
             
-            if ($pending_trade) {
-                hdh_create_trade_from_pending($pending_trade, $transient_key);
-                exit;
+            if ($transient_key) {
+                $pending_trade = get_transient($transient_key);
+                
+                if ($pending_trade) {
+                    hdh_create_trade_from_pending($pending_trade, $transient_key);
+                    exit;
+                }
             }
         }
+        
+        // Redirect to specified URL or homepage
+        wp_redirect($redirect_to);
+        exit;
     }
-    
-    // Redirect to specified URL or homepage
-    wp_redirect($redirect_to);
-    exit;
 }
 add_action('admin_post_hdh_custom_register', 'hdh_handle_custom_registration_submit');
 add_action('admin_post_nopriv_hdh_custom_register', 'hdh_handle_custom_registration_submit');
@@ -610,23 +615,28 @@ function hdh_handle_custom_login_submit() {
     wp_set_current_user($user->ID);
     wp_set_auth_cookie($user->ID, $remember);
     
-    // If redirect to trade, create trade from pending data
-    if ($redirect_to_trade) {
-        $transient_key = isset($_COOKIE['hdh_pending_trade_key']) ? $_COOKIE['hdh_pending_trade_key'] : '';
-        
-        if ($transient_key) {
-            $pending_trade = get_transient($transient_key);
+    // Use new redirect system
+    if (function_exists('hdh_redirect_after_auth')) {
+        hdh_redirect_after_auth($user->ID);
+    } else {
+        // Fallback: If redirect to trade, create trade from pending data
+        if ($redirect_to_trade) {
+            $transient_key = isset($_COOKIE['hdh_pending_trade_key']) ? $_COOKIE['hdh_pending_trade_key'] : '';
             
-            if ($pending_trade) {
-                hdh_create_trade_from_pending($pending_trade, $transient_key);
-                exit;
+            if ($transient_key) {
+                $pending_trade = get_transient($transient_key);
+                
+                if ($pending_trade) {
+                    hdh_create_trade_from_pending($pending_trade, $transient_key);
+                    exit;
+                }
             }
         }
+        
+        // Redirect to specified URL or homepage
+        wp_redirect($redirect_to);
+        exit;
     }
-    
-    // Redirect to specified URL or homepage
-    wp_redirect($redirect_to);
-    exit;
 }
 add_action('admin_post_hdh_custom_login', 'hdh_handle_custom_login_submit');
 add_action('admin_post_nopriv_hdh_custom_login', 'hdh_handle_custom_login_submit');
