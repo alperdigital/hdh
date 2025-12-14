@@ -18,6 +18,29 @@ get_header();
         <div class="create-trade-wrapper">
             <h2 class="section-title-cartoon">Hediyeleşme Başlasın</h2>
             
+            <?php
+            // Display error messages
+            if (isset($_GET['trade_error'])) {
+                $error_code = sanitize_text_field($_GET['trade_error']);
+                $error_messages = array(
+                    'no_wanted_item' => 'Lütfen almak istediğiniz ürünü seçin.',
+                    'invalid_wanted_item' => 'Seçtiğiniz ürün geçersiz.',
+                    'invalid_wanted_qty' => 'Miktar 1-999 arasında olmalıdır.',
+                    'no_offer_items' => 'Lütfen en az 1 ürün seçin (vermek istediğiniz).',
+                    'too_many_offer_items' => 'En fazla 3 ürün seçebilirsiniz.',
+                    'invalid_offer_item' => 'Seçtiğiniz ürünlerden biri geçersiz.',
+                    'invalid_offer_qty' => 'Tüm miktarlar 1-999 arasında olmalıdır.',
+                    'rate_limit' => 'Çok fazla ilan oluşturdunuz. Lütfen 1 saat sonra tekrar deneyin.',
+                );
+                
+                $error_message = isset($error_messages[$error_code]) ? $error_messages[$error_code] : 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                ?>
+                <div class="form-error-message">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-text"><?php echo esc_html($error_message); ?></span>
+                </div>
+            <?php } ?>
+            
             <form id="create-trade-form" class="trade-create-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                 <?php wp_nonce_field('hdh_create_trade', 'hdh_trade_nonce'); ?>
                 <input type="hidden" name="action" value="hdh_create_trade">
@@ -27,6 +50,7 @@ get_header();
                     <h3 class="form-section-title">
                         <span class="title-icon">🔍</span>
                         Almak İstediğin Hediye
+                        <span class="form-section-subtitle">Bir ürün seçin</span>
                     </h3>
                     <div class="items-grid" id="wanted-items-grid">
                         <?php 
@@ -36,15 +60,24 @@ get_header();
                         }
                         ?>
                     </div>
-                    <div class="quantity-input-wrapper">
-                        <label for="wanted_qty">Miktar:</label>
-                        <input type="number" 
-                               id="wanted_qty" 
-                               name="wanted_qty" 
-                               min="1" 
-                               value="1" 
-                               required
-                               class="quantity-input">
+                    <div class="quantity-stepper-wrapper" id="wanted-quantity-wrapper" style="display: none;">
+                        <label class="stepper-label">
+                            <span class="stepper-label-text">Miktar</span>
+                            <span class="stepper-hint">Kaç adet istiyorsunuz?</span>
+                        </label>
+                        <div class="quantity-stepper">
+                            <button type="button" class="qty-btn qty-minus" data-target="wanted_qty" aria-label="Azalt">−</button>
+                            <input type="number" 
+                                   id="wanted_qty" 
+                                   name="wanted_qty" 
+                                   min="1" 
+                                   max="999"
+                                   value="1" 
+                                   required
+                                   class="qty-input"
+                                   readonly>
+                            <button type="button" class="qty-btn qty-plus" data-target="wanted_qty" aria-label="Artır">+</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -52,7 +85,11 @@ get_header();
                 <div class="form-section">
                     <h3 class="form-section-title">
                         <span class="title-icon">🎁</span>
-                        Vermek İstediğin Hediye (En fazla 3 ürün seçebilirsiniz)
+                        Vermek İstediğin Hediye
+                        <span class="form-section-subtitle">
+                            <span id="offer-selection-count">0/3 seçildi</span>
+                            <span class="subtitle-hint">En fazla 3 ürün seçebilirsiniz</span>
+                        </span>
                     </h3>
                     <div class="items-grid" id="offer-items-grid">
                         <?php 
@@ -62,7 +99,7 @@ get_header();
                         ?>
                     </div>
                     <div class="offer-quantities" id="offer-quantities">
-                        <!-- Dynamic quantity inputs will be added here via JS -->
+                        <!-- Dynamic quantity steppers will be added here via JS -->
                     </div>
                 </div>
                 

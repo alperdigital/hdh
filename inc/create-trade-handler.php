@@ -68,30 +68,68 @@ function hdh_handle_create_trade() {
         }
     }
     
-    // Validation
-    if (empty($wanted_item) || $wanted_qty <= 0) {
-        wp_redirect(home_url('/?trade_error=invalid_wanted'));
-        exit;
-    }
-    
-    // Validate wanted_item exists in config
+    // Enhanced validation with detailed error messages
     $items_config = hdh_get_items_config();
+    
+    // Validate wanted item
+    if (empty($wanted_item)) {
+        wp_redirect(add_query_arg('trade_error', 'no_wanted_item', home_url('/ilan-ver')));
+        exit;
+    }
+    
     if (!isset($items_config[$wanted_item])) {
-        wp_redirect(home_url('/?trade_error=invalid_wanted'));
+        wp_redirect(add_query_arg('trade_error', 'invalid_wanted_item', home_url('/ilan-ver')));
         exit;
     }
     
-    if (empty($offer_items_data) || count($offer_items_data) > 3) {
-        wp_redirect(home_url('/?trade_error=invalid_offer'));
+    // Validate wanted quantity (min: 1, max: 999)
+    if ($wanted_qty < 1 || $wanted_qty > 999) {
+        wp_redirect(add_query_arg('trade_error', 'invalid_wanted_qty', home_url('/ilan-ver')));
         exit;
     }
     
-    // Validate all offer items exist in config
+    // Validate offer items (min: 1, max: 3)
+    if (empty($offer_items_data)) {
+        wp_redirect(add_query_arg('trade_error', 'no_offer_items', home_url('/ilan-ver')));
+        exit;
+    }
+    
+    if (count($offer_items_data) > 3) {
+        wp_redirect(add_query_arg('trade_error', 'too_many_offer_items', home_url('/ilan-ver')));
+        exit;
+    }
+    
+    // Validate all offer items exist in config and quantities are valid
     foreach ($offer_items_data as $offer_item) {
         if (!isset($items_config[$offer_item['slug']])) {
-            wp_redirect(home_url('/?trade_error=invalid_offer'));
+            wp_redirect(add_query_arg('trade_error', 'invalid_offer_item', home_url('/ilan-ver')));
             exit;
         }
+        
+        // Validate offer quantity (min: 1, max: 999)
+        if ($offer_item['qty'] < 1 || $offer_item['qty'] > 999) {
+            wp_redirect(add_query_arg('trade_error', 'invalid_offer_qty', home_url('/ilan-ver')));
+            exit;
+        }
+    }
+    
+    // Rate limiting: Check if user has created too many listings recently
+    $user_id = get_current_user_id();
+    $recent_posts = get_posts(array(
+        'post_type' => 'hayday_trade',
+        'author' => $user_id,
+        'post_status' => 'publish',
+        'date_query' => array(
+            array(
+                'after' => '1 hour ago'
+            )
+        ),
+        'fields' => 'ids'
+    ));
+    
+    if (count($recent_posts) >= 5) {
+        wp_redirect(add_query_arg('trade_error', 'rate_limit', home_url('/ilan-ver')));
+        exit;
     }
     
     // Auto-generate trade title from items
