@@ -59,10 +59,54 @@ get_header();
                 </div>
             </div>
             
-            <div class="trade-loading" id="trade-loading" style="display: none;">
-                <div class="loading-spinner">⏳</div>
-                <p>İlanlar yükleniyor...</p>
+            <!-- Skeleton Loading State -->
+            <div class="trade-skeleton-container" id="trade-skeleton" style="display: none;">
+                <div class="trade-cards-grid">
+                    <?php for ($i = 0; $i < 6; $i++) : ?>
+                        <div class="trade-card-skeleton">
+                            <div class="skeleton-header">
+                                <div class="skeleton-avatar"></div>
+                                <div class="skeleton-text skeleton-text-short"></div>
+                            </div>
+                            <div class="skeleton-body">
+                                <div class="skeleton-items">
+                                    <div class="skeleton-item"></div>
+                                    <div class="skeleton-item"></div>
+                                </div>
+                                <div class="skeleton-divider"></div>
+                                <div class="skeleton-items">
+                                    <div class="skeleton-item"></div>
+                                </div>
+                            </div>
+                            <div class="skeleton-footer">
+                                <div class="skeleton-text skeleton-text-long"></div>
+                            </div>
+                        </div>
+                    <?php endfor; ?>
+                </div>
             </div>
+            
+            <!-- Error State -->
+            <div class="trade-error-container" id="trade-error" style="display: none;">
+                <div class="trade-error-card">
+                    <div class="trade-error-icon" id="error-icon">⚠️</div>
+                    <h3 class="trade-error-title" id="error-title">Bir Sorun Oluştu</h3>
+                    <p class="trade-error-message" id="error-message">İlanlar yüklenirken bir hata oluştu.</p>
+                    <div class="trade-error-actions">
+                        <button class="btn-retry" id="btn-retry">
+                            <span class="btn-icon">🔄</span>
+                            <span class="btn-text">Tekrar Dene</span>
+                        </button>
+                        <button class="btn-reload" id="btn-reload">
+                            <span class="btn-icon">↻</span>
+                            <span class="btn-text">Sayfayı Yenile</span>
+                        </button>
+                    </div>
+                    <p class="trade-error-help">Sorun devam ediyorsa, internet bağlantınızı kontrol edin.</p>
+                </div>
+            </div>
+            
+            <!-- Trade Cards Grid -->
             <div class="trade-cards-grid" id="trade-cards-grid">
                 <?php
                 // Build query - default: show only open trades

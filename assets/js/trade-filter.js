@@ -9,6 +9,9 @@
     let currentFilter = null;
     let currentPage = 1;
     let isLoading = false;
+    let debounceTimer = null;
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
     
     $(document).ready(function() {
         // Filter item button click
@@ -33,6 +36,16 @@
             clearFilter();
         });
         
+        // Retry button click
+        $('#btn-retry').on('click', function() {
+            retryLoading();
+        });
+        
+        // Reload button click
+        $('#btn-reload').on('click', function() {
+            location.reload();
+        });
+        
         // Pagination click handler (delegated for dynamically loaded content)
         $(document).on('click', '.trade-pagination a', function(e) {
             e.preventDefault();
@@ -50,19 +63,23 @@
     });
     
     /**
-     * Apply filter
+     * Apply filter with debounce
      */
     function applyFilter(itemSlug) {
         currentFilter = itemSlug;
         currentPage = 1;
+        retryCount = 0;
         
-        // Update UI
+        // Update UI immediately (optimistic)
         $('.filter-item-btn').removeClass('active');
         $('.filter-item-btn[data-item-slug="' + itemSlug + '"]').addClass('active');
         $('#btn-clear-filter-visual').fadeIn(300);
         
-        // Load trades
-        loadTrades(itemSlug, 1);
+        // Debounce loading (prevent rapid clicks)
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function() {
+            loadTrades(itemSlug, 1);
+        }, 300);
     }
     
     /**
@@ -71,13 +88,17 @@
     function clearFilter() {
         currentFilter = null;
         currentPage = 1;
+        retryCount = 0;
         
         // Update UI
         $('.filter-item-btn').removeClass('active');
         $('#btn-clear-filter-visual').fadeOut(300);
         
-        // Load all trades (no filter)
-        loadTrades('', 1);
+        // Debounce loading
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function() {
+            loadTrades('', 1);
+        }, 300);
     }
     
     /**
@@ -89,7 +110,8 @@
         currentPage = page;
         
         const $container = $('#trade-feed-container');
-        const $loading = $('#trade-loading');
+        const $skeleton = $('#trade-skeleton');
+        const $error = $('#trade-error');
         const $grid = $('#trade-cards-grid');
         const $pagination = $('#trade-pagination');
         
@@ -98,10 +120,11 @@
             scrollTop: $container.offset().top - 100
         }, 300);
         
-        // Show loading state (hide content first, then show loading)
+        // Show skeleton loading (hide content and error first)
         $grid.fadeOut(150, function() {
             $pagination.fadeOut(150);
-            $loading.fadeIn(200);
+            $error.fadeOut(150);
+            $skeleton.fadeIn(200);
         });
         
         // AJAX request with timeout
@@ -116,8 +139,11 @@
                 nonce: hdhFilter.nonce
             },
             success: function(response) {
-                // Hide loading first
-                $loading.fadeOut(150, function() {
+                // Reset retry count on success
+                retryCount = 0;
+                
+                // Hide skeleton first
+                $skeleton.fadeOut(150, function() {
                     if (response.success) {
                         // Update content
                         $grid.html(response.data.html).fadeIn(300);
@@ -133,26 +159,45 @@
                         console.log('HDH Filter: Loaded ' + response.data.found_posts + ' trades');
                     } else {
                         // Server returned error
-                        const errorMsg = response.data && response.data.message ? response.data.message : 'Bir hata oluştu.';
-                        showErrorMessage(errorMsg, true);
+                        const errorMsg = response.data && response.data.message ? response.data.message : 'Sunucu hatası oluştu.';
+                        showError('server', errorMsg);
                     }
                 });
             },
             error: function(xhr, status, error) {
-                // Hide loading first
-                $loading.fadeOut(150, function() {
+                // Hide skeleton first
+                $skeleton.fadeOut(150, function() {
+                    let errorType = 'unknown';
                     let errorMsg = 'Bir hata oluştu. Lütfen tekrar deneyin.';
                     
                     if (status === 'timeout') {
-                        errorMsg = 'İstek zaman aşımına uğradı. İnternet bağlantınızı kontrol edin.';
+                        errorType = 'timeout';
+                        errorMsg = 'İstek zaman aşımına uğradı. İnternet bağlantınızı kontrol edin ve tekrar deneyin.';
                     } else if (status === 'error') {
-                        errorMsg = 'Sunucuya ulaşılamadı. Lütfen sayfayı yenileyin.';
+                        errorType = 'network';
+                        errorMsg = 'Sunucuya ulaşılamadı. İnternet bağlantınızı kontrol edin.';
+                    } else if (status === 'abort') {
+                        errorType = 'abort';
+                        errorMsg = 'İstek iptal edildi.';
+                    } else if (!navigator.onLine) {
+                        errorType = 'offline';
+                        errorMsg = 'İnternet bağlantınız yok. Lütfen bağlantınızı kontrol edin.';
                     }
                     
-                    showErrorMessage(errorMsg, false);
+                    // Auto-retry for network errors (up to MAX_RETRIES)
+                    if ((errorType === 'timeout' || errorType === 'network') && retryCount < MAX_RETRIES) {
+                        retryCount++;
+                        console.log('HDH Filter: Auto-retry ' + retryCount + '/' + MAX_RETRIES);
+                        setTimeout(function() {
+                            loadTrades(itemSlug, page);
+                        }, 2000 * retryCount); // Exponential backoff
+                    } else {
+                        // Show error UI
+                        showError(errorType, errorMsg);
+                    }
                     
                     // Log for debugging
-                    console.error('HDH Filter Error:', status, error);
+                    console.error('HDH Filter Error:', status, error, 'Retry:', retryCount);
                 });
             },
             complete: function() {
@@ -164,30 +209,46 @@
     /**
      * Show error message
      */
-    function showErrorMessage(message, canRetry) {
-        const $grid = $('#trade-cards-grid');
-        const $pagination = $('#trade-pagination');
+    /**
+     * Show error UI
+     */
+    function showError(errorType, message) {
+        const $error = $('#trade-error');
+        const $errorIcon = $('#error-icon');
+        const $errorTitle = $('#error-title');
+        const $errorMessage = $('#error-message');
         
-        let html = '<div class="no-trades-message">';
-        html += '<div class="no-trades-message-icon">⚠️</div>';
-        html += '<h3 class="no-trades-message-title">Bir Sorun Oluştu</h3>';
-        html += '<p>' + message + '</p>';
-        html += '<div class="no-trades-message-actions">';
+        // Set error icon based on type
+        const errorIcons = {
+            'timeout': '⏱️',
+            'network': '🌐',
+            'offline': '📡',
+            'server': '⚠️',
+            'unknown': '❌'
+        };
         
-        if (canRetry) {
-            html += '<button type="button" class="btn-create-listing" onclick="location.reload();">';
-            html += '<span>🔄</span><span>Sayfayı Yenile</span>';
-            html += '</button>';
-        } else {
-            html += '<a href="' + window.location.href + '" class="btn-create-listing">';
-            html += '<span>🔄</span><span>Sayfayı Yenile</span>';
-            html += '</a>';
-        }
+        const errorTitles = {
+            'timeout': 'Zaman Aşımı',
+            'network': 'Bağlantı Hatası',
+            'offline': 'İnternet Yok',
+            'server': 'Sunucu Hatası',
+            'unknown': 'Bir Sorun Oluştu'
+        };
         
-        html += '</div></div>';
+        $errorIcon.text(errorIcons[errorType] || errorIcons.unknown);
+        $errorTitle.text(errorTitles[errorType] || errorTitles.unknown);
+        $errorMessage.text(message);
         
-        $grid.html(html).fadeIn(300);
-        $pagination.html('').hide();
+        // Show error UI
+        $error.fadeIn(300);
+    }
+    
+    /**
+     * Retry loading trades
+     */
+    function retryLoading() {
+        retryCount = 0; // Reset retry count for manual retry
+        loadTrades(currentFilter || '', currentPage);
     }
     
 })(jQuery);

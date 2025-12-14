@@ -110,11 +110,18 @@ function hdh_enqueue_scripts() {
     
     // Enqueue trade filter script on ara page
     if (is_page_template('page-ara.php')) {
+        wp_enqueue_style(
+            'hdh-loading-states',
+            get_template_directory_uri() . '/assets/css/loading-states.css',
+            array('hdh-farm-style'),
+            '1.0.0'
+        );
+        
         wp_enqueue_script(
             'hdh-trade-filter',
             get_template_directory_uri() . '/assets/js/trade-filter.js',
             array('jquery'),
-            '1.0.0',
+            '2.0.0',
             true
         );
         
