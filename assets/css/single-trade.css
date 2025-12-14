@@ -1122,6 +1122,44 @@
     color: var(--farm-green-dark);
 }
 
+/* Alternative Trades Section */
+.alternative-trades-section {
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 2px solid rgba(201, 184, 138, 0.3);
+    text-align: left;
+}
+
+.alternative-trades-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 24px 0;
+    text-align: center;
+}
+
+.alternative-trades-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 100%;
+}
+
+/* Adjust trade cards in alternative grid */
+.alternative-trades-grid .trade-card-clickable {
+    background: #FFFFFF;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.2s ease;
+}
+
+.alternative-trades-grid .trade-card-clickable:hover {
+    border-color: var(--farm-green);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+    transform: translateY(-2px);
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .trade-not-found-card {

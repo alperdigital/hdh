@@ -6,7 +6,10 @@
 
 get_header();
 
-if (!have_posts()) : ?>
+if (!have_posts()) : 
+    // Get alternative trades
+    $alternatives = function_exists('hdh_get_alternative_trades') ? hdh_get_alternative_trades(0, 3) : array();
+    ?>
     <main class="single-trade-main">
         <div class="container">
             <div class="trade-not-found-card">
@@ -31,6 +34,18 @@ if (!have_posts()) : ?>
                         <span class="btn-text">Yeni İlan Oluştur</span>
                     </a>
                 </div>
+                
+                <?php if (!empty($alternatives)) : ?>
+                    <div class="alternative-trades-section">
+                        <h3 class="alternative-trades-title">Benzer İlanlar</h3>
+                        <div class="alternative-trades-grid">
+                            <?php foreach ($alternatives as $alt_id) : ?>
+                                <?php hdh_render_trade_card($alt_id); ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                
                 <div class="trade-not-found-help">
                     <p>Sorun devam ediyorsa, <a href="<?php echo esc_url(home_url('/profil')); ?>">destek</a> ile iletişime geçebilirsiniz.</p>
                 </div>
@@ -47,6 +62,8 @@ if (!have_posts()) : ?>
         
         // Check if post is not published and user is not owner/admin
         if ($post_status !== 'publish' && !$is_owner && !current_user_can('administrator')) {
+            // Get alternative trades
+            $alternatives = function_exists('hdh_get_alternative_trades') ? hdh_get_alternative_trades($post_id, 3) : array();
             ?>
             <main class="single-trade-main">
                 <div class="container">
@@ -66,6 +83,17 @@ if (!have_posts()) : ?>
                                 <span class="btn-text">Aktif İlanları İncele</span>
                             </a>
                         </div>
+                        
+                        <?php if (!empty($alternatives)) : ?>
+                            <div class="alternative-trades-section">
+                                <h3 class="alternative-trades-title">Benzer Aktif İlanlar</h3>
+                                <div class="alternative-trades-grid">
+                                    <?php foreach ($alternatives as $alt_id) : ?>
+                                        <?php hdh_render_trade_card($alt_id); ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </main>
