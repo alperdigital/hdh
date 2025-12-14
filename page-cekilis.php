@@ -12,13 +12,29 @@ $genisletme_entries_today = $user_id && function_exists('hdh_get_lottery_entries
 $next_lottery_date = function_exists('hdh_get_next_lottery_date') ? hdh_get_next_lottery_date() : '';
 $server_time = function_exists('hdh_get_server_time_iso') ? hdh_get_server_time_iso() : '';
 
-// Format display date (Turkey time)
+// Format display date (Turkey time) - Use Turkish month names
 $display_date = '';
 if (!empty($next_lottery_date)) {
     try {
         $dt = new DateTime($next_lottery_date);
         $dt->setTimezone(new DateTimeZone('Europe/Istanbul'));
-        $display_date = $dt->format('d F Y, H:i') . ' (TSI)';
+        
+        // Use Turkish date formatter if available
+        if (function_exists('hdh_format_date_turkish')) {
+            $display_date = hdh_format_date_turkish($dt) . ' (TSI)';
+        } else {
+            // Fallback with Turkish month names
+            $months_tr = array(
+                1 => 'Ocak', 2 => 'Şubat', 3 => 'Mart', 4 => 'Nisan',
+                5 => 'Mayıs', 6 => 'Haziran', 7 => 'Temmuz', 8 => 'Ağustos',
+                9 => 'Eylül', 10 => 'Ekim', 11 => 'Kasım', 12 => 'Aralık'
+            );
+            $day = $dt->format('d');
+            $month = (int) $dt->format('m');
+            $year = $dt->format('Y');
+            $time = $dt->format('H:i');
+            $display_date = sprintf('%s %s %s, %s (TSI)', $day, $months_tr[$month], $year, $time);
+        }
     } catch (Exception $e) {
         $display_date = '21 Aralık 2025, 20:00 (TSI)';
     }
@@ -42,14 +58,14 @@ if (!empty($next_lottery_date)) {
     <?php endif; ?>
     <div class="lottery-countdown-section">
         <h2 class="countdown-title">Çekiliş Tarihi</h2>
+        <p class="countdown-target" id="countdown-target-date"><?php echo esc_html($display_date); ?></p>
         <div class="countdown-display" id="lottery-countdown" 
              data-lottery-date="<?php echo esc_attr($next_lottery_date); ?>"
              data-server-time="<?php echo esc_attr($server_time); ?>">
-            <div class="countdown-item"><span class="countdown-value" id="countdown-days">--</span><span class="countdown-label">Gün</span></div>
-            <div class="countdown-item"><span class="countdown-value" id="countdown-hours">--</span><span class="countdown-label">Saat</span></div>
-            <div class="countdown-item"><span class="countdown-value" id="countdown-minutes">--</span><span class="countdown-label">Dakika</span></div>
+            <div class="countdown-item"><span class="countdown-value" id="countdown-days">...</span><span class="countdown-label">Gün</span></div>
+            <div class="countdown-item"><span class="countdown-value" id="countdown-hours">...</span><span class="countdown-label">Saat</span></div>
+            <div class="countdown-item"><span class="countdown-value" id="countdown-minutes">...</span><span class="countdown-label">Dakika</span></div>
         </div>
-        <p class="countdown-target" id="countdown-target-date"><?php echo esc_html($display_date); ?></p>
     </div>
     <?php if (is_user_logged_in()) : ?>
         <div class="lottery-card">

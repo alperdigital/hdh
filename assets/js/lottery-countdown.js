@@ -61,22 +61,33 @@
             const daysEl = document.getElementById('countdown-days');
             const hoursEl = document.getElementById('countdown-hours');
             const minutesEl = document.getElementById('countdown-minutes');
+            const targetDateEl = document.getElementById('countdown-target-date');
             
             if (!daysEl || !hoursEl || !minutesEl) return;
             
-            // If countdown finished
+            // If countdown finished or expired
             if (diff <= 0) {
                 daysEl.textContent = '0';
                 hoursEl.textContent = '0';
                 minutesEl.textContent = '0';
                 
                 // Show "Çekiliş Tamamlandı" message
-                const targetDateEl = document.getElementById('countdown-target-date');
                 if (targetDateEl) {
-                    targetDateEl.textContent = 'Çekiliş Tamamlandı!';
+                    targetDateEl.textContent = 'Çekiliş Tamamlandı! 🎉';
                     targetDateEl.style.color = 'var(--farm-green)';
                     targetDateEl.style.fontWeight = '700';
+                    targetDateEl.style.fontSize = '1.2rem';
                 }
+                
+                // Disable join buttons
+                const joinButtons = document.querySelectorAll('.btn-join-lottery');
+                joinButtons.forEach(btn => {
+                    if (!btn.disabled) {
+                        btn.disabled = true;
+                        btn.classList.add('disabled');
+                        btn.textContent = 'Çekiliş Tamamlandı';
+                    }
+                });
                 
                 return;
             }
@@ -86,10 +97,18 @@
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             
-            // Update display with padding
-            daysEl.textContent = days;
-            hoursEl.textContent = hours;
-            minutesEl.textContent = minutes;
+            // Update display (no padding, just numbers)
+            daysEl.textContent = days.toString();
+            hoursEl.textContent = hours.toString();
+            minutesEl.textContent = minutes.toString();
+            
+            // Ensure target date is visible and styled correctly
+            if (targetDateEl && targetDateEl.textContent.includes('--')) {
+                // Reset any "Tamamlandı" styling
+                targetDateEl.style.color = '';
+                targetDateEl.style.fontWeight = '';
+                targetDateEl.style.fontSize = '';
+            }
         }
         
         // Initial update

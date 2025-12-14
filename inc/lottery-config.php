@@ -90,6 +90,27 @@ add_action('wp_ajax_hdh_get_server_time', 'hdh_ajax_get_server_time');
 add_action('wp_ajax_nopriv_hdh_get_server_time', 'hdh_ajax_get_server_time');
 
 /**
+ * Format date in Turkish locale
+ * 
+ * @param DateTime $dt DateTime object
+ * @return string Formatted date in Turkish
+ */
+function hdh_format_date_turkish($dt) {
+    $months_tr = array(
+        1 => 'Ocak', 2 => 'Şubat', 3 => 'Mart', 4 => 'Nisan',
+        5 => 'Mayıs', 6 => 'Haziran', 7 => 'Temmuz', 8 => 'Ağustos',
+        9 => 'Eylül', 10 => 'Ekim', 11 => 'Kasım', 12 => 'Aralık'
+    );
+    
+    $day = $dt->format('d');
+    $month = (int) $dt->format('m');
+    $year = $dt->format('Y');
+    $time = $dt->format('H:i');
+    
+    return sprintf('%s %s %s, %s', $day, $months_tr[$month], $year, $time);
+}
+
+/**
  * AJAX endpoint: Get lottery info
  */
 function hdh_ajax_get_lottery_info() {
@@ -103,11 +124,15 @@ function hdh_ajax_get_lottery_info() {
     // Calculate time remaining
     $diff = $next_dt->getTimestamp() - $now_dt->getTimestamp();
     
+    // Convert to Turkey timezone for display
+    $next_dt_turkey = clone $next_dt;
+    $next_dt_turkey->setTimezone(new DateTimeZone('Europe/Istanbul'));
+    
     wp_send_json_success(array(
         'nextLotteryDate' => $next_date,
         'serverTime' => $server_time,
         'timeRemaining' => max(0, $diff),
-        'lotteryDateFormatted' => $next_dt->setTimezone(new DateTimeZone('Europe/Istanbul'))->format('d F Y, H:i') . ' (TSI)'
+        'lotteryDateFormatted' => hdh_format_date_turkish($next_dt_turkey) . ' (TSI)'
     ));
 }
 add_action('wp_ajax_hdh_get_lottery_info', 'hdh_ajax_get_lottery_info');
