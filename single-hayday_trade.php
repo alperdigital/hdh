@@ -9,20 +9,72 @@ get_header();
 if (!have_posts()) : ?>
     <main class="single-trade-main">
         <div class="container">
-            <div class="trade-not-found">
-                <h1>İlan Bulunamadı</h1>
-                <p>Bu ilan mevcut değil veya silinmiş olabilir.</p>
-                <a href="<?php echo esc_url(home_url('/ara')); ?>" class="btn-back">← İlanlara Dön</a>
+            <div class="trade-not-found-card">
+                <div class="trade-not-found-icon">🔍</div>
+                <h1 class="trade-not-found-title">İlan Bulunamadı</h1>
+                <div class="trade-not-found-reasons">
+                    <p class="trade-not-found-text">Bu ilan artık mevcut değil. Bunun nedeni:</p>
+                    <ul class="trade-not-found-list">
+                        <li>İlan sahibi tarafından kaldırılmış olabilir</li>
+                        <li>Takas tamamlanmış ve ilan kapanmış olabilir</li>
+                        <li>İlan süresi dolmuş olabilir</li>
+                        <li>Yanlış bir bağlantı kullanmış olabilirsiniz</li>
+                    </ul>
+                </div>
+                <div class="trade-not-found-actions">
+                    <a href="<?php echo esc_url(home_url('/ara')); ?>" class="btn-primary-action">
+                        <span class="btn-icon">🔍</span>
+                        <span class="btn-text">Diğer İlanları İncele</span>
+                    </a>
+                    <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-secondary-action">
+                        <span class="btn-icon">➕</span>
+                        <span class="btn-text">Yeni İlan Oluştur</span>
+                    </a>
+                </div>
+                <div class="trade-not-found-help">
+                    <p>Sorun devam ediyorsa, <a href="<?php echo esc_url(home_url('/profil')); ?>">destek</a> ile iletişime geçebilirsiniz.</p>
+                </div>
             </div>
         </div>
     </main>
 <?php else :
     while (have_posts()) : the_post();
         $post_id = get_the_ID();
-        $trade_data = hdh_get_trade_data();
+        $post_status = get_post_status($post_id);
         $author_id = get_post_field('post_author', $post_id);
         $current_user_id = get_current_user_id();
         $is_owner = ($current_user_id == $author_id);
+        
+        // Check if post is not published and user is not owner/admin
+        if ($post_status !== 'publish' && !$is_owner && !current_user_can('administrator')) {
+            ?>
+            <main class="single-trade-main">
+                <div class="container">
+                    <div class="trade-not-found-card">
+                        <div class="trade-not-found-icon">🚫</div>
+                        <h1 class="trade-not-found-title">İlan Pasif Durumda</h1>
+                        <div class="trade-not-found-reasons">
+                            <p class="trade-not-found-text">Bu ilan şu anda aktif değil.</p>
+                            <ul class="trade-not-found-list">
+                                <li>İlan sahibi ilanı pasife almış olabilir</li>
+                                <li>İlan henüz yayınlanmamış olabilir</li>
+                            </ul>
+                        </div>
+                        <div class="trade-not-found-actions">
+                            <a href="<?php echo esc_url(home_url('/ara')); ?>" class="btn-primary-action">
+                                <span class="btn-icon">🔍</span>
+                                <span class="btn-text">Aktif İlanları İncele</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <?php
+            get_footer();
+            exit;
+        }
+        
+        $trade_data = hdh_get_trade_data();
         
         // Get trade status and accepted offer
         $trade_status = get_post_meta($post_id, '_hdh_trade_status', true) ?: 'open';

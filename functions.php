@@ -70,6 +70,11 @@ function hdh_enqueue_scripts() {
         wp_enqueue_style('hdh-legal-pages', get_template_directory_uri() . '/assets/css/legal-pages.css', array('hdh-farm-style'), '1.0.0');
     }
     
+    // Enqueue 404 page CSS
+    if (is_404()) {
+        wp_enqueue_style('hdh-404-page', get_template_directory_uri() . '/assets/css/404-page.css', array('hdh-farm-style'), '1.0.0');
+    }
+    
     wp_enqueue_script('jquery');
     
     wp_enqueue_script(

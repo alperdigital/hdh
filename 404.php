@@ -1,60 +1,55 @@
 <?php
 /**
  * 404 Error Page Template
+ * HDH: User-friendly 404 page
  */
 
 get_header();
 ?>
 
-<main>
+<main class="error-404-main">
     <div class="container">
-        <?php mi_breadcrumbs(); ?>
-        
-        <div class="error-404">
-            <div class="error-content">
-                <div class="error-icon">
-                    <span class="error-number">404</span>
-                </div>
-                <h1 class="error-title"><?php _e('Sayfa Bulunamadı', 'mi-theme'); ?></h1>
-                <p class="error-description">
-                    <?php _e('Aradığınız sayfa mevcut değil veya taşınmış olabilir.', 'mi-theme'); ?>
-                </p>
-                
-                <div class="error-actions">
-                    <a href="<?php echo esc_url(home_url('/')); ?>" class="error-button">
-                        <?php _e('Ana Sayfaya Dön', 'mi-theme'); ?>
+        <div class="error-404-card">
+            <div class="error-404-icon">🌾</div>
+            <h1 class="error-404-title">Sayfa Bulunamadı</h1>
+            <p class="error-404-code">404</p>
+            <div class="error-404-content">
+                <p class="error-404-text">Aradığınız sayfa bulunamadı. Bu sayfaya ulaşmaya çalışırken bir sorun oluşmuş olabilir.</p>
+                <p class="error-404-subtext">Muhtemelen aradığınız sayfa taşınmış, silinmiş veya hiç var olmamış olabilir.</p>
+            </div>
+            
+            <div class="error-404-search">
+                <h2 class="error-404-search-title">Ne Arıyordunuz?</h2>
+                <div class="error-404-suggestions">
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="suggestion-link">
+                        <span class="suggestion-icon">🏠</span>
+                        <span class="suggestion-text">Ana Sayfa</span>
                     </a>
-                    <button onclick="history.back()" class="error-button error-button-secondary">
-                        <?php _e('Geri Git', 'mi-theme'); ?>
-                    </button>
+                    <a href="<?php echo esc_url(home_url('/ara')); ?>" class="suggestion-link">
+                        <span class="suggestion-icon">🔍</span>
+                        <span class="suggestion-text">İlan Ara</span>
+                    </a>
+                    <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="suggestion-link">
+                        <span class="suggestion-icon">➕</span>
+                        <span class="suggestion-text">İlan Ver</span>
+                    </a>
+                    <a href="<?php echo esc_url(home_url('/cekilis')); ?>" class="suggestion-link">
+                        <span class="suggestion-icon">🎟️</span>
+                        <span class="suggestion-text">Çekiliş</span>
+                    </a>
+                    <a href="<?php echo esc_url(home_url('/dekorlar')); ?>" class="suggestion-link">
+                        <span class="suggestion-icon">🎨</span>
+                        <span class="suggestion-text">Dekorlar</span>
+                    </a>
+                    <a href="<?php echo esc_url(home_url('/profil')); ?>" class="suggestion-link">
+                        <span class="suggestion-icon">👤</span>
+                        <span class="suggestion-text">Profil</span>
+                    </a>
                 </div>
-                
-                <div class="error-search">
-                    <h3><?php _e('Arama Yapın', 'mi-theme'); ?></h3>
-                    <?php get_search_form(); ?>
-                </div>
-                
-                <div class="error-suggestions">
-                    <h3><?php _e('Popüler İçerikler', 'mi-theme'); ?></h3>
-                    <?php
-                    $popular = new WP_Query(array(
-                        'post_type' => 'post',
-                        'posts_per_page' => 5,
-                        'meta_key' => 'mi_post_views_count',
-                        'orderby' => 'meta_value_num',
-                        'order' => 'DESC',
-                    ));
-                    
-                    if ($popular->have_posts()) :
-                        echo '<ul class="popular-links">';
-                        while ($popular->have_posts()) : $popular->the_post();
-                            echo '<li><a href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . '</a></li>';
-                        endwhile;
-                        echo '</ul>';
-                        wp_reset_postdata();
-                    endif;
-                    ?>
-                </div>
+            </div>
+            
+            <div class="error-404-help">
+                <p>Sorun devam ediyorsa, lütfen <a href="<?php echo esc_url(home_url('/profil')); ?>">destek</a> ile iletişime geçin.</p>
             </div>
         </div>
     </div>
@@ -63,4 +58,3 @@ get_header();
 <?php
 get_footer();
 ?>
-

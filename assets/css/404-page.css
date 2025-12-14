@@ -1,0 +1,225 @@
+/* ============================================
+   404 ERROR PAGE
+   ============================================ */
+
+.error-404-main {
+    padding: 60px 20px 120px;
+    background: #FFF6D8;
+    min-height: calc(100vh - 200px);
+}
+
+.error-404-main .container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.error-404-card {
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 16px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.error-404-icon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.error-404-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 12px 0;
+}
+
+.error-404-code {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--newspaper-text-light);
+    margin: 0 0 32px 0;
+    font-family: monospace;
+}
+
+.error-404-content {
+    margin: 32px 0;
+}
+
+.error-404-text {
+    font-size: 1.1rem;
+    color: var(--newspaper-text);
+    margin: 0 0 12px 0;
+    line-height: 1.6;
+}
+
+.error-404-subtext {
+    font-size: 0.95rem;
+    color: var(--newspaper-text-light);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.error-404-search {
+    margin: 40px 0;
+    padding: 32px 0;
+    border-top: 2px solid rgba(201, 184, 138, 0.2);
+    border-bottom: 2px solid rgba(201, 184, 138, 0.2);
+}
+
+.error-404-search-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 24px 0;
+}
+
+.error-404-suggestions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.suggestion-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 16px;
+    background: rgba(139, 195, 74, 0.05);
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.suggestion-link:hover {
+    background: rgba(139, 195, 74, 0.1);
+    border-color: var(--farm-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 195, 74, 0.2);
+}
+
+.suggestion-icon {
+    font-size: 2rem;
+}
+
+.suggestion-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+}
+
+.error-404-help {
+    margin-top: 32px;
+}
+
+.error-404-help p {
+    font-size: 0.9rem;
+    color: var(--newspaper-text-light);
+    margin: 0;
+}
+
+.error-404-help a {
+    color: var(--farm-green);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.error-404-help a:hover {
+    color: var(--farm-green-dark);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .error-404-main {
+        padding: 40px 15px 100px;
+    }
+    
+    .error-404-card {
+        padding: 40px 24px;
+        border-radius: 12px;
+    }
+    
+    .error-404-icon {
+        font-size: 4.5rem;
+    }
+    
+    .error-404-title {
+        font-size: 2rem;
+    }
+    
+    .error-404-code {
+        font-size: 1rem;
+    }
+    
+    .error-404-text {
+        font-size: 1rem;
+    }
+    
+    .error-404-subtext {
+        font-size: 0.9rem;
+    }
+    
+    .error-404-search {
+        margin: 32px 0;
+        padding: 24px 0;
+    }
+    
+    .error-404-search-title {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+    
+    .error-404-suggestions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .suggestion-link {
+        padding: 16px 12px;
+    }
+    
+    .suggestion-icon {
+        font-size: 1.8rem;
+    }
+    
+    .suggestion-text {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-404-card {
+        padding: 32px 20px;
+    }
+    
+    .error-404-icon {
+        font-size: 4rem;
+    }
+    
+    .error-404-title {
+        font-size: 1.6rem;
+    }
+    
+    .error-404-suggestions {
+        grid-template-columns: 1fr;
+    }
+    
+    .suggestion-link {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+    }
+    
+    .suggestion-icon {
+        font-size: 1.5rem;
+    }
+    
+    .suggestion-text {
+        font-size: 0.95rem;
+    }
+}
+
