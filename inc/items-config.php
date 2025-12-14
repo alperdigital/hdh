@@ -15,44 +15,47 @@ if (!defined('ABSPATH')) {
  * @return array Associative array of items with 'label' and 'image' keys
  */
 function hdh_get_items_config() {
-    $template_uri = get_template_directory_uri();
+    // Use versioned asset URLs for cache busting
+    $get_asset = function_exists('hdh_get_asset_url') ? 'hdh_get_asset_url' : function($path) {
+        return get_template_directory_uri() . '/' . ltrim($path, '/');
+    };
     
     return array(
         'civata' => array(
             'label' => 'Cıvata',
-            'image' => $template_uri . '/assets/items/civata.svg',
+            'image' => $get_asset('assets/items/civata.svg'),
         ),
         'kalas' => array(
             'label' => 'Kalas',
-            'image' => $template_uri . '/assets/items/kalas.svg',
+            'image' => $get_asset('assets/items/kalas.svg'),
         ),
         'bant' => array(
             'label' => 'Bant',
-            'image' => $template_uri . '/assets/items/bant.svg',
+            'image' => $get_asset('assets/items/bant.svg'),
         ),
         'civi' => array(
             'label' => 'Çivi',
-            'image' => $template_uri . '/assets/items/civi.svg',
+            'image' => $get_asset('assets/items/civi.svg'),
         ),
         'vida' => array(
             'label' => 'Vida',
-            'image' => $template_uri . '/assets/items/vida.svg',
+            'image' => $get_asset('assets/items/vida.svg'),
         ),
         'tahta' => array(
             'label' => 'Ahşap Levha',
-            'image' => $template_uri . '/assets/items/tahta.svg',
+            'image' => $get_asset('assets/items/tahta.svg'),
         ),
         'kazik' => array(
             'label' => 'İşaret Kazığı',
-            'image' => $template_uri . '/assets/items/kazik.svg',
+            'image' => $get_asset('assets/items/kazik.svg'),
         ),
         'tokmak' => array(
             'label' => 'Tokmak',
-            'image' => $template_uri . '/assets/items/tokmak.svg',
+            'image' => $get_asset('assets/items/tokmak.svg'),
         ),
         'tapu' => array(
             'label' => 'Tapu',
-            'image' => $template_uri . '/assets/items/tapu.svg',
+            'image' => $get_asset('assets/items/tapu.svg'),
         ),
     );
 }
