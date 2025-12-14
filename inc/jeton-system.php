@@ -16,6 +16,12 @@ function hdh_add_jeton($user_id, $amount, $reason = '', $metadata = array()) {
     $new = $current + $amount;
     update_user_meta($user_id, 'hdh_jeton_balance', $new);
     hdh_log_jeton_transaction($user_id, $amount, 'add', $reason, $metadata);
+    
+    // Track reward event (if event system is loaded)
+    if (function_exists('hdh_track_reward')) {
+        hdh_track_reward($user_id, 'bilet', $amount, $reason, $metadata);
+    }
+    
     return true;
 }
 
@@ -26,6 +32,16 @@ function hdh_spend_jeton($user_id, $amount, $reason = '', $metadata = array()) {
     $new = $current - $amount;
     update_user_meta($user_id, 'hdh_jeton_balance', $new);
     hdh_log_jeton_transaction($user_id, $amount, 'spend', $reason, $metadata);
+    
+    // Track action event (if event system is loaded)
+    if (function_exists('hdh_track_action')) {
+        hdh_track_action($user_id, 'bilet_spent', array(
+            'amount' => $amount,
+            'reason' => $reason,
+            'metadata' => $metadata,
+        ));
+    }
+    
     return true;
 }
 
