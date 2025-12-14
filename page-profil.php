@@ -164,6 +164,7 @@ if (!$is_logged_in) {
                                 autocomplete="email"
                                 placeholder="ornek@email.com"
                             >
+                            <small class="auth-help">E-postanı doğrula <strong>+1 bilet</strong> kazan 🎟️</small>
                         </div>
                         
                         <div class="auth-field">
@@ -189,9 +190,7 @@ if (!$is_logged_in) {
                                 autocomplete="tel"
                                 placeholder="+90 5XX XXX XX XX"
                             >
-                            <div class="auth-tip">
-                                <strong>💡 İpucu:</strong> Telefon numaranızı belirtirseniz hesabınız <strong>mavi tikli</strong> olacaktır ve diğer kullanıcılar size daha çok güvenecektir.
-                            </div>
+                            <small class="auth-help">Telefon numaranı doğrula <strong>+4 bilet</strong> kazan 🎟️</small>
                         </div>
                         
                         <div class="auth-field">

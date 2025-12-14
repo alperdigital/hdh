@@ -16,7 +16,7 @@
             <div class="container">
                 <p class="farm-announcement-text">
                     <?php 
-                    $announcement = get_theme_mod('hdh_announcement_text', '🎁 Rehber, Hediyeleşme ve Çekiliş Merkezi!');
+                    $announcement = get_theme_mod('hdh_announcement_text', '🎁 Hediyeleşme ve Çekiliş Merkezi!');
                     echo esc_html($announcement);
                     ?>
                 </p>

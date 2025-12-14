@@ -21,7 +21,7 @@ get_header();
 
                 <section class="legal-section">
                     <h2>2. Sözleşmenin Konusu</h2>
-                    <p>İşbu Sözleşme'nin konusu, Platform'un sunduğu hizmetlerden Üye'nin faydalanma şartlarının belirlenmesidir. Platform, Hay Day oyunu oyuncularının sanal ürün takası yapabilecekleri bir topluluk platformudur.</p>
+                    <p>İşbu Sözleşme'nin konusu, Platform'un sunduğu hizmetlerden Üye'nin faydalanma şartlarının belirlenmesidir. Platform, multiplayer oyun oyuncularının sanal ürün takası yapabilecekleri bir topluluk platformudur.</p>
                 </section>
 
                 <section class="legal-section">
@@ -93,7 +93,7 @@ get_header();
                     <ul>
                         <li>Tamamen ücretsizdir (bilet ile katılım)</li>
                         <li>Şans oyunudur, kazanma garantisi yoktur</li>
-                        <li>Ödüller oyun içi ürünlerdir</li>
+                        <li>Ödüller sanal ürünlerdir</li>
                         <li>Platform çekiliş kurallarını değiştirme hakkını saklı tutar</li>
                         <li>Hile tespit edilirse katılım iptal edilir</li>
                     </ul>

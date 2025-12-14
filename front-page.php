@@ -36,7 +36,7 @@ $recent_listings = new WP_Query($recent_listings_args);
     <section class="homepage-hero">
         <div class="container">
             <h1 class="homepage-headline">Hediyeleşmeye Başla</h1>
-            <p class="homepage-subtitle">Hay Day oyuncularıyla güvenle hediyeleş</p>
+            <p class="homepage-subtitle">Diğer çiftliklerle güvenle hediyeleş</p>
             <a href="<?php echo esc_url(home_url('/ara')); ?>" class="homepage-primary-cta">
                 Hediyeni Seç
             </a>
