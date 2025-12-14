@@ -102,26 +102,34 @@ if (!$is_logged_in) {
                     <?php
                     $register_error = isset($_GET['registration_error']) ? $_GET['registration_error'] : '';
                     if ($register_error) {
+                        $error_messages = array(
+                            'farm_name_required' => 'Çiftlik adı gereklidir',
+                            'farm_name_too_short' => 'Çiftlik adı en az 3 karakter olmalıdır',
+                            'farm_name_too_long' => 'Çiftlik adı en fazla 50 karakter olabilir',
+                            'username_exists' => 'Bu çiftlik adı zaten kullanılıyor',
+                            'email_required' => 'E-posta adresi gereklidir',
+                            'email_invalid' => 'Geçerli bir e-posta adresi girin',
+                            'email_exists' => 'Bu e-posta adresi zaten kayıtlı',
+                            'farm_tag_required' => 'Çiftlik etiketi gereklidir',
+                            'farm_tag_invalid_format' => 'Çiftlik etiketi #ABC123 formatında olmalıdır',
+                            'farm_tag_exists' => 'Bu çiftlik etiketi zaten kullanılıyor',
+                            'phone_invalid' => 'Geçerli bir telefon numarası girin (örnek: +90 5XX XXX XX XX)',
+                            'password_required' => 'Şifre gereklidir',
+                            'password_too_short' => 'Şifre en az 6 karakter olmalıdır',
+                            'password_too_long' => 'Şifre en fazla 100 karakter olabilir',
+                            'terms_not_accepted' => 'Üyelik sözleşmesini kabul etmelisiniz',
+                            'empty_fields' => 'Lütfen tüm zorunlu alanları doldurun',
+                        );
+                        
+                        // Handle multiple errors (comma-separated)
+                        $errors = explode(',', $register_error);
                         echo '<div class="auth-message auth-error">';
-                        switch ($register_error) {
-                            case 'empty_fields':
-                                echo 'Lütfen tüm zorunlu alanları doldurun.';
-                                break;
-                            case 'farm_tag_exists':
-                                echo 'Bu çiftlik etiketi zaten kullanılıyor.';
-                                break;
-                            case 'email_exists':
-                                echo 'Bu e-posta adresi zaten kayıtlı.';
-                                break;
-                            case 'username_exists':
-                                echo 'Bu çiftlik adı zaten kullanılıyor.';
-                                break;
-                            case 'terms_not_accepted':
-                                echo 'Üyelik sözleşmesini kabul etmelisiniz.';
-                                break;
-                            default:
-                                echo 'Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.';
+                        echo '<ul class="error-list">';
+                        foreach ($errors as $error_code) {
+                            $message = isset($error_messages[$error_code]) ? $error_messages[$error_code] : 'Bir hata oluştu';
+                            echo '<li>' . esc_html($message) . '</li>';
                         }
+                        echo '</ul>';
                         echo '</div>';
                     }
                     ?>

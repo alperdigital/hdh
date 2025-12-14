@@ -491,38 +491,79 @@ function hdh_handle_custom_registration_submit() {
     $redirect_to = isset($_POST['redirect_to']) ? esc_url_raw($_POST['redirect_to']) : home_url('/');
     $redirect_to_trade = isset($_POST['redirect_to_trade']) && $_POST['redirect_to_trade'] === '1';
     
-    // Validation
-    if (empty($farm_name) || empty($user_email) || empty($user_pass) || empty($farm_tag)) {
-        wp_redirect(add_query_arg('registration_error', 'empty_fields', $redirect_to));
-        exit;
+    // Enhanced validation with detailed error messages
+    $errors = array();
+    
+    // Validate farm name
+    if (empty($farm_name)) {
+        $errors['farm_name'] = 'farm_name_required';
+    } elseif (strlen($farm_name) < 3) {
+        $errors['farm_name'] = 'farm_name_too_short';
+    } elseif (strlen($farm_name) > 50) {
+        $errors['farm_name'] = 'farm_name_too_long';
+    } elseif (username_exists($farm_name)) {
+        $errors['farm_name'] = 'username_exists';
     }
     
+    // Validate email
+    if (empty($user_email)) {
+        $errors['user_email'] = 'email_required';
+    } elseif (!is_email($user_email)) {
+        $errors['user_email'] = 'email_invalid';
+    } elseif (email_exists($user_email)) {
+        $errors['user_email'] = 'email_exists';
+    }
+    
+    // Validate farm tag
+    if (empty($farm_tag)) {
+        $errors['farm_tag'] = 'farm_tag_required';
+    } else {
+        // Normalize farm tag
+        $farm_tag = strtoupper(trim($farm_tag));
+        
+        // Farm tag format: #ABC123 or #ABCDEF
+        if (!preg_match('/^#[A-Z0-9]{5,6}$/', $farm_tag)) {
+            $errors['farm_tag'] = 'farm_tag_invalid_format';
+        } else {
+            // Check if farm tag exists
+            $existing_user = get_users(array(
+                'meta_key' => 'farm_tag',
+                'meta_value' => $farm_tag,
+                'number' => 1
+            ));
+            
+            if (!empty($existing_user)) {
+                $errors['farm_tag'] = 'farm_tag_exists';
+            }
+        }
+    }
+    
+    // Validate phone number (optional)
+    if (!empty($phone_number)) {
+        $clean_phone = preg_replace('/[\s\-\(\)]/', '', $phone_number);
+        if (!preg_match('/^(\+90|0)?5\d{9}$/', $clean_phone)) {
+            $errors['phone_number'] = 'phone_invalid';
+        }
+    }
+    
+    // Validate password
+    if (empty($user_pass)) {
+        $errors['user_pass'] = 'password_required';
+    } elseif (strlen($user_pass) < 6) {
+        $errors['user_pass'] = 'password_too_short';
+    } elseif (strlen($user_pass) > 100) {
+        $errors['user_pass'] = 'password_too_long';
+    }
+    
+    // Validate terms acceptance
     if (!$accept_terms) {
-        wp_redirect(add_query_arg('registration_error', 'terms_not_accepted', $redirect_to));
-        exit;
+        $errors['accept_terms'] = 'terms_not_accepted';
     }
     
-    // Check if farm tag exists
-    $existing_user = get_users(array(
-        'meta_key' => 'farm_tag',
-        'meta_value' => $farm_tag,
-        'number' => 1
-    ));
-    
-    if (!empty($existing_user)) {
-        wp_redirect(add_query_arg('registration_error', 'farm_tag_exists', $redirect_to));
-        exit;
-    }
-    
-    // Check if email exists
-    if (email_exists($user_email)) {
-        wp_redirect(add_query_arg('registration_error', 'email_exists', $redirect_to));
-        exit;
-    }
-    
-    // Check if username exists
-    if (username_exists($farm_name)) {
-        wp_redirect(add_query_arg('registration_error', 'username_exists', $redirect_to));
+    // If there are errors, redirect with error codes
+    if (!empty($errors)) {
+        $error_string = implode(',', array_values($errors));
+        wp_redirect(add_query_arg('registration_error', $error_string, $redirect_to));
         exit;
     }
     
