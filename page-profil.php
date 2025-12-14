@@ -16,7 +16,7 @@ if (!$is_logged_in) {
             <div class="auth-screen">
                 <div class="auth-header">
                     <h1 class="auth-title">Hesabına Giriş Yap</h1>
-                    <p class="auth-subtitle">Hediye Jetonu biriktirmek ve hediyeleşmek için giriş yap.</p>
+                    <p class="auth-subtitle">Bilet biriktirmek ve hediyeleşmek için giriş yap.</p>
                 </div>
                 
                 <!-- Tab Switcher -->
@@ -259,10 +259,10 @@ if (!$is_logged_in) {
                         </div>
                         
                         <div class="profile-stat-item">
-                            <div class="stat-icon">🪙</div>
+                            <div class="stat-icon">🎟️</div>
                             <div class="stat-content">
                                 <div class="stat-value"><?php echo esc_html(number_format_i18n($jeton_balance)); ?></div>
-                                <div class="stat-label">Hediye Jetonu</div>
+                                <div class="stat-label">Bilet</div>
                             </div>
                         </div>
                     </div>

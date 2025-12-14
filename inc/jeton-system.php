@@ -1,6 +1,6 @@
 <?php
 /**
- * HDH: Jeton Economy System
+ * HDH: Bilet Economy System (formerly Jeton)
  */
 
 if (!defined('ABSPATH')) exit;

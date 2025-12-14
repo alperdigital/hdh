@@ -9,7 +9,7 @@ function hdh_handle_claim_daily_jeton() {
         $result = hdh_claim_daily_jeton($user_id);
         if (is_wp_error($result)) { wp_send_json_error(array('message' => $result->get_error_message())); return; }
         $new_balance = function_exists('hdh_get_user_jeton_balance') ? hdh_get_user_jeton_balance($user_id) : 0;
-        wp_send_json_success(array('message' => 'Günlük jetonunuz alındı!', 'new_balance' => $new_balance));
+        wp_send_json_success(array('message' => 'Günlük biletiniz alındı!', 'new_balance' => $new_balance));
     } else {
         wp_send_json_error(array('message' => 'Jeton sistemi aktif değil'));
     }

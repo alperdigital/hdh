@@ -9,7 +9,7 @@ function hdh_handle_join_lottery() {
     $jeton_cost = isset($_POST['jeton_cost']) ? absint($_POST['jeton_cost']) : 0;
     if (!in_array($lottery_type, array('kurek', 'genisletme')) || $jeton_cost <= 0) { wp_send_json_error(array('message' => 'Geçersiz parametreler')); return; }
     $balance = function_exists('hdh_get_user_jeton_balance') ? hdh_get_user_jeton_balance($user_id) : 0;
-    if ($balance < $jeton_cost) { wp_send_json_error(array('message' => 'Yetersiz jeton bakiyesi')); return; }
+    if ($balance < $jeton_cost) { wp_send_json_error(array('message' => 'Yetersiz bilet')); return; }
     $today = date('Y-m-d');
     $entries_today = hdh_get_lottery_entries_today($user_id, $lottery_type, $today);
     if ($entries_today >= 3) { wp_send_json_error(array('message' => 'Bugün bu çekilişe maksimum 3 kez katılabilirsiniz')); return; }

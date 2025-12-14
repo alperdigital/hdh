@@ -22,22 +22,22 @@ if (!function_exists('hdh_render_tasks_panel')) {
             <div class="tasks-list">
                 <div class="task-item <?php echo $can_claim_daily ? '' : 'task-completed'; ?>">
                     <div class="task-info">
-                        <span class="task-icon">🪙</span>
-                        <div class="task-details"><span class="task-name">Günlük Jeton Al</span><span class="task-reward">+1 Jeton</span></div>
+                        <span class="task-icon">🎟️</span>
+                        <div class="task-details"><span class="task-name">Günlük Bilet Al</span><span class="task-reward">+1 Bilet</span></div>
                     </div>
                     <?php if ($can_claim_daily) : ?><button class="btn-claim-daily" data-user-id="<?php echo esc_attr($user_id); ?>">Al</button><?php else : ?><span class="task-status">✅ Tamamlandı</span><?php endif; ?>
                 </div>
                 <div class="task-item <?php echo $created_listing_today ? 'task-completed' : ''; ?>">
                     <div class="task-info">
                         <span class="task-icon">📝</span>
-                        <div class="task-details"><span class="task-name">İlan Oluştur</span><span class="task-reward">+2 Jeton</span></div>
+                        <div class="task-details"><span class="task-name">İlan Oluştur</span><span class="task-reward">+2 Bilet</span></div>
                     </div>
                     <?php if ($created_listing_today) : ?><span class="task-status">✅ Tamamlandı</span><?php else : ?><a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task">Yap</a><?php endif; ?>
                 </div>
                 <div class="task-item <?php echo $completed_exchange_today ? 'task-completed' : ''; ?>">
                     <div class="task-info">
                         <span class="task-icon">🎁</span>
-                        <div class="task-details"><span class="task-name">Hediyeleşmeyi Tamamla</span><span class="task-reward">+5 Jeton</span></div>
+                        <div class="task-details"><span class="task-name">Hediyeleşmeyi Tamamla</span><span class="task-reward">+5 Bilet</span></div>
                     </div>
                     <?php if ($completed_exchange_today) : ?><span class="task-status">✅ Tamamlandı</span><?php else : ?><span class="task-status">Beklemede</span><?php endif; ?>
                 </div>

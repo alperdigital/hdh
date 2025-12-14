@@ -12,10 +12,10 @@ $genisletme_entries_today = $user_id && function_exists('hdh_get_lottery_entries
     <h1 class="lottery-page-title">Çekiliş</h1>
     <?php if (is_user_logged_in()) : ?>
         <div class="lottery-balance-section"><div class="jeton-balance-display">
-            <span class="jeton-icon-large">🪙</span>
+            <span class="jeton-icon-large">🎟️</span>
             <div class="jeton-balance-info">
                 <span class="jeton-balance-amount"><?php echo esc_html(number_format_i18n($jeton_balance)); ?></span>
-                <span class="jeton-balance-label">Hediye Jetonu</span>
+                <span class="jeton-balance-label">Bilet</span>
             </div>
         </div></div>
     <?php else : ?>
@@ -37,27 +37,27 @@ $genisletme_entries_today = $user_id && function_exists('hdh_get_lottery_entries
         <div class="lottery-card">
             <div class="lottery-header">
                 <h3 class="lottery-name">89 Kürek Çekilişi</h3>
-                <span class="lottery-cost">1 🪙 Jeton</span>
+                <span class="lottery-cost">1 🎟️ Bilet</span>
             </div>
             <div class="lottery-info">
-                <p class="lottery-description">1 jeton ile katılabilirsiniz. Ödül: 89 Kürek</p>
+                <p class="lottery-description">1 bilet ile katılabilirsiniz. Ödül: 89 Kürek</p>
                 <p class="lottery-entries-info">Bugünkü katılımlarınız: <strong><?php echo esc_html($kurek_entries_today); ?>/3</strong></p>
             </div>
             <button class="btn-join-lottery <?php echo ($jeton_balance < 1 || $kurek_entries_today >= 3) ? 'disabled' : ''; ?>" data-lottery-type="kurek" data-jeton-cost="1" <?php echo ($jeton_balance < 1 || $kurek_entries_today >= 3) ? 'disabled' : ''; ?>>
-                <?php if ($jeton_balance < 1) echo 'Yetersiz Jeton'; elseif ($kurek_entries_today >= 3) echo 'Günlük Limit Doldu'; else echo 'Çekilişe Katıl (1 🪙)'; ?>
+                <?php if ($jeton_balance < 1) echo 'Yetersiz Bilet'; elseif ($kurek_entries_today >= 3) echo 'Günlük Limit Doldu'; else echo 'Çekilişe Katıl (1 🎟️)'; ?>
             </button>
         </div>
         <div class="lottery-card">
             <div class="lottery-header">
                 <h3 class="lottery-name">89 Genişletme/Ağıl Malzemesi Çekilişi</h3>
-                <span class="lottery-cost">5 🪙 Jeton</span>
+                <span class="lottery-cost">5 🎟️ Bilet</span>
             </div>
             <div class="lottery-info">
-                <p class="lottery-description">5 jeton ile katılabilirsiniz. Ödül: 89 Genişletme/Ağıl Malzemesi</p>
+                <p class="lottery-description">5 bilet ile katılabilirsiniz. Ödül: 89 Genişletme/Ağıl Malzemesi</p>
                 <p class="lottery-entries-info">Bugünkü katılımlarınız: <strong><?php echo esc_html($genisletme_entries_today); ?>/3</strong></p>
             </div>
             <button class="btn-join-lottery <?php echo ($jeton_balance < 5 || $genisletme_entries_today >= 3) ? 'disabled' : ''; ?>" data-lottery-type="genisletme" data-jeton-cost="5" <?php echo ($jeton_balance < 5 || $genisletme_entries_today >= 3) ? 'disabled' : ''; ?>>
-                <?php if ($jeton_balance < 5) echo 'Yetersiz Jeton'; elseif ($genisletme_entries_today >= 3) echo 'Günlük Limit Doldu'; else echo 'Çekilişe Katıl (5 🪙)'; ?>
+                <?php if ($jeton_balance < 5) echo 'Yetersiz Bilet'; elseif ($genisletme_entries_today >= 3) echo 'Günlük Limit Doldu'; else echo 'Çekilişe Katıl (5 🎟️)'; ?>
             </button>
         </div>
     <?php endif; ?>

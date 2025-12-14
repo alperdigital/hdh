@@ -424,7 +424,7 @@ function hdh_handle_confirm_exchange() {
         }
         
         wp_send_json_success(array(
-            'message' => 'Hediyeleşme tamamlandı! Her iki taraf da +5 jeton kazandı.',
+            'message' => 'Hediyeleşme tamamlandı! Her iki taraf da +5 bilet kazandı.',
             'completed' => true
         ));
     } else {

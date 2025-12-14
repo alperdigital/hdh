@@ -16,7 +16,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        showToast('+1 Jeton kazandınız! 🪙', 'success');
+                        showToast('+1 Bilet kazandınız! 🎟️', 'success');
                         this.parentNode.classList.add('task-completed');
                         this.remove();
                         const status = document.createElement('span');

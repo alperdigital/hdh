@@ -8,7 +8,7 @@
                 const lotteryType = this.getAttribute('data-lottery-type');
                 const jetonCost = parseInt(this.getAttribute('data-jeton-cost'), 10);
                 if (!lotteryType || !jetonCost) { alert('Geçersiz parametreler'); return; }
-                if (!confirm('Çekilişe katılmak için ' + jetonCost + ' jeton harcanacak. Devam etmek istiyor musunuz?')) return;
+                if (!confirm('Çekilişe katılmak için ' + jetonCost + ' bilet harcanacak. Devam etmek istiyor musunuz?')) return;
                 this.disabled = true;
                 const originalText = this.textContent;
                 this.textContent = 'İşleniyor...';
