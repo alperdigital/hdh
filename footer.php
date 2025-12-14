@@ -18,9 +18,6 @@
             <?php endif; ?>
             
             <div class="footer-content">
-                <div class="footer-info">
-                    <p><?php echo esc_html(get_theme_mod('mi_footer_text', '© ' . date('Y') . ' ' . get_bloginfo('name') . '. Tüm hakları saklıdır.')); ?></p>
-                </div>
                 <div class="footer-links">
                     <?php
                     wp_nav_menu(array(
