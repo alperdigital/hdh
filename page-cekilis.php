@@ -7,6 +7,22 @@ $user_id = is_user_logged_in() ? get_current_user_id() : 0;
 $jeton_balance = $user_id && function_exists('hdh_get_user_jeton_balance') ? hdh_get_user_jeton_balance($user_id) : 0;
 $kurek_entries_today = $user_id && function_exists('hdh_get_lottery_entries_today') ? hdh_get_lottery_entries_today($user_id, 'kurek') : 0;
 $genisletme_entries_today = $user_id && function_exists('hdh_get_lottery_entries_today') ? hdh_get_lottery_entries_today($user_id, 'genisletme') : 0;
+
+// Get lottery date info
+$next_lottery_date = function_exists('hdh_get_next_lottery_date') ? hdh_get_next_lottery_date() : '';
+$server_time = function_exists('hdh_get_server_time_iso') ? hdh_get_server_time_iso() : '';
+
+// Format display date (Turkey time)
+$display_date = '';
+if (!empty($next_lottery_date)) {
+    try {
+        $dt = new DateTime($next_lottery_date);
+        $dt->setTimezone(new DateTimeZone('Europe/Istanbul'));
+        $display_date = $dt->format('d F Y, H:i') . ' (TSI)';
+    } catch (Exception $e) {
+        $display_date = '21 Aralık 2025, 20:00 (TSI)';
+    }
+}
 ?>
 <main class="lottery-page-main"><div class="container">
     <h1 class="lottery-page-title">Çekiliş</h1>
@@ -26,12 +42,14 @@ $genisletme_entries_today = $user_id && function_exists('hdh_get_lottery_entries
     <?php endif; ?>
     <div class="lottery-countdown-section">
         <h2 class="countdown-title">Çekiliş Tarihi</h2>
-        <div class="countdown-display" id="lottery-countdown">
-            <div class="countdown-item"><span class="countdown-value" id="countdown-days">0</span><span class="countdown-label">Gün</span></div>
-            <div class="countdown-item"><span class="countdown-value" id="countdown-hours">0</span><span class="countdown-label">Saat</span></div>
-            <div class="countdown-item"><span class="countdown-value" id="countdown-minutes">0</span><span class="countdown-label">Dakika</span></div>
+        <div class="countdown-display" id="lottery-countdown" 
+             data-lottery-date="<?php echo esc_attr($next_lottery_date); ?>"
+             data-server-time="<?php echo esc_attr($server_time); ?>">
+            <div class="countdown-item"><span class="countdown-value" id="countdown-days">--</span><span class="countdown-label">Gün</span></div>
+            <div class="countdown-item"><span class="countdown-value" id="countdown-hours">--</span><span class="countdown-label">Saat</span></div>
+            <div class="countdown-item"><span class="countdown-value" id="countdown-minutes">--</span><span class="countdown-label">Dakika</span></div>
         </div>
-        <p class="countdown-target">21 Aralık 2025, 20:00 (TSI)</p>
+        <p class="countdown-target" id="countdown-target-date"><?php echo esc_html($display_date); ?></p>
     </div>
     <?php if (is_user_logged_in()) : ?>
         <div class="lottery-card">
