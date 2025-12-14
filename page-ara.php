@@ -89,8 +89,16 @@ get_header();
                     <?php endwhile; ?>
                 <?php else : ?>
                     <div class="no-trades-message">
-                        <p>Henüz hediye ilanı bulunmamaktadır.</p>
-                        <p>İlk ilanı siz oluşturun!</p>
+                        <div class="no-trades-message-icon">🔍</div>
+                        <h3 class="no-trades-message-title">Henüz İlan Yok</h3>
+                        <p>Şu anda aktif hediye ilanı bulunmamaktadır.</p>
+                        <p>İlk ilanı siz oluşturarak topluluğa katkıda bulunun!</p>
+                        <div class="no-trades-message-actions">
+                            <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-create-listing">
+                                <span>➕</span>
+                                <span>İlan Oluştur</span>
+                            </a>
+                        </div>
                     </div>
                 <?php endif; 
                 wp_reset_postdata();

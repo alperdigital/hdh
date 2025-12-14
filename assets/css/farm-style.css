@@ -1426,14 +1426,26 @@ h6 { font-size: 1.1rem; }
 
 .trade-loading {
     text-align: center;
-    padding: 40px 20px;
-    color: var(--newspaper-text);
+    padding: 60px 40px;
+    background: #FFF6D8;
+    border-radius: 16px;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 40px 0;
 }
 
 .loading-spinner {
     font-size: 3rem;
     animation: spin 1s linear infinite;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.trade-loading p {
+    font-size: 1.1rem;
+    color: var(--newspaper-text);
+    margin: 0;
+    font-weight: 600;
 }
 
 @keyframes spin {
@@ -1463,18 +1475,110 @@ h6 { font-size: 1.1rem; }
 
 .no-trades-message {
     text-align: center;
-    padding: 60px 20px;
-    background: linear-gradient(135deg, var(--newyear-snow) 0%, var(--newyear-ice) 100%);
-    border-radius: var(--radius-large);
-    border: 3px dashed var(--newyear-red);
-    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.1);
+    padding: 60px 40px;
+    background: #FFF6D8;
+    border-radius: 16px;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 40px 0;
+}
+
+.no-trades-message-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.no-trades-message-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 16px 0;
 }
 
 .no-trades-message p {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: var(--newspaper-text);
-    margin: 10px 0;
+    margin: 12px 0;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.no-trades-message p:last-child {
+    margin-bottom: 0;
+}
+
+.no-trades-message-actions {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-create-listing,
+.btn-clear-filter-inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 12px;
     font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-height: 52px;
+}
+
+.btn-create-listing {
+    background: var(--farm-green);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(139, 195, 74, 0.3);
+}
+
+.btn-create-listing:hover {
+    background: var(--farm-green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(139, 195, 74, 0.4);
+}
+
+.btn-clear-filter-inline {
+    background: #FFF6D8;
+    color: var(--newspaper-text);
+    border: 2px solid rgba(201, 184, 138, 0.4);
+}
+
+.btn-clear-filter-inline:hover {
+    background: rgba(201, 184, 138, 0.1);
+    border-color: var(--wood-brown);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .no-trades-message {
+        padding: 40px 24px;
+        margin: 30px 0;
+    }
+    
+    .no-trades-message-icon {
+        font-size: 3.5rem;
+    }
+    
+    .no-trades-message-title {
+        font-size: 1.3rem;
+    }
+    
+    .no-trades-message p {
+        font-size: 1rem;
+    }
+    
+    .btn-create-listing,
+    .btn-clear-filter-inline {
+        width: 100%;
+        max-width: 300px;
+    }
 }
 
 /* ============================================
@@ -1937,11 +2041,16 @@ h6 { font-size: 1.1rem; }
     }
     
     .trade-loading {
-        padding: 30px 15px;
+        padding: 40px 24px;
+        margin: 30px 0;
     }
     
     .loading-spinner {
         font-size: 2.5rem;
+    }
+    
+    .trade-loading p {
+        font-size: 1rem;
     }
     
     /* Trade card - Mobile: Compact and clickable */

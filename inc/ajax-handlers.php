@@ -13,11 +13,25 @@ if (!defined('ABSPATH')) {
  * AJAX Handler: Filter trades by offer item
  */
 function hdh_filter_trades_by_offer_item() {
+    // Generate request ID for debugging
+    $request_id = uniqid('hdh_filter_', true);
+    
     // Verify nonce
-    check_ajax_referer('hdh_filter_trades', 'nonce');
+    if (!check_ajax_referer('hdh_filter_trades', 'nonce', false)) {
+        wp_send_json_error(array(
+            'message' => 'Güvenlik doğrulaması başarısız. Lütfen sayfayı yenileyin.',
+            'request_id' => $request_id
+        ), 403);
+        return;
+    }
     
     $item_slug = isset($_POST['item_slug']) ? sanitize_text_field($_POST['item_slug']) : '';
     $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    
+    // Validate page number
+    if ($page < 1) {
+        $page = 1;
+    }
     
     // Build query
     $args = array(
@@ -83,8 +97,29 @@ function hdh_filter_trades_by_offer_item() {
         echo '</div>';
     } else {
         echo '<div class="no-trades-message">';
-        echo '<p>Bu ürünü verebilecek ilan bulunmamaktadır.</p>';
-        echo '<p>Farklı bir filtre deneyin veya ilk ilanı siz oluşturun!</p>';
+        echo '<div class="no-trades-message-icon">🎁</div>';
+        echo '<h3 class="no-trades-message-title">İlan Bulunamadı</h3>';
+        if (!empty($item_slug)) {
+            $item_label = function_exists('hdh_get_item_label') ? hdh_get_item_label($item_slug) : 'Bu ürün';
+            echo '<p>' . esc_html($item_label) . ' verebilecek aktif ilan bulunmamaktadır.</p>';
+            echo '<p>Farklı bir ürün seçerek arama yapabilir veya kendi ilanınızı oluşturabilirsiniz.</p>';
+            echo '<div class="no-trades-message-actions">';
+            echo '<button type="button" class="btn-clear-filter-inline" onclick="document.getElementById(\'btn-clear-filter-visual\').click();">';
+            echo '<span>🔄</span><span>Filtreyi Temizle</span>';
+            echo '</button>';
+            echo '<a href="' . esc_url(home_url('/ilan-ver')) . '" class="btn-create-listing">';
+            echo '<span>➕</span><span>İlan Oluştur</span>';
+            echo '</a>';
+            echo '</div>';
+        } else {
+            echo '<p>Şu anda aktif hediye ilanı bulunmamaktadır.</p>';
+            echo '<p>İlk ilanı siz oluşturarak topluluğa katkıda bulunun!</p>';
+            echo '<div class="no-trades-message-actions">';
+            echo '<a href="' . esc_url(home_url('/ilan-ver')) . '" class="btn-create-listing">';
+            echo '<span>➕</span><span>İlan Oluştur</span>';
+            echo '</a>';
+            echo '</div>';
+        }
         echo '</div>';
     }
     
@@ -114,6 +149,24 @@ function hdh_filter_trades_by_offer_item() {
         'pagination' => $pagination_html,
         'found_posts' => $trade_query->found_posts,
         'max_pages' => $trade_query->max_num_pages,
+        'request_id' => $request_id,
+        'query_time' => timer_stop(0, 3) // Query execution time
+    ));
+}
+
+/**
+ * Log AJAX errors for debugging
+ */
+function hdh_log_ajax_error($request_id, $error_message, $context = array()) {
+    if (!WP_DEBUG) {
+        return;
+    }
+    
+    error_log(sprintf(
+        '[HDH AJAX Error] Request ID: %s | Message: %s | Context: %s',
+        $request_id,
+        $error_message,
+        json_encode($context)
     ));
 }
 add_action('wp_ajax_hdh_filter_trades', 'hdh_filter_trades_by_offer_item');

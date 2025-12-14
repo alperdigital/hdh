@@ -93,20 +93,22 @@
         const $grid = $('#trade-cards-grid');
         const $pagination = $('#trade-pagination');
         
-        // Show loading
-        $loading.fadeIn(200);
-        $grid.fadeOut(200);
-        $pagination.fadeOut(200);
-        
         // Scroll to top of feed
         $('html, body').animate({
             scrollTop: $container.offset().top - 100
         }, 300);
         
-        // AJAX request
+        // Show loading state (hide content first, then show loading)
+        $grid.fadeOut(150, function() {
+            $pagination.fadeOut(150);
+            $loading.fadeIn(200);
+        });
+        
+        // AJAX request with timeout
         $.ajax({
             url: hdhFilter.ajaxUrl,
             type: 'POST',
+            timeout: 15000, // 15 second timeout
             data: {
                 action: 'hdh_filter_trades',
                 item_slug: itemSlug,
@@ -114,30 +116,78 @@
                 nonce: hdhFilter.nonce
             },
             success: function(response) {
-                if (response.success) {
-                    // Update content
-                    $grid.html(response.data.html).fadeIn(300);
-                    
-                    // Update pagination
-                    if (response.data.pagination) {
-                        $pagination.html(response.data.pagination).fadeIn(300);
+                // Hide loading first
+                $loading.fadeOut(150, function() {
+                    if (response.success) {
+                        // Update content
+                        $grid.html(response.data.html).fadeIn(300);
+                        
+                        // Update pagination
+                        if (response.data.pagination) {
+                            $pagination.html(response.data.pagination).fadeIn(300);
+                        } else {
+                            $pagination.html('').hide();
+                        }
+                        
+                        // Log for debugging
+                        console.log('HDH Filter: Loaded ' + response.data.found_posts + ' trades');
                     } else {
-                        $pagination.html('').hide();
+                        // Server returned error
+                        const errorMsg = response.data && response.data.message ? response.data.message : 'Bir hata oluştu.';
+                        showErrorMessage(errorMsg, true);
                     }
-                } else {
-                    $grid.html('<div class="no-trades-message"><p>Bir hata oluştu. Lütfen tekrar deneyin.</p></div>').fadeIn(300);
-                    $pagination.html('').hide();
-                }
+                });
             },
-            error: function() {
-                $grid.html('<div class="no-trades-message"><p>Bir hata oluştu. Lütfen sayfayı yenileyin.</p></div>').fadeIn(300);
-                $pagination.html('').hide();
+            error: function(xhr, status, error) {
+                // Hide loading first
+                $loading.fadeOut(150, function() {
+                    let errorMsg = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                    
+                    if (status === 'timeout') {
+                        errorMsg = 'İstek zaman aşımına uğradı. İnternet bağlantınızı kontrol edin.';
+                    } else if (status === 'error') {
+                        errorMsg = 'Sunucuya ulaşılamadı. Lütfen sayfayı yenileyin.';
+                    }
+                    
+                    showErrorMessage(errorMsg, false);
+                    
+                    // Log for debugging
+                    console.error('HDH Filter Error:', status, error);
+                });
             },
             complete: function() {
                 isLoading = false;
-                $loading.fadeOut(200);
             }
         });
+    }
+    
+    /**
+     * Show error message
+     */
+    function showErrorMessage(message, canRetry) {
+        const $grid = $('#trade-cards-grid');
+        const $pagination = $('#trade-pagination');
+        
+        let html = '<div class="no-trades-message">';
+        html += '<div class="no-trades-message-icon">⚠️</div>';
+        html += '<h3 class="no-trades-message-title">Bir Sorun Oluştu</h3>';
+        html += '<p>' + message + '</p>';
+        html += '<div class="no-trades-message-actions">';
+        
+        if (canRetry) {
+            html += '<button type="button" class="btn-create-listing" onclick="location.reload();">';
+            html += '<span>🔄</span><span>Sayfayı Yenile</span>';
+            html += '</button>';
+        } else {
+            html += '<a href="' + window.location.href + '" class="btn-create-listing">';
+            html += '<span>🔄</span><span>Sayfayı Yenile</span>';
+            html += '</a>';
+        }
+        
+        html += '</div></div>';
+        
+        $grid.html(html).fadeIn(300);
+        $pagination.html('').hide();
     }
     
 })(jQuery);
