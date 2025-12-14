@@ -3799,10 +3799,78 @@ footer,
     display: none; /* No dot for center button */
 }
 
-/* Hide on desktop */
+/* Desktop: Show bottom navigation (same as mobile) */
 @media (min-width: 769px) {
     .bottom-navigation {
-        display: none !important;
+        display: flex;
+        /* Slightly larger for desktop */
+        padding: 12px 0;
+        max-width: 600px;
+        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .bottom-nav-item {
+        padding: 8px 6px 10px;
+        min-height: 48px;
+    }
+    
+    .bottom-nav-icon {
+        font-size: 24px;
+    }
+    
+    .bottom-nav-label {
+        font-size: 12px;
+        margin-top: 4px;
+    }
+    
+    .bottom-nav-center {
+        width: 64px;
+        height: 64px;
+        margin: -16px 8px 0;
+        min-height: 64px;
+    }
+    
+    .bottom-nav-center-icon {
+        font-size: 32px;
+    }
+    
+    .bottom-nav-center-label {
+        font-size: 11px;
+    }
+    
+    /* Add padding to body for desktop too */
+    body {
+        padding-bottom: 90px;
+    }
+    
+    /* Ensure footer doesn't overlap */
+    footer {
+        margin-bottom: 90px;
+    }
+    
+    /* Hover effects for desktop */
+    .bottom-nav-item:hover {
+        color: var(--farm-green);
+        transform: translateY(-2px);
+    }
+    
+    .bottom-nav-item:hover .bottom-nav-icon {
+        transform: scale(1.1);
+    }
+    
+    .bottom-nav-center:hover {
+        background: linear-gradient(135deg, var(--farm-green) 0%, #2d5016 100%);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        transform: translateY(-4px);
+    }
+    
+    .bottom-nav-item.active::after {
+        width: 6px;
+        height: 6px;
     }
 }
 

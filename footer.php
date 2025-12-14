@@ -45,7 +45,7 @@
         </div>
     </footer>
     
-    <!-- HDH: Bottom Navigation (Mobile Only) -->
+    <!-- HDH: Bottom Navigation (Mobile & Desktop) -->
     <nav class="bottom-navigation" id="bottom-navigation" role="navigation" aria-label="Ana Navigasyon">
         <a href="<?php echo esc_url(home_url('/ara')); ?>" class="bottom-nav-item" data-nav="search">
             <span class="bottom-nav-icon">🔍</span>
