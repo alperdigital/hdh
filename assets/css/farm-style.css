@@ -4314,9 +4314,22 @@ footer,
         gap: 10px;
     }
     
+    .listing-header-split {
+        padding: 10px 0;
+        margin-bottom: 10px;
+    }
+    
+    .listing-header-icon {
+        font-size: 16px;
+    }
+    
+    .listing-header-label {
+        font-size: 14px;
+    }
+    
     .listing-column-divider {
-        width: 1px;
-        opacity: 0.35;
+        width: 2px;
+        opacity: 0.4;
     }
     
     .listing-item-row {
