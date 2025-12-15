@@ -481,7 +481,6 @@ if (!$is_logged_in) {
                 </div>
                 
                 <!-- Tasks Panel -->
-                <?php if (function_exists('hdh_render_tasks_panel')) hdh_render_tasks_panel($user_id); ?>
             </div>
         </div>
     </main>
