@@ -1,6 +1,6 @@
 /**
  * HDH: Tasks Panel JavaScript
- * Handles toggle functionality for tasks panel
+ * Handles toggle functionality and task reward claiming
  */
 
 (function() {
@@ -109,61 +109,138 @@
         });
         
         /**
-         * Handle daily ticket claim
+         * Handle task reward claim
          */
-        const claimBtn = document.querySelector('.btn-claim-daily');
-        if (claimBtn) {
-            claimBtn.addEventListener('click', function() {
-                const userId = this.getAttribute('data-user-id');
-                if (!userId) return;
-                
-                const btn = this;
-                btn.disabled = true;
-                const originalText = btn.textContent;
-                btn.textContent = 'İşleniyor...';
-                
-                const formData = new FormData();
-                formData.append('action', 'hdh_claim_daily_jeton');
-                formData.append('user_id', userId);
-                formData.append('nonce', hdhTasks.nonce);
-                
-                fetch(hdhTasks.ajaxUrl, { 
-                    method: 'POST', 
-                    body: formData 
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        showToast('+1 Bilet kazandınız! 🎟️', 'success');
-                        btn.parentNode.classList.add('task-completed');
-                        btn.remove();
-                        const status = document.createElement('span');
-                        status.className = 'task-status';
-                        status.textContent = '✅ Tamamlandı';
-                        btn.parentNode.appendChild(status);
-                        
-                        // Update badge count
-                        updateTasksBadge();
-                        
-                        // Update balance if element exists
-                        if (data.data.new_balance !== undefined) {
-                            const balanceEl = document.querySelector('.jeton-balance, .bilet-balance');
-                            if (balanceEl) {
-                                balanceEl.textContent = data.data.new_balance.toLocaleString('tr-TR');
-                            }
-                        }
-                    } else {
-                        showToast(data.data.message || 'Bir hata oluştu', 'error');
-                        btn.disabled = false;
-                        btn.textContent = originalText;
+        function handleClaimTask(btn) {
+            const taskId = btn.getAttribute('data-task-id');
+            const isDaily = btn.getAttribute('data-is-daily') === 'true';
+            
+            if (!taskId) {
+                console.error('HDH Tasks: Task ID not found');
+                return;
+            }
+            
+            // Disable button to prevent double-click
+            btn.disabled = true;
+            const originalText = btn.textContent;
+            btn.textContent = 'İşleniyor...';
+            
+            const formData = new FormData();
+            formData.append('action', 'hdh_claim_task_reward');
+            formData.append('task_id', taskId);
+            formData.append('is_daily', isDaily ? 'true' : 'false');
+            formData.append('nonce', hdhTasks.nonce);
+            
+            fetch(hdhTasks.ajaxUrl, { 
+                method: 'POST', 
+                body: formData 
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const bilet = data.data.bilet || 0;
+                    const level = data.data.level || 0;
+                    
+                    let message = 'Ödül alındı!';
+                    if (bilet > 0 && level > 0) {
+                        message = `+${bilet} 🎟️ Bilet +${level} ⭐ Seviye kazandınız!`;
+                    } else if (bilet > 0) {
+                        message = `+${bilet} 🎟️ Bilet kazandınız!`;
+                    } else if (level > 0) {
+                        message = `+${level} ⭐ Seviye kazandınız!`;
                     }
-                })
-                .catch(error => { 
-                    console.error('Error:', error); 
-                    showToast('Bir hata oluştu', 'error'); 
-                    btn.disabled = false; 
-                    btn.textContent = originalText; 
+                    
+                    showToast(message, 'success');
+                    
+                    // Update button to show claimed status
+                    btn.parentNode.innerHTML = '<span class="task-status">✅ Ödül Alındı</span>';
+                    
+                    // Update badge count
+                    updateTasksBadge();
+                    
+                    // Update balance if element exists
+                    if (data.data.new_bilet !== undefined) {
+                        const balanceEl = document.querySelector('.jeton-balance, .bilet-balance');
+                        if (balanceEl) {
+                            balanceEl.textContent = data.data.new_bilet.toLocaleString('tr-TR');
+                        }
+                    }
+                    
+                    // Update level if element exists
+                    if (data.data.new_level !== undefined) {
+                        const levelEl = document.querySelector('.hdh-user-level, .user-level');
+                        if (levelEl) {
+                            levelEl.textContent = data.data.new_level;
+                        }
+                    }
+                    
+                    // Refresh tasks list after a short delay
+                    setTimeout(function() {
+                        refreshTasksList();
+                    }, 1000);
+                } else {
+                    showToast(data.data.message || 'Bir hata oluştu', 'error');
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                }
+            })
+            .catch(error => { 
+                console.error('Error:', error); 
+                showToast('Bir hata oluştu', 'error'); 
+                btn.disabled = false; 
+                btn.textContent = originalText; 
+            });
+        }
+        
+        /**
+         * Attach claim task handlers to all claim buttons
+         */
+        function attachClaimHandlers() {
+            const claimButtons = document.querySelectorAll('.btn-claim-task');
+            claimButtons.forEach(function(btn) {
+                // Remove existing listeners by cloning
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                
+                // Add new listener
+                newBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleClaimTask(newBtn);
                 });
+            });
+        }
+        
+        // Attach handlers on initial load
+        attachClaimHandlers();
+        
+        // Re-attach handlers when panel opens (in case tasks were updated)
+        tasksIcon.addEventListener('click', function() {
+            setTimeout(attachClaimHandlers, 100);
+        });
+        
+        /**
+         * Refresh tasks list from server
+         */
+        function refreshTasksList() {
+            const formData = new FormData();
+            formData.append('action', 'hdh_get_tasks');
+            formData.append('nonce', hdhTasks.nonce);
+            
+            fetch(hdhTasks.ajaxUrl, { 
+                method: 'POST', 
+                body: formData 
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Tasks list will be updated on next page load
+                    // For now, we just update the badge
+                    updateTasksBadge();
+                }
+            })
+            .catch(error => {
+                console.error('Error refreshing tasks:', error);
             });
         }
         
@@ -174,8 +251,9 @@
             const badge = document.getElementById('tasks-icon-badge');
             if (!badge) return;
             
-            const incompleteTasks = document.querySelectorAll('.task-item:not(.task-completed)');
-            const count = incompleteTasks.length;
+            // Count tasks that are completed but not claimed
+            const claimButtons = document.querySelectorAll('.btn-claim-task');
+            const count = claimButtons.length;
             
             if (count > 0) {
                 badge.textContent = count;
@@ -192,6 +270,7 @@
         if (window.MutationObserver && tasksPanel) {
             const observer = new MutationObserver(function() {
                 updateTasksBadge();
+                attachClaimHandlers(); // Re-attach handlers when DOM changes
             });
             observer.observe(tasksPanel, {
                 childList: true,

@@ -75,6 +75,8 @@ require_once get_template_directory() . '/inc/email-verification.php';
 require_once get_template_directory() . '/inc/firebase-config.php';
 require_once get_template_directory() . '/inc/firebase-verification.php';
 require_once get_template_directory() . '/inc/quest-system.php';
+require_once get_template_directory() . '/inc/tasks-system.php';
+require_once get_template_directory() . '/inc/tasks-handler.php';
 require_once get_template_directory() . '/social-share.php';
 
 // Enqueue styles and scripts
@@ -231,7 +233,7 @@ function hdh_enqueue_scripts() {
         );
         wp_localize_script('hdh-tasks-panel', 'hdhTasks', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('hdh_claim_daily_jeton'),
+            'nonce' => wp_create_nonce('hdh_claim_task_reward'),
         ));
     }
     

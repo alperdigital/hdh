@@ -5762,7 +5762,8 @@ footer,
 }
 
 .btn-claim-daily, 
-.btn-do-task {
+.btn-do-task,
+.btn-claim-task {
     background: var(--farm-green);
     color: #FFFFFF;
     font-size: 14px;
@@ -5779,22 +5780,26 @@ footer,
     overflow: hidden;
     text-overflow: ellipsis;
     box-sizing: border-box;
+    display: inline-block;
 }
 
 .btn-claim-daily:hover,
-.btn-do-task:hover {
+.btn-do-task:hover,
+.btn-claim-task:hover {
     background: var(--farm-green-dark);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
 .btn-claim-daily:active, 
-.btn-do-task:active {
+.btn-do-task:active,
+.btn-claim-task:active {
     transform: translateY(0);
     box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
 }
 
-.btn-claim-daily:disabled {
+.btn-claim-daily:disabled,
+.btn-claim-task:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }

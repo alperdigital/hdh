@@ -7,40 +7,22 @@ if (!function_exists('hdh_render_tasks_panel')) {
     function hdh_render_tasks_panel($user_id) {
         if (!$user_id) return;
         
-        $can_claim_daily = function_exists('hdh_can_claim_daily_jeton') ? hdh_can_claim_daily_jeton($user_id) : false;
-        $created_listing_today = false;
-        $today_start = strtotime('today');
-        $today_end = strtotime('tomorrow') - 1;
-        $today_listings = new WP_Query(array(
-            'post_type' => 'hayday_trade', 
-            'author' => $user_id, 
-            'post_status' => 'publish', 
-            'date_query' => array(array(
-                'after' => date('Y-m-d H:i:s', $today_start), 
-                'before' => date('Y-m-d H:i:s', $today_end)
-            )), 
-            'posts_per_page' => 1, 
-            'fields' => 'ids'
-        ));
-        if ($today_listings->have_posts()) $created_listing_today = true;
-        wp_reset_postdata();
-        
-        $completed_exchange_today = false;
-        $transactions = function_exists('hdh_get_jeton_transactions') ? hdh_get_jeton_transactions($user_id, 20) : array();
-        foreach ($transactions as $transaction) {
-            if (isset($transaction['reason']) && $transaction['reason'] === 'completed_exchange') {
-                if (date('Y-m-d', strtotime($transaction['timestamp'])) === date('Y-m-d')) { 
-                    $completed_exchange_today = true; 
-                    break; 
-                }
-            }
-        }
+        // Get one-time and daily tasks
+        $one_time_tasks = function_exists('hdh_get_user_one_time_tasks') ? hdh_get_user_one_time_tasks($user_id) : array();
+        $daily_tasks = function_exists('hdh_get_user_daily_tasks') ? hdh_get_user_daily_tasks($user_id) : array();
         
         // Count incomplete tasks for badge
         $incomplete_count = 0;
-        if ($can_claim_daily) $incomplete_count++;
-        if (!$created_listing_today) $incomplete_count++;
-        if (!$completed_exchange_today) $incomplete_count++;
+        foreach ($one_time_tasks as $task) {
+            if ($task['completed'] && !$task['claimed']) {
+                $incomplete_count++;
+            }
+        }
+        foreach ($daily_tasks as $task) {
+            if ($task['completed'] && !$task['claimed']) {
+                $incomplete_count++;
+            }
+        }
         ?>
         
         <!-- Tasks Panel Toggle Button (Fixed Position) -->
@@ -64,55 +46,125 @@ if (!function_exists('hdh_render_tasks_panel')) {
             </div>
             
             <div class="tasks-panel-content">
-                <div class="tasks-list">
-                    <div class="task-item <?php echo $can_claim_daily ? '' : 'task-completed'; ?>">
-                        <div class="task-info">
-                            <span class="task-icon">🎟️</span>
-                            <div class="task-details">
-                                <span class="task-name">Günlük Bilet Al</span>
-                                <span class="task-description">Her gün ücretsiz bilet kazanın</span>
-                                <span class="task-reward">+1 🎟️ Bilet</span>
+                <!-- One-Time Tasks Section -->
+                <?php if (!empty($one_time_tasks)) : ?>
+                <div class="tasks-section">
+                    <h4 class="tasks-section-title">Tek Seferlik Görevler</h4>
+                    <div class="tasks-list">
+                        <?php foreach ($one_time_tasks as $task) : ?>
+                            <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>">
+                                <div class="task-info">
+                                    <span class="task-icon">
+                                        <?php
+                                        $icons = array(
+                                            'verify_email' => '📧',
+                                            'create_first_listing' => '📝',
+                                            'complete_first_exchange' => '🎁',
+                                            'invite_friend' => '👥',
+                                            'friend_exchange' => '🤝',
+                                        );
+                                        echo isset($icons[$task['id']]) ? $icons[$task['id']] : '📋';
+                                        ?>
+                                    </span>
+                                    <div class="task-details">
+                                        <span class="task-name"><?php echo esc_html($task['title']); ?></span>
+                                        <span class="task-description"><?php echo esc_html($task['description']); ?></span>
+                                        <span class="task-reward">
+                                            <?php if ($task['reward_bilet'] > 0) : ?>
+                                                +<?php echo esc_html($task['reward_bilet']); ?> 🎟️
+                                            <?php endif; ?>
+                                            <?php if ($task['reward_level'] > 0) : ?>
+                                                <?php echo $task['reward_bilet'] > 0 ? ' + ' : ''; ?>
+                                                +<?php echo esc_html($task['reward_level']); ?> ⭐ Seviye
+                                            <?php endif; ?>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="task-actions">
+                                    <?php if ($task['completed'] && $task['claimed']) : ?>
+                                        <span class="task-status">✅ Ödül Alındı</span>
+                                    <?php elseif ($task['completed'] && $task['can_claim']) : ?>
+                                        <button class="btn-claim-task" 
+                                                data-task-id="<?php echo esc_attr($task['id']); ?>" 
+                                                data-is-daily="false">
+                                            Ödülünü Al
+                                        </button>
+                                    <?php elseif ($task['id'] === 'verify_email') : ?>
+                                        <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task">Yap</a>
+                                    <?php elseif ($task['id'] === 'create_first_listing') : ?>
+                                        <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task">Yap</a>
+                                    <?php elseif ($task['id'] === 'invite_friend' || $task['id'] === 'friend_exchange') : ?>
+                                        <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task">Yap</a>
+                                    <?php else : ?>
+                                        <span class="task-status">Beklemede</span>
+                                    <?php endif; ?>
+                                </div>
                             </div>
-                        </div>
-                        <?php if ($can_claim_daily) : ?>
-                            <button class="btn-claim-daily" data-user-id="<?php echo esc_attr($user_id); ?>">Al</button>
-                        <?php else : ?>
-                            <span class="task-status">✅ Tamamlandı</span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="task-item <?php echo $created_listing_today ? 'task-completed' : ''; ?>">
-                        <div class="task-info">
-                            <span class="task-icon">📝</span>
-                            <div class="task-details">
-                                <span class="task-name">İlan Oluştur</span>
-                                <span class="task-description">Yeni bir ilan oluşturun</span>
-                                <span class="task-reward">+2 🎟️ Bilet</span>
-                            </div>
-                        </div>
-                        <?php if ($created_listing_today) : ?>
-                            <span class="task-status">✅ Tamamlandı</span>
-                        <?php else : ?>
-                            <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task">Yap</a>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="task-item <?php echo $completed_exchange_today ? 'task-completed' : ''; ?>">
-                        <div class="task-info">
-                            <span class="task-icon">🎁</span>
-                            <div class="task-details">
-                                <span class="task-name">Hediyeleşmeyi Tamamla</span>
-                                <span class="task-description">Bir takası başarıyla tamamlayın</span>
-                                <span class="task-reward">+5 🎟️ Bilet</span>
-                            </div>
-                        </div>
-                        <?php if ($completed_exchange_today) : ?>
-                            <span class="task-status">✅ Tamamlandı</span>
-                        <?php else : ?>
-                            <span class="task-status">Beklemede</span>
-                        <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
+                <?php endif; ?>
+                
+                <!-- Daily Tasks Section -->
+                <?php if (!empty($daily_tasks)) : ?>
+                <div class="tasks-section">
+                    <h4 class="tasks-section-title">Günlük Görevler</h4>
+                    <div class="tasks-list">
+                        <?php foreach ($daily_tasks as $task) : ?>
+                            <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>">
+                                <div class="task-info">
+                                    <span class="task-icon">
+                                        <?php
+                                        $icons = array(
+                                            'create_listings' => '📝',
+                                            'complete_exchanges' => '🎁',
+                                            'invite_friends' => '👥',
+                                            'friend_exchanges' => '🤝',
+                                        );
+                                        echo isset($icons[$task['id']]) ? $icons[$task['id']] : '📋';
+                                        ?>
+                                    </span>
+                                    <div class="task-details">
+                                        <span class="task-name">
+                                            <?php echo esc_html($task['title']); ?>
+                                            <?php if ($task['max_progress'] > 1) : ?>
+                                                <span class="task-progress">(<?php echo esc_html($task['progress']); ?>/<?php echo esc_html($task['max_progress']); ?>)</span>
+                                            <?php endif; ?>
+                                        </span>
+                                        <span class="task-description"><?php echo esc_html($task['description']); ?></span>
+                                        <span class="task-reward">
+                                            <?php if ($task['reward_bilet'] > 0) : ?>
+                                                +<?php echo esc_html($task['reward_bilet']); ?> 🎟️
+                                            <?php endif; ?>
+                                            <?php if ($task['reward_level'] > 0) : ?>
+                                                <?php echo $task['reward_bilet'] > 0 ? ' + ' : ''; ?>
+                                                +<?php echo esc_html($task['reward_level']); ?> ⭐ Seviye
+                                            <?php endif; ?>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="task-actions">
+                                    <?php if ($task['completed'] && $task['claimed']) : ?>
+                                        <span class="task-status">✅ Ödül Alındı</span>
+                                    <?php elseif ($task['completed'] && $task['can_claim']) : ?>
+                                        <button class="btn-claim-task" 
+                                                data-task-id="<?php echo esc_attr($task['id']); ?>" 
+                                                data-is-daily="true">
+                                            Ödülünü Al
+                                        </button>
+                                    <?php elseif ($task['id'] === 'create_listings') : ?>
+                                        <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task">Yap</a>
+                                    <?php elseif ($task['id'] === 'invite_friends' || $task['id'] === 'friend_exchanges') : ?>
+                                        <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task">Yap</a>
+                                    <?php else : ?>
+                                        <span class="task-status">Beklemede</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
         <?php
