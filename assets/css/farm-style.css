@@ -6163,6 +6163,136 @@ footer,
 }
 
 /* ============================================
+   USER INFO WIDGET (FIXED TOP LEFT)
+   ============================================ */
+
+.hdh-user-info-widget {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 10001; /* Above everything including announcement banner */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 246, 216, 0.95); /* #FFF6D8 with transparency */
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
+    padding: 8px 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+.hdh-user-info-widget:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+.hdh-user-info-widget .hdh-level-badge {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.hdh-user-info-widget .hdh-level-badge.lvl-d1 {
+    font-size: 24px;
+}
+
+.hdh-user-info-widget .hdh-level-badge.lvl-d2 {
+    font-size: 22px;
+    letter-spacing: -1px;
+}
+
+.hdh-user-info-widget .hdh-level-badge.lvl-d3 {
+    font-size: 19px;
+    letter-spacing: -2px;
+}
+
+.hdh-user-info-widget .hdh-level-badge {
+    -webkit-text-stroke: 3px #0b0b0b;
+    text-shadow:
+        0 2px 0 rgba(0, 0, 0, 0.25),
+        0 6px 10px rgba(0, 0, 0, 0.18);
+}
+
+.hdh-farm-name {
+    font-family: 'Baloo 2', -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    line-height: 1.4;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .hdh-user-info-widget {
+        top: 12px;
+        left: 12px;
+        padding: 6px 12px;
+        gap: 10px;
+    }
+    
+    .hdh-user-info-widget .hdh-level-badge {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .hdh-user-info-widget .hdh-level-badge.lvl-d1 {
+        font-size: 20px;
+    }
+    
+    .hdh-user-info-widget .hdh-level-badge.lvl-d2 {
+        font-size: 18px;
+    }
+    
+    .hdh-user-info-widget .hdh-level-badge.lvl-d3 {
+        font-size: 16px;
+    }
+    
+    .hdh-farm-name {
+        font-size: 14px;
+        max-width: 150px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .hdh-user-info-widget {
+        top: 8px;
+        left: 8px;
+        padding: 5px 10px;
+        gap: 8px;
+    }
+    
+    .hdh-user-info-widget .hdh-level-badge {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .hdh-user-info-widget .hdh-level-badge.lvl-d1 {
+        font-size: 18px;
+    }
+    
+    .hdh-user-info-widget .hdh-level-badge.lvl-d2 {
+        font-size: 16px;
+    }
+    
+    .hdh-user-info-widget .hdh-level-badge.lvl-d3 {
+        font-size: 14px;
+    }
+    
+    .hdh-farm-name {
+        font-size: 13px;
+        max-width: 120px;
+    }
+}
+
+/* ============================================
    HOMEPAGE CTA BUTTONS (IN HERO SECTION)
    ============================================ */
 

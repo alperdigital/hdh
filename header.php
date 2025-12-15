@@ -10,6 +10,31 @@
     <!-- HDH: SVG Icons Sprite -->
     <?php include get_template_directory() . '/assets/svg/farm-icons.svg'; ?>
     
+    <!-- HDH: User Info Widget (Fixed Top Left) -->
+    <?php if (is_user_logged_in()) : 
+        $current_user_id = get_current_user_id();
+        $current_user = wp_get_current_user();
+        $farm_name = $current_user->display_name;
+        
+        // Get user level
+        $user_state = function_exists('hdh_get_user_state') ? hdh_get_user_state($current_user_id) : null;
+        $user_level = $user_state ? $user_state['level'] : 1;
+        
+        // Determine digit class based on level
+        $level_int = (int) $user_level;
+        $digits = strlen((string)$level_int);
+        $digit_class = $digits === 1 ? 'lvl-d1' : ($digits === 2 ? 'lvl-d2' : 'lvl-d3');
+        ?>
+        <div class="hdh-user-info-widget">
+            <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
+                 aria-label="Seviye <?php echo esc_attr($user_level); ?>"
+                 title="Seviye <?php echo esc_attr($user_level); ?>">
+                <?php echo esc_html($user_level); ?>
+            </div>
+            <span class="hdh-farm-name"><?php echo esc_html($farm_name); ?></span>
+        </div>
+    <?php endif; ?>
+    
     <!-- HDH: Cartoon Farm Announcement Banner -->
     <?php if (get_theme_mod('hdh_show_announcement', true)) : ?>
         <div class="farm-announcement-banner">
