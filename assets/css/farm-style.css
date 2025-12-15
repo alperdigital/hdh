@@ -3534,6 +3534,14 @@ main {
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box;
+        /* Ensure spinners are hidden on mobile too */
+        -moz-appearance: textfield !important;
+    }
+    
+    .offer-quantity-item input[type="number"]::-webkit-outer-spin-button,
+    .offer-quantity-item input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0;
     }
     
     /* Form inputs mobile fix */
