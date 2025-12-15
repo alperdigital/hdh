@@ -82,6 +82,9 @@
 html {
     background: #FFF6D8;
     height: 100%;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
 }
 
 body {
@@ -99,6 +102,25 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+/* Global overflow protection */
+* {
+    box-sizing: border-box;
+}
+
+*:not(html):not(body) {
+    max-width: 100%;
+}
+
+/* Text overflow protection */
+p, span, div, h1, h2, h3, h4, h5, h6, a, label, button {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 /* Removed blue background pseudo-elements - using unified newspaper background */
@@ -213,6 +235,8 @@ h6 { font-size: 1.1rem; }
     width: 100%;
     box-sizing: border-box;
     background: transparent;
+    overflow-x: hidden;
+    position: relative;
 }
 
 /* ============================================
@@ -3761,6 +3785,12 @@ footer,
     text-align: center;
     transition: all 0.2s ease;
     color: inherit;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 
 /* Active state */
@@ -4587,6 +4617,9 @@ footer,
     color: var(--newspaper-text);
     margin: 0 0 12px 0;
     line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .homepage-subtitle {
@@ -4596,6 +4629,9 @@ footer,
     color: var(--newspaper-text-light);
     margin: 0 0 32px 0;
     opacity: 0.7;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .homepage-primary-cta {
@@ -4728,8 +4764,24 @@ footer,
 .profile-card { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
 .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(201, 184, 138, 0.3); }
 .profile-name-section { flex: 1; min-width: 0; }
-.profile-farm-name { font-size: 20px; font-weight: 700; color: var(--newspaper-text); margin: 0 0 4px 0; }
-.profile-hayday-username { font-size: 14px; color: var(--newspaper-text-light); margin: 0; opacity: 0.7; }
+.profile-farm-name { 
+    font-size: 20px; 
+    font-weight: 700; 
+    color: var(--newspaper-text); 
+    margin: 0 0 4px 0; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+.profile-hayday-username { 
+    font-size: 14px; 
+    color: var(--newspaper-text-light); 
+    margin: 0; 
+    opacity: 0.7; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
 .profile-trust-section { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(201, 184, 138, 0.3); }
 .trust-star-large { font-size: 48px; color: var(--newspaper-star-blue); font-weight: 700; line-height: 1; margin-bottom: 8px; text-shadow: 0 1px 3px rgba(74, 144, 226, 0.4); }
 .trust-explanation { font-size: 13px; color: var(--newspaper-text); margin: 0; opacity: 0.8; }
@@ -5475,12 +5527,50 @@ footer,
 .countdown-label { font-size: 12px; color: var(--newspaper-text-light); margin-top: 4px; opacity: 0.7; }
 .countdown-target { font-size: 13px; color: var(--newspaper-text-light); margin: 0; opacity: 0.7; }
 .lottery-card { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
-.lottery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.lottery-name { font-size: 18px; font-weight: 700; color: var(--newspaper-text); margin: 0; }
-.lottery-cost { font-size: 14px; font-weight: 600; color: var(--farm-green); }
-.lottery-info { margin-bottom: 16px; }
-.lottery-description { font-size: 14px; color: var(--newspaper-text); margin: 0 0 8px 0; }
-.lottery-entries-info { font-size: 13px; color: var(--newspaper-text-light); margin: 0; }
+.lottery-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 16px; 
+    gap: 12px;
+    min-width: 0;
+}
+.lottery-name { 
+    font-size: 18px; 
+    font-weight: 700; 
+    color: var(--newspaper-text); 
+    margin: 0; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+.lottery-cost { 
+    font-size: 14px; 
+    font-weight: 600; 
+    color: var(--farm-green); 
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.lottery-info { 
+    margin-bottom: 16px; 
+    min-width: 0;
+}
+.lottery-description { 
+    font-size: 14px; 
+    color: var(--newspaper-text); 
+    margin: 0 0 8px 0; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+.lottery-entries-info { 
+    font-size: 13px; 
+    color: var(--newspaper-text-light); 
+    margin: 0; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
 .btn-join-lottery { width: 100%; background: var(--farm-green); color: #FFFFFF; font-size: 16px; font-weight: 600; padding: 14px 24px; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
 .btn-join-lottery:active:not(:disabled) { background: var(--farm-green-dark); transform: scale(0.98); }
 .btn-join-lottery:disabled, .btn-join-lottery.disabled { opacity: 0.5; cursor: not-allowed; }
@@ -7189,6 +7279,12 @@ footer,
     font-family: 'Baloo 2', -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 700;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
     color: var(--newspaper-text);
     white-space: nowrap;
     overflow: hidden;
