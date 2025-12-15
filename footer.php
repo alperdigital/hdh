@@ -69,7 +69,7 @@
         </a>
     </nav>
     
-    <!-- HDH: Tasks Panel (Visible on all pages for logged-in users) -->
+    <!-- HDH: Tasks Panel Toggle (Visible on all pages for logged-in users) -->
     <?php if (is_user_logged_in()) : 
         $current_user_id = get_current_user_id();
         if (function_exists('hdh_render_tasks_panel')) {
