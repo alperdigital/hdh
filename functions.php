@@ -367,8 +367,8 @@ function hdh_create_required_pages() {
             'template' => 'page-cekilis.php'
         ),
         array(
-            'title' => 'Ücretsiz Dekorasyonlar',
-            'slug' => 'dekorlar',
+            'title' => 'Hazine',
+            'slug' => 'hazine',
             'template' => 'page-dekorlar.php'
         ),
         array(
@@ -427,7 +427,7 @@ function hdh_ensure_required_pages() {
     $pages_checked = true;
     
     // Check if all required pages exist
-    $required_slugs = array('ara', 'ilan-ver', 'profil', 'cekilis', 'dekorlar', 'uyelik-sozlesmesi', 'gizlilik-politikasi');
+        $required_slugs = array('ara', 'ilan-ver', 'profil', 'cekilis', 'hazine', 'uyelik-sozlesmesi', 'gizlilik-politikasi');
     $missing_pages = false;
     
     foreach ($required_slugs as $slug) {

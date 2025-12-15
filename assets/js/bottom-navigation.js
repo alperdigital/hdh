@@ -58,11 +58,11 @@
                 }
             }
             
-            // Check if we're on decorations page (dekorlar)
-            if (normalizedPath === '/dekorlar') {
-                const decorationsItem = bottomNav.querySelector('[data-nav="decorations"]');
-                if (decorationsItem) {
-                    setActiveItem(decorationsItem);
+            // Check if we're on treasure page (hazine)
+            if (normalizedPath === '/hazine') {
+                const treasureItem = bottomNav.querySelector('[data-nav="treasure"]');
+                if (treasureItem) {
+                    setActiveItem(treasureItem);
                     return;
                 }
             }

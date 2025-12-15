@@ -51,9 +51,9 @@
             <span class="bottom-nav-icon">🔍</span>
             <span class="bottom-nav-label">Ara</span>
         </a>
-        <a href="<?php echo esc_url(home_url('/dekorlar')); ?>" class="bottom-nav-item" data-nav="decorations">
-            <span class="bottom-nav-icon">🎨</span>
-            <span class="bottom-nav-label">Dekorlar</span>
+        <a href="<?php echo esc_url(home_url('/hazine')); ?>" class="bottom-nav-item" data-nav="treasure">
+            <span class="bottom-nav-icon">💎</span>
+            <span class="bottom-nav-label">Hazine</span>
         </a>
         <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="bottom-nav-item bottom-nav-center" data-nav="create">
             <span class="bottom-nav-center-icon">+</span>
