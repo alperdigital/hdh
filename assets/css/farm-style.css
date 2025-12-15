@@ -5816,3 +5816,219 @@ footer,
         width: 100%;
     }
 }
+
+/* ============================================
+   QUEST PANEL
+   ============================================ */
+
+.quest-icon-fixed {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+    transition: all 0.3s ease;
+}
+
+.quest-icon-fixed:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
+}
+
+.quest-icon-emoji {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.quest-icon-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #FF4444;
+    color: #FFFFFF;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFFFFF;
+}
+
+.quest-panel {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 320px;
+    max-height: 500px;
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    display: none;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.quest-panel.active {
+    display: flex;
+}
+
+.quest-panel-header {
+    padding: 16px 20px;
+    border-bottom: 2px solid rgba(201, 184, 138, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(201, 184, 138, 0.1);
+}
+
+.quest-panel-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0;
+}
+
+.quest-panel-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--newspaper-text);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.quest-panel-content {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.quest-section {
+    margin-bottom: 24px;
+}
+
+.quest-section:last-child {
+    margin-bottom: 0;
+}
+
+.quest-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 12px 0;
+}
+
+.quest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quest-item {
+    background: #FFFFFF;
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 12px;
+    padding: 12px;
+    transition: all 0.2s ease;
+}
+
+.quest-item.quest-completed {
+    opacity: 0.6;
+    background: rgba(76, 175, 80, 0.1);
+    border-color: var(--farm-green);
+}
+
+.quest-info {
+    margin-bottom: 8px;
+}
+
+.quest-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 4px 0;
+}
+
+.quest-description {
+    font-size: 0.85rem;
+    color: rgba(74, 59, 44, 0.7);
+    margin: 0 0 8px 0;
+}
+
+.quest-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quest-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(201, 184, 138, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.quest-progress-fill {
+    height: 100%;
+    background: var(--farm-green);
+    transition: width 0.3s ease;
+}
+
+.quest-progress-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    min-width: 40px;
+    text-align: right;
+}
+
+.quest-rewards {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.quest-reward {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--farm-green);
+    background: rgba(76, 175, 80, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+    .quest-panel {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+        max-height: 70vh;
+    }
+    
+    .quest-icon-fixed {
+        bottom: 90px;
+        right: 16px;
+    }
+}
