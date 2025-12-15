@@ -3315,6 +3315,13 @@ main {
 .offer-quantity-item .quantity-stepper-wrapper {
     width: 100%;
     box-sizing: border-box;
+    margin-top: 0; /* Override default margin-top from .quantity-stepper-wrapper */
+    padding: 20px;
+    background: rgba(139, 195, 74, 0.05);
+    border: 2px solid rgba(139, 195, 74, 0.2);
+    border-radius: 12px;
+    opacity: 1; /* Override default opacity */
+    transform: none; /* Override default transform */
 }
 
 .offer-quantity-item label {
