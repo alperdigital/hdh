@@ -4371,12 +4371,20 @@ footer,
         margin-bottom: 10px;
     }
     
+    .listing-header-left {
+        padding-right: 20%;
+    }
+    
+    .listing-header-right {
+        padding-left: 20%;
+    }
+    
     .listing-header-icon {
-        font-size: 16px;
+        font-size: 0.95rem;
     }
     
     .listing-header-label {
-        font-size: 14px;
+        font-size: 0.95rem;
     }
     
     .listing-column-divider {
