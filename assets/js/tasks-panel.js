@@ -39,13 +39,21 @@
         /**
          * Toggle panel
          */
-        tasksIcon.addEventListener('click', function(e) {
+        function handleToggle(e) {
+            e.preventDefault();
             e.stopPropagation();
             if (tasksPanel.classList.contains('active')) {
                 closeTasksPanel();
             } else {
                 openTasksPanel();
             }
+        }
+        
+        // Support both click and touch events for better mobile compatibility
+        tasksIcon.addEventListener('click', handleToggle);
+        tasksIcon.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            handleToggle(e);
         });
         
         /**
