@@ -218,8 +218,10 @@ function hdh_enqueue_scripts() {
                 true
             );
         }
-        
-        // Tasks panel (for logged-in users)
+    }
+    
+    // Tasks panel (for logged-in users on ALL pages)
+    if (is_user_logged_in()) {
         wp_enqueue_script(
             'hdh-tasks-panel',
             get_template_directory_uri() . '/assets/js/tasks-panel.js',
