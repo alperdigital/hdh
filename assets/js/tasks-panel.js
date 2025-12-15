@@ -12,7 +12,17 @@
         const tasksOverlay = document.getElementById('tasks-panel-overlay');
         const tasksClose = document.getElementById('tasks-panel-close');
         
-        if (!tasksIcon || !tasksPanel) return;
+        if (!tasksIcon) {
+            console.warn('HDH Tasks: tasks-icon-toggle not found');
+            return;
+        }
+        
+        if (!tasksPanel) {
+            console.warn('HDH Tasks: tasks-panel not found');
+            return;
+        }
+        
+        console.log('HDH Tasks: Initialized', { tasksIcon, tasksPanel, tasksOverlay });
         
         /**
          * Open tasks panel
@@ -40,8 +50,11 @@
          * Toggle panel
          */
         function handleToggle(e) {
-            e.preventDefault();
-            e.stopPropagation();
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            console.log('HDH Tasks: Toggle clicked', tasksPanel.classList.contains('active'));
             if (tasksPanel.classList.contains('active')) {
                 closeTasksPanel();
             } else {
@@ -50,10 +63,20 @@
         }
         
         // Support both click and touch events for better mobile compatibility
-        tasksIcon.addEventListener('click', handleToggle);
+        tasksIcon.addEventListener('click', function(e) {
+            console.log('HDH Tasks: Click event fired');
+            handleToggle(e);
+        }, { passive: false });
+        
         tasksIcon.addEventListener('touchend', function(e) {
+            console.log('HDH Tasks: Touch event fired');
             e.preventDefault();
             handleToggle(e);
+        }, { passive: false });
+        
+        // Also add mousedown for desktop
+        tasksIcon.addEventListener('mousedown', function(e) {
+            e.preventDefault();
         });
         
         /**

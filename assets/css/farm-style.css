@@ -5574,9 +5574,10 @@ footer,
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 1000;
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
@@ -5585,6 +5586,7 @@ footer,
 .tasks-panel-overlay.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
 }
 
 /* Tasks Panel */
@@ -5598,13 +5600,18 @@ footer,
     border: 2px solid rgba(201, 184, 138, 0.4);
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
+    z-index: 1001;
     display: none;
     overflow: hidden;
     flex-direction: column;
     transform: translateY(20px);
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.tasks-panel.active {
+    pointer-events: auto;
 }
 
 .tasks-panel.active {
