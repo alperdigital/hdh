@@ -40,15 +40,17 @@ $recent_listings = new WP_Query($recent_listings_args);
         </button>
     <?php endif; ?>
     
-    <!-- 1. TOP SECTION - CTA BUTTONS -->
-    <section class="homepage-cta-buttons">
+    <!-- 1. TOP SECTION - PRIMARY ACTION -->
+    <section class="homepage-hero">
         <div class="container">
-            <div class="homepage-cta-row">
-                <a href="<?php echo esc_url(home_url('/ara')); ?>" class="homepage-cta-btn homepage-cta-search">
+            <h1 class="homepage-headline">Diğer çiftliklerle hediyeleşmeye başla</h1>
+            <p class="homepage-subtitle">Diğer çiftliklerle güvenle hediyeleş</p>
+            <div class="homepage-cta-buttons">
+                <a href="<?php echo esc_url(home_url('/ara')); ?>" class="homepage-primary-cta homepage-cta-search">
                     İlan Ara
                 </a>
-                <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="homepage-cta-btn homepage-cta-create">
-                    İlan Oluştur
+                <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="homepage-primary-cta homepage-cta-create">
+                    İlan Ver
                 </a>
             </div>
         </div>

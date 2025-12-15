@@ -5793,71 +5793,58 @@ footer,
 }
 
 /* ============================================
-   HOMEPAGE CTA BUTTONS
+   HOMEPAGE CTA BUTTONS (IN HERO SECTION)
    ============================================ */
 
-.homepage-cta-buttons {
-    padding: 40px 20px;
-    background: #FFF6D8;
-}
-
-.homepage-cta-row {
+.homepage-hero .homepage-cta-buttons {
     display: flex;
     gap: 16px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.homepage-cta-btn {
-    flex: 1;
-    padding: 16px 24px;
-    background: #FFF6D8;
-    border: 2px solid rgba(201, 184, 138, 0.4);
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--wood-brown);
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    min-height: 56px;
-    display: flex;
-    align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 24px;
 }
 
-.homepage-cta-btn:hover {
-    background: rgba(201, 184, 138, 0.15);
-    border-color: rgba(201, 184, 138, 0.6);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-}
-
-.homepage-cta-search {
+.homepage-primary-cta.homepage-cta-search,
+.homepage-primary-cta.homepage-cta-create {
+    display: inline-block;
     background: var(--farm-green);
     color: #FFFFFF;
-    border-color: var(--farm-green);
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 16px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(116, 195, 101, 0.3);
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    border: none;
 }
 
-.homepage-cta-search:hover {
+.homepage-primary-cta.homepage-cta-search:hover,
+.homepage-primary-cta.homepage-cta-create:hover {
     background: var(--farm-green-dark);
-    border-color: var(--farm-green-dark);
-    color: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(116, 195, 101, 0.4);
+    transform: translateY(-2px);
+}
+
+.homepage-primary-cta.homepage-cta-search:active,
+.homepage-primary-cta.homepage-cta-create:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(116, 195, 101, 0.4);
 }
 
 @media (max-width: 768px) {
-    .homepage-cta-buttons {
-        padding: 30px 20px;
-    }
-    
-    .homepage-cta-row {
+    .homepage-hero .homepage-cta-buttons {
         flex-direction: column;
         gap: 12px;
+        align-items: stretch;
     }
     
-    .homepage-cta-btn {
+    .homepage-primary-cta.homepage-cta-search,
+    .homepage-primary-cta.homepage-cta-create {
         width: 100%;
+        text-align: center;
     }
 }
 }
