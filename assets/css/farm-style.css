@@ -3331,9 +3331,13 @@ main {
     flex-shrink: 0;
 }
 
-.offer-quantity-item input[type="number"] {
+.offer-quantity-item input[type="number"],
+.offer-quantity-item .qty-input {
     flex: 1;
     min-width: 0;
+    border: 2px solid rgba(201, 184, 138, 0.4) !important; /* Override any red borders */
+    background: #FFF6D8 !important; /* Ensure correct background */
+    color: var(--newspaper-text) !important;
 }
 
 .form-field {
