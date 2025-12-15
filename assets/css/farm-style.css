@@ -5420,6 +5420,28 @@ footer,
     transition: all 0.3s ease;
 }
 
+/* Desktop: Ensure visibility above bottom navigation */
+@media (min-width: 769px) {
+    .tasks-icon-fixed {
+        bottom: 110px;
+        left: 24px;
+        width: 60px;
+        height: 60px;
+        z-index: 999;
+    }
+    
+    .tasks-icon-emoji {
+        font-size: 2rem;
+    }
+    
+    .tasks-panel {
+        bottom: 110px;
+        left: 24px;
+        width: 400px;
+        max-height: 650px;
+    }
+}
+
 .tasks-icon-fixed:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 16px rgba(116, 195, 101, 0.5);
