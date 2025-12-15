@@ -98,6 +98,23 @@
         const emailVerifyBtn = document.getElementById('btn-firebase-email-verify');
         const emailCheckBtn = document.getElementById('btn-firebase-email-check');
         const emailMessage = document.getElementById('firebase-email-message');
+        const verificationActions = document.querySelector('.verification-actions');
+        
+        // Check if email is already verified (from PHP)
+        const verificationBadge = document.querySelector('.verification-badge.verified');
+        if (verificationBadge) {
+            // Email is verified - hide all verification buttons
+            if (emailVerifyBtn) {
+                emailVerifyBtn.style.display = 'none';
+            }
+            if (emailCheckBtn) {
+                emailCheckBtn.style.display = 'none';
+            }
+            if (verificationActions) {
+                verificationActions.style.display = 'none';
+            }
+            return; // Exit early if already verified
+        }
         
         if (!emailVerifyBtn) return;
         
@@ -236,6 +253,22 @@
                             
                             if (data.success) {
                                 showMessage(emailMessage, 'success', data.data.message || 'E-posta doğrulandı!');
+                                
+                                // Hide verification buttons and actions immediately
+                                if (emailVerifyBtn) {
+                                    emailVerifyBtn.style.display = 'none';
+                                    emailVerifyBtn.disabled = true;
+                                }
+                                if (emailCheckBtn) {
+                                    emailCheckBtn.style.display = 'none';
+                                    emailCheckBtn.disabled = true;
+                                }
+                                const verificationActions = document.querySelector('.verification-actions');
+                                if (verificationActions) {
+                                    verificationActions.style.display = 'none';
+                                }
+                                
+                                // Reload page after 2 seconds to show updated status
                                 setTimeout(() => {
                                     window.location.reload();
                                 }, 2000);
