@@ -66,6 +66,7 @@ require_once get_template_directory() . '/inc/admin-moderation-ui.php';
 require_once get_template_directory() . '/inc/trust-display.php';
 require_once get_template_directory() . '/components/user-badge.php';
 require_once get_template_directory() . '/components/quest-panel.php';
+require_once get_template_directory() . '/components/tasks-panel.php';
 require_once get_template_directory() . '/components/share-buttons.php';
 require_once get_template_directory() . '/inc/seo-handler.php';
 require_once get_template_directory() . '/inc/share-image-generator.php';
