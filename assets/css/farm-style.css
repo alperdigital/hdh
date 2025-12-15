@@ -4033,22 +4033,27 @@ footer,
     display: block;
     text-decoration: none;
     color: inherit;
-    padding: 10px 16px;
-    background: var(--newspaper-bg);
-    border: none;
-    border-radius: 0;
+    padding: 16px;
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
     margin-bottom: 0;
-    border-bottom: 1px solid rgba(201, 184, 138, 0.35);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     -webkit-tap-highlight-color: transparent;
-    transition: background-color 0.15s ease;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .listing-unified-block:active {
-    background-color: rgba(0, 0, 0, 0.015);
+    transform: scale(0.98);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-.listing-unified-block:last-child {
-    border-bottom: none;
+.listing-unified-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-color: rgba(201, 184, 138, 0.6);
 }
 
 /* Meta Row: Blue Star + Farm Name + Time (Bottom, Left Aligned, Minimum Spacing) */
@@ -4165,15 +4170,28 @@ footer,
     padding: 4px 0;
 }
 
-/* Unified Newspaper Panel Layout (Continuous Column) */
+/* Unified Newspaper Panel Layout - Grid (Yan Yana) */
 .trade-cards-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    background: var(--newspaper-bg);
-    border: 1px solid rgba(201, 184, 138, 0.4);
-    border-radius: 8px;
-    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+/* Fallback for older browsers that don't support grid */
+@supports not (display: grid) {
+    .trade-cards-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+    
+    .listing-unified-block {
+        flex: 1 1 350px;
+        min-width: 350px;
+        max-width: 100%;
+    }
 }
 
 /* Mobile Optimizations */
@@ -4215,9 +4233,10 @@ footer,
     }
     
     .listing-unified-block {
-        padding: 8px 12px;
+        padding: 12px;
         margin-bottom: 0;
-        border-bottom: 1px solid rgba(201, 184, 138, 0.35);
+        border-bottom: none;
+        border-radius: 10px;
     }
     
     .listing-meta-row-unified {
@@ -4292,18 +4311,30 @@ footer,
     }
 }
 
-/* Desktop: Keep unified panel (no grid) */
+/* Desktop: Grid layout (yan yana) */
 @media (min-width: 769px) {
     .trade-cards-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-        max-width: 800px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 24px;
+        max-width: 100%;
         margin: 0 auto;
     }
     
     .listing-unified-block {
-        padding: 14px 20px;
+        padding: 16px;
+        border-bottom: none;
+        border-radius: 12px;
+        background: #FFF6D8;
+        border: 2px solid rgba(201, 184, 138, 0.4);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.2s ease;
+    }
+    
+    .listing-unified-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        border-color: rgba(201, 184, 138, 0.6);
     }
     
     .listing-content-columns-unified {
