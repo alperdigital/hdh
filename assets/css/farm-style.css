@@ -5720,35 +5720,50 @@ footer,
 
 /* ============================================
    LEVEL BADGE (CARTOON/GAME HUD STYLE)
-   ============================================ */
+   ============================================
+   
+   Usage in listing card markup:
+   <div class="hdh-level-badge lvl-d2" aria-label="Seviye 88">88</div>
+   
+   Digit classes:
+   - lvl-d1: Single digit (1-9)
+   - lvl-d2: Two digits (10-99)
+   - lvl-d3: Three digits (100+)
+   
+   Backend PHP example:
+   $level_int = (int) $level;
+   $digits = strlen((string)$level_int);
+   $digit_class = $digits === 1 ? 'lvl-d1' : ($digits === 2 ? 'lvl-d2' : 'lvl-d3');
+   */
 
 .hdh-level-badge {
     width: 56px;
     height: 56px;
-    background: url('../icons/level-star.svg') center/contain no-repeat;
+    background: url('../icons/level-star-original.svg') center/contain no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     
-    /* Number style */
+    /* Number style - bold cartoon HUD */
     font-weight: 900;
-    font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    font-family: Impact, Haettenschweiler, "Arial Black", system-ui, sans-serif;
     color: #FFFFFF;
     line-height: 1;
     
-    /* Contour (main effect) */
-    -webkit-text-stroke: 4px #111;
+    /* Thick black outline (cartoon style) */
+    -webkit-text-stroke: 4px #0b0b0b;
     paint-order: stroke fill;
     
-    /* Shadow/depth */
+    /* Drop shadow for depth */
     text-shadow:
         0 3px 0 rgba(0, 0, 0, 0.25),
-        0 6px 10px rgba(0, 0, 0, 0.18);
+        0 8px 12px rgba(0, 0, 0, 0.20);
     
-    transform: translateY(-1px); /* Fine-tune centering */
+    transform: translateY(-1px); /* Fine-tune vertical centering */
     
     flex-shrink: 0;
     cursor: help;
+    user-select: none;
 }
 
 /* Font size based on digit count */
@@ -5788,7 +5803,10 @@ footer,
 
 /* Adjust stroke for smaller badges */
 .listing-meta-row-unified .hdh-level-badge {
-    -webkit-text-stroke: 3px #111;
+    -webkit-text-stroke: 3px #0b0b0b;
+    text-shadow:
+        0 2px 0 rgba(0, 0, 0, 0.25),
+        0 6px 10px rgba(0, 0, 0, 0.18);
 }
 
 @media (max-width: 768px) {
@@ -5810,7 +5828,10 @@ footer,
     }
     
     .hdh-level-badge {
-        -webkit-text-stroke: 3px #111;
+        -webkit-text-stroke: 3px #0b0b0b;
+        text-shadow:
+            0 2px 0 rgba(0, 0, 0, 0.25),
+            0 6px 10px rgba(0, 0, 0, 0.18);
     }
 }
 
