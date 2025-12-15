@@ -62,19 +62,6 @@ $recent_listings = new WP_Query($recent_listings_args);
         <div class="container">
             <h2 class="homepage-section-title">Son İlanlar</h2>
             
-            <!-- Sticky Header: Hediye Ediyor / Hediye İstiyor -->
-            <div class="listing-feed-sticky-header">
-                <div class="sticky-header-column sticky-header-left">
-                    <span class="sticky-header-icon">🎁</span>
-                    <span class="sticky-header-label">Hediye Ediyor</span>
-                </div>
-                <div class="sticky-header-divider"></div>
-                <div class="sticky-header-column sticky-header-right">
-                    <span class="sticky-header-icon">🤍</span>
-                    <span class="sticky-header-label">Hediye İstiyor</span>
-                </div>
-            </div>
-            
             <!-- Listing Cards -->
             <div class="trade-cards-grid">
                 <?php while ($recent_listings->have_posts()) : $recent_listings->the_post(); ?>

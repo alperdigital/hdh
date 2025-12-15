@@ -4105,18 +4105,18 @@ footer,
     border-color: rgba(201, 184, 138, 0.6);
 }
 
-/* Meta Row: Blue Star + Farm Name + Time (Bottom, Left Aligned, Minimum Spacing) */
+/* Meta Row: Blue Star + Farm Name + Time (Top, Left Aligned, Minimum Spacing) */
 .listing-meta-row-unified {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-top: 6px;
-    padding-top: 6px;
-    padding-bottom: 0;
-    margin-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 12px;
+    padding-top: 0;
+    padding-bottom: 12px;
     background: transparent;
     border: none;
-    border-top: 1px solid rgba(201, 184, 138, 0.3);
+    border-bottom: 1px solid rgba(201, 184, 138, 0.3);
 }
 
 /* Old star styles removed - replaced by .hdh-level-badge */
@@ -4145,15 +4145,17 @@ footer,
     font-weight: 500;
 }
 
-/* Listing Header: Split with Divider */
+/* Listing Header/Footer: Split with Divider */
 .listing-header-split {
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
     padding: 12px 0;
-    margin-bottom: 12px;
-    border-bottom: 1px solid rgba(201, 184, 138, 0.3);
+    margin-top: 12px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(201, 184, 138, 0.3);
+    border-bottom: none;
 }
 
 .listing-header-left,
@@ -4179,7 +4181,7 @@ footer,
 }
 
 .listing-header-label {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--newspaper-text);
     letter-spacing: 0;
@@ -4343,9 +4345,16 @@ footer,
     }
     
     .listing-meta-row-unified {
-        margin-top: 5px;
-        padding-top: 5px;
+        margin-top: 0;
+        margin-bottom: 10px;
+        padding-top: 0;
+        padding-bottom: 10px;
         gap: 5px;
+    }
+    
+    .listing-header-split {
+        margin-top: 10px;
+        padding: 10px 0;
     }
     
     .hdh-level-badge {

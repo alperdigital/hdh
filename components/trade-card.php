@@ -49,18 +49,30 @@ if (!function_exists('hdh_render_trade_card')) {
         }
         ?>
         <a href="<?php echo esc_url($post_url); ?>" class="listing-unified-block">
-            <!-- Header: Hediye (Left) | İstek (Right) with Divider -->
-            <div class="listing-header-split">
-                <div class="listing-header-left">
-                    <span class="listing-header-icon">🎁</span>
-                    <span class="listing-header-label">Hediye</span>
+            <!-- Meta Row: Blue Star (Level) + Farm Name + Time (Top, Left Aligned) -->
+            <header class="listing-meta-row-unified">
+                <?php 
+                // Get user level
+                $user_level = 1;
+                if (function_exists('hdh_get_user_state')) {
+                    $user_state = hdh_get_user_state($author_id);
+                    $user_level = $user_state['level'] ?? 1;
+                }
+                // Determine digit class based on level
+                $level_int = (int) $user_level;
+                $digits = strlen((string)$level_int);
+                $digit_class = $digits === 1 ? 'lvl-d1' : ($digits === 2 ? 'lvl-d2' : 'lvl-d3');
+                ?>
+                <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
+                     aria-label="Seviye <?php echo esc_attr($user_level); ?>"
+                     title="Seviye <?php echo esc_attr($user_level); ?>">
+                    <?php echo esc_html($user_level); ?>
                 </div>
-                <div class="listing-header-divider"></div>
-                <div class="listing-header-right">
-                    <span class="listing-header-icon">🤍</span>
-                    <span class="listing-header-label">İstek</span>
-                </div>
-            </div>
+                <span class="listing-meta-farm-name">
+                    <?php echo esc_html($author_name); ?>
+                </span>
+                <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
+            </header>
             
             <!-- Two-Column Layout: Gifted (Left) | Requested (Right) -->
             <div class="listing-content-columns-unified">
@@ -121,29 +133,17 @@ if (!function_exists('hdh_render_trade_card')) {
                 </div>
             </div>
             
-            <!-- Meta Row: Blue Star (Level) + Farm Name + Time (Bottom, Left Aligned) -->
-            <footer class="listing-meta-row-unified">
-                <?php 
-                // Get user level
-                $user_level = 1;
-                if (function_exists('hdh_get_user_state')) {
-                    $user_state = hdh_get_user_state($author_id);
-                    $user_level = $user_state['level'] ?? 1;
-                }
-                // Determine digit class based on level
-                $level_int = (int) $user_level;
-                $digits = strlen((string)$level_int);
-                $digit_class = $digits === 1 ? 'lvl-d1' : ($digits === 2 ? 'lvl-d2' : 'lvl-d3');
-                ?>
-                <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
-                     aria-label="Seviye <?php echo esc_attr($user_level); ?>"
-                     title="Seviye <?php echo esc_attr($user_level); ?>">
-                    <?php echo esc_html($user_level); ?>
+            <!-- Footer: Hediye (Left) | İstek (Right) with Divider -->
+            <footer class="listing-header-split">
+                <div class="listing-header-left">
+                    <span class="listing-header-icon">🎁</span>
+                    <span class="listing-header-label">Hediye</span>
                 </div>
-                <span class="listing-meta-farm-name">
-                    <?php echo esc_html($author_name); ?>
-                </span>
-                <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
+                <div class="listing-header-divider"></div>
+                <div class="listing-header-right">
+                    <span class="listing-header-icon">🤍</span>
+                    <span class="listing-header-label">İstek</span>
+                </div>
             </footer>
         </a>
         <?php
