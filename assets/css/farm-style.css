@@ -5823,12 +5823,6 @@ footer,
     flex-shrink: 0;
 }
 
-.task-progress {
-    font-size: 13px;
-    color: rgba(44, 44, 44, 0.6);
-    font-weight: 600;
-    margin-left: 4px;
-}
 
 .task-actions {
     display: flex;
