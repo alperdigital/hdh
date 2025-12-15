@@ -5812,6 +5812,37 @@ footer,
     flex-shrink: 0;
 }
 
+.task-progress {
+    font-size: 13px;
+    color: rgba(44, 44, 44, 0.6);
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.tasks-section {
+    margin-bottom: 24px;
+}
+
+.tasks-section:last-child {
+    margin-bottom: 0;
+}
+
+.tasks-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid rgba(201, 184, 138, 0.3);
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .tasks-icon-fixed {
