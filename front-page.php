@@ -85,16 +85,6 @@ $recent_listings = new WP_Query($recent_listings_args);
     </section>
     <?php endif; ?>
     
-    <!-- 4. SECONDARY ACTION (LOW PRIORITY) -->
-    <section class="homepage-secondary-action">
-        <div class="container">
-            <p class="secondary-action-text">Sen de bir ilan oluştur</p>
-            <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="homepage-secondary-cta">
-                İlan Ver
-            </a>
-        </div>
-    </section>
-    
 </main>
 
 <?php
