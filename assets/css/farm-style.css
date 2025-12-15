@@ -6331,10 +6331,16 @@ body:not([class*="announcement"]) .hdh-user-info-widget {
 /* Very small screens */
 @media (max-width: 480px) {
     .hdh-user-info-widget {
-        top: 8px;
+        top: 44px; /* Adjusted for mobile */
         left: 8px;
-        padding: 5px 10px;
+        padding: 6px 12px;
         gap: 8px;
+        border-radius: 12px;
+    }
+    
+    body:not(:has(.farm-announcement-banner)) .hdh-user-info-widget,
+    body:not([class*="announcement"]) .hdh-user-info-widget {
+        top: 8px;
     }
     
     .hdh-user-info-widget .hdh-level-badge {
