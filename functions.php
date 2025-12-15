@@ -113,6 +113,17 @@ function hdh_enqueue_scripts() {
         true
     );
     
+    // Enqueue user info widget script (for logged-in users)
+    if (is_user_logged_in()) {
+        wp_enqueue_script(
+            'hdh-user-info-widget',
+            get_template_directory_uri() . '/assets/js/user-info-widget.js',
+            array(),
+            '1.0.0',
+            true
+        );
+    }
+    
     // Enqueue trade form script on ilan-ver page
     if (is_page_template('page-ilan-ver.php')) {
         wp_enqueue_script(

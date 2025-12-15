@@ -6163,30 +6163,68 @@ footer,
 }
 
 /* ============================================
-   USER INFO WIDGET (FIXED TOP LEFT)
+   USER INFO WIDGET (FIXED BELOW HEADER)
    ============================================ */
 
 .hdh-user-info-widget {
     position: fixed;
-    top: 16px;
+    top: 52px; /* Below announcement banner (12px padding * 2 + ~28px text height) */
     left: 16px;
-    z-index: 10001; /* Above everything including announcement banner */
+    z-index: 9999; /* Below header (1000) but above content */
     display: flex;
     align-items: center;
     gap: 12px;
-    background: rgba(255, 246, 216, 0.95); /* #FFF6D8 with transparency */
-    border: 2px solid rgba(201, 184, 138, 0.4);
-    border-radius: 12px;
-    padding: 8px 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(255, 246, 216, 0.98) 0%, rgba(255, 250, 240, 0.98) 100%);
+    border: 2px solid rgba(201, 184, 138, 0.5);
+    border-radius: 16px;
+    padding: 10px 18px;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(201, 184, 138, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideInFromTop 0.5s ease-out;
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hdh-user-info-widget:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    transform: translateY(-1px);
+    box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.15),
+        0 3px 10px rgba(201, 184, 138, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    border-color: rgba(201, 184, 138, 0.7);
+}
+
+/* Add a subtle glow effect */
+.hdh-user-info-widget::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, rgba(201, 184, 138, 0.1), rgba(255, 246, 216, 0.1));
+    border-radius: 18px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hdh-user-info-widget:hover::before {
+    opacity: 1;
 }
 
 .hdh-user-info-widget .hdh-level-badge {
@@ -6226,15 +6264,45 @@ footer,
     text-overflow: ellipsis;
     max-width: 200px;
     line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.3px;
+    position: relative;
+}
+
+.hdh-farm-name::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--farm-green), var(--wood-brown));
+    transition: width 0.3s ease;
+}
+
+.hdh-user-info-widget:hover .hdh-farm-name::after {
+    width: 100%;
+}
+
+/* Adjust top position when announcement banner is hidden */
+body:not(:has(.farm-announcement-banner)) .hdh-user-info-widget,
+body:not([class*="announcement"]) .hdh-user-info-widget {
+    top: 16px;
 }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
     .hdh-user-info-widget {
-        top: 12px;
+        top: 48px; /* Slightly less on mobile */
         left: 12px;
-        padding: 6px 12px;
+        padding: 8px 14px;
         gap: 10px;
+        border-radius: 14px;
+    }
+    
+    body:not(:has(.farm-announcement-banner)) .hdh-user-info-widget,
+    body:not([class*="announcement"]) .hdh-user-info-widget {
+        top: 12px;
     }
     
     .hdh-user-info-widget .hdh-level-badge {
