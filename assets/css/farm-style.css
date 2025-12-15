@@ -5611,10 +5611,6 @@ footer,
 }
 
 .tasks-panel.active {
-    pointer-events: auto;
-}
-
-.tasks-panel.active {
     display: flex;
     opacity: 1;
     transform: translateY(0);
