@@ -122,10 +122,14 @@ function hdh_generate_schema_offer($listing_id, $title, $description, $url, $ima
 }
 
 /**
- * Get OG image URL (placeholder until image generator is ready)
+ * Get OG image URL (delegates to share-image-generator.php)
  */
 function hdh_get_listing_og_image_url($listing_id) {
-    // TODO: Generate image if doesn't exist
+    if (function_exists('hdh_get_listing_og_image_url_generated')) {
+        return hdh_get_listing_og_image_url_generated($listing_id);
+    }
+    
+    // Fallback
     $upload_dir = wp_upload_dir();
     $image_path = $upload_dir['basedir'] . '/hdh-shares/' . $listing_id . '-og.jpg';
     $image_url = $upload_dir['baseurl'] . '/hdh-shares/' . $listing_id . '-og.jpg';
@@ -134,7 +138,6 @@ function hdh_get_listing_og_image_url($listing_id) {
         return $image_url;
     }
     
-    // Fallback: site logo or default
     return get_site_icon_url();
 }
 
