@@ -70,9 +70,16 @@
         const offerQuantities = document.getElementById('offer-quantities');
         const selectionCount = document.getElementById('offer-selection-count');
         
-        if (!offerItemsGrid || !offerQuantities) return;
+        if (!offerItemsGrid || !offerQuantities) {
+            console.error('HDH Trade Form: offer-items-grid or offer-quantities not found');
+            return;
+        }
         
-        let selectedCount = 0;
+        // Get current selected count
+        function getSelectedCount() {
+            const checkedBoxes = offerItemsGrid.querySelectorAll('input[type="checkbox"]:checked');
+            return checkedBoxes.length;
+        }
         
         offerItemsGrid.addEventListener('change', function(e) {
             if (e.target.type !== 'checkbox') return;
@@ -83,9 +90,16 @@
             const itemLabelElement = itemCardWrapper ? itemCardWrapper.querySelector('.item-card-label') : null;
             const itemLabel = itemLabelElement ? itemLabelElement.textContent.trim() : itemSlug;
             
+            console.log('HDH Trade Form: Checkbox changed', {
+                slug: itemSlug,
+                label: itemLabel,
+                checked: checkbox.checked
+            });
+            
             if (checkbox.checked) {
-                // Check limit
-                if (selectedCount >= MAX_OFFER_ITEMS) {
+                // Check limit - get current count before adding
+                const currentCount = getSelectedCount();
+                if (currentCount > MAX_OFFER_ITEMS) {
                     checkbox.checked = false;
                     showToast('En fazla ' + MAX_OFFER_ITEMS + ' ürün seçebilirsiniz', 'warning');
                     return;
@@ -97,8 +111,8 @@
                 }
                 
                 // Add quantity stepper
+                console.log('HDH Trade Form: Adding quantity stepper for', itemSlug);
                 addQuantityStepper(itemSlug, itemLabel);
-                selectedCount++;
                 
             } else {
                 // Remove selected state
@@ -107,14 +121,15 @@
                 }
                 
                 // Remove quantity stepper
+                console.log('HDH Trade Form: Removing quantity stepper for', itemSlug);
                 removeQuantityStepper(itemSlug);
-                selectedCount--;
             }
             
-            // Update selection count
-            updateSelectionCount(selectedCount);
+            // Update selection count - get actual count
+            const actualCount = getSelectedCount();
+            updateSelectionCount(actualCount);
             
-            console.log('HDH Trade Form: Offer items selected', selectedCount);
+            console.log('HDH Trade Form: Offer items selected', actualCount);
         });
     }
     
@@ -123,10 +138,19 @@
      */
     function addQuantityStepper(slug, label) {
         const offerQuantities = document.getElementById('offer-quantities');
-        if (!offerQuantities) return;
+        if (!offerQuantities) {
+            console.error('HDH Trade Form: offer-quantities container not found');
+            return;
+        }
         
         // Check if already exists
-        if (document.getElementById('quantity-item-' + slug)) return;
+        const existingStepper = document.getElementById('quantity-item-' + slug);
+        if (existingStepper) {
+            console.log('HDH Trade Form: Quantity stepper already exists for', slug);
+            return;
+        }
+        
+        console.log('HDH Trade Form: Creating quantity stepper for', slug, 'with label', label);
         
         const stepperItem = document.createElement('div');
         stepperItem.className = 'offer-quantity-item';
@@ -163,6 +187,8 @@
         
         // Scroll into view
         stepperItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        console.log('HDH Trade Form: Quantity stepper added successfully for', slug);
     }
     
     /**
