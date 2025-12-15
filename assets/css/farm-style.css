@@ -5508,8 +5508,11 @@ footer,
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 998;
+    z-index: 1001;
     transition: all 0.3s ease;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: rgba(116, 195, 101, 0.3);
+    touch-action: manipulation;
 }
 
 /* Desktop: Ensure visibility above bottom navigation */
@@ -5774,6 +5777,9 @@ footer,
         right: 16px;
         width: 52px;
         height: 52px;
+        z-index: 1001;
+        pointer-events: auto;
+        touch-action: manipulation;
     }
     
     .tasks-icon-emoji {
@@ -5786,6 +5792,11 @@ footer,
         left: 16px;
         width: auto;
         max-height: 70vh;
+        z-index: 1002;
+    }
+    
+    .tasks-panel-overlay {
+        z-index: 1001;
     }
     
     .tasks-panel-header {
