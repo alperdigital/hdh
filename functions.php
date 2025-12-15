@@ -71,6 +71,8 @@ require_once get_template_directory() . '/inc/seo-handler.php';
 require_once get_template_directory() . '/inc/share-image-generator.php';
 require_once get_template_directory() . '/inc/share-tracking-handler.php';
 require_once get_template_directory() . '/inc/email-verification.php';
+require_once get_template_directory() . '/inc/firebase-config.php';
+require_once get_template_directory() . '/inc/firebase-verification.php';
 require_once get_template_directory() . '/inc/quest-system.php';
 require_once get_template_directory() . '/social-share.php';
 
@@ -175,6 +177,36 @@ function hdh_enqueue_scripts() {
             true
         );
         
+        // Firebase SDK (if configured)
+        if (function_exists('hdh_is_firebase_configured') && hdh_is_firebase_configured()) {
+            // Firebase App SDK
+            wp_enqueue_script(
+                'firebase-app',
+                'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js',
+                array(),
+                '10.7.1',
+                true
+            );
+            
+            // Firebase Auth SDK
+            wp_enqueue_script(
+                'firebase-auth',
+                'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js',
+                array('firebase-app'),
+                '10.7.1',
+                true
+            );
+            
+            // Firebase verification script
+            wp_enqueue_script(
+                'hdh-firebase-verification',
+                get_template_directory_uri() . '/assets/js/firebase-verification.js',
+                array('firebase-auth'),
+                '1.0.0',
+                true
+            );
+        }
+        
         // Tasks panel (for logged-in users)
         wp_enqueue_script(
             'hdh-tasks-panel',
@@ -261,6 +293,19 @@ function hdh_enqueue_scripts() {
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('hdh_email_verification'),
             ));
+            
+            // Localize Firebase verification script (if Firebase is configured)
+            if (function_exists('hdh_is_firebase_configured') && hdh_is_firebase_configured()) {
+                $current_user = wp_get_current_user();
+                $firebase_config = hdh_get_firebase_config();
+                
+                wp_localize_script('hdh-firebase-verification', 'hdhFirebase', array(
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('hdh_firebase_verification'),
+                    'config' => $firebase_config,
+                    'userEmail' => $current_user->user_email,
+                ));
+            }
     }
 }
 add_action('wp_enqueue_scripts', 'hdh_enqueue_scripts');
