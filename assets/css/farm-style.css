@@ -3249,10 +3249,12 @@ main {
 }
 
 /* Offer quantity items */
+/* Offer quantity item - animation styles */
 .offer-quantity-item {
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;
+    margin-bottom: 16px;
 }
 
 .offer-quantity-item.visible {
@@ -3303,14 +3305,8 @@ main {
     min-height: 0;
 }
 
-.offer-quantity-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    background: rgba(220, 20, 60, 0.05);
-    border-radius: var(--radius-medium);
-    border: 2px solid rgba(220, 20, 60, 0.2);
+/* Offer quantity item - layout styles (merged with animation styles above) */
+.offer-quantity-item .quantity-stepper-wrapper {
     width: 100%;
     box-sizing: border-box;
 }
