@@ -5513,6 +5513,10 @@ footer,
     pointer-events: auto;
     -webkit-tap-highlight-color: rgba(116, 195, 101, 0.3);
     touch-action: manipulation;
+    overflow: visible;
+    max-width: 56px;
+    max-height: 56px;
+    box-sizing: border-box;
 }
 
 /* Desktop: Ensure visibility above bottom navigation */
@@ -5595,6 +5599,7 @@ footer,
     bottom: 100px;
     right: 20px;
     width: 360px;
+    max-width: calc(100vw - 40px);
     max-height: 600px;
     background: #FFF6D8;
     border: 2px solid rgba(201, 184, 138, 0.4);
@@ -5608,6 +5613,7 @@ footer,
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none;
+    box-sizing: border-box;
 }
 
 .tasks-panel.active {
@@ -5678,6 +5684,11 @@ footer,
     border-radius: 12px;
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .task-item:hover {
@@ -5710,6 +5721,11 @@ footer,
     flex-direction: column;
     gap: 4px;
     flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .task-name {
@@ -5717,12 +5733,22 @@ footer,
     font-weight: 700;
     color: var(--newspaper-text);
     line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 
 .task-description {
     font-size: 13px;
     color: rgba(44, 44, 44, 0.7);
     line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-width: 100%;
 }
 
 .task-reward {
@@ -5746,6 +5772,10 @@ footer,
     transition: all 0.2s ease;
     white-space: nowrap;
     flex-shrink: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
 }
 
 .btn-claim-daily:hover,
@@ -5790,11 +5820,24 @@ footer,
         font-size: 1.6rem;
     }
     
+    .tasks-icon-fixed {
+        bottom: 90px;
+        right: 16px;
+        width: 52px;
+        height: 52px;
+        max-width: 52px;
+        max-height: 52px;
+        z-index: 1001;
+        pointer-events: auto;
+        touch-action: manipulation;
+    }
+    
     .tasks-panel {
         bottom: 90px;
         right: 16px;
         left: 16px;
         width: auto;
+        max-width: calc(100vw - 32px);
         max-height: 70vh;
         z-index: 1002;
     }

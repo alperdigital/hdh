@@ -32,14 +32,6 @@ $recent_listings = new WP_Query($recent_listings_args);
 <!-- Homepage: Action Starter -->
 <main class="homepage-action-starter">
     
-    <?php if (is_user_logged_in() && function_exists('hdh_render_quest_panel')) : ?>
-        <?php echo hdh_render_quest_panel(); ?>
-        <button class="quest-icon-fixed" id="quest-icon-toggle" aria-label="Görevler">
-            <span class="quest-icon-emoji">📋</span>
-            <span class="quest-icon-badge" id="quest-icon-badge" style="display: none;">0</span>
-        </button>
-    <?php endif; ?>
-    
     <!-- 1. TOP SECTION - PRIMARY ACTION -->
     <section class="homepage-hero">
         <div class="container">
