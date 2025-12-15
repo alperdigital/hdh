@@ -5800,8 +5800,9 @@ footer,
     display: flex;
     gap: 16px;
     justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 24px;
+    align-items: center;
+    margin-top: 32px;
+    flex-wrap: nowrap;
 }
 
 .homepage-primary-cta.homepage-cta-search,
@@ -5810,15 +5811,20 @@ footer,
     background: var(--farm-green);
     color: #FFFFFF;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    padding: 16px 32px;
+    padding: 14px 28px;
     border-radius: 12px;
     text-decoration: none;
     box-shadow: 0 4px 12px rgba(116, 195, 101, 0.3);
     transition: all 0.2s ease;
     -webkit-tap-highlight-color: transparent;
     border: none;
+    flex: 1;
+    max-width: 200px;
+    text-align: center;
+    min-height: 48px;
+    line-height: 1.4;
 }
 
 .homepage-primary-cta.homepage-cta-search:hover,
@@ -5836,17 +5842,27 @@ footer,
 
 @media (max-width: 768px) {
     .homepage-hero .homepage-cta-buttons {
-        flex-direction: column;
         gap: 12px;
-        align-items: stretch;
+        padding: 0 10px;
     }
     
     .homepage-primary-cta.homepage-cta-search,
     .homepage-primary-cta.homepage-cta-create {
-        width: 100%;
-        text-align: center;
+        font-size: 15px;
+        padding: 12px 20px;
+        max-width: none;
+        flex: 1;
+        min-height: 48px;
     }
 }
+
+@media (min-width: 769px) {
+    .homepage-primary-cta.homepage-cta-search,
+    .homepage-primary-cta.homepage-cta-create {
+        font-size: 18px;
+        padding: 16px 32px;
+        max-width: 220px;
+    }
 }
 
 .btn-cookie-accept-all:hover {
