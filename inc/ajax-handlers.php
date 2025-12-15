@@ -84,6 +84,15 @@ function hdh_filter_trades_by_offer_item() {
         $args['meta_query'] = $meta_query;
     }
     
+    // Exclude blocked users (server-side filtering)
+    $current_user_id = get_current_user_id();
+    if ($current_user_id && function_exists('hdh_get_blocked_users')) {
+        $blocked_users = hdh_get_blocked_users($current_user_id);
+        if (!empty($blocked_users)) {
+            $args['author__not_in'] = $blocked_users;
+        }
+    }
+    
     $trade_query = new WP_Query($args);
     
     ob_start();
