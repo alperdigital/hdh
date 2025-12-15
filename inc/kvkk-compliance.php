@@ -6,103 +6,13 @@
 if (!defined('ABSPATH')) exit;
 
 /**
- * Show cookie consent banner
+ * Show simple cookie consent banner
  */
 function hdh_show_cookie_banner() {
     if (is_admin()) return;
     
-    $user_id = get_current_user_id();
-    $consent = hdh_get_cookie_consent($user_id);
-    $policy_version = get_option('hdh_cookie_policy_version', '1.0');
-    
-    // Check if user needs to consent (no consent or version changed)
-    if ($consent && isset($consent['version']) && $consent['version'] === $policy_version) {
-        return; // Already consented to current version
-    }
-    
-    // Check localStorage (client-side check)
-    ?>
-    <div id="hdh-cookie-banner" class="hdh-cookie-banner" style="display: none;">
-        <div class="cookie-banner-content">
-            <p class="cookie-banner-text">
-                Bu site, deneyiminizi iyileştirmek için çerezler kullanır. 
-                <a href="<?php echo esc_url(home_url('/gizlilik-politikasi')); ?>">Gizlilik Politikası</a>
-            </p>
-            <div class="cookie-banner-options">
-                <label class="cookie-option">
-                    <input type="checkbox" id="cookie-analytics" checked disabled>
-                    <span>Gerekli Çerezler (Her zaman aktif)</span>
-                </label>
-                <label class="cookie-option">
-                    <input type="checkbox" id="cookie-analytics-opt">
-                    <span>Analitik Çerezler</span>
-                </label>
-                <label class="cookie-option">
-                    <input type="checkbox" id="cookie-marketing-opt">
-                    <span>Pazarlama Çerezleri</span>
-                </label>
-            </div>
-            <div class="cookie-banner-actions">
-                <button type="button" class="btn-cookie-accept-all" id="btn-cookie-accept-all">Tümünü Kabul Et</button>
-                <button type="button" class="btn-cookie-save" id="btn-cookie-save">Seçimleri Kaydet</button>
-            </div>
-        </div>
-    </div>
-    <script>
-    (function() {
-        const banner = document.getElementById('hdh-cookie-banner');
-        const saved = localStorage.getItem('hdh_cookie_consent');
-        const policyVersion = '<?php echo esc_js($policy_version); ?>';
-        
-        if (saved) {
-            const consent = JSON.parse(saved);
-            if (consent.version === policyVersion) {
-                return; // Already consented
-            }
-        }
-        
-        banner.style.display = 'block';
-        
-        document.getElementById('btn-cookie-accept-all').addEventListener('click', function() {
-            const consent = {
-                essential: true,
-                analytics: true,
-                marketing: true,
-                timestamp: new Date().toISOString(),
-                version: policyVersion
-            };
-            localStorage.setItem('hdh_cookie_consent', JSON.stringify(consent));
-            hdhSaveCookieConsent(consent);
-            banner.style.display = 'none';
-        });
-        
-        document.getElementById('btn-cookie-save').addEventListener('click', function() {
-            const consent = {
-                essential: true,
-                analytics: document.getElementById('cookie-analytics-opt').checked,
-                marketing: document.getElementById('cookie-marketing-opt').checked,
-                timestamp: new Date().toISOString(),
-                version: policyVersion
-            };
-            localStorage.setItem('hdh_cookie_consent', JSON.stringify(consent));
-            hdhSaveCookieConsent(consent);
-            banner.style.display = 'none';
-        });
-        
-        function hdhSaveCookieConsent(consent) {
-            fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: new URLSearchParams({
-                    action: 'hdh_save_cookie_consent',
-                    consent: JSON.stringify(consent),
-                    nonce: '<?php echo wp_create_nonce('hdh_cookie_consent'); ?>'
-                })
-            });
-        }
-    })();
-    </script>
-    <?php
+    // Load simple cookie consent template
+    get_template_part('template-parts/cookie-consent');
 }
 add_action('wp_footer', 'hdh_show_cookie_banner');
 

@@ -108,22 +108,21 @@ if (!function_exists('hdh_render_trade_card')) {
                 </div>
             </div>
             
-            <!-- Meta Row: Blue Star + Farm Name + Time (Bottom, Left Aligned) -->
+            <!-- Meta Row: Blue Star (Level) + Farm Name + Time (Bottom, Left Aligned) -->
             <footer class="listing-meta-row-unified">
-                <span class="listing-meta-star">
-                    <span class="star-icon">★</span>
-                    <?php if ($completed_gift_count > 0) : ?>
-                        <span class="star-number"><?php echo esc_html($completed_gift_count); ?></span>
-                    <?php endif; ?>
+                <?php 
+                // Get user level
+                $user_level = 1;
+                if (function_exists('hdh_get_user_state')) {
+                    $user_state = hdh_get_user_state($author_id);
+                    $user_level = $user_state['level'] ?? 1;
+                }
+                ?>
+                <span class="hdh-level-badge" title="Seviye <?php echo esc_attr($user_level); ?>">
+                    <?php echo esc_html($user_level); ?>
                 </span>
                 <span class="listing-meta-farm-name">
                     <?php echo esc_html($author_name); ?>
-                    <?php if (function_exists('hdh_render_user_badge')) : ?>
-                        <?php echo hdh_render_user_badge($author_id, 'small'); ?>
-                    <?php endif; ?>
-                    <?php if (function_exists('hdh_render_trust_stars')) : ?>
-                        <?php echo hdh_render_trust_stars($author_id, 'small'); ?>
-                    <?php endif; ?>
                 </span>
                 <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
             </footer>

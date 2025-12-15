@@ -40,22 +40,25 @@ $recent_listings = new WP_Query($recent_listings_args);
         </button>
     <?php endif; ?>
     
-    <!-- 1. TOP SECTION - PRIMARY ACTION -->
-    <section class="homepage-hero">
+    <!-- 1. TOP SECTION - CTA BUTTONS -->
+    <section class="homepage-cta-buttons">
         <div class="container">
-            <h1 class="homepage-headline">Hediyeleşmeye Başla</h1>
-            <p class="homepage-subtitle">Diğer çiftliklerle güvenle hediyeleş</p>
-            <a href="<?php echo esc_url(home_url('/ara')); ?>" class="homepage-primary-cta">
-                Hediyeni Seç
-            </a>
+            <div class="homepage-cta-row">
+                <a href="<?php echo esc_url(home_url('/ara')); ?>" class="homepage-cta-btn homepage-cta-search">
+                    İlan Ara
+                </a>
+                <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="homepage-cta-btn homepage-cta-create">
+                    İlan Oluştur
+                </a>
+            </div>
         </div>
     </section>
     
-    <!-- 2. MIDDLE SECTION - SOCIAL PROOF (LIVE NEWSPAPER) -->
+    <!-- 2. MIDDLE SECTION - SON İLANLAR -->
     <?php if ($recent_listings->have_posts()) : ?>
     <section class="homepage-recent-listings">
         <div class="container">
-            <h2 class="homepage-section-title">Son Hediyeleşmeler</h2>
+            <h2 class="homepage-section-title">Son İlanlar</h2>
             
             <!-- Sticky Header: Hediye Ediyor / Hediye İstiyor -->
             <div class="listing-feed-sticky-header">
