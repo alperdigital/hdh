@@ -37,9 +37,9 @@ get_header();
                         <span class="suggestion-icon">🎟️</span>
                         <span class="suggestion-text">Çekiliş</span>
                     </a>
-                    <a href="<?php echo esc_url(home_url('/dekorlar')); ?>" class="suggestion-link">
-                        <span class="suggestion-icon">🎨</span>
-                        <span class="suggestion-text">Dekorlar</span>
+                    <a href="<?php echo esc_url(home_url('/hazine')); ?>" class="suggestion-link">
+                        <span class="suggestion-icon">💎</span>
+                        <span class="suggestion-text">Hazine</span>
                     </a>
                     <a href="<?php echo esc_url(home_url('/profil')); ?>" class="suggestion-link">
                         <span class="suggestion-icon">👤</span>
