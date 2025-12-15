@@ -5765,31 +5765,99 @@ footer,
 }
 
 /* ============================================
-   LEVEL BADGE (BLUE STAR)
+   LEVEL BADGE (CARTOON/GAME HUD STYLE)
    ============================================ */
 
 .hdh-level-badge {
-    display: inline-flex;
+    width: 56px;
+    height: 56px;
+    background: url('../icons/level-star.svg') center/contain no-repeat;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    background-image: url('../icons/star-blue.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    font-size: 1.2rem;
-    font-weight: 700;
+    
+    /* Number style */
+    font-weight: 900;
+    font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
     color: #FFFFFF;
     line-height: 1;
+    
+    /* Contour (main effect) */
+    -webkit-text-stroke: 4px #111;
+    paint-order: stroke fill;
+    
+    /* Shadow/depth */
+    text-shadow:
+        0 3px 0 rgba(0, 0, 0, 0.25),
+        0 6px 10px rgba(0, 0, 0, 0.18);
+    
+    transform: translateY(-1px); /* Fine-tune centering */
+    
     flex-shrink: 0;
     cursor: help;
 }
 
+/* Font size based on digit count */
+.hdh-level-badge.lvl-d1 {
+    font-size: 28px;
+}
+
+.hdh-level-badge.lvl-d2 {
+    font-size: 26px;
+    letter-spacing: -1px;
+}
+
+.hdh-level-badge.lvl-d3 {
+    font-size: 22px;
+    letter-spacing: -2px;
+}
+
+/* Smaller size for listing cards */
 .listing-meta-row-unified .hdh-level-badge {
-    width: 44px;
-    height: 44px;
-    font-size: 1.1rem;
+    width: 48px;
+    height: 48px;
+}
+
+.listing-meta-row-unified .hdh-level-badge.lvl-d1 {
+    font-size: 24px;
+}
+
+.listing-meta-row-unified .hdh-level-badge.lvl-d2 {
+    font-size: 22px;
+    letter-spacing: -1px;
+}
+
+.listing-meta-row-unified .hdh-level-badge.lvl-d3 {
+    font-size: 19px;
+    letter-spacing: -2px;
+}
+
+/* Adjust stroke for smaller badges */
+.listing-meta-row-unified .hdh-level-badge {
+    -webkit-text-stroke: 3px #111;
+}
+
+@media (max-width: 768px) {
+    .hdh-level-badge {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .hdh-level-badge.lvl-d1 {
+        font-size: 22px;
+    }
+    
+    .hdh-level-badge.lvl-d2 {
+        font-size: 20px;
+    }
+    
+    .hdh-level-badge.lvl-d3 {
+        font-size: 18px;
+    }
+    
+    .hdh-level-badge {
+        -webkit-text-stroke: 3px #111;
+    }
 }
 
 /* ============================================

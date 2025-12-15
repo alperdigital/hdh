@@ -48,7 +48,11 @@ function hdh_render_user_badge($user_id, $size = 'medium') {
     $member_since = $tooltip_data['member_since'];
     $formatted_date = $member_since ? date_i18n('d F Y', strtotime($member_since)) : '';
     
-    $size_class = 'badge-' . $size;
+    // Determine digit class based on level
+    $level_int = (int) $level;
+    $digits = strlen((string)$level_int);
+    $digit_class = $digits === 1 ? 'lvl-d1' : ($digits === 2 ? 'lvl-d2' : 'lvl-d3');
+    
     $tooltip_text = sprintf(
         'Seviye %d • %d başarılı takas • %.1f%% güven puanı • Üye: %s',
         $level,
@@ -59,13 +63,12 @@ function hdh_render_user_badge($user_id, $size = 'medium') {
     
     ob_start();
     ?>
-    <span class="user-level-badge <?php echo esc_attr($size_class); ?>" 
+    <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
           data-user-id="<?php echo esc_attr($user_id); ?>"
           title="<?php echo esc_attr($tooltip_text); ?>"
           aria-label="<?php echo esc_attr($tooltip_text); ?>">
-        <span class="badge-level"><?php echo esc_html($level); ?></span>
-        <span class="badge-label">Seviye</span>
-    </span>
+        <?php echo esc_html($level); ?>
+    </div>
     <?php
     return ob_get_clean();
 }

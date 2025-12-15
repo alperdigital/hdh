@@ -117,10 +117,16 @@ if (!function_exists('hdh_render_trade_card')) {
                     $user_state = hdh_get_user_state($author_id);
                     $user_level = $user_state['level'] ?? 1;
                 }
+                // Determine digit class based on level
+                $level_int = (int) $user_level;
+                $digits = strlen((string)$level_int);
+                $digit_class = $digits === 1 ? 'lvl-d1' : ($digits === 2 ? 'lvl-d2' : 'lvl-d3');
                 ?>
-                <span class="hdh-level-badge" title="Seviye <?php echo esc_attr($user_level); ?>">
+                <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
+                     aria-label="Seviye <?php echo esc_attr($user_level); ?>"
+                     title="Seviye <?php echo esc_attr($user_level); ?>">
                     <?php echo esc_html($user_level); ?>
-                </span>
+                </div>
                 <span class="listing-meta-farm-name">
                     <?php echo esc_html($author_name); ?>
                 </span>
