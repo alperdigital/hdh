@@ -5404,7 +5404,7 @@ footer,
 .tasks-icon-fixed {
     position: fixed;
     bottom: 100px;
-    left: 20px;
+    right: 20px;
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -5424,7 +5424,7 @@ footer,
 @media (min-width: 769px) {
     .tasks-icon-fixed {
         bottom: 110px;
-        left: 24px;
+        right: 24px;
         width: 60px;
         height: 60px;
         z-index: 999;
@@ -5436,7 +5436,8 @@ footer,
     
     .tasks-panel {
         bottom: 110px;
-        left: 24px;
+        right: 24px;
+        left: auto;
         width: 400px;
         max-height: 650px;
     }
@@ -5495,7 +5496,7 @@ footer,
 .tasks-panel {
     position: fixed;
     bottom: 100px;
-    left: 20px;
+    right: 20px;
     width: 360px;
     max-height: 600px;
     background: #FFF6D8;
@@ -5678,7 +5679,7 @@ footer,
 @media (max-width: 768px) {
     .tasks-icon-fixed {
         bottom: 90px;
-        left: 16px;
+        right: 16px;
         width: 52px;
         height: 52px;
     }
@@ -5689,8 +5690,8 @@ footer,
     
     .tasks-panel {
         bottom: 90px;
-        left: 16px;
         right: 16px;
+        left: 16px;
         width: auto;
         max-height: 70vh;
     }
