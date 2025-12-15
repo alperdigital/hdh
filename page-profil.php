@@ -190,7 +190,7 @@ if (!$is_logged_in) {
                                 autocomplete="tel"
                                 placeholder="+90 5XX XXX XX XX"
                             >
-                            <small class="auth-help">Telefon numaranı doğrula <strong>+4 bilet</strong> kazan 🎟️</small>
+                            <small class="auth-help">Telefon numaranız isteğe bağlıdır</small>
                         </div>
                         
                         <div class="auth-field">
@@ -351,87 +351,6 @@ if (!$is_logged_in) {
                         <?php else : ?>
                             <p class="verification-success">
                                 ✅ E-posta adresiniz doğrulandı. <strong>+1 bilet</strong> kazandınız! 🎟️
-                            </p>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                
-                <!-- Phone Verification Section -->
-                <?php
-                $phone_number = get_user_meta($user_id, 'phone_number', true);
-                $phone_verified = get_user_meta($user_id, 'hdh_phone_verified', true);
-                ?>
-                <div class="email-verification-card">
-                    <div class="verification-header">
-                        <h3 class="verification-title">📱 Telefon Doğrulama</h3>
-                        <?php if ($phone_verified) : ?>
-                            <span class="verification-badge verified">✅ Doğrulandı</span>
-                        <?php else : ?>
-                            <span class="verification-badge not-verified">⏳ Doğrulanmadı</span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="verification-content">
-                        <?php if ($phone_number) : ?>
-                            <p class="verification-email">
-                                <strong>Telefon:</strong> <?php echo esc_html($phone_number); ?>
-                            </p>
-                        <?php endif; ?>
-                        
-                        <?php if (!$phone_verified) : ?>
-                            <div class="verification-actions">
-                                <?php if ($firebase_enabled) : ?>
-                                    <!-- Firebase Phone Verification -->
-                                    <div class="verification-code-form">
-                                        <label for="firebase-phone-number" class="verification-label">
-                                            Telefon numaranızı girin (ülke kodu ile):
-                                        </label>
-                                        <div class="verification-input-group">
-                                            <input 
-                                                type="tel" 
-                                                id="firebase-phone-number" 
-                                                class="verification-code-input" 
-                                                placeholder="+90 5XX XXX XX XX"
-                                                autocomplete="tel"
-                                            >
-                                            <button type="button" class="btn-send-verification-code" id="btn-firebase-phone-verify">
-                                                📨 SMS Kodu Gönder
-                                            </button>
-                                        </div>
-                                        
-                                        <div id="firebase-recaptcha-container" style="margin: 16px 0;"></div>
-                                        
-                                        <div class="verification-code-form" id="phone-code-form" style="display: none; margin-top: 16px;">
-                                            <label for="firebase-phone-code" class="verification-label">
-                                                SMS ile gönderilen 6 haneli kodu girin:
-                                            </label>
-                                            <div class="verification-input-group">
-                                                <input 
-                                                    type="text" 
-                                                    id="firebase-phone-code" 
-                                                    class="verification-code-input" 
-                                                    placeholder="000000"
-                                                    maxlength="6"
-                                                    pattern="[0-9]{6}"
-                                                    autocomplete="off"
-                                                >
-                                                <button type="button" class="btn-verify-code" id="btn-firebase-phone-verify-code" style="display: none;">
-                                                    Doğrula
-                                                </button>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="verification-message" id="firebase-phone-message"></div>
-                                    </div>
-                                <?php else : ?>
-                                    <p class="verification-help">
-                                        Telefon doğrulaması için Firebase yapılandırması gereklidir.
-                                    </p>
-                                <?php endif; ?>
-                            </div>
-                        <?php else : ?>
-                            <p class="verification-success">
-                                ✅ Telefon numaranız doğrulandı. <strong>+4 bilet</strong> kazandınız! 🎟️
                             </p>
                         <?php endif; ?>
                     </div>

@@ -379,8 +379,8 @@ function hdh_verify_phone($user_id) {
         update_user_meta($user_id, 'hdh_phone_verified', true);
         update_user_meta($user_id, 'hdh_phone_verified_at', current_time('mysql'));
         
-        // Award bilet for verification
-        hdh_add_bilet($user_id, 4, 'phone_verification');
+        // Note: Phone verification reward removed - phone is optional
+        // No bilet reward for phone verification
         
         // Log verification event
         hdh_log_event($user_id, 'phone_verified', array(

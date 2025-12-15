@@ -85,46 +85,11 @@ function hdh_verify_email_via_firebase($user_id, $firebase_id_token) {
 /**
  * Verify phone using Firebase token
  * Called from frontend after Firebase phone verification
+ * NOTE: Phone verification is disabled - phone is optional, no rewards
  */
 function hdh_verify_phone_via_firebase($user_id, $firebase_id_token, $phone_number) {
-    if (!$user_id || !$firebase_id_token || !$phone_number) {
-        return new WP_Error('invalid_params', 'Geçersiz parametreler');
-    }
-    
-    // Check if already verified
-    if (get_user_meta($user_id, 'hdh_phone_verified', true)) {
-        return new WP_Error('already_verified', 'Telefon zaten doğrulanmış');
-    }
-    
-    // Store verification request
-    $verification_key = 'hdh_firebase_phone_verify_' . $user_id;
-    set_transient($verification_key, array(
-        'token' => $firebase_id_token,
-        'phone' => $phone_number,
-        'timestamp' => time(),
-    ), 10 * MINUTE_IN_SECONDS);
-    
-    // Update phone number in user meta
-    update_user_meta($user_id, 'phone_number', $phone_number);
-    
-    // Mark as verified (in production, verify token server-side first)
-    if (function_exists('hdh_verify_phone')) {
-        hdh_verify_phone($user_id);
-    } else {
-        update_user_meta($user_id, 'hdh_phone_verified', true);
-        update_user_meta($user_id, 'hdh_phone_verified_at', current_time('mysql'));
-    }
-    
-    // Log event
-    if (function_exists('hdh_log_event')) {
-        hdh_log_event($user_id, 'phone_verified', array(
-            'verified_at' => current_time('mysql'),
-            'method' => 'firebase_auth',
-            'phone' => $phone_number,
-        ));
-    }
-    
-    return true;
+    // Phone verification is disabled - return error
+    return new WP_Error('phone_verification_disabled', 'Telefon doğrulaması devre dışı bırakılmıştır.');
 }
 
 /**
@@ -169,42 +134,10 @@ add_action('wp_ajax_hdh_verify_email_firebase', 'hdh_ajax_verify_email_firebase'
 
 /**
  * AJAX: Verify phone via Firebase
+ * NOTE: Phone verification is disabled - phone is optional, no rewards
  */
 function hdh_ajax_verify_phone_firebase() {
-    if (!is_user_logged_in()) {
-        wp_send_json_error(array('message' => 'Giriş yapmalısınız.'));
-        return;
-    }
-    
-    check_ajax_referer('hdh_firebase_verification', 'nonce');
-    
-    $user_id = get_current_user_id();
-    $id_token = isset($_POST['id_token']) ? sanitize_text_field($_POST['id_token']) : '';
-    $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
-    $firebase_uid = isset($_POST['firebase_uid']) ? sanitize_text_field($_POST['firebase_uid']) : '';
-    
-    if (empty($id_token) || empty($phone_number)) {
-        wp_send_json_error(array('message' => 'Firebase token ve telefon numarası gerekli.'));
-        return;
-    }
-    
-    // Link Firebase UID
-    if ($firebase_uid) {
-        hdh_link_firebase_uid($user_id, $firebase_uid);
-    }
-    
-    $result = hdh_verify_phone_via_firebase($user_id, $id_token, $phone_number);
-    
-    if (is_wp_error($result)) {
-        wp_send_json_error(array('message' => $result->get_error_message()));
-    } else {
-        wp_send_json_success(array(
-            'message' => 'Telefon numaranız başarıyla doğrulandı! +4 bilet kazandınız.',
-            'bilet_balance' => function_exists('hdh_get_user_jeton_balance') 
-                ? hdh_get_user_jeton_balance($user_id) 
-                : 0
-        ));
-    }
+    wp_send_json_error(array('message' => 'Telefon doğrulaması devre dışı bırakılmıştır.'));
 }
 add_action('wp_ajax_hdh_verify_phone_firebase', 'hdh_ajax_verify_phone_firebase');
 
