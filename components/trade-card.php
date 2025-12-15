@@ -116,7 +116,15 @@ if (!function_exists('hdh_render_trade_card')) {
                         <span class="star-number"><?php echo esc_html($completed_gift_count); ?></span>
                     <?php endif; ?>
                 </span>
-                <span class="listing-meta-farm-name"><?php echo esc_html($author_name); ?></span>
+                <span class="listing-meta-farm-name">
+                    <?php echo esc_html($author_name); ?>
+                    <?php if (function_exists('hdh_render_user_badge')) : ?>
+                        <?php echo hdh_render_user_badge($author_id, 'small'); ?>
+                    <?php endif; ?>
+                    <?php if (function_exists('hdh_render_trust_stars')) : ?>
+                        <?php echo hdh_render_trust_stars($author_id, 'small'); ?>
+                    <?php endif; ?>
+                </span>
                 <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
             </footer>
         </a>
