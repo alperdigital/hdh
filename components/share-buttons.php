@@ -45,45 +45,39 @@ function hdh_render_share_buttons($listing_id, $context = 'single-trade') {
     
     ob_start();
     ?>
-    <div class="share-buttons <?php echo esc_attr($context); ?>">
-        <button class="share-btn share-whatsapp" 
-                data-url="<?php echo esc_url($url); ?>"
-                data-text="<?php echo esc_attr($share_text); ?>"
-                aria-label="WhatsApp'ta Paylaş">
-            <span class="share-icon">📱</span>
-            <span class="share-label">WhatsApp</span>
-        </button>
-        
-        <button class="share-btn share-twitter" 
-                data-url="<?php echo esc_url($url); ?>"
-                data-text="<?php echo esc_attr($share_text); ?>"
-                aria-label="Twitter'da Paylaş">
-            <span class="share-icon">🐦</span>
-            <span class="share-label">Twitter</span>
-        </button>
-        
-        <button class="share-btn share-facebook" 
-                data-url="<?php echo esc_url($url); ?>"
-                aria-label="Facebook'ta Paylaş">
-            <span class="share-icon">👤</span>
-            <span class="share-label">Facebook</span>
-        </button>
-        
-        <button class="share-btn share-copy" 
-                data-url="<?php echo esc_url($url); ?>"
-                aria-label="Linki Kopyala">
-            <span class="share-icon">🔗</span>
-            <span class="share-label">Kopyala</span>
-        </button>
-        
-        <?php if ($story_image) : ?>
-        <button class="share-btn share-story" 
-                data-story-image="<?php echo esc_url($story_image); ?>"
-                aria-label="Hikaye Görseli İndir">
-            <span class="share-icon">📸</span>
-            <span class="share-label">Hikaye</span>
-        </button>
-        <?php endif; ?>
+    <div class="share-section-minimal">
+        <p class="share-section-label">Burada paylaş:</p>
+        <div class="share-buttons-minimal">
+            <button class="share-btn-minimal share-whatsapp" 
+                    data-url="<?php echo esc_url($url); ?>"
+                    data-text="<?php echo esc_attr($share_text); ?>"
+                    aria-label="WhatsApp'ta Paylaş"
+                    title="WhatsApp">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/icons/whatsapp.svg'); ?>" alt="WhatsApp" class="share-logo">
+            </button>
+            
+            <button class="share-btn-minimal share-twitter" 
+                    data-url="<?php echo esc_url($url); ?>"
+                    data-text="<?php echo esc_attr($share_text); ?>"
+                    aria-label="Twitter'da Paylaş"
+                    title="Twitter">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/icons/twitter.svg'); ?>" alt="Twitter" class="share-logo">
+            </button>
+            
+            <button class="share-btn-minimal share-facebook" 
+                    data-url="<?php echo esc_url($url); ?>"
+                    aria-label="Facebook'ta Paylaş"
+                    title="Facebook">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/icons/facebook.svg'); ?>" alt="Facebook" class="share-logo">
+            </button>
+            
+            <button class="share-btn-minimal share-copy" 
+                    data-url="<?php echo esc_url($url); ?>"
+                    aria-label="Linki Kopyala"
+                    title="Linki Kopyala">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/icons/copy-link.svg'); ?>" alt="Kopyala" class="share-logo">
+            </button>
+        </div>
     </div>
     <?php
     return ob_get_clean();

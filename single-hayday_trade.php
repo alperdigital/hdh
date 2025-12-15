@@ -169,12 +169,7 @@ if (!have_posts()) :
                 <div class="single-trade-card">
                     <!-- Header -->
                     <div class="single-trade-header">
-                        <div class="single-trade-header-top">
-                            <h1 class="single-trade-title"><?php the_title(); ?></h1>
-                            <?php if (function_exists('hdh_render_share_buttons')) : ?>
-                                <?php echo hdh_render_share_buttons(get_the_ID(), 'single-trade'); ?>
-                            <?php endif; ?>
-                        </div>
+                        <h1 class="single-trade-title"><?php the_title(); ?></h1>
                         <div class="single-trade-status">
                             <?php if ($trade_status === 'completed') : ?>
                                 <span class="status-badge status-completed">✅ Tamamlandı</span>
@@ -461,6 +456,13 @@ if (!have_posts()) :
                                 <?php endif; ?>
                             </div>
                         <?php endif; ?>
+                    <?php endif; ?>
+                    
+                    <!-- Share Section (at the end) -->
+                    <?php if (function_exists('hdh_render_share_buttons')) : ?>
+                        <div class="share-section-wrapper">
+                            <?php echo hdh_render_share_buttons(get_the_ID(), 'single-trade'); ?>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>

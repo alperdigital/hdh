@@ -12,6 +12,8 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Back Button */
@@ -41,6 +43,8 @@
     background: #FFF6D8;
     border: 2px solid rgba(201, 184, 138, 0.4);
     border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
@@ -52,20 +56,11 @@
     border-bottom: 2px solid rgba(201, 184, 138, 0.3);
 }
 
-.single-trade-header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 12px;
-}
-
 .single-trade-title {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--newspaper-text);
-    margin: 0;
-    flex: 1;
+    margin: 0 0 12px 0;
     line-height: 1.3;
 }
 
@@ -194,6 +189,7 @@
     border: none;
     padding: 0;
     margin: 0;
+    margin-right: 6px;
 }
 
 .trade-item-box {
@@ -822,17 +818,19 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 14px 28px;
+    padding: 14px 24px;
     background: var(--farm-green);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1rem;
     text-decoration: none;
     transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(139, 195, 74, 0.3);
-    min-height: 52px;
+    min-height: 48px;
+    max-width: 100%;
+    word-wrap: break-word;
 }
 
 .btn-login:hover {
@@ -843,6 +841,40 @@
 
 .btn-login .btn-icon {
     font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.login-required-message {
+    text-align: center;
+    padding: 24px;
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
+    margin-top: 24px;
+}
+
+.login-required-message p {
+    margin: 0 0 12px 0;
+    color: var(--wood-brown);
+    font-size: 0.95rem;
+}
+
+.login-hint {
+    font-size: 0.85rem !important;
+    color: rgba(108, 63, 31, 0.7) !important;
+}
+
+@media (max-width: 768px) {
+    .login-required-message {
+        padding: 20px 16px;
+        margin-top: 20px;
+    }
+    
+    .btn-login {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
 }
 
 /* No Offers */
@@ -892,29 +924,40 @@
 @media (max-width: 768px) {
     .single-trade-main .container {
         padding: 0 15px;
+        max-width: 100%;
     }
     
     .single-trade-card {
-        padding: 20px;
+        padding: 16px;
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .single-trade-header {
         flex-direction: column;
         gap: 12px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
     }
     
     .single-trade-title {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .single-trade-author {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
     }
     
     .farm-number-display {
         width: 100%;
         justify-content: center;
+        padding: 12px;
+        box-sizing: border-box;
     }
     
     .single-trade-items {
@@ -922,8 +965,17 @@
         gap: 16px;
     }
     
+    .trade-item-header {
+        font-size: 0.95rem;
+    }
+    
+    .trade-item-icon {
+        font-size: 1.1rem;
+    }
+    
     .trade-item-box {
         min-height: 120px;
+        padding: 12px;
     }
     
     .item-image {
@@ -937,6 +989,13 @@
     
     .offer-actions {
         flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn-accept-offer,
+    .btn-reject-offer {
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .message {
@@ -949,6 +1008,24 @@
     
     .btn-send-message {
         align-self: stretch;
+        width: 100%;
+    }
+    
+    .btn-submit-offer,
+    .btn-confirm-exchange {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .login-required-message {
+        padding: 16px;
+        margin-top: 16px;
+    }
+    
+    .btn-login {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 }
 
@@ -956,67 +1033,97 @@
    SHARE BUTTONS
    ============================================ */
 
-.share-buttons {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
+/* Share Section - Minimal at bottom */
+.share-section-wrapper {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid rgba(201, 184, 138, 0.3);
 }
 
-.share-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px;
-    background: #FFF6D8;
-    border: 2px solid rgba(201, 184, 138, 0.4);
-    border-radius: 12px;
+.share-section-minimal {
+    text-align: center;
+}
+
+.share-section-label {
     font-size: 0.9rem;
-    font-weight: 600;
     color: var(--wood-brown);
+    margin: 0 0 12px 0;
+    font-weight: 600;
+}
+
+.share-buttons-minimal {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.share-btn-minimal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
 }
 
-.share-btn:hover {
-    background: rgba(201, 184, 138, 0.15);
+.share-btn-minimal:hover {
     border-color: rgba(201, 184, 138, 0.6);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.share-btn .share-icon {
-    font-size: 1.1rem;
-    line-height: 1;
+.share-btn-minimal .share-logo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
 }
 
-.share-btn .share-label {
-    font-size: 0.85rem;
+.share-btn-minimal.share-whatsapp:hover {
+    border-color: #25D366;
+    background: rgba(37, 211, 102, 0.1);
 }
 
-.share-buttons.single-trade {
-    flex-shrink: 0;
+.share-btn-minimal.share-twitter:hover {
+    border-color: #1DA1F2;
+    background: rgba(29, 161, 242, 0.1);
+}
+
+.share-btn-minimal.share-facebook:hover {
+    border-color: #1877F2;
+    background: rgba(24, 119, 242, 0.1);
+}
+
+.share-btn-minimal.share-copy:hover {
+    border-color: var(--wood-brown);
+    background: rgba(108, 63, 31, 0.1);
 }
 
 @media (max-width: 768px) {
-    .share-buttons {
-        width: 100%;
-        justify-content: flex-start;
+    .share-section-wrapper {
+        margin-top: 24px;
+        padding-top: 20px;
     }
     
-    .share-btn {
-        flex: 1;
-        min-width: 0;
-        justify-content: center;
+    .share-buttons-minimal {
+        gap: 10px;
     }
     
-    .share-btn .share-label {
-        display: none;
+    .share-btn-minimal {
+        width: 44px;
+        height: 44px;
     }
     
-    .share-btn .share-icon {
-        font-size: 1.3rem;
+    .share-btn-minimal .share-logo {
+        width: 22px;
+        height: 22px;
     }
 }
 
