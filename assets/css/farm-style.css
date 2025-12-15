@@ -5605,18 +5605,21 @@ footer,
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--farm-green) 0%, #2d5016 100%);
+    background: linear-gradient(135deg, var(--farm-green) 0%, var(--farm-green-dark) 100%);
     color: #FFFFFF;
-    border-radius: 6px;
-    padding: 4px 8px;
+    border-radius: 12px;
+    padding: 4px 10px;
     font-weight: 700;
     line-height: 1;
     cursor: help;
-    transition: transform 0.2s ease;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(116, 195, 101, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .user-level-badge:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(116, 195, 101, 0.4);
 }
 
 .user-level-badge.badge-small {
@@ -5683,8 +5686,8 @@ footer,
 
 .trust-rating-text {
     font-size: 0.85em;
-    color: var(--newspaper-text);
-    margin-left: 4px;
+    color: var(--wood-brown);
+    margin-left: 6px;
     font-weight: 600;
 }
 
@@ -5828,10 +5831,10 @@ footer,
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: var(--farm-green);
+    background: linear-gradient(135deg, var(--farm-green) 0%, var(--farm-green-dark) 100%);
     color: #FFFFFF;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    box-shadow: 0 4px 12px rgba(116, 195, 101, 0.4);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -5842,7 +5845,7 @@ footer,
 
 .quest-icon-fixed:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
+    box-shadow: 0 6px 16px rgba(116, 195, 101, 0.5);
 }
 
 .quest-icon-emoji {
@@ -5854,25 +5857,26 @@ footer,
     position: absolute;
     top: -4px;
     right: -4px;
-    background: #FF4444;
+    background: var(--warm-orange);
     color: #FFFFFF;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     font-size: 0.7rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid #FFFFFF;
+    box-shadow: 0 2px 6px rgba(232, 111, 51, 0.4);
 }
 
 .quest-panel {
     position: fixed;
     bottom: 100px;
     right: 20px;
-    width: 320px;
-    max-height: 500px;
+    width: 340px;
+    max-height: 520px;
     background: #FFF6D8;
     border: 2px solid rgba(201, 184, 138, 0.4);
     border-radius: 16px;
@@ -5897,17 +5901,18 @@ footer,
 }
 
 .quest-panel-title {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    color: var(--newspaper-text);
+    color: var(--wood-brown);
     margin: 0;
+    font-family: 'Baloo 2', 'Poppins', sans-serif;
 }
 
 .quest-panel-close {
     background: none;
     border: none;
     font-size: 1.8rem;
-    color: var(--newspaper-text);
+    color: var(--wood-brown);
     cursor: pointer;
     padding: 0;
     width: 32px;
@@ -5916,6 +5921,13 @@ footer,
     align-items: center;
     justify-content: center;
     line-height: 1;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+}
+
+.quest-panel-close:hover {
+    background: rgba(201, 184, 138, 0.2);
+    transform: scale(1.1);
 }
 
 .quest-panel-content {
@@ -5946,16 +5958,23 @@ footer,
 }
 
 .quest-item {
-    background: #FFFFFF;
-    border: 2px solid rgba(201, 184, 138, 0.3);
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
     border-radius: 12px;
-    padding: 12px;
+    padding: 14px;
     transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.quest-item:hover {
+    border-color: rgba(201, 184, 138, 0.6);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
 }
 
 .quest-item.quest-completed {
-    opacity: 0.6;
-    background: rgba(76, 175, 80, 0.1);
+    opacity: 0.7;
+    background: rgba(116, 195, 101, 0.15);
     border-color: var(--farm-green);
 }
 
@@ -5964,16 +5983,18 @@ footer,
 }
 
 .quest-title {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: var(--newspaper-text);
-    margin: 0 0 4px 0;
+    color: var(--wood-brown);
+    margin: 0 0 6px 0;
+    font-family: 'Baloo 2', 'Poppins', sans-serif;
 }
 
 .quest-description {
-    font-size: 0.85rem;
-    color: rgba(74, 59, 44, 0.7);
-    margin: 0 0 8px 0;
+    font-size: 0.9rem;
+    color: rgba(108, 63, 31, 0.7);
+    margin: 0 0 10px 0;
+    line-height: 1.5;
 }
 
 .quest-progress {
@@ -5997,10 +6018,10 @@ footer,
 }
 
 .quest-progress-text {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--newspaper-text);
-    min-width: 40px;
+    color: var(--wood-brown);
+    min-width: 45px;
     text-align: right;
 }
 
@@ -6011,12 +6032,13 @@ footer,
 }
 
 .quest-reward {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    color: var(--farm-green);
-    background: rgba(76, 175, 80, 0.1);
-    padding: 4px 8px;
-    border-radius: 6px;
+    color: var(--farm-green-dark);
+    background: rgba(116, 195, 101, 0.15);
+    padding: 6px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(116, 195, 101, 0.3);
 }
 
 @media (max-width: 768px) {

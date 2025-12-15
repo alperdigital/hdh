@@ -967,21 +967,23 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 12px;
-    background: #FFFFFF;
-    border: 2px solid rgba(201, 184, 138, 0.3);
-    border-radius: 8px;
-    font-size: 0.85rem;
+    padding: 10px 16px;
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: var(--newspaper-text);
+    color: var(--wood-brown);
     cursor: pointer;
     transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .share-btn:hover {
-    background: rgba(201, 184, 138, 0.1);
-    border-color: rgba(201, 184, 138, 0.5);
-    transform: translateY(-1px);
+    background: rgba(201, 184, 138, 0.15);
+    border-color: rgba(201, 184, 138, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .share-btn .share-icon {
