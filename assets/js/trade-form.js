@@ -99,6 +99,7 @@
             if (checkbox.checked) {
                 // Check limit - get current count before adding
                 const currentCount = getSelectedCount();
+                console.log('HDH Trade Form: Current selected count before adding:', currentCount);
                 if (currentCount > MAX_OFFER_ITEMS) {
                     checkbox.checked = false;
                     showToast('En fazla ' + MAX_OFFER_ITEMS + ' ürün seçebilirsiniz', 'warning');
@@ -110,8 +111,14 @@
                     itemCardWrapper.classList.add('selected');
                 }
                 
+                // Ensure offer-quantities container is visible
+                if (offerQuantities) {
+                    offerQuantities.style.display = 'flex';
+                    offerQuantities.style.visibility = 'visible';
+                }
+                
                 // Add quantity stepper
-                console.log('HDH Trade Form: Adding quantity stepper for', itemSlug);
+                console.log('HDH Trade Form: Adding quantity stepper for', itemSlug, 'with label', itemLabel);
                 addQuantityStepper(itemSlug, itemLabel);
                 
             } else {
@@ -123,6 +130,12 @@
                 // Remove quantity stepper
                 console.log('HDH Trade Form: Removing quantity stepper for', itemSlug);
                 removeQuantityStepper(itemSlug);
+                
+                // Hide offer-quantities container if no items selected
+                const remainingCount = getSelectedCount();
+                if (remainingCount === 0 && offerQuantities) {
+                    offerQuantities.style.display = 'none';
+                }
             }
             
             // Update selection count - get actual count
@@ -178,17 +191,27 @@
             </div>
         `;
         
+        // Ensure container is visible
+        offerQuantities.style.display = 'flex';
+        offerQuantities.style.visibility = 'visible';
+        
         offerQuantities.appendChild(stepperItem);
+        
+        // Force reflow to ensure element is in DOM
+        void stepperItem.offsetHeight;
         
         // Animate in
         setTimeout(function() {
             stepperItem.classList.add('visible');
+            console.log('HDH Trade Form: Visible class added to stepper for', slug);
         }, 10);
         
         // Scroll into view
-        stepperItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        setTimeout(function() {
+            stepperItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 50);
         
-        console.log('HDH Trade Form: Quantity stepper added successfully for', slug);
+        console.log('HDH Trade Form: Quantity stepper added successfully for', slug, 'Element:', stepperItem);
     }
     
     /**

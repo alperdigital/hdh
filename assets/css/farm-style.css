@@ -3253,10 +3253,12 @@ main {
 /* Offer quantity items */
 /* Offer quantity item - animation styles */
 .offer-quantity-item {
+    display: block; /* Ensure it's visible */
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;
     margin-bottom: 16px;
+    width: 100%;
 }
 
 .offer-quantity-item.visible {
@@ -3305,6 +3307,8 @@ main {
     flex-direction: column;
     gap: 15px;
     min-height: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Offer quantity item - layout styles (merged with animation styles above) */
