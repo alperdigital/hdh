@@ -3230,6 +3230,15 @@ main {
     background: #FFF6D8;
     transition: all 0.2s ease;
     user-select: none;
+    /* Hide number input spinners */
+    -moz-appearance: textfield;
+}
+
+/* Hide number input spinners for WebKit browsers (Chrome, Safari, Edge) */
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .qty-input:focus {
@@ -3341,6 +3350,17 @@ main {
     border: 2px solid rgba(201, 184, 138, 0.4) !important; /* Override any red borders */
     background: #FFF6D8 !important; /* Ensure correct background */
     color: var(--newspaper-text) !important;
+    /* Hide number input spinners */
+    -moz-appearance: textfield !important;
+}
+
+/* Hide number input spinners for WebKit browsers in offer quantity items */
+.offer-quantity-item input[type="number"]::-webkit-outer-spin-button,
+.offer-quantity-item input[type="number"]::-webkit-inner-spin-button,
+.offer-quantity-item .qty-input::-webkit-outer-spin-button,
+.offer-quantity-item .qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
 }
 
 .form-field {
