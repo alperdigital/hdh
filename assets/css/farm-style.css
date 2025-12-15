@@ -4092,6 +4092,9 @@ footer,
     transition: all 0.2s ease;
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .listing-unified-block:active {
@@ -4132,6 +4135,9 @@ footer,
     line-height: 1.4;
     display: flex;
     align-items: center;
+    max-width: 100%;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .listing-meta-right {
