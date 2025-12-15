@@ -5040,12 +5040,14 @@ footer,
     .btn-get-decoration { padding: 14px 24px; font-size: 16px; }
     .countdown-value { font-size: 32px; }
     .profile-edit-form .form-actions, .offer-actions { flex-direction: column; }
-    .btn-save-profile, .btn-cancel-edit, .btn-accept-offer, .btn-reject-offer { width: 100%; }
+    .btn-save-profile, .btn-cancel-edit, .btn-accept-offer, .btn-reject-offer, .btn-create-listing-profile { width: 100%; }
     .my-listings-section { padding: 20px; }
     .my-listing-item { flex-direction: column; align-items: flex-start; padding: 14px; }
     .listing-actions { flex-direction: row; width: 100%; justify-content: space-between; align-items: center; }
     .profile-stats { flex-direction: column; }
     .profile-actions { flex-direction: column; }
+    .no-listings-message { padding: 30px 16px; }
+    .no-listings-message p { font-size: 14px; margin-bottom: 20px; }
 }
 
 /* ============================================
