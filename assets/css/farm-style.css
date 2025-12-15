@@ -4630,6 +4630,227 @@ footer,
 .btn-logout:hover { background: rgba(201, 184, 138, 0.1); border-color: rgba(201, 184, 138, 0.6); color: var(--newspaper-text); }
 
 /* ============================================
+   EMAIL VERIFICATION
+   ============================================ */
+.email-verification-card {
+    background: #FFF6D8;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.verification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(201, 184, 138, 0.3);
+}
+
+.verification-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0;
+}
+
+.verification-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.verification-badge.verified {
+    background: rgba(76, 175, 80, 0.1);
+    color: var(--farm-green-dark);
+}
+
+.verification-badge.not-verified {
+    background: rgba(201, 184, 138, 0.1);
+    color: var(--newspaper-text-light);
+}
+
+.verification-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.verification-email {
+    font-size: 14px;
+    color: var(--newspaper-text);
+    margin: 0;
+}
+
+.verification-email strong {
+    color: var(--newspaper-text);
+    font-weight: 600;
+}
+
+.verification-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.btn-send-verification-code {
+    background: var(--farm-green);
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.btn-send-verification-code:hover:not(:disabled) {
+    background: var(--farm-green-dark);
+    transform: translateY(-2px);
+}
+
+.btn-send-verification-code:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.verification-code-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(201, 184, 138, 0.05);
+    border-radius: 8px;
+}
+
+.verification-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    margin: 0;
+}
+
+.verification-input-group {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+}
+
+.verification-code-input {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 4px;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--newspaper-text);
+    transition: all 0.2s ease;
+}
+
+.verification-code-input:focus {
+    outline: none;
+    border-color: var(--farm-green);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.verification-code-input::placeholder {
+    color: rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+}
+
+.btn-verify-code {
+    background: var(--farm-green);
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-verify-code:hover:not(:disabled) {
+    background: var(--farm-green-dark);
+    transform: translateY(-2px);
+}
+
+.btn-verify-code:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.verification-help {
+    font-size: 12px;
+    color: var(--newspaper-text-light);
+    opacity: 0.7;
+    margin: 0;
+}
+
+.verification-message {
+    display: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.verification-message.verification-success {
+    background: rgba(76, 175, 80, 0.1);
+    color: var(--farm-green-dark);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.verification-message.verification-error {
+    background: rgba(255, 99, 71, 0.1);
+    color: #FF6347;
+    border: 1px solid rgba(255, 99, 71, 0.3);
+}
+
+.verification-success {
+    font-size: 14px;
+    color: var(--farm-green-dark);
+    margin: 0;
+    padding: 12px;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.verification-success strong {
+    color: var(--farm-green-dark);
+}
+
+@media (max-width: 768px) {
+    .verification-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .verification-input-group {
+        flex-direction: column;
+    }
+    
+    .btn-verify-code {
+        width: 100%;
+    }
+}
+
+/* ============================================
    DECORATIONS PAGE (STEP 6)
    ============================================ */
 .decorations-page-main { padding: 40px 20px 100px; background: #FFF6D8; min-height: calc(100vh - 200px); }

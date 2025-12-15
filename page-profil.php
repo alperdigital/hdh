@@ -284,6 +284,65 @@ if (!$is_logged_in) {
                     </div>
                 </div>
                 
+                <!-- Email Verification Section -->
+                <?php
+                $user_email = $current_user->user_email;
+                $email_verified = get_user_meta($user_id, 'hdh_email_verified', true);
+                ?>
+                <div class="email-verification-card">
+                    <div class="verification-header">
+                        <h3 class="verification-title">📧 E-posta Doğrulama</h3>
+                        <?php if ($email_verified) : ?>
+                            <span class="verification-badge verified">✅ Doğrulandı</span>
+                        <?php else : ?>
+                            <span class="verification-badge not-verified">⏳ Doğrulanmadı</span>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="verification-content">
+                        <p class="verification-email">
+                            <strong>E-posta:</strong> <?php echo esc_html($user_email); ?>
+                        </p>
+                        
+                        <?php if (!$email_verified) : ?>
+                            <div class="verification-actions">
+                                <button type="button" class="btn-send-verification-code" id="btn-send-email-code">
+                                    📨 Doğrulama Kodu Gönder
+                                </button>
+                                
+                                <div class="verification-code-form" id="email-code-form" style="display: none;">
+                                    <label for="email-verification-code" class="verification-label">
+                                        E-posta adresinize gönderilen 6 haneli kodu girin:
+                                    </label>
+                                    <div class="verification-input-group">
+                                        <input 
+                                            type="text" 
+                                            id="email-verification-code" 
+                                            class="verification-code-input" 
+                                            placeholder="000000"
+                                            maxlength="6"
+                                            pattern="[0-9]{6}"
+                                            autocomplete="off"
+                                        >
+                                        <button type="button" class="btn-verify-code" id="btn-verify-email-code">
+                                            Doğrula
+                                        </button>
+                                    </div>
+                                    <small class="verification-help">
+                                        Kod 15 dakika süreyle geçerlidir. E-posta gelmediyse spam klasörünü kontrol edin.
+                                    </small>
+                                </div>
+                                
+                                <div class="verification-message" id="email-verification-message"></div>
+                            </div>
+                        <?php else : ?>
+                            <p class="verification-success">
+                                ✅ E-posta adresiniz doğrulandı. <strong>+1 bilet</strong> kazandınız! 🎟️
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                
                 <!-- Profile Edit Form -->
                 <div class="profile-edit-form" id="profile-edit-form" style="display: <?php echo $show_edit ? 'block' : 'none'; ?>;">
                     <h3 class="edit-form-title">Profili Düzenle</h3>

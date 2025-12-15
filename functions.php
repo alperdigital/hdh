@@ -70,6 +70,7 @@ require_once get_template_directory() . '/components/share-buttons.php';
 require_once get_template_directory() . '/inc/seo-handler.php';
 require_once get_template_directory() . '/inc/share-image-generator.php';
 require_once get_template_directory() . '/inc/share-tracking-handler.php';
+require_once get_template_directory() . '/inc/email-verification.php';
 require_once get_template_directory() . '/inc/quest-system.php';
 require_once get_template_directory() . '/social-share.php';
 
@@ -165,6 +166,15 @@ function hdh_enqueue_scripts() {
             true
         );
         
+        // Email verification script (for logged-in users on profile page)
+        wp_enqueue_script(
+            'hdh-email-verification',
+            get_template_directory_uri() . '/assets/js/email-verification.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        
         // Tasks panel (for logged-in users)
         wp_enqueue_script(
             'hdh-tasks-panel',
@@ -241,10 +251,16 @@ function hdh_enqueue_scripts() {
     
     // Enqueue profile page script with localized data
     if (is_page_template('page-profil.php') && is_user_logged_in()) {
-        wp_localize_script('hdh-profile-page', 'hdhProfile', array(
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('hdh_listing_actions'),
-        ));
+            wp_localize_script('hdh-profile-page', 'hdhProfile', array(
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('hdh_listing_actions'),
+            ));
+            
+            // Localize email verification script
+            wp_localize_script('hdh-email-verification', 'hdhProfile', array(
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('hdh_email_verification'),
+            ));
     }
 }
 add_action('wp_enqueue_scripts', 'hdh_enqueue_scripts');
