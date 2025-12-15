@@ -4834,6 +4834,36 @@ footer,
     color: var(--farm-green-dark);
 }
 
+.btn-check-verification {
+    background: var(--farm-green);
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.btn-check-verification:hover:not(:disabled) {
+    background: var(--farm-green-dark);
+    transform: translateY(-2px);
+}
+
+.btn-check-verification:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#firebase-recaptcha-container {
+    margin: 16px 0;
+    display: flex;
+    justify-content: center;
+}
+
 @media (max-width: 768px) {
     .verification-header {
         flex-direction: column;

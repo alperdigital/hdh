@@ -152,27 +152,44 @@
                     throw new Error('E-posta adresi bulunamadı');
                 }
                 
-                // Create user with email (or sign in if exists)
-                let user;
+                // Create a temporary Firebase user account for email verification
+                // Note: We'll use Firebase's email link authentication
+                // First, create a user account with email (passwordless)
+                
                 try {
-                    // Try to sign in with email (passwordless)
-                    // Note: For passwordless email, we need to use email link authentication
-                    // For now, we'll use a different approach: send verification to existing email
+                    // Create user with email (if not exists) or sign in
+                    let userCredential;
                     
-                    // Alternative: Use Firebase Admin to send verification email
-                    // Or use Firebase's sendEmailVerification after creating a temporary account
+                    // Try to sign in anonymously first, then link email
+                    // Or create user with email/password (temporary password)
+                    // For WordPress integration, we'll use a simpler approach:
+                    // Create a temporary account, send verification, then link to WordPress user
                     
-                    // For WordPress integration, we'll send verification via Firebase Admin SDK
-                    // But for client-side, we can use Firebase's email link auth
+                    // Generate a temporary password
+                    const tempPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
                     
-                    // Create a temporary auth state
-                    const actionCodeSettings = {
+                    try {
+                        // Try to sign in with email (if account exists)
+                        userCredential = await firebaseAuth.signInWithEmailAndPassword(userEmail, tempPassword);
+                    } catch (error) {
+                        // If account doesn't exist, create it
+                        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                            userCredential = await firebaseAuth.createUserWithEmailAndPassword(userEmail, tempPassword);
+                        } else {
+                            throw error;
+                        }
+                    }
+                    
+                    const user = userCredential.user;
+                    
+                    // Send email verification
+                    await user.sendEmailVerification({
                         url: window.location.origin + '/profil?email_verified=true',
                         handleCodeInApp: true,
-                    };
+                    });
                     
-                    // Send verification email via backend
-                    const response = await fetch(hdhFirebase.ajaxUrl, {
+                    // Log to backend
+                    await fetch(hdhFirebase.ajaxUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
@@ -184,15 +201,15 @@
                         })
                     });
                     
-                    const data = await response.json();
+                    showMessage(emailMessage, 'success', 'Doğrulama e-postası gönderildi. E-posta kutunuzu kontrol edin.');
                     
-                    if (data.success) {
-                        showMessage(emailMessage, 'success', 'Doğrulama e-postası gönderildi. E-posta kutunuzu kontrol edin.');
-                    } else {
-                        throw new Error(data.data.message || 'E-posta gönderilemedi');
+                    // Show check button
+                    if (emailCheckBtn) {
+                        emailCheckBtn.style.display = 'block';
                     }
                 } catch (error) {
-                    showMessage(emailMessage, 'error', error.message || 'Bir hata oluştu');
+                    console.error('Firebase email verification error:', error);
+                    showMessage(emailMessage, 'error', error.message || 'E-posta gönderilemedi. Lütfen tekrar deneyin.');
                 }
             } catch (error) {
                 showMessage(emailMessage, 'error', error.message || 'Bir hata oluştu');
