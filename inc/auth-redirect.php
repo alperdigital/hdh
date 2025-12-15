@@ -82,7 +82,7 @@ function hdh_is_valid_return_url($url) {
         '/^\/ilan-ver/',
         '/^\/ara/',
         '/^\/cekilis/',
-        '/^\/dekorlar/',
+        '/^\/hazine/',
         '/^\/profil/',
         '/^\/hayday_trade\//',
         '/^\/$/',
