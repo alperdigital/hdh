@@ -208,3 +208,43 @@ function hdh_ajax_verify_phone_firebase() {
 }
 add_action('wp_ajax_hdh_verify_phone_firebase', 'hdh_ajax_verify_phone_firebase');
 
+/**
+ * AJAX: Send Firebase email verification
+ * Note: This uses Firebase Admin SDK on server-side (optional)
+ * For now, we'll use client-side Firebase Auth
+ */
+function hdh_ajax_send_firebase_email_verification() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmalısınız.'));
+        return;
+    }
+    
+    check_ajax_referer('hdh_firebase_verification', 'nonce');
+    
+    $user_id = get_current_user_id();
+    $user = get_userdata($user_id);
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : $user->user_email;
+    
+    if (empty($email)) {
+        wp_send_json_error(array('message' => 'E-posta adresi gerekli.'));
+        return;
+    }
+    
+    // Note: In production, use Firebase Admin SDK to send verification email
+    // For now, we'll let client-side Firebase Auth handle it
+    // This endpoint is mainly for logging purposes
+    
+    // Log event
+    if (function_exists('hdh_log_event')) {
+        hdh_log_event($user_id, 'firebase_email_verification_requested', array(
+            'email' => $email,
+            'requested_at' => current_time('mysql'),
+        ));
+    }
+    
+    wp_send_json_success(array(
+        'message' => 'Doğrulama e-postası gönderilecek. Firebase Auth kullanarak e-posta kutunuzu kontrol edin.'
+    ));
+}
+add_action('wp_ajax_hdh_send_firebase_email_verification', 'hdh_ajax_send_firebase_email_verification');
+
