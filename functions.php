@@ -60,6 +60,7 @@ require_once get_template_directory() . '/inc/asset-loader.php';
 require_once get_template_directory() . '/inc/trade-integrity.php';
 require_once get_template_directory() . '/inc/event-system.php';
 require_once get_template_directory() . '/inc/user-state-system.php';
+require_once get_template_directory() . '/inc/kvkk-compliance.php';
 require_once get_template_directory() . '/social-share.php';
 
 // Enqueue styles and scripts

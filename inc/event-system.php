@@ -29,12 +29,15 @@ function hdh_log_event($user_id, $event_type, $data = array(), $ip_address = nul
         $ip_address = hdh_get_client_ip();
     }
     
+    // Hash IP address before storage (KVKK compliance)
+    $ip_hash = hdh_hash_ip($ip_address);
+    
     // Prepare event data
     $event = array(
         'user_id' => (int) $user_id,
         'event_type' => sanitize_key($event_type),
         'event_data' => wp_json_encode($data),
-        'ip_address' => $ip_address,
+        'ip_address' => $ip_hash,
         'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : '',
         'created_at' => current_time('mysql'),
     );
