@@ -952,6 +952,72 @@
     }
 }
 
+/* ============================================
+   SHARE BUTTONS
+   ============================================ */
+
+.share-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #FFFFFF;
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.share-btn:hover {
+    background: rgba(201, 184, 138, 0.1);
+    border-color: rgba(201, 184, 138, 0.5);
+    transform: translateY(-1px);
+}
+
+.share-btn .share-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.share-btn .share-label {
+    font-size: 0.85rem;
+}
+
+.share-buttons.single-trade {
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .share-buttons {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .share-btn {
+        flex: 1;
+        min-width: 0;
+        justify-content: center;
+    }
+    
+    .share-btn .share-label {
+        display: none;
+    }
+    
+    .share-btn .share-icon {
+        font-size: 1.3rem;
+    }
+}
+
 @media (max-width: 480px) {
     .single-trade-card {
         padding: 16px;
