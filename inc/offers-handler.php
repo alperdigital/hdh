@@ -423,6 +423,10 @@ function hdh_handle_confirm_exchange() {
             hdh_add_jeton($accepted_offerer_id, 5, 'complete_trade', array('listing_id' => $listing_id));
         }
         
+        // Trigger exchange completed hook for quest tracking
+        do_action('hdh_exchange_completed', $listing->post_author, $listing_id);
+        do_action('hdh_exchange_completed', $accepted_offerer_id, $listing_id);
+        
         wp_send_json_success(array(
             'message' => 'Hediyeleşme tamamlandı! Her iki taraf da +5 bilet kazandı.',
             'completed' => true
