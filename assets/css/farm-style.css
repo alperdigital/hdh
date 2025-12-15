@@ -4145,12 +4145,64 @@ footer,
     font-weight: 500;
 }
 
+/* Listing Header: Split with Divider */
+.listing-header-split {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 12px 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(201, 184, 138, 0.3);
+}
+
+.listing-header-left,
+.listing-header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.listing-header-left {
+    justify-content: flex-start;
+}
+
+.listing-header-right {
+    justify-content: flex-end;
+}
+
+.listing-header-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.listing-header-label {
+    font-family: 'Baloo 2', 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--wood-brown);
+    letter-spacing: 0.3px;
+}
+
+.listing-header-divider {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(201, 184, 138, 0.5) 0%, rgba(201, 184, 138, 0.3) 100%);
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
 /* Two-Column Layout (Unified) */
 .listing-content-columns-unified {
     display: flex;
     gap: 12px;
     align-items: flex-start;
     padding: 0;
+    position: relative;
 }
 
 .listing-column {
