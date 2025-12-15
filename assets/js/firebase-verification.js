@@ -71,35 +71,9 @@
     
     /**
      * Send phone verification code
+     * NOTE: Phone verification is disabled - phone is optional, no rewards
      */
-    async function sendPhoneVerificationCode(phoneNumber, recaptchaVerifier) {
-        try {
-            const confirmationResult = await firebaseAuth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
-            return { success: true, confirmationResult };
-        } catch (error) {
-            console.error('Phone verification error:', error);
-            return { 
-                success: false, 
-                error: error.message || 'SMS kodu gönderilemedi' 
-            };
-        }
-    }
-    
-    /**
-     * Verify phone code
-     */
-    async function verifyPhoneCode(confirmationResult, code) {
-        try {
-            const result = await confirmationResult.confirm(code);
-            return { success: true, user: result.user };
-        } catch (error) {
-            console.error('Phone code verification error:', error);
-            return { 
-                success: false, 
-                error: error.message || 'Doğrulama kodu hatalı' 
-            };
-        }
-    }
+    // Phone verification functions removed
     
     /**
      * Get Firebase ID token
@@ -286,158 +260,9 @@
     
     /**
      * Phone Verification Handler
+     * NOTE: Phone verification is disabled - phone is optional, no rewards
      */
-    document.addEventListener('DOMContentLoaded', function() {
-        const phoneVerifyBtn = document.getElementById('btn-firebase-phone-verify');
-        const phoneCodeInput = document.getElementById('firebase-phone-code');
-        const phoneNumberInput = document.getElementById('firebase-phone-number');
-        const phoneVerifyCodeBtn = document.getElementById('btn-firebase-phone-verify-code');
-        const phoneMessage = document.getElementById('firebase-phone-message');
-        const recaptchaContainer = document.getElementById('firebase-recaptcha-container');
-        
-        if (!phoneVerifyBtn) return;
-        
-        // Initialize Firebase
-        if (!initFirebase()) {
-            if (phoneMessage) {
-                phoneMessage.textContent = 'Firebase yapılandırması bulunamadı.';
-                phoneMessage.className = 'verification-message verification-error';
-                phoneMessage.style.display = 'block';
-            }
-            return;
-        }
-        
-        let recaptchaVerifier = null;
-        let confirmationResult = null;
-        
-        // Initialize reCAPTCHA
-        if (recaptchaContainer) {
-            recaptchaVerifier = new firebase.auth.RecaptchaVerifier(recaptchaContainer, {
-                'size': 'normal',
-                'callback': function(response) {
-                    // reCAPTCHA solved
-                },
-                'expired-callback': function() {
-                    // reCAPTCHA expired
-                }
-            });
-        }
-        
-        // Send phone verification code
-        phoneVerifyBtn.addEventListener('click', async function() {
-            const btn = this;
-            const originalText = btn.textContent;
-            const phoneNumber = phoneNumberInput ? phoneNumberInput.value.trim() : '';
-            
-            if (!phoneNumber) {
-                showMessage(phoneMessage, 'error', 'Lütfen telefon numaranızı girin.');
-                return;
-            }
-            
-            // Format phone number (add country code if needed)
-            const formattedPhone = phoneNumber.startsWith('+') ? phoneNumber : '+90' + phoneNumber.replace(/^0/, '');
-            
-            btn.disabled = true;
-            btn.textContent = 'Gönderiliyor...';
-            
-            try {
-                const result = await sendPhoneVerificationCode(formattedPhone, recaptchaVerifier);
-                
-                if (result.success) {
-                    confirmationResult = result.confirmationResult;
-                    showMessage(phoneMessage, 'success', 'SMS kodu gönderildi. Lütfen telefonunuzu kontrol edin.');
-                    
-                    // Show code input
-                    if (phoneCodeInput) {
-                        phoneCodeInput.parentElement.style.display = 'block';
-                        phoneCodeInput.focus();
-                    }
-                    if (phoneVerifyCodeBtn) {
-                        phoneVerifyCodeBtn.style.display = 'block';
-                    }
-                } else {
-                    throw new Error(result.error);
-                }
-            } catch (error) {
-                showMessage(phoneMessage, 'error', error.message || 'SMS kodu gönderilemedi');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = originalText;
-            }
-        });
-        
-        // Verify phone code
-        if (phoneVerifyCodeBtn) {
-            phoneVerifyCodeBtn.addEventListener('click', async function() {
-                const btn = this;
-                const originalText = btn.textContent;
-                const code = phoneCodeInput ? phoneCodeInput.value.trim() : '';
-                
-                if (!code) {
-                    showMessage(phoneMessage, 'error', 'Lütfen doğrulama kodunu girin.');
-                    return;
-                }
-                
-                if (!confirmationResult) {
-                    showMessage(phoneMessage, 'error', 'Önce SMS kodu gönderin.');
-                    return;
-                }
-                
-                btn.disabled = true;
-                btn.textContent = 'Doğrulanıyor...';
-                
-                try {
-                    const result = await verifyPhoneCode(confirmationResult, code);
-                    
-                    if (result.success) {
-                        // Get ID token
-                        const tokenResult = await getIdToken(result.user);
-                        
-                        if (tokenResult.success) {
-                            // Send to backend
-                            const response = await fetch(hdhFirebase.ajaxUrl, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                },
-                                body: new URLSearchParams({
-                                    action: 'hdh_verify_phone_firebase',
-                                    nonce: hdhFirebase.nonce,
-                                    id_token: tokenResult.token,
-                                    phone_number: phoneNumberInput.value.trim(),
-                                    firebase_uid: result.user.uid
-                                })
-                            });
-                            
-                            const data = await response.json();
-                            
-                            if (data.success) {
-                                showMessage(phoneMessage, 'success', data.data.message || 'Telefon doğrulandı!');
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 2000);
-                            } else {
-                                throw new Error(data.data.message || 'Doğrulama başarısız');
-                            }
-                        } else {
-                            throw new Error('Token alınamadı');
-                        }
-                    } else {
-                        throw new Error(result.error);
-                    }
-                } catch (error) {
-                    showMessage(phoneMessage, 'error', error.message || 'Doğrulama kodu hatalı');
-                    if (phoneCodeInput) {
-                        phoneCodeInput.value = '';
-                        phoneCodeInput.focus();
-                    }
-                } finally {
-                    btn.disabled = false;
-                    btn.textContent = originalText;
-                }
-            });
-        }
-    });
+    // Phone verification code removed - phone verification is disabled
     
     function showMessage(element, type, message) {
         if (!element) return;
@@ -457,8 +282,6 @@
     window.hdhFirebaseAuth = {
         initFirebase,
         sendEmailVerification,
-        sendPhoneVerificationCode,
-        verifyPhoneCode,
         getIdToken,
     };
 })();
