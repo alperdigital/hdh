@@ -223,6 +223,12 @@ function hdh_get_user_daily_tasks($user_id) {
                 break;
         }
         
+        // For daily tasks: check if there are unclaimed progress milestones
+        // claimed_progress = how many progress milestones have been claimed
+        // can_claim = true if progress > claimed_progress (at least 1 milestone available)
+        $claimed_progress = (int) get_user_meta($user_id, $claimed_key, true);
+        $can_claim = $progress > $claimed_progress;
+        
         $tasks[] = array(
             'id' => $task_id,
             'title' => $task_config['title'],
@@ -233,7 +239,8 @@ function hdh_get_user_daily_tasks($user_id) {
             'max_progress' => $task_config['max_progress'],
             'completed' => $progress >= $task_config['max_progress'],
             'claimed' => $claimed,
-            'can_claim' => ($progress >= $task_config['max_progress']) && !$claimed,
+            'can_claim' => $can_claim,
+            'claimed_progress' => $claimed_progress,
         );
     }
     
@@ -250,7 +257,7 @@ function hdh_reset_daily_tasks($user_id) {
     
     foreach ($config as $task_id => $task_config) {
         delete_user_meta($user_id, 'hdh_daily_task_progress_' . $task_id);
-        delete_user_meta($user_id, 'hdh_daily_task_claimed_' . $task_id);
+        delete_user_meta($user_id, 'hdh_daily_task_claimed_' . $task_id); // This stores claimed_progress (number, not boolean)
     }
     
     update_user_meta($user_id, 'hdh_daily_tasks_reset_date', date('Y-m-d'));
@@ -284,46 +291,51 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
         return new WP_Error('not_completed', 'Görev henüz tamamlanmamış');
     }
     
-    // For daily tasks, allow multiple claims (every max_progress)
+    // For daily tasks: allow claiming rewards for each progress milestone
     if ($is_daily) {
-        // Calculate how many times the task has been completed
-        $completed_times = floor($progress / $task_config['max_progress']);
+        // Get current progress and claimed progress
+        $claimed_progress = (int) get_user_meta($user_id, $claimed_key, true);
         
-        // Get last claimed progress
-        $last_claimed_progress = (int) get_user_meta($user_id, $claimed_key, true);
-        $last_claimed_times = $last_claimed_progress > 0 ? floor($last_claimed_progress / $task_config['max_progress']) : 0;
-        
-        // Check if there are new completions to claim
-        if ($completed_times <= $last_claimed_times) {
+        // Check if there are unclaimed progress milestones
+        if ($progress <= $claimed_progress) {
             return new WP_Error('already_claimed', 'Bu görevin ödülü zaten alınmış');
         }
         
-        // Calculate reward multiplier (how many times to award)
-        $reward_multiplier = $completed_times - $last_claimed_times;
+        // Calculate how many milestones can be claimed
+        // Example: progress = 3, claimed_progress = 1 → can claim 2 milestones (for progress 2 and 3)
+        $claimable_milestones = $progress - $claimed_progress;
         
-        // Update last claimed progress
-        update_user_meta($user_id, $claimed_key, $completed_times * $task_config['max_progress']);
+        // Update claimed progress to current progress
+        update_user_meta($user_id, $claimed_key, $progress);
         
-        // Award bilet (multiplied by reward_multiplier)
+        // Award bilet (multiplied by claimable milestones)
+        $total_bilet = 0;
         if ($task_config['reward_bilet'] > 0) {
+            $total_bilet = $task_config['reward_bilet'] * $claimable_milestones;
             if (function_exists('hdh_add_bilet')) {
-                hdh_add_bilet($user_id, $task_config['reward_bilet'] * $reward_multiplier, 'task_reward', array(
+                hdh_add_bilet($user_id, $total_bilet, 'task_reward', array(
                     'task_id' => $task_id,
                     'is_daily' => $is_daily,
-                    'multiplier' => $reward_multiplier,
+                    'milestones' => $claimable_milestones,
+                    'progress' => $progress,
+                    'claimed_progress' => $claimed_progress,
                 ));
             }
         }
         
-        // Award level (XP) (multiplied by reward_multiplier)
+        // Award level (XP) (multiplied by claimable milestones)
+        $total_level = 0;
         if ($task_config['reward_level'] > 0) {
+            $total_level = $task_config['reward_level'] * $claimable_milestones;
             if (function_exists('hdh_add_xp')) {
                 // Convert level to XP (1 level = 100 XP)
-                $xp_amount = $task_config['reward_level'] * 100 * $reward_multiplier;
+                $xp_amount = $task_config['reward_level'] * 100 * $claimable_milestones;
                 hdh_add_xp($user_id, $xp_amount, 'task_reward', array(
                     'task_id' => $task_id,
                     'is_daily' => $is_daily,
-                    'multiplier' => $reward_multiplier,
+                    'milestones' => $claimable_milestones,
+                    'progress' => $progress,
+                    'claimed_progress' => $claimed_progress,
                 ));
             }
         }
@@ -334,17 +346,20 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
                 'task_id' => $task_id,
                 'is_daily' => $is_daily,
                 'rewards' => array(
-                    'bilet' => $task_config['reward_bilet'] * $reward_multiplier,
-                    'level' => $task_config['reward_level'] * $reward_multiplier,
+                    'bilet' => $total_bilet,
+                    'level' => $total_level,
                 ),
-                'multiplier' => $reward_multiplier,
+                'milestones' => $claimable_milestones,
+                'progress' => $progress,
+                'claimed_progress' => $claimed_progress,
             ));
         }
         
         return array(
             'success' => true,
-            'bilet' => $task_config['reward_bilet'] * $reward_multiplier,
-            'level' => $task_config['reward_level'] * $reward_multiplier,
+            'bilet' => $total_bilet,
+            'level' => $total_level,
+            'milestones' => $claimable_milestones,
         );
     } else {
         // For one-time tasks, check if already claimed

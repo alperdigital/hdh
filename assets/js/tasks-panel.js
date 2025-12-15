@@ -152,12 +152,6 @@
                     
                     showToast(message, 'success');
                     
-                    // Update button to show claimed status
-                    btn.parentNode.innerHTML = '<span class="task-status">✅ Ödül Alındı</span>';
-                    
-                    // Update badge count
-                    updateTasksBadge();
-                    
                     // Update balance if element exists
                     if (data.data.new_bilet !== undefined) {
                         const balanceEl = document.querySelector('.jeton-balance, .bilet-balance');
@@ -174,10 +168,19 @@
                         }
                     }
                     
-                    // Refresh tasks list after a short delay
-                    setTimeout(function() {
-                        refreshTasksList();
-                    }, 1000);
+                    // For daily tasks, refresh the tasks list to update progress
+                    // For one-time tasks, update button to show claimed status
+                    if (isDaily) {
+                        // Refresh tasks list to update progress and button state
+                        setTimeout(function() {
+                            refreshTasksListAndUpdateUI();
+                        }, 500);
+                    } else {
+                        // Update button to show claimed status
+                        btn.parentNode.innerHTML = '<span class="task-status">✅ Ödül Alındı</span>';
+                        // Update badge count
+                        updateTasksBadge();
+                    }
                 } else {
                     showToast(data.data.message || 'Bir hata oluştu', 'error');
                     btn.disabled = false;
@@ -220,9 +223,9 @@
         });
         
         /**
-         * Refresh tasks list from server
+         * Refresh tasks list from server and update UI
          */
-        function refreshTasksList() {
+        function refreshTasksListAndUpdateUI() {
             const formData = new FormData();
             formData.append('action', 'hdh_get_tasks');
             formData.append('nonce', hdhTasks.nonce);
@@ -234,14 +237,53 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Tasks list will be updated on next page load
-                    // For now, we just update the badge
+                    // Update daily tasks UI
+                    const dailyTasks = data.data.daily_tasks || [];
+                    dailyTasks.forEach(function(task) {
+                        // Find task item by looking for task ID in the task list
+                        const taskItems = document.querySelectorAll('.task-item');
+                        taskItems.forEach(function(taskItem) {
+                            const taskName = taskItem.querySelector('.task-name');
+                            if (taskName && taskName.textContent.includes(task.title)) {
+                                const taskActions = taskItem.querySelector('.task-actions');
+                                if (taskActions) {
+                                    if (task.can_claim) {
+                                        taskActions.innerHTML = '<button class="btn-claim-task" data-task-id="' + task.id + '" data-is-daily="true">Ödülünü Al</button>';
+                                    } else if (task.id === 'create_listings') {
+                                        taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/ilan-ver" class="btn-do-task">Yap</a>';
+                                    } else if (task.id === 'invite_friends' || task.id === 'friend_exchanges') {
+                                        taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/profil" class="btn-do-task">Yap</a>';
+                                    } else {
+                                        taskActions.innerHTML = '<span class="task-status">Beklemede</span>';
+                                    }
+                                }
+                                
+                                // Update progress display
+                                const taskProgress = taskItem.querySelector('.task-progress');
+                                if (taskProgress && task.max_progress > 1) {
+                                    taskProgress.textContent = '(' + task.progress + '/' + task.max_progress + ')';
+                                }
+                            }
+                        });
+                    });
+                    
+                    // Re-attach claim handlers
+                    attachClaimHandlers();
+                    
+                    // Update badge count
                     updateTasksBadge();
                 }
             })
             .catch(error => {
                 console.error('Error refreshing tasks:', error);
             });
+        }
+        
+        /**
+         * Refresh tasks list from server (legacy function)
+         */
+        function refreshTasksList() {
+            refreshTasksListAndUpdateUI();
         }
         
         /**

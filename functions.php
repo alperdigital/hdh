@@ -234,6 +234,7 @@ function hdh_enqueue_scripts() {
         wp_localize_script('hdh-tasks-panel', 'hdhTasks', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_claim_task_reward'),
+            'siteUrl' => home_url(),
         ));
     }
     

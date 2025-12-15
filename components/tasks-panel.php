@@ -144,9 +144,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                     </div>
                                 </div>
                                 <div class="task-actions">
-                                    <?php if ($task['completed'] && $task['claimed']) : ?>
-                                        <span class="task-status">✅ Ödül Alındı</span>
-                                    <?php elseif ($task['completed'] && $task['can_claim']) : ?>
+                                    <?php if ($task['can_claim']) : ?>
                                         <button class="btn-claim-task" 
                                                 data-task-id="<?php echo esc_attr($task['id']); ?>" 
                                                 data-is-daily="true">

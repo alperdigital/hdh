@@ -5740,6 +5740,17 @@ footer,
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.task-progress {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(44, 44, 44, 0.6);
+    white-space: nowrap;
 }
 
 .task-description {
@@ -5913,6 +5924,39 @@ footer,
         width: 100%;
         text-align: center;
         justify-content: center;
+    }
+    
+    .task-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .task-info {
+        width: 100%;
+    }
+    
+    .task-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .btn-claim-task,
+    .btn-do-task {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px 20px;
+    }
+    
+    .task-name {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+    
+    .task-progress {
+        display: inline-block;
+        margin-left: 6px;
     }
 }
 
