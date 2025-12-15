@@ -471,7 +471,7 @@ if (!$is_logged_in) {
                     <?php else : ?>
                         <div class="no-listings-message">
                             <p>Henüz ilan oluşturmadınız.</p>
-                            <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-create-listing">
+                            <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-create-listing-profile">
                                 ➕ İlk İlanını Oluştur
                             </a>
                         </div>

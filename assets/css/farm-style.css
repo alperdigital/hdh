@@ -4607,8 +4607,52 @@ footer,
 .btn-deactivate-listing:disabled { opacity: 0.5; cursor: not-allowed; }
 .no-listings-message { text-align: center; padding: 40px 20px; color: var(--newspaper-text-light); }
 .no-listings-message p { margin: 0 0 16px 0; font-size: 15px; }
-.btn-create-listing { display: inline-block; background: var(--farm-green); color: #FFFFFF; font-size: 15px; font-weight: 600; padding: 12px 24px; border-radius: 10px; text-decoration: none; transition: all 0.2s ease; }
-.btn-create-listing:hover { background: var(--farm-green-dark); transform: translateY(-2px); }
+
+/* Profile page specific create listing button - matches other profile buttons */
+.my-listings-section .btn-create-listing-profile,
+.btn-create-listing-profile {
+    display: inline-block;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-create-listing-profile:hover {
+    background: var(--farm-green-dark);
+    transform: translateY(-2px);
+}
+
+.btn-create-listing-profile:active {
+    transform: scale(0.98);
+}
+
+/* General create listing button (for other pages) */
+.btn-create-listing { 
+    display: inline-block; 
+    background: var(--farm-green); 
+    color: #FFFFFF; 
+    font-size: 15px; 
+    font-weight: 600; 
+    padding: 12px 24px; 
+    border-radius: 10px; 
+    text-decoration: none; 
+    transition: all 0.2s ease; 
+}
+
+.btn-create-listing:hover { 
+    background: var(--farm-green-dark); 
+    transform: translateY(-2px); 
+}
 
 /* Profile Toast Notifications */
 .profile-toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--newspaper-text); color: #FFFFFF; padding: 14px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; z-index: 10000; opacity: 0; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); max-width: 90%; text-align: center; }
