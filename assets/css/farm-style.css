@@ -3253,17 +3253,18 @@ main {
 /* Offer quantity items */
 /* Offer quantity item - animation styles */
 .offer-quantity-item {
-    display: block; /* Ensure it's visible */
+    display: block !important; /* Ensure it's visible */
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     margin-bottom: 16px;
     width: 100%;
+    visibility: visible; /* Ensure element is in layout */
 }
 
 .offer-quantity-item.visible {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 .offer-quantity-item:not(:last-child) {
@@ -3303,12 +3304,14 @@ main {
 
 .offer-quantities {
     margin-top: 20px;
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     gap: 15px;
     min-height: 0;
     width: 100%;
     box-sizing: border-box;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 /* Offer quantity item - layout styles (merged with animation styles above) */

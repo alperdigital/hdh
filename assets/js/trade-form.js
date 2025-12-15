@@ -194,17 +194,22 @@
         // Ensure container is visible
         offerQuantities.style.display = 'flex';
         offerQuantities.style.visibility = 'visible';
+        offerQuantities.style.opacity = '1';
         
+        // Append to DOM first
         offerQuantities.appendChild(stepperItem);
         
-        // Force reflow to ensure element is in DOM
+        // Force reflow to ensure element is in DOM and styles are applied
         void stepperItem.offsetHeight;
+        void stepperItem.querySelector('.quantity-stepper-wrapper').offsetHeight;
         
-        // Animate in
-        setTimeout(function() {
+        // Immediately make it visible (no delay for better UX)
+        requestAnimationFrame(function() {
             stepperItem.classList.add('visible');
+            stepperItem.style.opacity = '1';
+            stepperItem.style.transform = 'translateY(0)';
             console.log('HDH Trade Form: Visible class added to stepper for', slug);
-        }, 10);
+        });
         
         // Scroll into view
         setTimeout(function() {
