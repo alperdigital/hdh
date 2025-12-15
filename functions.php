@@ -62,6 +62,7 @@ require_once get_template_directory() . '/inc/event-system.php';
 require_once get_template_directory() . '/inc/user-state-system.php';
 require_once get_template_directory() . '/inc/kvkk-compliance.php';
 require_once get_template_directory() . '/inc/moderation-system.php';
+require_once get_template_directory() . '/inc/admin-moderation-ui.php';
 require_once get_template_directory() . '/inc/trust-display.php';
 require_once get_template_directory() . '/components/user-badge.php';
 require_once get_template_directory() . '/components/quest-panel.php';
