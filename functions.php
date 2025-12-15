@@ -175,6 +175,17 @@ function hdh_enqueue_scripts() {
         ));
     }
     
+    // Enqueue quest panel script on homepage
+    if (is_front_page() && is_user_logged_in()) {
+        wp_enqueue_script(
+            'hdh-quest-panel',
+            get_template_directory_uri() . '/assets/js/quest-panel.js',
+            array(),
+            '1.0.0',
+            true
+        );
+    }
+    
     // Enqueue single trade page script
     if (is_singular('hayday_trade')) {
         wp_enqueue_script(
