@@ -196,17 +196,32 @@ function hdh_handle_create_trade() {
         }
     }
     
-    // Award +2 jetons (bilet) for creating a listing (only if published)
+    // Award rewards for creating a listing (only if published)
     if ($post_status === 'publish') {
-        // Use hdh_add_bilet if available (wrapper for hdh_add_jeton)
+        $user_id = get_current_user_id();
+        
+        // Award +2 bilet for creating a listing
         if (function_exists('hdh_add_bilet')) {
-            hdh_add_bilet(get_current_user_id(), 2, 'listing_created', array('post_id' => $post_id));
+            hdh_add_bilet($user_id, 2, 'listing_created', array('post_id' => $post_id));
         } elseif (function_exists('hdh_add_jeton')) {
-            hdh_add_jeton(get_current_user_id(), 2, 'listing_created', array('post_id' => $post_id));
+            hdh_add_jeton($user_id, 2, 'listing_created', array('post_id' => $post_id));
+        }
+        
+        // Check if this is the first listing - if so, award level reward too
+        $listings = get_posts(array(
+            'post_type' => 'hayday_trade',
+            'author' => $user_id,
+            'posts_per_page' => 1,
+            'fields' => 'ids',
+        ));
+        
+        // If this is the first listing, award +1 level (100 XP)
+        if (count($listings) === 1 && function_exists('hdh_add_xp')) {
+            hdh_add_xp($user_id, 100, 'first_listing_created', array('post_id' => $post_id));
         }
         
         // Trigger listing created hook for quest/task tracking
-        do_action('hdh_listing_created', get_current_user_id(), $post_id);
+        do_action('hdh_listing_created', $user_id, $post_id);
     }
     
     // Redirect based on approval status
