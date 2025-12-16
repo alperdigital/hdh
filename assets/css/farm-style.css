@@ -7284,6 +7284,14 @@ footer,
         0 6px 10px rgba(0, 0, 0, 0.18);
 }
 
+.hdh-farm-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    flex: 1;
+}
+
 .hdh-farm-name {
     font-family: 'Baloo 2', -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
     font-size: 16px;
@@ -7295,10 +7303,6 @@ footer,
     white-space: nowrap;
     max-width: 200px;
     color: var(--newspaper-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
     line-height: 1.4;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     letter-spacing: 0.3px;
@@ -7318,6 +7322,35 @@ footer,
 
 .hdh-user-info-widget:hover .hdh-farm-name::after {
     width: 100%;
+}
+
+.hdh-farm-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.hdh-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--newspaper-text);
+    opacity: 0.85;
+}
+
+.hdh-stat-emoji {
+    font-size: 14px;
+    line-height: 1;
+    display: inline-block;
+}
+
+.hdh-stat-value {
+    font-family: 'Baloo 2', -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.2px;
 }
 
 /* Adjust top position when announcement banner is hidden */
@@ -7361,6 +7394,19 @@ body:not([class*="announcement"]) .hdh-user-info-widget {
     .hdh-farm-name {
         font-size: 14px;
         max-width: 150px;
+    }
+    
+    .hdh-farm-stats {
+        gap: 10px;
+        font-size: 11px;
+    }
+    
+    .hdh-stat-emoji {
+        font-size: 12px;
+    }
+    
+    .hdh-stat-value {
+        font-size: 11px;
     }
 }
 

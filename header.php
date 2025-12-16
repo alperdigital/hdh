@@ -16,9 +16,10 @@
         $current_user = wp_get_current_user();
         $farm_name = $current_user->display_name;
         
-        // Get user level
+        // Get user level and bilet balance
         $user_state = function_exists('hdh_get_user_state') ? hdh_get_user_state($current_user_id) : null;
         $user_level = $user_state ? $user_state['level'] : 1;
+        $bilet_balance = $user_state ? $user_state['bilet_balance'] : 0;
         
         // Determine digit class based on level
         $level_int = (int) $user_level;
@@ -31,7 +32,19 @@
                  title="Seviye <?php echo esc_attr($user_level); ?>">
                 <?php echo esc_html($user_level); ?>
             </div>
-            <span class="hdh-farm-name"><?php echo esc_html($farm_name); ?></span>
+            <div class="hdh-farm-info">
+                <span class="hdh-farm-name"><?php echo esc_html($farm_name); ?></span>
+                <div class="hdh-farm-stats">
+                    <span class="hdh-stat-item">
+                        <span class="hdh-stat-emoji">⭐</span>
+                        <span class="hdh-stat-value"><?php echo esc_html($user_level); ?></span>
+                    </span>
+                    <span class="hdh-stat-item">
+                        <span class="hdh-stat-emoji">🎟️</span>
+                        <span class="hdh-stat-value"><?php echo esc_html(number_format($bilet_balance, 0, ',', '.')); ?></span>
+                    </span>
+                </div>
+            </div>
         </div>
     <?php endif; ?>
     
