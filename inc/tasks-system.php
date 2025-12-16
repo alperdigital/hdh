@@ -540,24 +540,22 @@ function hdh_track_listing_creation($user_id, $listing_id) {
     ));
     
     // If this is the first listing, update one-time task progress
+    // Note: Reward is already given in create-trade-handler.php, so we just mark the task as completed
     if (count($listings) === 1) {
         // This is the first listing, mark the task as completed
         update_user_meta($user_id, 'hdh_task_progress_create_first_listing', 1);
         
-        // Auto-claim reward if not already claimed
-        $claimed = get_user_meta($user_id, 'hdh_task_claimed_create_first_listing', true);
-        if (!$claimed) {
-            // Auto-claim the reward
-            $result = hdh_claim_task_reward($user_id, 'create_first_listing', false);
-            if (!is_wp_error($result)) {
-                // Log auto-claim event
-                if (function_exists('hdh_log_event')) {
-                    hdh_log_event($user_id, 'task_auto_claimed', array(
-                        'task_id' => 'create_first_listing',
-                        'reason' => 'first_listing_created',
-                    ));
-                }
-            }
+        // Mark as claimed since reward was already given directly
+        // This prevents double-rewarding when user clicks "Ödülünü Al" button
+        update_user_meta($user_id, 'hdh_task_claimed_create_first_listing', true);
+        
+        // Log task completion
+        if (function_exists('hdh_log_event')) {
+            hdh_log_event($user_id, 'task_completed', array(
+                'task_id' => 'create_first_listing',
+                'reason' => 'first_listing_created',
+                'note' => 'Reward given directly in create-trade-handler',
+            ));
         }
     }
 }
