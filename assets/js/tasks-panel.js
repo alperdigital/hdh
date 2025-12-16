@@ -13,16 +13,12 @@
         const tasksClose = document.getElementById('tasks-panel-close');
         
         if (!tasksIcon) {
-            console.warn('HDH Tasks: tasks-icon-toggle not found');
-            return;
+            return; // Silently fail if icon not found
         }
         
         if (!tasksPanel) {
-            console.warn('HDH Tasks: tasks-panel not found');
-            return;
+            return; // Silently fail if panel not found
         }
-        
-        console.log('HDH Tasks: Initialized', { tasksIcon, tasksPanel, tasksOverlay });
         
         /**
          * Open tasks panel
@@ -54,7 +50,6 @@
                 e.preventDefault();
                 e.stopPropagation();
             }
-            console.log('HDH Tasks: Toggle clicked', tasksPanel.classList.contains('active'));
             if (tasksPanel.classList.contains('active')) {
                 closeTasksPanel();
             } else {
@@ -68,7 +63,6 @@
         tasksIcon.addEventListener('click', function(e) {
             if (isToggling) return;
             isToggling = true;
-            console.log('HDH Tasks: Click event fired');
             handleToggle(e);
             setTimeout(function() {
                 isToggling = false;
@@ -78,7 +72,6 @@
         tasksIcon.addEventListener('touchend', function(e) {
             if (isToggling) return;
             isToggling = true;
-            console.log('HDH Tasks: Touch event fired');
             e.preventDefault();
             handleToggle(e);
             setTimeout(function() {
@@ -128,7 +121,7 @@
             const isDaily = btn.getAttribute('data-is-daily') === 'true';
             
             if (!taskId) {
-                console.error('HDH Tasks: Task ID not found');
+                showToast('Görev ID bulunamadı', 'error');
                 return;
             }
             

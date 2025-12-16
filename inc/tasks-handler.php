@@ -64,6 +64,12 @@ function hdh_handle_get_tasks() {
         return;
     }
     
+    // Verify nonce (optional but recommended for security)
+    if (isset($_POST['nonce']) && !wp_verify_nonce($_POST['nonce'], 'hdh_claim_task_reward')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
     $user_id = get_current_user_id();
     
     if (!function_exists('hdh_get_user_one_time_tasks') || !function_exists('hdh_get_user_daily_tasks')) {
