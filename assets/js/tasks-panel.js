@@ -125,6 +125,12 @@
                 return;
             }
             
+            // Check if hdhTasks is defined
+            if (typeof hdhTasks === 'undefined') {
+                showToast('Görev sistemi yüklenemedi', 'error');
+                return;
+            }
+            
             // Disable button to prevent double-click
             btn.disabled = true;
             const originalText = btn.textContent;
@@ -236,6 +242,13 @@
                 return;
             }
             refreshTasksListAndUpdateUI.isLoading = true;
+            
+            // Check if hdhTasks is defined
+            if (typeof hdhTasks === 'undefined') {
+                refreshTasksListAndUpdateUI.isLoading = false;
+                console.error('HDH Tasks: hdhTasks object not defined');
+                return;
+            }
             
             const formData = new FormData();
             formData.append('action', 'hdh_get_tasks');
