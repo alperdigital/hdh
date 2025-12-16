@@ -235,7 +235,10 @@
                         }, 500);
                     } else {
                         // Update button to show claimed status
-                        btn.parentNode.innerHTML = '<span class="task-status">✅ Ödül Alındı</span>';
+                        const taskActions = btn.closest('.task-actions');
+                        if (taskActions) {
+                            taskActions.innerHTML = '<span class="task-status">✅ Ödül Alındı</span>';
+                        }
                         // Update badge count
                         updateTasksBadge();
                     }
