@@ -174,13 +174,15 @@
                     
                     showToast(message, 'success');
                     
-                    // Log for debugging
-                    console.log('HDH Tasks: Reward claimed', {
-                        bilet: bilet,
-                        level: level,
-                        new_bilet: new_bilet,
-                        new_level: new_level
-                    });
+                    // Log for debugging (only in development)
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        console.log('HDH Tasks: Reward claimed', {
+                            bilet: bilet,
+                            level: level,
+                            new_bilet: new_bilet,
+                            new_level: new_level
+                        });
+                    }
                     
                     // Update bilet balance in header widget
                     if (data.data.new_bilet !== undefined) {
@@ -219,9 +221,6 @@
                                 // Update digit class if needed
                                 const digits = newLevel.toString().length;
                                 levelBadge.className = 'hdh-level-badge ' + (digits === 1 ? 'lvl-d1' : (digits === 2 ? 'lvl-d2' : 'lvl-d3'));
-                                console.log('HDH Tasks: Updated level badge to', newLevel);
-                            } else {
-                                console.warn('HDH Tasks: Level badge element not found');
                             }
                             
                             // Update star stat value (first .hdh-stat-value in .hdh-farm-stats)
@@ -233,15 +232,8 @@
                                     const starValue = statItems[0].querySelector('.hdh-stat-value');
                                     if (starValue) {
                                         starValue.textContent = newLevel;
-                                        console.log('HDH Tasks: Updated star stat value to', newLevel);
-                                    } else {
-                                        console.warn('HDH Tasks: Star value element not found');
                                     }
-                                } else {
-                                    console.warn('HDH Tasks: No stat items found');
                                 }
-                            } else {
-                                console.warn('HDH Tasks: Farm stats element not found for level update');
                             }
                             
                             // Also try old selectors for backward compatibility
@@ -249,11 +241,7 @@
                             if (levelEl) {
                                 levelEl.textContent = newLevel;
                             }
-                        } else {
-                            console.warn('HDH Tasks: Invalid new_level value', data.data.new_level);
                         }
-                    } else {
-                        console.warn('HDH Tasks: new_level is undefined or null', data.data);
                     }
                     
                     // For daily tasks, refresh the tasks list to update progress
