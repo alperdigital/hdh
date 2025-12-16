@@ -292,8 +292,52 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
     $claimed_key = $is_daily ? 'hdh_daily_task_claimed_' . $task_id : 'hdh_task_claimed_' . $task_id;
     $progress_key = $is_daily ? 'hdh_daily_task_progress_' . $task_id : 'hdh_task_progress_' . $task_id;
     
-    // Get current progress
-    $progress = (int) get_user_meta($user_id, $progress_key, true);
+    // Get current progress - recalculate from actual data to ensure accuracy
+    if ($is_daily) {
+        // For daily tasks, get fresh progress from hdh_get_user_daily_tasks
+        // This ensures we have the latest progress before claiming
+        $daily_tasks = hdh_get_user_daily_tasks($user_id);
+        $progress = 0;
+        foreach ($daily_tasks as $task) {
+            if ($task['id'] === $task_id) {
+                $progress = $task['progress'];
+                break;
+            }
+        }
+        // Fallback to meta if not found in tasks
+        if ($progress === 0) {
+            $progress = (int) get_user_meta($user_id, $progress_key, true);
+        }
+    } else {
+        // For one-time tasks, get from meta or check completion status
+        $progress = (int) get_user_meta($user_id, $progress_key, true);
+        
+        // Check task-specific completion
+        switch ($task_id) {
+            case 'verify_email':
+                if ((bool) get_user_meta($user_id, 'hdh_email_verified', true)) {
+                    $progress = $task_config['max_progress'];
+                }
+                break;
+            case 'create_first_listing':
+                $listings = get_posts(array(
+                    'post_type' => 'hayday_trade',
+                    'author' => $user_id,
+                    'posts_per_page' => 1,
+                    'fields' => 'ids',
+                ));
+                if (!empty($listings)) {
+                    $progress = $task_config['max_progress'];
+                }
+                break;
+            case 'complete_first_exchange':
+                $completed = (int) get_user_meta($user_id, 'hdh_completed_exchanges', true);
+                if ($completed > 0) {
+                    $progress = $task_config['max_progress'];
+                }
+                break;
+        }
+    }
     
     // For daily tasks: allow claiming rewards for each progress milestone
     if ($is_daily) {
