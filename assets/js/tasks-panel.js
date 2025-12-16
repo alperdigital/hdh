@@ -146,7 +146,12 @@
                 method: 'POST', 
                 body: formData 
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     const bilet = data.data.bilet || 0;
@@ -163,16 +168,58 @@
                     
                     showToast(message, 'success');
                     
-                    // Update balance if element exists
+                    // Update bilet balance in header widget
                     if (data.data.new_bilet !== undefined) {
+                        // Find bilet stat value (second .hdh-stat-value in .hdh-farm-stats)
+                        const farmStats = document.querySelector('.hdh-farm-stats');
+                        if (farmStats) {
+                            const statItems = farmStats.querySelectorAll('.hdh-stat-item');
+                            if (statItems.length >= 2) {
+                                // Second item is bilet (🎟️)
+                                const biletValue = statItems[1].querySelector('.hdh-stat-value');
+                                if (biletValue) {
+                                    biletValue.textContent = data.data.new_bilet.toLocaleString('tr-TR');
+                                }
+                            }
+                        }
+                        
+                        // Also try old selectors for backward compatibility
                         const balanceEl = document.querySelector('.jeton-balance, .bilet-balance');
                         if (balanceEl) {
                             balanceEl.textContent = data.data.new_bilet.toLocaleString('tr-TR');
                         }
                     }
                     
-                    // Update level if element exists
+                    // Update level in header widget
                     if (data.data.new_level !== undefined) {
+                        // Update level badge (star with number)
+                        const levelBadge = document.querySelector('.hdh-level-badge');
+                        if (levelBadge) {
+                            levelBadge.textContent = data.data.new_level;
+                            // Update aria-label and title
+                            levelBadge.setAttribute('aria-label', 'Seviye ' + data.data.new_level);
+                            levelBadge.setAttribute('title', 'Seviye ' + data.data.new_level);
+                            
+                            // Update digit class if needed
+                            const levelInt = parseInt(data.data.new_level);
+                            const digits = levelInt.toString().length;
+                            levelBadge.className = 'hdh-level-badge ' + (digits === 1 ? 'lvl-d1' : (digits === 2 ? 'lvl-d2' : 'lvl-d3'));
+                        }
+                        
+                        // Update star stat value (first .hdh-stat-value in .hdh-farm-stats)
+                        const farmStats = document.querySelector('.hdh-farm-stats');
+                        if (farmStats) {
+                            const statItems = farmStats.querySelectorAll('.hdh-stat-item');
+                            if (statItems.length >= 1) {
+                                // First item is star (⭐)
+                                const starValue = statItems[0].querySelector('.hdh-stat-value');
+                                if (starValue) {
+                                    starValue.textContent = data.data.new_level;
+                                }
+                            }
+                        }
+                        
+                        // Also try old selectors for backward compatibility
                         const levelEl = document.querySelector('.hdh-user-level, .user-level');
                         if (levelEl) {
                             levelEl.textContent = data.data.new_level;
@@ -208,30 +255,72 @@
         
         /**
          * Attach claim task handlers to all claim buttons
+         * Uses event delegation for better reliability
          */
         function attachClaimHandlers() {
-            const claimButtons = document.querySelectorAll('.btn-claim-task');
-            claimButtons.forEach(function(btn) {
-                // Remove existing listeners by cloning
-                const newBtn = btn.cloneNode(true);
-                btn.parentNode.replaceChild(newBtn, btn);
-                
-                // Add new listener
-                newBtn.addEventListener('click', function(e) {
+            // Remove all existing listeners by using event delegation
+            // This is more reliable than cloning nodes
+            const tasksPanelContent = document.querySelector('.tasks-panel-content');
+            if (!tasksPanelContent) return;
+            
+            // Remove old delegation listener if exists
+            if (tasksPanelContent._claimHandlerAttached) {
+                tasksPanelContent.removeEventListener('click', tasksPanelContent._claimHandler);
+            }
+            
+            // Create new delegation handler
+            tasksPanelContent._claimHandler = function(e) {
+                const btn = e.target.closest('.btn-claim-task');
+                if (btn && !btn.disabled) {
                     e.preventDefault();
                     e.stopPropagation();
-                    handleClaimTask(newBtn);
-                });
-            });
+                    handleClaimTask(btn);
+                }
+            };
+            
+            // Attach delegation listener
+            tasksPanelContent.addEventListener('click', tasksPanelContent._claimHandler);
+            tasksPanelContent._claimHandlerAttached = true;
         }
         
         // Attach handlers on initial load
         attachClaimHandlers();
         
         // Re-attach handlers when panel opens (in case tasks were updated)
-        tasksIcon.addEventListener('click', function() {
-            setTimeout(attachClaimHandlers, 100);
-        });
+        let panelOpenHandler = function() {
+            if (!tasksPanel.classList.contains('active')) {
+                // Panel is opening, wait a bit for content to be ready
+                setTimeout(attachClaimHandlers, 150);
+            }
+        };
+        
+        tasksIcon.addEventListener('click', panelOpenHandler);
+        
+        // Also attach when panel becomes visible (for dynamic content)
+        if (window.MutationObserver) {
+            const panelObserver = new MutationObserver(function(mutations) {
+                let shouldReattach = false;
+                for (let mutation of mutations) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        if (tasksPanel.classList.contains('active')) {
+                            shouldReattach = true;
+                        }
+                    }
+                    if (mutation.type === 'childList' && tasksPanel.classList.contains('active')) {
+                        shouldReattach = true;
+                    }
+                }
+                if (shouldReattach) {
+                    setTimeout(attachClaimHandlers, 100);
+                }
+            });
+            panelObserver.observe(tasksPanel, {
+                attributes: true,
+                attributeFilter: ['class'],
+                childList: true,
+                subtree: true
+            });
+        }
         
         /**
          * Refresh tasks list from server and update UI
