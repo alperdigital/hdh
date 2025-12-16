@@ -7446,6 +7446,19 @@ body:not([class*="announcement"]) .hdh-user-info-widget {
         font-size: 13px;
         max-width: 120px;
     }
+    
+    .hdh-farm-stats {
+        gap: 8px;
+        font-size: 10px;
+    }
+    
+    .hdh-stat-emoji {
+        font-size: 11px;
+    }
+    
+    .hdh-stat-value {
+        font-size: 10px;
+    }
 }
 
 /* ============================================
