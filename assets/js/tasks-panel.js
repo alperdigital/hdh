@@ -450,13 +450,14 @@
         updateTasksBadge();
         
         // Update badge when tasks change (throttled to prevent infinite loops)
+        // Note: Event delegation handles button clicks automatically, so we don't need to re-attach handlers
         if (window.MutationObserver && tasksPanel) {
             let observerTimeout;
             const observer = new MutationObserver(function() {
                 clearTimeout(observerTimeout);
                 observerTimeout = setTimeout(function() {
                     updateTasksBadge();
-                    attachClaimHandlers(); // Re-attach handlers when DOM changes
+                    // Event delegation is already in place, no need to re-attach
                 }, 200); // Throttle to prevent excessive calls
             });
             observer.observe(tasksPanel, {
