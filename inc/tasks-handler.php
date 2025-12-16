@@ -71,8 +71,29 @@ function hdh_handle_get_tasks() {
         return;
     }
     
-    $one_time_tasks = hdh_get_user_one_time_tasks($user_id);
-    $daily_tasks = hdh_get_user_daily_tasks($user_id);
+    // Get tasks with error handling
+    $one_time_tasks = array();
+    $daily_tasks = array();
+    
+    try {
+        $one_time_tasks = hdh_get_user_one_time_tasks($user_id);
+        if (!is_array($one_time_tasks)) {
+            $one_time_tasks = array();
+        }
+    } catch (Exception $e) {
+        error_log('HDH Tasks AJAX: Error getting one-time tasks: ' . $e->getMessage());
+        $one_time_tasks = array();
+    }
+    
+    try {
+        $daily_tasks = hdh_get_user_daily_tasks($user_id);
+        if (!is_array($daily_tasks)) {
+            $daily_tasks = array();
+        }
+    } catch (Exception $e) {
+        error_log('HDH Tasks AJAX: Error getting daily tasks: ' . $e->getMessage());
+        $daily_tasks = array();
+    }
     
     wp_send_json_success(array(
         'one_time_tasks' => $one_time_tasks,

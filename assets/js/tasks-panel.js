@@ -63,15 +63,27 @@
         }
         
         // Support both click and touch events for better mobile compatibility
+        let isToggling = false; // Prevent multiple rapid toggles
+        
         tasksIcon.addEventListener('click', function(e) {
+            if (isToggling) return;
+            isToggling = true;
             console.log('HDH Tasks: Click event fired');
             handleToggle(e);
+            setTimeout(function() {
+                isToggling = false;
+            }, 300);
         }, { passive: false });
         
         tasksIcon.addEventListener('touchend', function(e) {
+            if (isToggling) return;
+            isToggling = true;
             console.log('HDH Tasks: Touch event fired');
             e.preventDefault();
             handleToggle(e);
+            setTimeout(function() {
+                isToggling = false;
+            }, 300);
         }, { passive: false });
         
         // Also add mousedown for desktop
@@ -226,6 +238,12 @@
          * Refresh tasks list from server and update UI
          */
         function refreshTasksListAndUpdateUI() {
+            // Prevent multiple simultaneous requests
+            if (refreshTasksListAndUpdateUI.isLoading) {
+                return;
+            }
+            refreshTasksListAndUpdateUI.isLoading = true;
+            
             const formData = new FormData();
             formData.append('action', 'hdh_get_tasks');
             formData.append('nonce', hdhTasks.nonce);
@@ -234,8 +252,14 @@
                 method: 'POST', 
                 body: formData 
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
+                refreshTasksListAndUpdateUI.isLoading = false;
                 if (data.success) {
                     // Update daily tasks UI
                     const dailyTasks = data.data.daily_tasks || [];
@@ -290,10 +314,14 @@
                     
                     // Update badge count
                     updateTasksBadge();
+                } else {
+                    console.error('HDH Tasks: Failed to refresh tasks', data);
                 }
             })
             .catch(error => {
+                refreshTasksListAndUpdateUI.isLoading = false;
                 console.error('Error refreshing tasks:', error);
+                // Don't show error to user, just log it
             });
         }
         
@@ -326,11 +354,15 @@
         // Initial badge update
         updateTasksBadge();
         
-        // Update badge when tasks change
+        // Update badge when tasks change (throttled to prevent infinite loops)
         if (window.MutationObserver && tasksPanel) {
+            let observerTimeout;
             const observer = new MutationObserver(function() {
-                updateTasksBadge();
-                attachClaimHandlers(); // Re-attach handlers when DOM changes
+                clearTimeout(observerTimeout);
+                observerTimeout = setTimeout(function() {
+                    updateTasksBadge();
+                    attachClaimHandlers(); // Re-attach handlers when DOM changes
+                }, 200); // Throttle to prevent excessive calls
             });
             observer.observe(tasksPanel, {
                 childList: true,

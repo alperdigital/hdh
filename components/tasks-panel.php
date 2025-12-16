@@ -7,19 +7,43 @@ if (!function_exists('hdh_render_tasks_panel')) {
     function hdh_render_tasks_panel($user_id) {
         if (!$user_id) return;
         
-        // Get one-time and daily tasks
-        $one_time_tasks = function_exists('hdh_get_user_one_time_tasks') ? hdh_get_user_one_time_tasks($user_id) : array();
-        $daily_tasks = function_exists('hdh_get_user_daily_tasks') ? hdh_get_user_daily_tasks($user_id) : array();
+        // Get one-time and daily tasks with error handling
+        $one_time_tasks = array();
+        $daily_tasks = array();
+        $incomplete_count = 0;
+        
+        try {
+            if (function_exists('hdh_get_user_one_time_tasks')) {
+                $one_time_tasks = hdh_get_user_one_time_tasks($user_id);
+                if (!is_array($one_time_tasks)) {
+                    $one_time_tasks = array();
+                }
+            }
+        } catch (Exception $e) {
+            error_log('HDH Tasks: Error getting one-time tasks: ' . $e->getMessage());
+            $one_time_tasks = array();
+        }
+        
+        try {
+            if (function_exists('hdh_get_user_daily_tasks')) {
+                $daily_tasks = hdh_get_user_daily_tasks($user_id);
+                if (!is_array($daily_tasks)) {
+                    $daily_tasks = array();
+                }
+            }
+        } catch (Exception $e) {
+            error_log('HDH Tasks: Error getting daily tasks: ' . $e->getMessage());
+            $daily_tasks = array();
+        }
         
         // Count incomplete tasks for badge (tasks that can be claimed)
-        $incomplete_count = 0;
         foreach ($one_time_tasks as $task) {
-            if ($task['can_claim']) {
+            if (isset($task['can_claim']) && $task['can_claim']) {
                 $incomplete_count++;
             }
         }
         foreach ($daily_tasks as $task) {
-            if ($task['can_claim']) {
+            if (isset($task['can_claim']) && $task['can_claim']) {
                 $incomplete_count++;
             }
         }

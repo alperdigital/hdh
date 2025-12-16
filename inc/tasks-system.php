@@ -178,7 +178,16 @@ function hdh_get_user_daily_tasks($user_id) {
         $claimed_key = 'hdh_daily_task_claimed_' . $task_id;
         
         $progress = (int) get_user_meta($user_id, $progress_key, true);
-        $claimed = (bool) get_user_meta($user_id, $claimed_key, true);
+        // For daily tasks, claimed_key stores claimed_progress (number), not a boolean
+        // For backward compatibility, check if it's a boolean (old data) and convert
+        $claimed_meta = get_user_meta($user_id, $claimed_key, true);
+        if ($claimed_meta === true || $claimed_meta === '1' || $claimed_meta === 1) {
+            // Old format: boolean true means all progress claimed, set to max_progress
+            $claimed_progress = $task_config['max_progress'];
+            update_user_meta($user_id, $claimed_key, $claimed_progress);
+        } else {
+            $claimed_progress = (int) $claimed_meta;
+        }
         
         // Check task-specific progress
         switch ($task_id) {
@@ -226,7 +235,6 @@ function hdh_get_user_daily_tasks($user_id) {
         // For daily tasks: check if there are unclaimed progress milestones
         // claimed_progress = how many progress milestones have been claimed
         // can_claim = true if progress > claimed_progress (at least 1 milestone available)
-        $claimed_progress = (int) get_user_meta($user_id, $claimed_key, true);
         $can_claim = $progress > $claimed_progress;
         
         $tasks[] = array(
@@ -238,7 +246,6 @@ function hdh_get_user_daily_tasks($user_id) {
             'progress' => $progress,
             'max_progress' => $task_config['max_progress'],
             'completed' => $progress >= $task_config['max_progress'],
-            'claimed' => $claimed,
             'can_claim' => $can_claim,
             'claimed_progress' => $claimed_progress,
         );
