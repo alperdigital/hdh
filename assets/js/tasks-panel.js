@@ -407,8 +407,12 @@
                         }
                     });
                     
-                    // Re-attach claim handlers
-                    attachClaimHandlers();
+                    // Event delegation handles button clicks automatically, no need to re-attach
+                    // But ensure delegation is set up (it should already be, but just in case)
+                    const tasksPanelContent = document.querySelector('.tasks-panel-content');
+                    if (tasksPanelContent && !tasksPanelContent._claimHandlerAttached) {
+                        attachClaimHandlers();
+                    }
                     
                     // Update badge count
                     updateTasksBadge();
