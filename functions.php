@@ -44,6 +44,7 @@ require_once get_template_directory() . '/inc/items-config.php';
 require_once get_template_directory() . '/components/item-card.php';
 require_once get_template_directory() . '/components/trade-card.php';
 require_once get_template_directory() . '/inc/trade-offers.php';
+require_once get_template_directory() . '/inc/jeton-system.php';
 require_once get_template_directory() . '/inc/create-trade-handler.php';
 require_once get_template_directory() . '/inc/trade-settings.php';
 require_once get_template_directory() . '/inc/registration-handler.php';

@@ -191,13 +191,16 @@ function hdh_handle_create_trade() {
         }
     }
     
-    // Award +2 jetons for creating a listing (only if published)
-    if ($post_status === 'publish' && function_exists('hdh_add_jeton')) {
-        hdh_add_jeton(get_current_user_id(), 2, 'listing_created', array('post_id' => $post_id));
-    }
-    
-    // Trigger listing created hook for quest tracking
+    // Award +2 jetons (bilet) for creating a listing (only if published)
     if ($post_status === 'publish') {
+        // Use hdh_add_bilet if available (wrapper for hdh_add_jeton)
+        if (function_exists('hdh_add_bilet')) {
+            hdh_add_bilet(get_current_user_id(), 2, 'listing_created', array('post_id' => $post_id));
+        } elseif (function_exists('hdh_add_jeton')) {
+            hdh_add_jeton(get_current_user_id(), 2, 'listing_created', array('post_id' => $post_id));
+        }
+        
+        // Trigger listing created hook for quest/task tracking
         do_action('hdh_listing_created', get_current_user_id(), $post_id);
     }
     
