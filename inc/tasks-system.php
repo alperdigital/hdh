@@ -525,11 +525,41 @@ function hdh_update_daily_task_progress($user_id, $task_id, $increment = 1) {
 }
 
 /**
- * Track listing creation for daily task
+ * Track listing creation for daily task and one-time task
  */
 function hdh_track_listing_creation($user_id, $listing_id) {
     // Update daily task progress
     hdh_update_daily_task_progress($user_id, 'create_listings', 1);
+    
+    // Check if this is the first listing (one-time task)
+    $listings = get_posts(array(
+        'post_type' => 'hayday_trade',
+        'author' => $user_id,
+        'posts_per_page' => 1,
+        'fields' => 'ids',
+    ));
+    
+    // If this is the first listing, update one-time task progress
+    if (count($listings) === 1) {
+        // This is the first listing, mark the task as completed
+        update_user_meta($user_id, 'hdh_task_progress_create_first_listing', 1);
+        
+        // Auto-claim reward if not already claimed
+        $claimed = get_user_meta($user_id, 'hdh_task_claimed_create_first_listing', true);
+        if (!$claimed) {
+            // Auto-claim the reward
+            $result = hdh_claim_task_reward($user_id, 'create_first_listing', false);
+            if (!is_wp_error($result)) {
+                // Log auto-claim event
+                if (function_exists('hdh_log_event')) {
+                    hdh_log_event($user_id, 'task_auto_claimed', array(
+                        'task_id' => 'create_first_listing',
+                        'reason' => 'first_listing_created',
+                    ));
+                }
+            }
+        }
+    }
 }
 add_action('hdh_listing_created', 'hdh_track_listing_creation', 10, 2);
 

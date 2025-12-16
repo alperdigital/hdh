@@ -184,8 +184,8 @@
                         });
                     }
                     
-                    // Update bilet balance in header widget
-                    if (data.data.new_bilet !== undefined) {
+                    // Update bilet balance in header widget with animation
+                    if (data.data.new_bilet !== undefined && data.data.new_bilet !== null) {
                         // Find bilet stat value (second .hdh-stat-value in .hdh-farm-stats)
                         const farmStats = document.querySelector('.hdh-farm-stats');
                         if (farmStats) {
@@ -194,7 +194,19 @@
                                 // Second item is bilet (🎟️)
                                 const biletValue = statItems[1].querySelector('.hdh-stat-value');
                                 if (biletValue) {
-                                    biletValue.textContent = data.data.new_bilet.toLocaleString('tr-TR');
+                                    const oldValue = parseInt(biletValue.textContent.replace(/\./g, '')) || 0;
+                                    const newValue = data.data.new_bilet;
+                                    
+                                    // Add animation class
+                                    biletValue.classList.add('updating');
+                                    
+                                    // Update value
+                                    biletValue.textContent = newValue.toLocaleString('tr-TR');
+                                    
+                                    // Remove animation class after animation completes
+                                    setTimeout(function() {
+                                        biletValue.classList.remove('updating');
+                                    }, 600);
                                 }
                             }
                         }
@@ -206,13 +218,19 @@
                         }
                     }
                     
-                    // Update level in header widget
+                    // Update level in header widget with animation
                     if (data.data.new_level !== undefined && data.data.new_level !== null) {
                         const newLevel = parseInt(data.data.new_level);
                         if (!isNaN(newLevel)) {
                             // Update level badge (star with number)
                             const levelBadge = document.querySelector('.hdh-level-badge');
                             if (levelBadge) {
+                                const oldLevel = parseInt(levelBadge.textContent) || 0;
+                                
+                                // Add animation class
+                                levelBadge.classList.add('updating');
+                                
+                                // Update value
                                 levelBadge.textContent = newLevel;
                                 // Update aria-label and title
                                 levelBadge.setAttribute('aria-label', 'Seviye ' + newLevel);
@@ -220,7 +238,12 @@
                                 
                                 // Update digit class if needed
                                 const digits = newLevel.toString().length;
-                                levelBadge.className = 'hdh-level-badge ' + (digits === 1 ? 'lvl-d1' : (digits === 2 ? 'lvl-d2' : 'lvl-d3'));
+                                levelBadge.className = 'hdh-level-badge ' + (digits === 1 ? 'lvl-d1' : (digits === 2 ? 'lvl-d2' : 'lvl-d3')) + ' updating';
+                                
+                                // Remove animation class after animation completes
+                                setTimeout(function() {
+                                    levelBadge.classList.remove('updating');
+                                }, 600);
                             }
                             
                             // Update star stat value (first .hdh-stat-value in .hdh-farm-stats)
@@ -231,7 +254,16 @@
                                     // First item is star (⭐)
                                     const starValue = statItems[0].querySelector('.hdh-stat-value');
                                     if (starValue) {
+                                        // Add animation class
+                                        starValue.classList.add('updating');
+                                        
+                                        // Update value
                                         starValue.textContent = newLevel;
+                                        
+                                        // Remove animation class after animation completes
+                                        setTimeout(function() {
+                                            starValue.classList.remove('updating');
+                                        }, 600);
                                     }
                                 }
                             }
