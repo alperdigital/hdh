@@ -69,6 +69,11 @@ function hdh_handle_create_trade() {
     }
     
     // Enhanced validation with detailed error messages
+    if (!function_exists('hdh_get_items_config')) {
+        wp_redirect(add_query_arg('trade_error', 'system_error', home_url('/ilan-ver')));
+        exit;
+    }
+    
     $items_config = hdh_get_items_config();
     
     // Validate wanted item
