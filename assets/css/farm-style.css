@@ -5762,7 +5762,11 @@ footer,
 .tasks-panel-content {
     padding: 20px;
     overflow-y: auto;
+    overflow-x: hidden;
     flex: 1;
+    min-height: 0;
+    max-height: 100%;
+    -webkit-overflow-scrolling: touch;
 }
 
 .tasks-list {
@@ -5940,24 +5944,13 @@ footer,
     margin-bottom: 16px;
     padding-bottom: 8px;
     border-bottom: 2px solid rgba(201, 184, 138, 0.3);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-    .tasks-icon-fixed {
-        bottom: 90px;
-        right: 16px;
-        width: 52px;
-        height: 52px;
-        z-index: 1001;
-        pointer-events: auto;
-        touch-action: manipulation;
-    }
-    
-    .tasks-icon-emoji {
-        font-size: 1.6rem;
-    }
-    
     .tasks-icon-fixed {
         bottom: 90px;
         right: 16px;
@@ -5968,6 +5961,10 @@ footer,
         z-index: 1001;
         pointer-events: auto;
         touch-action: manipulation;
+    }
+    
+    .tasks-icon-emoji {
+        font-size: 1.6rem;
     }
     
     .tasks-panel {
@@ -5994,6 +5991,14 @@ footer,
     
     .tasks-panel-content {
         padding: 16px;
+        max-height: calc(70vh - 60px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .tasks-section-title {
+        font-size: 1rem;
     }
     
     .task-item {

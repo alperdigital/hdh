@@ -285,11 +285,8 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
     $claimed_key = $is_daily ? 'hdh_daily_task_claimed_' . $task_id : 'hdh_task_claimed_' . $task_id;
     $progress_key = $is_daily ? 'hdh_daily_task_progress_' . $task_id : 'hdh_task_progress_' . $task_id;
     
-    // Check if task is completed
+    // Get current progress
     $progress = (int) get_user_meta($user_id, $progress_key, true);
-    if ($progress < $task_config['max_progress']) {
-        return new WP_Error('not_completed', 'Görev henüz tamamlanmamış');
-    }
     
     // For daily tasks: allow claiming rewards for each progress milestone
     if ($is_daily) {
@@ -362,7 +359,12 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
             'milestones' => $claimable_milestones,
         );
     } else {
-        // For one-time tasks, check if already claimed
+        // For one-time tasks: check if task is completed
+        if ($progress < $task_config['max_progress']) {
+            return new WP_Error('not_completed', 'Görev henüz tamamlanmamış');
+        }
+        
+        // Check if already claimed
         if (get_user_meta($user_id, $claimed_key, true)) {
             return new WP_Error('already_claimed', 'Bu görevin ödülü zaten alınmış');
         }

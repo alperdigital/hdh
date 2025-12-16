@@ -11,15 +11,15 @@ if (!function_exists('hdh_render_tasks_panel')) {
         $one_time_tasks = function_exists('hdh_get_user_one_time_tasks') ? hdh_get_user_one_time_tasks($user_id) : array();
         $daily_tasks = function_exists('hdh_get_user_daily_tasks') ? hdh_get_user_daily_tasks($user_id) : array();
         
-        // Count incomplete tasks for badge
+        // Count incomplete tasks for badge (tasks that can be claimed)
         $incomplete_count = 0;
         foreach ($one_time_tasks as $task) {
-            if ($task['completed'] && !$task['claimed']) {
+            if ($task['can_claim']) {
                 $incomplete_count++;
             }
         }
         foreach ($daily_tasks as $task) {
-            if ($task['completed'] && !$task['claimed']) {
+            if ($task['can_claim']) {
                 $incomplete_count++;
             }
         }
@@ -52,7 +52,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                     <h4 class="tasks-section-title">Tek Seferlik Görevler</h4>
                     <div class="tasks-list">
                         <?php foreach ($one_time_tasks as $task) : ?>
-                            <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>">
+                            <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>" data-task-container-id="<?php echo esc_attr($task['id']); ?>">
                                 <div class="task-info">
                                     <span class="task-icon">
                                         <?php
@@ -67,7 +67,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                         ?>
                                     </span>
                                     <div class="task-details">
-                                        <span class="task-name"><?php echo esc_html($task['title']); ?></span>
+                                        <span class="task-name" data-task-id="<?php echo esc_attr($task['id']); ?>"><?php echo esc_html($task['title']); ?></span>
                                         <span class="task-description"><?php echo esc_html($task['description']); ?></span>
                                         <span class="task-reward">
                                             <?php if ($task['reward_bilet'] > 0) : ?>
@@ -111,7 +111,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                     <h4 class="tasks-section-title">Günlük Görevler</h4>
                     <div class="tasks-list">
                         <?php foreach ($daily_tasks as $task) : ?>
-                            <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>">
+                            <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>" data-task-container-id="<?php echo esc_attr($task['id']); ?>">
                                 <div class="task-info">
                                     <span class="task-icon">
                                         <?php
@@ -125,7 +125,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                         ?>
                                     </span>
                                     <div class="task-details">
-                                        <span class="task-name">
+                                        <span class="task-name" data-task-id="<?php echo esc_attr($task['id']); ?>">
                                             <?php echo esc_html($task['title']); ?>
                                             <?php if ($task['max_progress'] > 1) : ?>
                                                 <span class="task-progress">(<?php echo esc_html($task['progress']); ?>/<?php echo esc_html($task['max_progress']); ?>)</span>

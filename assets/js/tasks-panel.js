@@ -240,31 +240,49 @@
                     // Update daily tasks UI
                     const dailyTasks = data.data.daily_tasks || [];
                     dailyTasks.forEach(function(task) {
-                        // Find task item by looking for task ID in the task list
-                        const taskItems = document.querySelectorAll('.task-item');
-                        taskItems.forEach(function(taskItem) {
-                            const taskName = taskItem.querySelector('.task-name');
-                            if (taskName && taskName.textContent.includes(task.title)) {
-                                const taskActions = taskItem.querySelector('.task-actions');
-                                if (taskActions) {
-                                    if (task.can_claim) {
-                                        taskActions.innerHTML = '<button class="btn-claim-task" data-task-id="' + task.id + '" data-is-daily="true">Ödülünü Al</button>';
-                                    } else if (task.id === 'create_listings') {
-                                        taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/ilan-ver" class="btn-do-task">Yap</a>';
-                                    } else if (task.id === 'invite_friends' || task.id === 'friend_exchanges') {
-                                        taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/profil" class="btn-do-task">Yap</a>';
-                                    } else {
-                                        taskActions.innerHTML = '<span class="task-status">Beklemede</span>';
-                                    }
-                                }
-                                
-                                // Update progress display
-                                const taskProgress = taskItem.querySelector('.task-progress');
-                                if (taskProgress && task.max_progress > 1) {
-                                    taskProgress.textContent = '(' + task.progress + '/' + task.max_progress + ')';
+                        // Find task item by container data attribute
+                        const taskItemContainer = document.querySelector('.task-item[data-task-container-id="' + task.id + '"]');
+                        if (taskItemContainer) {
+                            const taskActions = taskItemContainer.querySelector('.task-actions');
+                            if (taskActions) {
+                                if (task.can_claim) {
+                                    taskActions.innerHTML = '<button class="btn-claim-task" data-task-id="' + task.id + '" data-is-daily="true">Ödülünü Al</button>';
+                                } else if (task.id === 'create_listings') {
+                                    taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/ilan-ver" class="btn-do-task">Yap</a>';
+                                } else if (task.id === 'invite_friends' || task.id === 'friend_exchanges') {
+                                    taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/profil" class="btn-do-task">Yap</a>';
+                                } else {
+                                    taskActions.innerHTML = '<span class="task-status">Beklemede</span>';
                                 }
                             }
-                        });
+                            
+                            // Update progress display
+                            const taskName = taskItemContainer.querySelector('.task-name');
+                            if (taskName && task.max_progress > 1) {
+                                const taskProgress = taskName.querySelector('.task-progress');
+                                if (taskProgress) {
+                                    taskProgress.textContent = '(' + task.progress + '/' + task.max_progress + ')';
+                                } else {
+                                    // Create progress element if it doesn't exist
+                                    const progressEl = document.createElement('span');
+                                    progressEl.className = 'task-progress';
+                                    progressEl.textContent = '(' + task.progress + '/' + task.max_progress + ')';
+                                    taskName.appendChild(progressEl);
+                                }
+                            }
+                        }
+                    });
+                    
+                    // Update one-time tasks UI
+                    const oneTimeTasks = data.data.one_time_tasks || [];
+                    oneTimeTasks.forEach(function(task) {
+                        const taskItemContainer = document.querySelector('.task-item[data-task-container-id="' + task.id + '"]');
+                        if (taskItemContainer) {
+                            const taskActions = taskItemContainer.querySelector('.task-actions');
+                            if (taskActions && !task.can_claim && task.claimed) {
+                                taskActions.innerHTML = '<span class="task-status">✅ Ödül Alındı</span>';
+                            }
+                        }
                     });
                     
                     // Re-attach claim handlers
