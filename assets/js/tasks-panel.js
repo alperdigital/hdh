@@ -156,17 +156,31 @@
                 if (data.success) {
                     const bilet = data.data.bilet || 0;
                     const level = data.data.level || 0;
+                    const new_bilet = data.data.new_bilet;
+                    const new_level = data.data.new_level;
                     
+                    // Build success message
                     let message = 'Ödül alındı!';
-                    if (bilet > 0 && level > 0) {
-                        message = `+${bilet} 🎟️ Bilet +${level} ⭐ Seviye kazandınız!`;
-                    } else if (bilet > 0) {
-                        message = `+${bilet} 🎟️ Bilet kazandınız!`;
-                    } else if (level > 0) {
-                        message = `+${level} ⭐ Seviye kazandınız!`;
+                    const parts = [];
+                    if (bilet > 0) {
+                        parts.push(`+${bilet} 🎟️ Bilet`);
+                    }
+                    if (level > 0) {
+                        parts.push(`+${level} ⭐ Seviye`);
+                    }
+                    if (parts.length > 0) {
+                        message = parts.join(' + ') + ' kazandınız!';
                     }
                     
                     showToast(message, 'success');
+                    
+                    // Log for debugging
+                    console.log('HDH Tasks: Reward claimed', {
+                        bilet: bilet,
+                        level: level,
+                        new_bilet: new_bilet,
+                        new_level: new_level
+                    });
                     
                     // Update bilet balance in header widget
                     if (data.data.new_bilet !== undefined) {
@@ -191,39 +205,55 @@
                     }
                     
                     // Update level in header widget
-                    if (data.data.new_level !== undefined) {
-                        // Update level badge (star with number)
-                        const levelBadge = document.querySelector('.hdh-level-badge');
-                        if (levelBadge) {
-                            levelBadge.textContent = data.data.new_level;
-                            // Update aria-label and title
-                            levelBadge.setAttribute('aria-label', 'Seviye ' + data.data.new_level);
-                            levelBadge.setAttribute('title', 'Seviye ' + data.data.new_level);
-                            
-                            // Update digit class if needed
-                            const levelInt = parseInt(data.data.new_level);
-                            const digits = levelInt.toString().length;
-                            levelBadge.className = 'hdh-level-badge ' + (digits === 1 ? 'lvl-d1' : (digits === 2 ? 'lvl-d2' : 'lvl-d3'));
-                        }
-                        
-                        // Update star stat value (first .hdh-stat-value in .hdh-farm-stats)
-                        const farmStats = document.querySelector('.hdh-farm-stats');
-                        if (farmStats) {
-                            const statItems = farmStats.querySelectorAll('.hdh-stat-item');
-                            if (statItems.length >= 1) {
-                                // First item is star (⭐)
-                                const starValue = statItems[0].querySelector('.hdh-stat-value');
-                                if (starValue) {
-                                    starValue.textContent = data.data.new_level;
-                                }
+                    if (data.data.new_level !== undefined && data.data.new_level !== null) {
+                        const newLevel = parseInt(data.data.new_level);
+                        if (!isNaN(newLevel)) {
+                            // Update level badge (star with number)
+                            const levelBadge = document.querySelector('.hdh-level-badge');
+                            if (levelBadge) {
+                                levelBadge.textContent = newLevel;
+                                // Update aria-label and title
+                                levelBadge.setAttribute('aria-label', 'Seviye ' + newLevel);
+                                levelBadge.setAttribute('title', 'Seviye ' + newLevel);
+                                
+                                // Update digit class if needed
+                                const digits = newLevel.toString().length;
+                                levelBadge.className = 'hdh-level-badge ' + (digits === 1 ? 'lvl-d1' : (digits === 2 ? 'lvl-d2' : 'lvl-d3'));
+                                console.log('HDH Tasks: Updated level badge to', newLevel);
+                            } else {
+                                console.warn('HDH Tasks: Level badge element not found');
                             }
+                            
+                            // Update star stat value (first .hdh-stat-value in .hdh-farm-stats)
+                            const farmStats = document.querySelector('.hdh-farm-stats');
+                            if (farmStats) {
+                                const statItems = farmStats.querySelectorAll('.hdh-stat-item');
+                                if (statItems.length >= 1) {
+                                    // First item is star (⭐)
+                                    const starValue = statItems[0].querySelector('.hdh-stat-value');
+                                    if (starValue) {
+                                        starValue.textContent = newLevel;
+                                        console.log('HDH Tasks: Updated star stat value to', newLevel);
+                                    } else {
+                                        console.warn('HDH Tasks: Star value element not found');
+                                    }
+                                } else {
+                                    console.warn('HDH Tasks: No stat items found');
+                                }
+                            } else {
+                                console.warn('HDH Tasks: Farm stats element not found for level update');
+                            }
+                            
+                            // Also try old selectors for backward compatibility
+                            const levelEl = document.querySelector('.hdh-user-level, .user-level');
+                            if (levelEl) {
+                                levelEl.textContent = newLevel;
+                            }
+                        } else {
+                            console.warn('HDH Tasks: Invalid new_level value', data.data.new_level);
                         }
-                        
-                        // Also try old selectors for backward compatibility
-                        const levelEl = document.querySelector('.hdh-user-level, .user-level');
-                        if (levelEl) {
-                            levelEl.textContent = data.data.new_level;
-                        }
+                    } else {
+                        console.warn('HDH Tasks: new_level is undefined or null', data.data);
                     }
                     
                     // For daily tasks, refresh the tasks list to update progress

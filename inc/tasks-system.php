@@ -329,7 +329,12 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
         
         // Award level (XP) (multiplied by claimable milestones)
         $total_level = 0;
+        $old_level = 0;
         if ($task_config['reward_level'] > 0) {
+            // Get current level before adding XP
+            $user_state_before = function_exists('hdh_get_user_state') ? hdh_get_user_state($user_id) : null;
+            $old_level = $user_state_before ? $user_state_before['level'] : 1;
+            
             $total_level = $task_config['reward_level'] * $claimable_milestones;
             if (function_exists('hdh_add_xp')) {
                 // Convert level to XP (1 level = 100 XP)
@@ -342,6 +347,14 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
                     'claimed_progress' => $claimed_progress,
                 ));
             }
+            
+            // Get new level after adding XP
+            $user_state_after = function_exists('hdh_get_user_state') ? hdh_get_user_state($user_id) : null;
+            $new_level = $user_state_after ? $user_state_after['level'] : $old_level;
+            $actual_level_gain = $new_level - $old_level;
+            
+            // Return actual level gain (not the XP reward amount)
+            $total_level = $actual_level_gain;
         }
         
         // Log event
@@ -390,7 +403,13 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
         }
         
         // Award level (XP)
+        $old_level = 0;
+        $actual_level_gain = 0;
         if ($task_config['reward_level'] > 0) {
+            // Get current level before adding XP
+            $user_state_before = function_exists('hdh_get_user_state') ? hdh_get_user_state($user_id) : null;
+            $old_level = $user_state_before ? $user_state_before['level'] : 1;
+            
             if (function_exists('hdh_add_xp')) {
                 // Convert level to XP (1 level = 100 XP)
                 $xp_amount = $task_config['reward_level'] * 100;
@@ -399,6 +418,11 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
                     'is_daily' => $is_daily,
                 ));
             }
+            
+            // Get new level after adding XP
+            $user_state_after = function_exists('hdh_get_user_state') ? hdh_get_user_state($user_id) : null;
+            $new_level = $user_state_after ? $user_state_after['level'] : $old_level;
+            $actual_level_gain = $new_level - $old_level;
         }
         
         // Log event
@@ -408,7 +432,8 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
                 'is_daily' => $is_daily,
                 'rewards' => array(
                     'bilet' => $task_config['reward_bilet'],
-                    'level' => $task_config['reward_level'],
+                    'level' => $actual_level_gain,
+                    'xp_reward' => $task_config['reward_level'] * 100,
                 ),
             ));
         }
@@ -416,7 +441,7 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
         return array(
             'success' => true,
             'bilet' => $task_config['reward_bilet'],
-            'level' => $task_config['reward_level'],
+            'level' => $actual_level_gain, // Return actual level gain, not XP reward
         );
     }
 }
