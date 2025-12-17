@@ -15,8 +15,8 @@ if (!$is_logged_in) {
         <div class="container">
             <div class="auth-screen">
                 <div class="auth-header">
-                    <h1 class="auth-title">Hesabına Giriş Yap</h1>
-                    <p class="auth-subtitle">Bilet biriktirmek ve hediyeleşmek için giriş yap.</p>
+                    <h1 class="auth-title"><?php echo esc_html(hdh_get_content('auth', 'login_title', 'Hesabına Giriş Yap')); ?></h1>
+                    <p class="auth-subtitle"><?php echo esc_html(hdh_get_content('auth', 'login_subtitle', 'Bilet biriktirmek ve hediyeleşmek için giriş yap.')); ?></p>
                 </div>
                 
                 <!-- Tab Switcher -->
@@ -37,13 +37,13 @@ if (!$is_logged_in) {
                         echo '<div class="auth-message auth-error">';
                         switch ($login_error) {
                             case 'invalid_credentials':
-                                echo 'Kullanıcı adı veya şifre hatalı.';
+                                echo esc_html(hdh_get_content('auth', 'error_invalid_credentials', 'Kullanıcı adı veya şifre hatalı.'));
                                 break;
                             case 'empty_fields':
-                                echo 'Lütfen tüm alanları doldurun.';
+                                echo esc_html(hdh_get_content('auth', 'error_empty_fields', 'Lütfen tüm alanları doldurun.'));
                                 break;
                             default:
-                                echo 'Giriş yapılırken bir hata oluştu.';
+                                echo esc_html(hdh_get_content('auth', 'error_generic', 'Giriş yapılırken bir hata oluştu.'));
                         }
                         echo '</div>';
                     }
@@ -77,7 +77,7 @@ if (!$is_logged_in) {
                                     class="auth-input" 
                                     required 
                                     autocomplete="current-password"
-                                    placeholder="Şifreniz"
+                                    placeholder="<?php echo esc_attr(hdh_get_content('auth', 'password_placeholder', 'Şifreniz')); ?>"
                                 >
                                 <button type="button" class="auth-password-toggle" data-target="login_password">
                                     <span class="toggle-show">👁️</span>
@@ -89,11 +89,11 @@ if (!$is_logged_in) {
                         <div class="auth-field-checkbox">
                             <label class="auth-checkbox-label">
                                 <input type="checkbox" name="rememberme" value="forever">
-                                <span>Beni hatırla</span>
+                                <span><?php echo esc_html(hdh_get_content('auth', 'remember_me_text', 'Beni hatırla')); ?></span>
                             </label>
                         </div>
                         
-                        <button type="submit" class="auth-submit">Giriş Yap</button>
+                        <button type="submit" class="auth-submit"><?php echo esc_html(hdh_get_content('auth', 'login_button_text', 'Giriş Yap')); ?></button>
                     </form>
                 </div>
                 

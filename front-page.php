@@ -35,14 +35,14 @@ $recent_listings = new WP_Query($recent_listings_args);
     <!-- 1. TOP SECTION - PRIMARY ACTION -->
     <section class="homepage-hero">
         <div class="container">
-            <h1 class="homepage-headline">Diğer çiftliklerle hediyeleşmeye başla</h1>
-            <p class="homepage-subtitle">Diğer çiftliklerle güvenle hediyeleş</p>
+            <h1 class="homepage-headline"><?php echo esc_html(hdh_get_content('homepage', 'headline', 'Diğer çiftliklerle hediyeleşmeye başla')); ?></h1>
+            <p class="homepage-subtitle"><?php echo esc_html(hdh_get_content('homepage', 'subtitle', 'Diğer çiftliklerle güvenle hediyeleş')); ?></p>
             <div class="homepage-cta-buttons">
                 <a href="<?php echo esc_url(home_url('/ara')); ?>" class="homepage-primary-cta homepage-cta-search">
-                    İlan Ara
+                    <?php echo esc_html(hdh_get_content('homepage', 'cta_search_text', 'İlan Ara')); ?>
                 </a>
                 <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="homepage-primary-cta homepage-cta-create">
-                    İlan Ver
+                    <?php echo esc_html(hdh_get_content('homepage', 'cta_create_text', 'İlan Ver')); ?>
                 </a>
             </div>
         </div>
@@ -52,7 +52,7 @@ $recent_listings = new WP_Query($recent_listings_args);
     <?php if ($recent_listings->have_posts()) : ?>
     <section class="homepage-recent-listings">
         <div class="container">
-            <h2 class="homepage-section-title">Son İlanlar</h2>
+            <h2 class="homepage-section-title"><?php echo esc_html(hdh_get_content('homepage', 'recent_listings_title', 'Son İlanlar')); ?></h2>
             
             <!-- Listing Cards -->
             <div class="trade-cards-grid">
@@ -71,7 +71,10 @@ $recent_listings = new WP_Query($recent_listings_args);
     <section class="homepage-trust-indicator">
         <div class="container">
             <p class="trust-indicator-text">
-                ⭐ <?php echo esc_html(number_format_i18n($total_exchanges)); ?> başarılı hediyeleşme
+                <?php 
+                $trust_text = hdh_get_content('homepage', 'trust_indicator_text', '⭐ {count} başarılı hediyeleşme');
+                echo esc_html(str_replace('{count}', number_format_i18n($total_exchanges), $trust_text));
+                ?>
             </p>
         </div>
     </section>
