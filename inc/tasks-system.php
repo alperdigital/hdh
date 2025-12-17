@@ -8,90 +8,114 @@ if (!defined('ABSPATH')) exit;
 
 /**
  * Get one-time tasks configuration
+ * Now loads from WordPress options (admin-manageable)
+ * Falls back to hardcoded config if options are empty
  */
 function hdh_get_one_time_tasks_config() {
-    return array(
-        'verify_email' => array(
-            'id' => 'verify_email',
-            'title' => 'Mail Adresini Doğrula',
-            'description' => 'E-posta adresinizi doğrulayın',
-            'reward_bilet' => 1,
-            'reward_level' => 1,
-            'max_progress' => 1,
-        ),
-        'create_first_listing' => array(
-            'id' => 'create_first_listing',
-            'title' => 'İlk İlanını Oluştur',
-            'description' => 'İlk ilanınızı oluşturun',
-            'reward_bilet' => 2,
-            'reward_level' => 1,
-            'max_progress' => 1,
-        ),
-        'complete_first_exchange' => array(
-            'id' => 'complete_first_exchange',
-            'title' => 'İlk Hediyeleşmeni Tamamla',
-            'description' => 'İlk hediyeleşmenizi tamamlayın',
-            'reward_bilet' => 5,
-            'reward_level' => 2,
-            'max_progress' => 1,
-        ),
-        'invite_friend' => array(
-            'id' => 'invite_friend',
-            'title' => 'Arkadaşını Davet Et',
-            'description' => 'Bir arkadaşınızı davet edin',
-            'reward_bilet' => 2,
-            'reward_level' => 1,
-            'max_progress' => 1,
-        ),
-        'friend_exchange' => array(
-            'id' => 'friend_exchange',
-            'title' => 'Arkadaşın Hediyeleşsin',
-            'description' => 'Davet ettiğiniz arkadaşınız hediyeleşme yapsın',
-            'reward_bilet' => 5,
-            'reward_level' => 2,
-            'max_progress' => 1,
-        ),
-    );
+    // Try to load from options first (admin-managed)
+    $tasks = get_option('hdh_one_time_tasks', array());
+    
+    // If empty, use hardcoded default (for migration/fallback)
+    if (empty($tasks)) {
+        $tasks = array(
+            'verify_email' => array(
+                'id' => 'verify_email',
+                'title' => 'Mail Adresini Doğrula',
+                'description' => 'E-posta adresinizi doğrulayın',
+                'reward_bilet' => 1,
+                'reward_level' => 1,
+                'max_progress' => 1,
+            ),
+            'create_first_listing' => array(
+                'id' => 'create_first_listing',
+                'title' => 'İlk İlanını Oluştur',
+                'description' => 'İlk ilanınızı oluşturun',
+                'reward_bilet' => 2,
+                'reward_level' => 1,
+                'max_progress' => 1,
+            ),
+            'complete_first_exchange' => array(
+                'id' => 'complete_first_exchange',
+                'title' => 'İlk Hediyeleşmeni Tamamla',
+                'description' => 'İlk hediyeleşmenizi tamamlayın',
+                'reward_bilet' => 5,
+                'reward_level' => 2,
+                'max_progress' => 1,
+            ),
+            'invite_friend' => array(
+                'id' => 'invite_friend',
+                'title' => 'Arkadaşını Davet Et',
+                'description' => 'Bir arkadaşınızı davet edin',
+                'reward_bilet' => 2,
+                'reward_level' => 1,
+                'max_progress' => 1,
+            ),
+            'friend_exchange' => array(
+                'id' => 'friend_exchange',
+                'title' => 'Arkadaşın Hediyeleşsin',
+                'description' => 'Davet ettiğiniz arkadaşınız hediyeleşme yapsın',
+                'reward_bilet' => 5,
+                'reward_level' => 2,
+                'max_progress' => 1,
+            ),
+        );
+        // Save defaults to options for first time
+        update_option('hdh_one_time_tasks', $tasks);
+    }
+    
+    return $tasks;
 }
 
 /**
  * Get daily tasks configuration
+ * Now loads from WordPress options (admin-manageable)
+ * Falls back to hardcoded config if options are empty
  */
 function hdh_get_daily_tasks_config() {
-    return array(
-        'create_listings' => array(
-            'id' => 'create_listings',
-            'title' => 'İlan Oluştur',
-            'description' => 'Günde 3 ilan oluşturun',
-            'reward_bilet' => 1,
-            'reward_level' => 0,
-            'max_progress' => 3,
-        ),
-        'complete_exchanges' => array(
-            'id' => 'complete_exchanges',
-            'title' => 'Hediyeleşme Tamamla',
-            'description' => 'Günde 5 hediyeleşme tamamlayın',
-            'reward_bilet' => 4,
-            'reward_level' => 1,
-            'max_progress' => 5,
-        ),
-        'invite_friends' => array(
-            'id' => 'invite_friends',
-            'title' => 'Arkadaşını Davet Et',
-            'description' => 'Günde 5 arkadaş davet edin',
-            'reward_bilet' => 2,
-            'reward_level' => 0,
-            'max_progress' => 5,
-        ),
-        'friend_exchanges' => array(
-            'id' => 'friend_exchanges',
-            'title' => 'Arkadaşın Hediyeleşsin',
-            'description' => 'Davet ettiğiniz arkadaşlarınız hediyeleşme yapsın',
-            'reward_bilet' => 5,
-            'reward_level' => 2,
-            'max_progress' => 1,
-        ),
-    );
+    // Try to load from options first (admin-managed)
+    $tasks = get_option('hdh_daily_tasks', array());
+    
+    // If empty, use hardcoded default (for migration/fallback)
+    if (empty($tasks)) {
+        $tasks = array(
+            'create_listings' => array(
+                'id' => 'create_listings',
+                'title' => 'İlan Oluştur',
+                'description' => 'Günde 3 ilan oluşturun',
+                'reward_bilet' => 1,
+                'reward_level' => 0,
+                'max_progress' => 3,
+            ),
+            'complete_exchanges' => array(
+                'id' => 'complete_exchanges',
+                'title' => 'Hediyeleşme Tamamla',
+                'description' => 'Günde 5 hediyeleşme tamamlayın',
+                'reward_bilet' => 4,
+                'reward_level' => 1,
+                'max_progress' => 5,
+            ),
+            'invite_friends' => array(
+                'id' => 'invite_friends',
+                'title' => 'Arkadaşını Davet Et',
+                'description' => 'Günde 5 arkadaş davet edin',
+                'reward_bilet' => 2,
+                'reward_level' => 0,
+                'max_progress' => 5,
+            ),
+            'friend_exchanges' => array(
+                'id' => 'friend_exchanges',
+                'title' => 'Arkadaşın Hediyeleşsin',
+                'description' => 'Davet ettiğiniz arkadaşlarınız hediyeleşme yapsın',
+                'reward_bilet' => 5,
+                'reward_level' => 2,
+                'max_progress' => 1,
+            ),
+        );
+        // Save defaults to options for first time
+        update_option('hdh_daily_tasks', $tasks);
+    }
+    
+    return $tasks;
 }
 
 /**

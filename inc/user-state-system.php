@@ -163,11 +163,35 @@ function hdh_update_user_state($user_id, $field, $value, $reason = '') {
 
 /**
  * Calculate XP required for a level
- * Formula: 100 * level^1.5
+ * Current formula: Linear - 100 XP per level (configurable)
+ * Can be changed later via hdh_get_xp_per_level() option
+ * 
+ * @param int $level Target level
+ * @return int Total XP required to reach this level
  */
 function hdh_calculate_xp_for_level($level) {
     if ($level <= 1) return 0;
-    return (int) (100 * pow($level, 1.5));
+    
+    // Get XP per level from options (default: 100)
+    $xp_per_level = hdh_get_xp_per_level();
+    
+    // Linear formula: (level - 1) * xp_per_level
+    // Level 1: 0 XP
+    // Level 2: 100 XP
+    // Level 3: 200 XP
+    // Level 10: 900 XP
+    return (int) (($level - 1) * $xp_per_level);
+}
+
+/**
+ * Get XP required per level (configurable)
+ * Can be changed via WordPress admin or wp_options
+ * 
+ * @return int XP required per level (default: 100)
+ */
+function hdh_get_xp_per_level() {
+    $xp_per_level = get_option('hdh_xp_per_level', 100);
+    return (int) max(1, $xp_per_level); // Minimum 1 XP per level
 }
 
 /**
@@ -223,14 +247,26 @@ function hdh_add_xp($user_id, $amount, $reason = '', $metadata = array()) {
 
 /**
  * Calculate level from total XP
+ * Linear formula: level = floor(xp / xp_per_level) + 1
+ * 
+ * @param int $xp Total XP
+ * @return int Current level
  */
 function hdh_calculate_level_from_xp($xp) {
-    $level = 1;
-    while (hdh_calculate_xp_for_level($level + 1) <= $xp) {
-        $level++;
-        if ($level >= 100) break; // Max level cap
-    }
-    return $level;
+    if ($xp <= 0) return 1;
+    
+    // Get XP per level from options (default: 100)
+    $xp_per_level = hdh_get_xp_per_level();
+    
+    // Linear calculation: level = floor(xp / xp_per_level) + 1
+    // 0-99 XP: Level 1
+    // 100-199 XP: Level 2
+    // 200-299 XP: Level 3
+    // 900-999 XP: Level 10
+    $level = floor($xp / $xp_per_level) + 1;
+    
+    // Max level cap (100)
+    return min($level, 100);
 }
 
 /**
