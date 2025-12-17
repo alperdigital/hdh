@@ -175,7 +175,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                             <?php echo esc_html(hdh_get_content('tasks', 'claim_reward_button', 'Ödülünü Al')); ?>
                                         </button>
                                     <?php elseif ($task['id'] === 'create_listings') : ?>
-                                        <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task">Yap</a>
+                                        <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php elseif ($task['id'] === 'invite_friends' || $task['id'] === 'friend_exchanges') : ?>
                                         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php else : ?>
