@@ -221,7 +221,7 @@ if (!$is_logged_in) {
                             </label>
                         </div>
                         
-                        <button type="submit" class="auth-submit" id="register-submit">Üye Ol</button>
+                        <button type="submit" class="auth-submit" id="register-submit"><?php echo esc_html(hdh_get_content('auth', 'register_button_text', 'Üye Ol')); ?></button>
                     </form>
                 </div>
             </div>
@@ -417,7 +417,7 @@ if (!$is_logged_in) {
                 
                 <!-- My Listings Section -->
                 <div class="my-listings-section">
-                    <h3 class="my-listings-title">📋 İlanlarım</h3>
+                    <h3 class="my-listings-title">📋 <?php echo esc_html(hdh_get_content('profile', 'my_listings_title', 'İlanlarım')); ?></h3>
                     <?php
                     // Get user's listings
                     $user_listings = new WP_Query(array(
