@@ -30,6 +30,13 @@ function hdh_get_js_messages() {
             'task_system_load_error' => 'Görev sistemi yüklenemedi',
             'reward_claimed' => hdh_get_content('tasks', 'reward_claimed_text', '✅ Ödül Alındı'),
             'do_task' => hdh_get_content('tasks', 'do_task_button', 'Yap'),
+            'pending_status' => hdh_get_content('tasks', 'pending_status', 'Beklemede'),
+            'claim_reward_button' => hdh_get_content('tasks', 'claim_reward_button', 'Ödülünü Al'),
+        ),
+        'verification' => array(
+            'email_sent' => hdh_get_message('verification', 'email_sent', 'Doğrulama kodu e-posta adresinize gönderildi. Lütfen e-posta kutunuzu kontrol edin.'),
+            'email_verified' => hdh_get_message('verification', 'email_verified', 'E-posta adresiniz başarıyla doğrulandı!'),
+            'code_invalid' => hdh_get_message('verification', 'code_invalid', 'Doğrulama kodu geçersiz veya süresi dolmuş.'),
         ),
     );
 }

@@ -164,7 +164,7 @@ add_action('wp_ajax_hdh_send_email_verification_code', 'hdh_ajax_send_email_veri
  */
 function hdh_ajax_verify_email_code() {
     if (!is_user_logged_in()) {
-        wp_send_json_error(array('message' => 'Giriş yapmalısınız.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'login_required', 'Giriş yapmalısınız.')));
         return;
     }
     
@@ -174,7 +174,7 @@ function hdh_ajax_verify_email_code() {
     $code = isset($_POST['code']) ? sanitize_text_field($_POST['code']) : '';
     
     if (empty($code)) {
-        wp_send_json_error(array('message' => 'Doğrulama kodu gerekli.'));
+        wp_send_json_error(array('message' => hdh_get_message('verification', 'code_invalid', 'Doğrulama kodu gerekli.')));
         return;
     }
     
