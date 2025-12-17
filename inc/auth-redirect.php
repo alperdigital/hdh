@@ -206,8 +206,9 @@ function hdh_redirect_after_auth($user_id = 0) {
             }
         }
         
-        // Default to profile page
-        $return_url = home_url('/profil');
+        // Default to configured redirect URL
+        $default_redirect = hdh_get_setting('default_after_login', '/profil');
+        $return_url = home_url($default_redirect);
     }
     
     // Log redirect for debugging (optional)

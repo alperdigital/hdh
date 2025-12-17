@@ -13,12 +13,12 @@ if (!is_user_logged_in()) {
         <div class="container">
             <div class="treasure-locked-screen">
                 <div class="treasure-locked-icon">💎</div>
-                <h1 class="treasure-locked-title">Hazine Odası</h1>
+                <h1 class="treasure-locked-title"><?php echo esc_html(hdh_get_content('decorations', 'page_title', 'Hazine Odası')); ?></h1>
                 <p class="treasure-locked-description">
-                    Bu özel hazine odasına erişmek için giriş yapmanız gerekiyor.
+                    <?php echo esc_html(hdh_get_content('decorations', 'login_required_message', 'Bu özel hazine odasına erişmek için giriş yapmanız gerekiyor.')); ?>
                 </p>
                 <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-treasure-login">
-                    🔐 Giriş Yap
+                    <?php echo esc_html(hdh_get_content('decorations', 'login_button_text', '🔐 Giriş Yap')); ?>
                 </a>
             </div>
         </div>
@@ -32,7 +32,7 @@ if (!is_user_logged_in()) {
 $user_id = get_current_user_id();
 $user_state = function_exists('hdh_get_user_state') ? hdh_get_user_state($user_id) : null;
 $user_level = $user_state ? $user_state['level'] : 1;
-$required_level = 10;
+$required_level = (int) hdh_get_setting('decorations_page_level', 10);
 
 if ($user_level < $required_level) {
     // Show level requirement message
@@ -42,7 +42,7 @@ if ($user_level < $required_level) {
         <div class="container">
             <div class="treasure-locked-screen treasure-level-locked">
                 <div class="treasure-locked-icon treasure-sparkle">💎✨</div>
-                <h1 class="treasure-locked-title">Hazine Odası Kilitli</h1>
+                <h1 class="treasure-locked-title"><?php echo esc_html(hdh_get_content('decorations', 'page_title', 'Hazine Odası')); ?> Kilitli</h1>
                 <div class="treasure-level-info">
                     <div class="treasure-current-level">
                         <span class="treasure-level-label">Mevcut Seviyeniz:</span>
@@ -54,25 +54,31 @@ if ($user_level < $required_level) {
                     </div>
                 </div>
                 <p class="treasure-locked-description">
-                    Bu hazine odasına erişmek için <strong>Seviye <?php echo esc_html($required_level); ?></strong> olmanız gerekiyor.
+                    <?php 
+                    $level_message = hdh_get_content('decorations', 'level_required_message', 'Bu hazine odasına erişmek için en az seviye {level} gerekiyor.');
+                    echo esc_html(str_replace('{level}', $required_level, $level_message));
+                    ?>
                     <?php if ($levels_needed > 0) : ?>
                         <br><br>
                         <span class="treasure-progress-text">
-                            🎯 Sadece <strong><?php echo esc_html($levels_needed); ?> seviye</strong> daha!
+                            <?php 
+                            $progress_text = hdh_get_content('decorations', 'level_progress_text', '🎯 Sadece {levels} seviye daha!');
+                            echo esc_html(str_replace('{levels}', $levels_needed, $progress_text));
+                            ?>
                         </span>
                     <?php endif; ?>
                 </p>
                 <div class="treasure-actions">
                     <a href="<?php echo esc_url(home_url('/ara')); ?>" class="btn-treasure-action">
-                        📋 İlan Ara ve Seviye Atla
+                        <?php echo esc_html(hdh_get_content('decorations', 'search_action_text', '📋 İlan Ara ve Seviye Atla')); ?>
                     </a>
                     <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-treasure-action">
-                        ✨ İlan Ver ve XP Kazan
+                        <?php echo esc_html(hdh_get_content('decorations', 'create_action_text', '✨ İlan Ver ve XP Kazan')); ?>
                     </a>
                 </div>
                 <div class="treasure-hint">
                     <p class="treasure-hint-text">
-                        💡 <strong>İpucu:</strong> İlan oluşturmak, takas tamamlamak ve görevleri yapmak size XP kazandırır!
+                        <?php echo esc_html(hdh_get_content('decorations', 'hint_text', '💡 İpucu: İlan oluşturmak, takas tamamlamak ve görevleri yapmak size XP kazandırır!')); ?>
                     </p>
                 </div>
             </div>

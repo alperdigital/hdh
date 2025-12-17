@@ -87,19 +87,25 @@ function hdh_handle_create_trade() {
         exit;
     }
     
-    // Validate wanted quantity (min: 1, max: 999)
-    if ($wanted_qty < 1 || $wanted_qty > 999) {
+    // Get settings
+    $min_qty = (int) hdh_get_setting('min_item_quantity', 1);
+    $max_qty = (int) hdh_get_setting('max_item_quantity', 999);
+    $max_offer_items = (int) hdh_get_setting('max_offer_items', 3);
+    $listing_create_per_hour = (int) hdh_get_setting('listing_create_per_hour', 5);
+    
+    // Validate wanted quantity
+    if ($wanted_qty < $min_qty || $wanted_qty > $max_qty) {
         wp_redirect(add_query_arg('trade_error', 'invalid_wanted_qty', home_url('/ilan-ver')));
         exit;
     }
     
-    // Validate offer items (min: 1, max: 3)
+    // Validate offer items
     if (empty($offer_items_data)) {
         wp_redirect(add_query_arg('trade_error', 'no_offer_items', home_url('/ilan-ver')));
         exit;
     }
     
-    if (count($offer_items_data) > 3) {
+    if (count($offer_items_data) > $max_offer_items) {
         wp_redirect(add_query_arg('trade_error', 'too_many_offer_items', home_url('/ilan-ver')));
         exit;
     }
@@ -111,8 +117,8 @@ function hdh_handle_create_trade() {
             exit;
         }
         
-        // Validate offer quantity (min: 1, max: 999)
-        if ($offer_item['qty'] < 1 || $offer_item['qty'] > 999) {
+        // Validate offer quantity
+        if ($offer_item['qty'] < $min_qty || $offer_item['qty'] > $max_qty) {
             wp_redirect(add_query_arg('trade_error', 'invalid_offer_qty', home_url('/ilan-ver')));
             exit;
         }
@@ -132,7 +138,7 @@ function hdh_handle_create_trade() {
         'fields' => 'ids'
     ));
     
-    if (count($recent_posts) >= 5) {
+    if (count($recent_posts) >= $listing_create_per_hour) {
         wp_redirect(add_query_arg('trade_error', 'rate_limit', home_url('/ilan-ver')));
         exit;
     }
