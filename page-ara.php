@@ -15,7 +15,7 @@ get_header();
 <!-- HDH: Trade Offer Feed Section -->
 <main class="trade-feed-main" id="trade-feed">
     <div class="container">
-        <h2 class="section-title-cartoon">Hediyeni Seç</h2>
+        <h2 class="section-title-cartoon"><?php echo esc_html(hdh_get_content('trade_search', 'page_title', 'Hediyeni Seç')); ?></h2>
         
         <!-- HDH: Visual Filter Grid (9 Items) -->
         <div class="trade-filter-visual-grid">
@@ -130,13 +130,12 @@ get_header();
                 <?php else : ?>
                     <div class="no-trades-message">
                         <div class="no-trades-message-icon">🔍</div>
-                        <h3 class="no-trades-message-title">Henüz İlan Yok</h3>
-                        <p>Şu anda aktif hediye ilanı bulunmamaktadır.</p>
-                        <p>İlk ilanı siz oluşturarak topluluğa katkıda bulunun!</p>
+                        <h3 class="no-trades-message-title"><?php echo esc_html(hdh_get_content('trade_search', 'empty_state_message', 'Henüz İlan Yok')); ?></h3>
+                        <p><?php echo esc_html(hdh_get_content('trade_search', 'no_results_message', 'Şu anda aktif hediye ilanı bulunmamaktadır.')); ?></p>
                         <div class="no-trades-message-actions">
                             <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-create-listing">
                                 <span>➕</span>
-                                <span>İlan Oluştur</span>
+                                <span><?php echo esc_html(hdh_get_content('profile', 'create_listing_button', 'İlan Oluştur')); ?></span>
                             </a>
                         </div>
                     </div>

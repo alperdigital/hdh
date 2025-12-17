@@ -41,7 +41,7 @@ if (!empty($next_lottery_date)) {
 }
 ?>
 <main class="lottery-page-main"><div class="container">
-    <h1 class="lottery-page-title">Çekiliş</h1>
+    <h1 class="lottery-page-title"><?php echo esc_html(hdh_get_content('lottery', 'page_title', 'Çekiliş')); ?></h1>
     <?php if (is_user_logged_in()) : ?>
         <div class="lottery-balance-section"><div class="jeton-balance-display">
             <span class="jeton-icon-large">🎟️</span>
@@ -52,8 +52,8 @@ if (!empty($next_lottery_date)) {
         </div></div>
     <?php else : ?>
         <div class="lottery-login-prompt">
-            <p>Çekilişe katılmak için giriş yapmanız gerekiyor.</p>
-            <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-login-for-lottery">Giriş Yap</a>
+            <p><?php echo esc_html(hdh_get_content('lottery', 'lottery_description', 'Çekilişe katılmak için giriş yapmanız gerekiyor.')); ?></p>
+            <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-login-for-lottery"><?php echo esc_html(hdh_get_content('lottery', 'login_button_text', 'Giriş Yap')); ?></a>
         </div>
     <?php endif; ?>
     <div class="lottery-countdown-section">

@@ -172,7 +172,7 @@ if (!have_posts()) :
                         <h1 class="single-trade-title"><?php the_title(); ?></h1>
                         <div class="single-trade-status">
                             <?php if ($trade_status === 'completed') : ?>
-                                <span class="status-badge status-completed">✅ Tamamlandı</span>
+                                <span class="status-badge status-completed">✅ <?php echo esc_html(hdh_get_content('trade_single', 'completed_status_text', 'Tamamlandı')); ?></span>
                             <?php elseif ($trade_status === 'accepted') : ?>
                                 <span class="status-badge status-accepted">🤝 Kabul Edildi</span>
                             <?php else : ?>
@@ -197,7 +197,7 @@ if (!have_posts()) :
                 
                         <?php if (($is_owner || $is_accepted_offerer) && $trade_status === 'accepted' && $author_farm_number) : ?>
                             <div class="farm-number-display">
-                                <span class="farm-label">🏡 Çiftlik No:</span>
+                                <span class="farm-label"><?php echo esc_html(hdh_get_content('trade_single', 'farm_number_label', '🏡 Çiftlik No:')); ?></span>
                                 <span class="farm-number"><?php echo esc_html($author_farm_number); ?></span>
                 </div>
             <?php endif; ?>
@@ -296,10 +296,10 @@ if (!have_posts()) :
                                             <?php if ($offer['status'] === 'pending') : ?>
                                                 <div class="offer-actions">
                                                     <button class="btn-accept-offer" data-offer-id="<?php echo esc_attr($offer['id']); ?>">
-                                                        ✅ Kabul Et
+                                                        ✅ <?php echo esc_html(hdh_get_content('trade_single', 'accept_button_text', 'Kabul Et')); ?>
                                                     </button>
                                                     <button class="btn-reject-offer" data-offer-id="<?php echo esc_attr($offer['id']); ?>">
-                                                        ❌ Reddet
+                                                        ❌ <?php echo esc_html(hdh_get_content('trade_single', 'reject_button_text', 'Reddet')); ?>
                                                     </button>
                                                 </div>
                                             <?php endif; ?>
@@ -395,7 +395,7 @@ if (!have_posts()) :
                             <p class="login-hint">Giriş yaptıktan sonra bu ilana geri döneceksiniz.</p>
                             <a href="<?php echo esc_url($login_url); ?>" class="btn-login">
                                 <span class="btn-icon">🔐</span>
-                                <span>Giriş Yap</span>
+                                <span><?php echo esc_html(hdh_get_content('trade_single', 'login_button_text', 'Giriş Yap')); ?></span>
                 </a>
                         </div>
                     <?php endif; ?>

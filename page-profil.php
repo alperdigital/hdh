@@ -140,7 +140,7 @@ if (!$is_logged_in) {
                         <input type="hidden" name="redirect_to" value="<?php echo esc_url(home_url('/profil')); ?>">
                         
                         <div class="auth-field">
-                            <label for="farm_name" class="auth-label">Çiftlik Adı <span class="required">*</span></label>
+                            <label for="farm_name" class="auth-label"><?php echo esc_html(hdh_get_content('auth', 'farm_name_label', 'Çiftlik Adı')); ?> <span class="required">*</span></label>
                             <input 
                                 type="text" 
                                 id="farm_name" 
@@ -148,13 +148,13 @@ if (!$is_logged_in) {
                                 class="auth-input" 
                                 required 
                                 autocomplete="username"
-                                placeholder="Çiftlik adınız"
+                                placeholder="<?php echo esc_attr(hdh_get_content('auth', 'farm_name_placeholder', 'Çiftlik adınız')); ?>"
                             >
                             <small class="auth-help">Bu ad kullanıcı adınız olarak kullanılacaktır</small>
                         </div>
                         
                         <div class="auth-field">
-                            <label for="user_email" class="auth-label">E-posta Adresi <span class="required">*</span></label>
+                            <label for="user_email" class="auth-label"><?php echo esc_html(hdh_get_content('auth', 'email_label', 'E-posta Adresi')); ?> <span class="required">*</span></label>
                             <input 
                                 type="email" 
                                 id="user_email" 
@@ -162,9 +162,9 @@ if (!$is_logged_in) {
                                 class="auth-input" 
                                 required 
                                 autocomplete="email"
-                                placeholder="ornek@email.com"
+                                placeholder="<?php echo esc_attr(hdh_get_content('auth', 'email_placeholder', 'ornek@email.com')); ?>"
                             >
-                            <small class="auth-help">E-postanı doğrula <strong>+1 bilet</strong> kazan 🎟️</small>
+                            <small class="auth-help"><?php echo esc_html(hdh_get_content('auth', 'email_verify_message', 'E-posta\'nı doğrula +1 bilet kazan')); ?> 🎟️</small>
                         </div>
                         
                         <div class="auth-field">
