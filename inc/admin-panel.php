@@ -497,3 +497,189 @@ function hdh_get_admin_stats() {
     );
 }
 
+/**
+ * Render Global Design Page
+ */
+function hdh_render_global_design_page() {
+    if (!current_user_can('manage_options')) {
+        wp_die('Bu sayfaya erişim yetkiniz yok.');
+    }
+    
+    $settings = array();
+    $quick_settings = array();
+    $advanced_settings = array();
+    
+    if (class_exists('HDH_Settings_Registry')) {
+        $settings = HDH_Settings_Registry::get_by_section('global', 'design');
+        $quick_settings = HDH_Settings_Registry::get_by_visibility('quick', 'global', 'design');
+        $advanced_settings = HDH_Settings_Registry::get_by_visibility('advanced', 'global', 'design');
+    }
+    
+    ?>
+    <div class="wrap hdh-admin-global-design">
+        <div class="hdh-admin-header">
+            <h1>Global Design</h1>
+        </div>
+        
+        <form method="post" action="" id="hdh-global-design-form" class="hdh-settings-form">
+            <?php wp_nonce_field('hdh_save_global_design'); ?>
+            
+            <div class="hdh-settings-section hdh-quick-settings">
+                <div class="hdh-section-header">
+                    <h2>Quick Edits</h2>
+                </div>
+                <div class="hdh-settings-grid">
+                    <?php foreach ($quick_settings as $full_key => $config) : ?>
+                    <?php hdh_render_setting_field($full_key, $config); ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            
+            <div class="hdh-settings-section hdh-advanced-settings">
+                <div class="hdh-section-header">
+                    <button type="button" class="hdh-toggle-advanced">
+                        <span class="dashicons dashicons-arrow-down-alt2"></span>
+                        Advanced Settings
+                    </button>
+                </div>
+                <div class="hdh-advanced-content" style="display: none;">
+                    <div class="hdh-settings-grid">
+                        <?php foreach ($advanced_settings as $full_key => $config) : ?>
+                        <?php hdh_render_setting_field($full_key, $config); ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hdh-form-actions">
+                <button type="button" class="button hdh-save-draft-btn">Save Draft</button>
+                <button type="submit" class="button button-primary hdh-publish-btn">Publish Changes</button>
+            </div>
+        </form>
+    </div>
+    <?php
+}
+
+/**
+ * Render Content Library Page
+ */
+function hdh_render_content_library_page() {
+    if (!current_user_can('manage_options')) {
+        wp_die('Bu sayfaya erişim yetkiniz yok.');
+    }
+    
+    // Redirect to old content admin for now (will be migrated)
+    wp_redirect(admin_url('admin.php?page=hdh-content'));
+    exit;
+}
+
+/**
+ * Render Components Page
+ */
+function hdh_render_components_page() {
+    if (!current_user_can('manage_options')) {
+        wp_die('Bu sayfaya erişim yetkiniz yok.');
+    }
+    
+    // Redirect to old items admin for now (will be migrated)
+    wp_redirect(admin_url('admin.php?page=hdh-items'));
+    exit;
+}
+
+/**
+ * Render Advanced Page
+ */
+function hdh_render_advanced_page() {
+    if (!current_user_can('manage_options')) {
+        wp_die('Bu sayfaya erişim yetkiniz yok.');
+    }
+    
+    $settings = array();
+    $advanced_settings = array();
+    
+    if (class_exists('HDH_Settings_Registry')) {
+        $settings = HDH_Settings_Registry::get_by_section('global', 'system');
+        $advanced_settings = HDH_Settings_Registry::get_by_visibility('advanced', 'global', 'system');
+    }
+    
+    ?>
+    <div class="wrap hdh-admin-advanced">
+        <div class="hdh-admin-header">
+            <h1>Advanced Settings</h1>
+            <p class="description">Technical settings and system configuration. Use with caution.</p>
+        </div>
+        
+        <form method="post" action="" id="hdh-advanced-form" class="hdh-settings-form">
+            <?php wp_nonce_field('hdh_save_advanced'); ?>
+            
+            <div class="hdh-settings-section">
+                <div class="hdh-settings-grid">
+                    <?php foreach ($advanced_settings as $full_key => $config) : ?>
+                    <?php hdh_render_setting_field($full_key, $config); ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            
+            <div class="hdh-form-actions">
+                <button type="submit" class="button button-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+    <?php
+}
+
+/**
+ * Render Logs Page
+ */
+function hdh_render_logs_page() {
+    if (!current_user_can('manage_options')) {
+        wp_die('Bu sayfaya erişim yetkiniz yok.');
+    }
+    
+    $history = hdh_get_change_history(50);
+    
+    ?>
+    <div class="wrap hdh-admin-logs">
+        <div class="hdh-admin-header">
+            <h1>Logs & History</h1>
+        </div>
+        
+        <div class="hdh-history-list">
+            <?php if (!empty($history)) : ?>
+            <table class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Setting</th>
+                        <th>Change</th>
+                        <th>User</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($history as $change) : ?>
+                    <tr>
+                        <td><?php echo esc_html(human_time_diff($change['timestamp'], current_time('timestamp'))); ?> ago</td>
+                        <td><?php echo esc_html($change['setting_key']); ?></td>
+                        <td><?php echo esc_html($change['description']); ?></td>
+                        <td><?php 
+                            $user = get_userdata($change['user_id']);
+                            echo $user ? esc_html($user->display_name) : 'Unknown';
+                        ?></td>
+                        <td>
+                            <button class="button hdh-rollback-btn" data-rollback-id="<?php echo esc_attr($change['id']); ?>">
+                                Rollback
+                            </button>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php else : ?>
+            <p class="hdh-empty-state">No change history yet</p>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php
+}
+
