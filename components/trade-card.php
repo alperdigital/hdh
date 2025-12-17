@@ -137,12 +137,12 @@ if (!function_exists('hdh_render_trade_card')) {
             <footer class="listing-header-split">
                 <div class="listing-header-left">
                     <span class="listing-header-icon">🎁</span>
-                    <span class="listing-header-label">Hediye</span>
+                    <span class="listing-header-label"><?php echo esc_html(hdh_get_content('trade_single', 'offering_label', 'Hediye')); ?></span>
                 </div>
                 <div class="listing-header-divider"></div>
                 <div class="listing-header-right">
                     <span class="listing-header-icon">🤍</span>
-                    <span class="listing-header-label">İstek</span>
+                    <span class="listing-header-label"><?php echo esc_html(hdh_get_content('trade_single', 'wanted_label', 'İstek')); ?></span>
                 </div>
             </footer>
         </a>

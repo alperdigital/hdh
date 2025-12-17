@@ -53,10 +53,7 @@
         <div class="farm-announcement-banner">
             <div class="container">
                 <p class="farm-announcement-text">
-                    <?php 
-                    $announcement = get_theme_mod('hdh_announcement_text', '🎁 Hediyeleşme ve Çekiliş Merkezi!');
-                    echo esc_html($announcement);
-                    ?>
+                    <?php echo esc_html(hdh_get_content('homepage', 'announcement_text', '🎁 Hediyeleşme ve Çekiliş Merkezi!')); ?>
                 </p>
             </div>
         </div>

@@ -50,7 +50,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
         ?>
         
         <!-- Tasks Panel Toggle Button (Fixed Position) -->
-        <button class="tasks-icon-fixed" id="tasks-icon-toggle" aria-label="Görevler">
+        <button class="tasks-icon-fixed" id="tasks-icon-toggle" aria-label="<?php echo esc_attr(hdh_get_content('tasks', 'panel_title', 'Görevler')); ?>">
             <span class="tasks-icon-emoji">📋</span>
             <?php if ($incomplete_count > 0) : ?>
                 <span class="tasks-icon-badge" id="tasks-icon-badge"><?php echo esc_html($incomplete_count); ?></span>
@@ -65,15 +65,15 @@ if (!function_exists('hdh_render_tasks_panel')) {
         <!-- Tasks Panel -->
         <div class="tasks-panel" id="tasks-panel">
             <div class="tasks-panel-header">
-                <h3 class="tasks-panel-title">📋 Görevler</h3>
-                <button class="tasks-panel-close" id="tasks-panel-close" aria-label="Kapat">×</button>
+                <h3 class="tasks-panel-title">📋 <?php echo esc_html(hdh_get_content('tasks', 'panel_title', 'Görevler')); ?></h3>
+                <button class="tasks-panel-close" id="tasks-panel-close" aria-label="<?php echo esc_attr(hdh_get_content('tasks', 'close_button_text', 'Kapat')); ?>">×</button>
             </div>
             
             <div class="tasks-panel-content">
                 <!-- One-Time Tasks Section -->
                 <?php if (!empty($one_time_tasks)) : ?>
                 <div class="tasks-section">
-                    <h4 class="tasks-section-title">Tek Seferlik Görevler</h4>
+                    <h4 class="tasks-section-title"><?php echo esc_html(hdh_get_content('tasks', 'one_time_section_title', 'Tek Seferlik Görevler')); ?></h4>
                     <div class="tasks-list">
                         <?php foreach ($one_time_tasks as $task) : ?>
                             <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>" data-task-container-id="<?php echo esc_attr($task['id']); ?>">
@@ -106,12 +106,12 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                 </div>
                                 <div class="task-actions">
                                     <?php if ($task['completed'] && $task['claimed']) : ?>
-                                        <span class="task-status">✅ Ödül Alındı</span>
+                                        <span class="task-status"><?php echo esc_html(hdh_get_content('tasks', 'reward_claimed_text', '✅ Ödül Alındı')); ?></span>
                                     <?php elseif ($task['completed'] && $task['can_claim']) : ?>
                                         <button class="btn-claim-task" 
                                                 data-task-id="<?php echo esc_attr($task['id']); ?>" 
                                                 data-is-daily="false">
-                                            Ödülünü Al
+                                            <?php echo esc_html(hdh_get_content('tasks', 'claim_reward_button', 'Ödülünü Al')); ?>
                                         </button>
                                     <?php elseif ($task['id'] === 'verify_email') : ?>
                                         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task">Yap</a>
@@ -132,7 +132,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                 <!-- Daily Tasks Section -->
                 <?php if (!empty($daily_tasks)) : ?>
                 <div class="tasks-section">
-                    <h4 class="tasks-section-title">Günlük Görevler</h4>
+                    <h4 class="tasks-section-title"><?php echo esc_html(hdh_get_content('tasks', 'daily_section_title', 'Günlük Görevler')); ?></h4>
                     <div class="tasks-list">
                         <?php foreach ($daily_tasks as $task) : ?>
                             <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>" data-task-container-id="<?php echo esc_attr($task['id']); ?>">
@@ -172,7 +172,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                         <button class="btn-claim-task" 
                                                 data-task-id="<?php echo esc_attr($task['id']); ?>" 
                                                 data-is-daily="true">
-                                            Ödülünü Al
+                                            <?php echo esc_html(hdh_get_content('tasks', 'claim_reward_button', 'Ödülünü Al')); ?>
                                         </button>
                                     <?php elseif ($task['id'] === 'create_listings') : ?>
                                         <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task">Yap</a>

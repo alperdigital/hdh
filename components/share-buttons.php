@@ -46,7 +46,7 @@ function hdh_render_share_buttons($listing_id, $context = 'single-trade') {
     ob_start();
     ?>
     <div class="share-section-minimal">
-        <p class="share-section-label">Burada paylaş:</p>
+        <p class="share-section-label"><?php echo esc_html(hdh_get_content('trade_single', 'share_label', 'Burada paylaş:')); ?></p>
         <div class="share-buttons-minimal">
             <button class="share-btn-minimal share-whatsapp" 
                     data-url="<?php echo esc_url($url); ?>"

@@ -108,6 +108,11 @@ function hdh_render_content_admin_page() {
             'icon' => '⚠️',
             'description' => '404 hata sayfası metinleri',
         ),
+        'tasks' => array(
+            'title' => 'Görevler',
+            'icon' => '📋',
+            'description' => 'Görevler paneli metinleri',
+        ),
     );
     
     // Get current page content

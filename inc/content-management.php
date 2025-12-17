@@ -75,6 +75,7 @@ function hdh_get_default_content($page) {
             'cta_create_text' => 'İlan Ver',
             'recent_listings_title' => 'Son İlanlar',
             'trust_indicator_text' => '⭐ {count} başarılı hediyeleşme',
+            'announcement_text' => '🎁 Hediyeleşme ve Çekiliş Merkezi!',
         ),
         'auth' => array(
             'login_title' => 'Hesabına Giriş Yap',
@@ -132,6 +133,7 @@ function hdh_get_default_content($page) {
             'farm_number_label' => '🏡 Çiftlik No:',
             'wanted_label' => 'Hediye İstiyor',
             'offering_label' => 'Hediye Ediyor',
+            'share_label' => 'Burada paylaş:',
         ),
         'lottery' => array(
             'page_title' => 'Çekiliş',
@@ -156,6 +158,15 @@ function hdh_get_default_content($page) {
             'create_listing_button' => 'İlan Oluştur',
             'edit_button_text' => 'Düzenle',
             'delete_button_text' => 'Sil',
+            'close_button_text' => 'Kapat',
+        ),
+        'tasks' => array(
+            'panel_title' => 'Görevler',
+            'one_time_section_title' => 'Tek Seferlik Görevler',
+            'daily_section_title' => 'Günlük Görevler',
+            'claim_reward_button' => 'Ödülünü Al',
+            'reward_claimed_text' => '✅ Ödül Alındı',
+            'do_task_button' => 'Yap',
             'close_button_text' => 'Kapat',
         ),
         'navigation' => array(
