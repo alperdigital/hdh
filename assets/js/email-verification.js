@@ -58,7 +58,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showMessage('success', data.data.message || 'Doğrulama kodu e-posta adresinize gönderildi.');
+                    const successMsg = data.data.message || (hdhProfile.messages && hdhProfile.messages.verification && hdhProfile.messages.verification.email_sent) 
+                        ? hdhProfile.messages.verification.email_sent 
+                        : 'Doğrulama kodu e-posta adresinize gönderildi.';
+                    showMessage('success', successMsg);
                     codeForm.style.display = 'block';
                     codeInput.focus();
                 } else {
@@ -137,7 +140,10 @@
                         window.location.reload();
                     }, 2000);
                 } else {
-                    showMessage('error', data.data.message || 'Doğrulama kodu hatalı. Lütfen tekrar deneyin.');
+                    const errorMsg = data.data.message || (hdhProfile.messages && hdhProfile.messages.verification && hdhProfile.messages.verification.code_invalid) 
+                        ? hdhProfile.messages.verification.code_invalid 
+                        : 'Doğrulama kodu hatalı. Lütfen tekrar deneyin.';
+                    showMessage('error', errorMsg);
                     codeInput.value = '';
                     codeInput.focus();
                 }
