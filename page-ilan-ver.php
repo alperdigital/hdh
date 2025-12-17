@@ -16,21 +16,21 @@ get_header();
 <section class="create-trade-form-section" id="create-trade">
     <div class="container">
         <div class="create-trade-wrapper">
-            <h2 class="section-title-cartoon">Hediyeleşme Başlasın</h2>
+            <h2 class="section-title-cartoon"><?php echo esc_html(hdh_get_content('trade_create', 'page_title', 'Hediyeleşme Başlasın')); ?></h2>
             
             <?php
             // Display error messages
             if (isset($_GET['trade_error'])) {
                 $error_code = sanitize_text_field($_GET['trade_error']);
                 $error_messages = array(
-                    'no_wanted_item' => 'Lütfen almak istediğiniz ürünü seçin.',
-                    'invalid_wanted_item' => 'Seçtiğiniz ürün geçersiz.',
-                    'invalid_wanted_qty' => 'Miktar 1-999 arasında olmalıdır.',
-                    'no_offer_items' => 'Lütfen en az 1 ürün seçin (vermek istediğiniz).',
-                    'too_many_offer_items' => 'En fazla 3 ürün seçebilirsiniz.',
-                    'invalid_offer_item' => 'Seçtiğiniz ürünlerden biri geçersiz.',
-                    'invalid_offer_qty' => 'Tüm miktarlar 1-999 arasında olmalıdır.',
-                    'rate_limit' => 'Çok fazla ilan oluşturdunuz. Lütfen 1 saat sonra tekrar deneyin.',
+                    'no_wanted_item' => hdh_get_content('trade_create', 'error_no_wanted_item', 'Lütfen almak istediğiniz ürünü seçin.'),
+                    'invalid_wanted_item' => hdh_get_content('trade_create', 'error_invalid_wanted_item', 'Seçtiğiniz ürün geçersiz.'),
+                    'invalid_wanted_qty' => hdh_get_content('trade_create', 'error_invalid_wanted_qty', 'Miktar 1-999 arasında olmalıdır.'),
+                    'no_offer_items' => hdh_get_content('trade_create', 'error_no_offer_items', 'Lütfen en az 1 ürün seçin (vermek istediğiniz).'),
+                    'too_many_offer_items' => hdh_get_content('trade_create', 'error_too_many_offer_items', 'En fazla 3 ürün seçebilirsiniz.'),
+                    'invalid_offer_item' => hdh_get_content('trade_create', 'error_invalid_offer_item', 'Seçtiğiniz ürünlerden biri geçersiz.'),
+                    'invalid_offer_qty' => hdh_get_content('trade_create', 'error_invalid_offer_qty', 'Tüm miktarlar 1-999 arasında olmalıdır.'),
+                    'rate_limit' => hdh_get_content('trade_create', 'error_rate_limit', 'Çok fazla ilan oluşturdunuz. Lütfen 1 saat sonra tekrar deneyin.'),
                 );
                 
                 $error_message = isset($error_messages[$error_code]) ? $error_messages[$error_code] : 'Bir hata oluştu. Lütfen tekrar deneyin.';

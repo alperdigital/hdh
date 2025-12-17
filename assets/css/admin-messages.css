@@ -1,0 +1,178 @@
+/**
+ * HDH: Admin Messages Management Styles
+ */
+
+.hdh-messages-admin {
+    max-width: 1400px;
+}
+
+.hdh-messages-admin h1 {
+    margin-bottom: 10px;
+}
+
+.hdh-messages-admin .description {
+    color: #646970;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Tabs */
+.hdh-messages-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding-bottom: 0;
+    border-bottom: 2px solid #ddd;
+}
+
+.hdh-messages-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #646970;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: -2px;
+}
+
+.hdh-messages-tab:hover {
+    color: #2271b1;
+    background: #f0f6fc;
+}
+
+.hdh-messages-tab.active {
+    color: #2271b1;
+    border-bottom-color: #2271b1;
+    background: transparent;
+}
+
+.hdh-messages-tab .tab-icon {
+    font-size: 18px;
+}
+
+/* Section */
+.hdh-messages-section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.hdh-messages-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.hdh-messages-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+.hdh-messages-header .section-icon {
+    font-size: 28px;
+}
+
+/* Fields */
+.hdh-messages-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.hdh-message-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hdh-message-field-group label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hdh-message-field-group strong {
+    font-size: 13px;
+    color: #1d2327;
+    font-weight: 600;
+}
+
+.hdh-message-field {
+    padding: 10px 12px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.hdh-message-field:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+.field-description {
+    font-size: 12px;
+    color: #646970;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.field-description code {
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+/* Footer */
+.hdh-messages-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.hdh-messages-footer .submit {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .hdh-messages-fields {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 782px) {
+    .hdh-messages-tabs {
+        flex-direction: column;
+    }
+    
+    .hdh-messages-tab {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .hdh-messages-section {
+        padding: 20px;
+    }
+}
+
