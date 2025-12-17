@@ -168,6 +168,7 @@ function hdh_get_default_content($page) {
             'reward_claimed_text' => '✅ Ödül Alındı',
             'do_task_button' => 'Yap',
             'close_button_text' => 'Kapat',
+            'pending_status' => 'Beklemede',
         ),
         'navigation' => array(
             'search_label' => 'Ara',

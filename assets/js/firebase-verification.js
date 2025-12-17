@@ -134,7 +134,10 @@
             const originalText = btn.textContent;
             
             btn.disabled = true;
-            btn.textContent = 'Gönderiliyor...';
+            const sendingMsg = (hdhFirebase.messages && hdhFirebase.messages.ui && hdhFirebase.messages.ui.sending) 
+                ? hdhFirebase.messages.ui.sending 
+                : 'Gönderiliyor...';
+            btn.textContent = sendingMsg;
             
             try {
                 // Get current user's email

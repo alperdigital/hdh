@@ -7,11 +7,23 @@
             btn.addEventListener('click', function() {
                 const lotteryType = this.getAttribute('data-lottery-type');
                 const jetonCost = parseInt(this.getAttribute('data-jeton-cost'), 10);
-                if (!lotteryType || !jetonCost) { alert('Geçersiz parametreler'); return; }
-                if (!confirm('Çekilişe katılmak için ' + jetonCost + ' bilet harcanacak. Devam etmek istiyor musunuz?')) return;
-                this.disabled = true;
-                const originalText = this.textContent;
-                this.textContent = 'İşleniyor...';
+                if (!lotteryType || !jetonCost) { 
+                const invalidMsg = (hdhLottery.messages && hdhLottery.messages.ajax && hdhLottery.messages.ajax.invalid_parameters) 
+                    ? hdhLottery.messages.ajax.invalid_parameters 
+                    : 'Geçersiz parametreler';
+                alert(invalidMsg); 
+                return; 
+            }
+            const confirmMsg = hdhLottery.confirmJoinLottery 
+                ? hdhLottery.confirmJoinLottery.replace('{cost}', jetonCost) 
+                : 'Çekilişe katılmak için ' + jetonCost + ' bilet harcanacak. Devam etmek istiyor musunuz?';
+            if (!confirm(confirmMsg)) return;
+            this.disabled = true;
+            const originalText = this.textContent;
+            const processingMsg = (hdhLottery.messages && hdhLottery.messages.ui && hdhLottery.messages.ui.processing) 
+                ? hdhLottery.messages.ui.processing 
+                : 'İşleniyor...';
+            this.textContent = processingMsg;
                 const formData = new FormData();
                 formData.append('action', 'hdh_join_lottery');
                 formData.append('lottery_type', lotteryType);

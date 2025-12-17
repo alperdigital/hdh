@@ -83,6 +83,7 @@ require_once get_template_directory() . '/inc/items-admin.php';
 require_once get_template_directory() . '/inc/content-management.php';
 require_once get_template_directory() . '/inc/content-admin.php';
 require_once get_template_directory() . '/inc/messages-admin.php';
+require_once get_template_directory() . '/inc/messages-localize.php';
 require_once get_template_directory() . '/inc/settings-admin.php';
 require_once get_template_directory() . '/social-share.php';
 
@@ -143,6 +144,8 @@ function hdh_enqueue_scripts() {
             '1.1.0',
             true
         );
+        $js_messages = hdh_get_js_messages();
+        wp_localize_script('hdh-trade-form', 'hdhMessages', $js_messages);
     }
     
     // Enqueue trade filter script on ara page
@@ -238,10 +241,12 @@ function hdh_enqueue_scripts() {
             '1.0.0',
             true
         );
+        $js_messages = hdh_get_js_messages();
         wp_localize_script('hdh-tasks-panel', 'hdhTasks', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_claim_task_reward'),
             'siteUrl' => home_url(),
+            'messages' => $js_messages,
         ));
     }
     
@@ -274,12 +279,14 @@ function hdh_enqueue_scripts() {
             '2.0.0',
             true
         );
+        $js_messages = hdh_get_js_messages();
         wp_localize_script('hdh-single-trade', 'hdhSingleTrade', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'makeOfferNonce' => wp_create_nonce('hdh_make_offer'),
             'offerResponseNonce' => wp_create_nonce('hdh_offer_response'),
             'messagingNonce' => wp_create_nonce('hdh_messaging'),
             'confirmExchangeNonce' => wp_create_nonce('hdh_confirm_exchange'),
+            'messages' => $js_messages,
         ));
     }
     
@@ -299,9 +306,13 @@ function hdh_enqueue_scripts() {
             '1.0.0',
             true
         );
+        $js_messages = hdh_get_js_messages();
+        $lottery_confirm = hdh_get_message('ui', 'confirm_join_lottery', 'Çekilişe katılmak için {cost} bilet harcanacak. Devam etmek istiyor musunuz?');
         wp_localize_script('hdh-lottery-page', 'hdhLottery', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_join_lottery'),
+            'messages' => $js_messages,
+            'confirmJoinLottery' => $lottery_confirm,
         ));
     }
     
@@ -313,9 +324,11 @@ function hdh_enqueue_scripts() {
             ));
             
             // Localize email verification script
+            $js_messages = hdh_get_js_messages();
             wp_localize_script('hdh-email-verification', 'hdhProfile', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('hdh_email_verification'),
+                'messages' => $js_messages,
             ));
             
             // Localize Firebase verification script (if Firebase is configured)
@@ -323,11 +336,13 @@ function hdh_enqueue_scripts() {
                 $current_user = wp_get_current_user();
                 $firebase_config = hdh_get_firebase_config();
                 
+                $js_messages = hdh_get_js_messages();
                 wp_localize_script('hdh-firebase-verification', 'hdhFirebase', array(
                     'ajaxUrl' => admin_url('admin-ajax.php'),
                     'nonce' => wp_create_nonce('hdh_firebase_verification'),
                     'config' => $firebase_config,
                     'userEmail' => $current_user->user_email,
+                    'messages' => $js_messages,
                 ));
             }
     }

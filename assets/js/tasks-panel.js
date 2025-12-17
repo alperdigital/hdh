@@ -121,20 +121,29 @@
             const isDaily = btn.getAttribute('data-is-daily') === 'true';
             
             if (!taskId) {
-                showToast('Görev ID bulunamadı', 'error');
+                const errorMsg = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.task_id_not_found) 
+                    ? hdhTasks.messages.tasks.task_id_not_found 
+                    : 'Görev ID bulunamadı';
+                showToast(errorMsg, 'error');
                 return;
             }
             
             // Check if hdhTasks is defined
             if (typeof hdhTasks === 'undefined') {
-                showToast('Görev sistemi yüklenemedi', 'error');
+                const errorMsg = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.task_system_load_error) 
+                    ? hdhTasks.messages.tasks.task_system_load_error 
+                    : 'Görev sistemi yüklenemedi';
+                showToast(errorMsg, 'error');
                 return;
             }
             
             // Disable button to prevent double-click
             btn.disabled = true;
             const originalText = btn.textContent;
-            btn.textContent = 'İşleniyor...';
+            const processingMsg = (hdhTasks.messages && hdhTasks.messages.ui && hdhTasks.messages.ui.processing) 
+                ? hdhTasks.messages.ui.processing 
+                : 'İşleniyor...';
+            btn.textContent = processingMsg;
             
             const formData = new FormData();
             formData.append('action', 'hdh_claim_task_reward');
@@ -293,14 +302,20 @@
                         updateTasksBadge();
                     }
                 } else {
-                    showToast(data.data.message || 'Bir hata oluştu', 'error');
+                    const errorMsg = data.data.message || (hdhTasks.messages && hdhTasks.messages.ajax && hdhTasks.messages.ajax.generic_error) 
+                        ? hdhTasks.messages.ajax.generic_error 
+                        : 'Bir hata oluştu';
+                    showToast(errorMsg, 'error');
                     btn.disabled = false;
                     btn.textContent = originalText;
                 }
             })
             .catch(error => { 
                 console.error('Error:', error); 
-                showToast('Bir hata oluştu', 'error'); 
+                const errorMsg = (hdhTasks.messages && hdhTasks.messages.ajax && hdhTasks.messages.ajax.generic_error) 
+                    ? hdhTasks.messages.ajax.generic_error 
+                    : 'Bir hata oluştu';
+                showToast(errorMsg, 'error'); 
                 btn.disabled = false; 
                 btn.textContent = originalText; 
             });
@@ -418,13 +433,25 @@
                             const taskActions = taskItemContainer.querySelector('.task-actions');
                             if (taskActions) {
                                 if (task.can_claim) {
-                                    taskActions.innerHTML = '<button class="btn-claim-task" data-task-id="' + task.id + '" data-is-daily="true">Ödülünü Al</button>';
-                                } else if (task.id === 'create_listings') {
-                                    taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/ilan-ver" class="btn-do-task">Yap</a>';
-                                } else if (task.id === 'invite_friends' || task.id === 'friend_exchanges') {
-                                    taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/profil" class="btn-do-task">Yap</a>';
-                                } else {
-                                    taskActions.innerHTML = '<span class="task-status">Beklemede</span>';
+                                    const claimRewardText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.claim_reward_button) 
+                                        ? hdhTasks.messages.tasks.claim_reward_button 
+                                        : 'Ödülünü Al';
+                                    taskActions.innerHTML = '<button class="btn-claim-task" data-task-id="' + task.id + '" data-is-daily="true">' + claimRewardText + '</button>';
+                                    } else if (task.id === 'create_listings') {
+                                    const doTaskText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.do_task) 
+                                        ? hdhTasks.messages.tasks.do_task 
+                                        : 'Yap';
+                                    taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/ilan-ver" class="btn-do-task">' + doTaskText + '</a>';
+                                    } else if (task.id === 'invite_friends' || task.id === 'friend_exchanges') {
+                                    const doTaskText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.do_task) 
+                                        ? hdhTasks.messages.tasks.do_task 
+                                        : 'Yap';
+                                    taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/profil" class="btn-do-task">' + doTaskText + '</a>';
+                                    } else {
+                                    const pendingText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.pending_status) 
+                                        ? hdhTasks.messages.tasks.pending_status 
+                                        : 'Beklemede';
+                                    taskActions.innerHTML = '<span class="task-status">' + pendingText + '</span>';
                                 }
                             }
                             

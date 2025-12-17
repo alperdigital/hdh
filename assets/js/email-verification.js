@@ -40,7 +40,10 @@
             const originalText = btn.textContent;
             
             btn.disabled = true;
-            btn.textContent = 'Gönderiliyor...';
+            const sendingMsg = (hdhProfile.messages && hdhProfile.messages.ui && hdhProfile.messages.ui.sending) 
+                ? hdhProfile.messages.ui.sending 
+                : 'Gönderiliyor...';
+            btn.textContent = sendingMsg;
             
             fetch(hdhProfile.ajaxUrl, {
                 method: 'POST',
@@ -59,7 +62,10 @@
                     codeForm.style.display = 'block';
                     codeInput.focus();
                 } else {
-                    showMessage('error', data.data.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
+                    const errorMsg = data.data.message || (hdhProfile.messages && hdhProfile.messages.ajax && hdhProfile.messages.ajax.generic_error_retry) 
+                        ? hdhProfile.messages.ajax.generic_error_retry 
+                        : 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                    showMessage('error', errorMsg);
                 }
             })
             .catch(error => {
@@ -102,7 +108,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showMessage('success', data.data.message || 'E-posta adresiniz başarıyla doğrulandı!');
+                    const successMsg = data.data.message || (hdhProfile.messages && hdhProfile.messages.verification && hdhProfile.messages.verification.email_verified) 
+                        ? hdhProfile.messages.verification.email_verified 
+                        : 'E-posta adresiniz başarıyla doğrulandı!';
+                    showMessage('success', successMsg);
                     
                     // Hide verification buttons and form immediately
                     if (sendBtn) {

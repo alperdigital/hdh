@@ -48,7 +48,10 @@
                 // Check if at least one item is selected
                 const checkedItems = makeOfferForm.querySelectorAll('.offer-item-check:checked');
                 if (checkedItems.length === 0) {
-                    showToast('En az bir hediye seçmelisiniz.', 'error');
+                    const msg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.select_at_least_one_gift) 
+                        ? hdhSingleTrade.messages.ajax.select_at_least_one_gift 
+                        : 'En az bir hediye seçmelisiniz.';
+                    showToast(msg, 'error');
                     return;
                 }
                 
@@ -58,7 +61,10 @@
                 
                 const submitBtn = makeOfferForm.querySelector('.btn-submit-offer');
                 submitBtn.disabled = true;
-                submitBtn.textContent = '⏳ Gönderiliyor...';
+                const sendingMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ui && hdhSingleTrade.messages.ui.sending) 
+                    ? hdhSingleTrade.messages.ui.sending 
+                    : 'Gönderiliyor...';
+                submitBtn.textContent = '⏳ ' + sendingMsg;
                 
                 fetch(hdhSingleTrade.ajaxUrl, {
                     method: 'POST',
@@ -72,14 +78,20 @@
                             location.reload();
                         }, 1500);
                     } else {
-                        showToast(data.data.message || 'Bir hata oluştu.', 'error');
+                        const errorMsg = data.data.message || (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.generic_error) 
+                            ? hdhSingleTrade.messages.ajax.generic_error 
+                            : 'Bir hata oluştu.';
+                        showToast(errorMsg, 'error');
                         submitBtn.disabled = false;
                         submitBtn.textContent = '📤 Teklif Gönder';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showToast('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+                    const errorMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.generic_error_retry) 
+                        ? hdhSingleTrade.messages.ajax.generic_error_retry 
+                        : 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                    showToast(errorMsg, 'error');
                     submitBtn.disabled = false;
                     submitBtn.textContent = '📤 Teklif Gönder';
                 });
@@ -90,13 +102,19 @@
         const acceptButtons = document.querySelectorAll('.btn-accept-offer');
         acceptButtons.forEach(function(btn) {
             btn.addEventListener('click', function() {
-                if (!confirm('Bu teklifi kabul etmek istediğinize emin misiniz? Diğer tüm teklifler reddedilecek.')) {
+                const confirmMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ui && hdhSingleTrade.messages.ui.confirm_accept_offer) 
+                    ? hdhSingleTrade.messages.ui.confirm_accept_offer 
+                    : 'Bu teklifi kabul etmek istediğinize emin misiniz? Diğer tüm teklifler reddedilecek.';
+                if (!confirm(confirmMsg)) {
                     return;
                 }
                 
                 const offerId = this.getAttribute('data-offer-id');
                 btn.disabled = true;
-                btn.textContent = '⏳ İşleniyor...';
+                const processingMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ui && hdhSingleTrade.messages.ui.processing) 
+                    ? hdhSingleTrade.messages.ui.processing 
+                    : 'İşleniyor...';
+                btn.textContent = '⏳ ' + processingMsg;
                 
                 fetch(hdhSingleTrade.ajaxUrl, {
                     method: 'POST',
@@ -135,13 +153,19 @@
         const rejectButtons = document.querySelectorAll('.btn-reject-offer');
         rejectButtons.forEach(function(btn) {
             btn.addEventListener('click', function() {
-                if (!confirm('Bu teklifi reddetmek istediğinize emin misiniz?')) {
+                const confirmMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ui && hdhSingleTrade.messages.ui.confirm_reject_offer) 
+                    ? hdhSingleTrade.messages.ui.confirm_reject_offer 
+                    : 'Bu teklifi reddetmek istediğinize emin misiniz?';
+                if (!confirm(confirmMsg)) {
                     return;
                 }
                 
                 const offerId = this.getAttribute('data-offer-id');
                 btn.disabled = true;
-                btn.textContent = '⏳ İşleniyor...';
+                const processingMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ui && hdhSingleTrade.messages.ui.processing) 
+                    ? hdhSingleTrade.messages.ui.processing 
+                    : 'İşleniyor...';
+                btn.textContent = '⏳ ' + processingMsg;
                 
                 fetch(hdhSingleTrade.ajaxUrl, {
                     method: 'POST',
@@ -162,14 +186,20 @@
                             location.reload();
                         }, 1500);
                     } else {
-                        showToast(data.data.message || 'Bir hata oluştu.', 'error');
+                        const errorMsg = data.data.message || (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.generic_error) 
+                            ? hdhSingleTrade.messages.ajax.generic_error 
+                            : 'Bir hata oluştu.';
+                        showToast(errorMsg, 'error');
                         btn.disabled = false;
                         btn.textContent = '❌ Reddet';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showToast('Bir hata oluştu.', 'error');
+                    const errorMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.generic_error) 
+                        ? hdhSingleTrade.messages.ajax.generic_error 
+                        : 'Bir hata oluştu.';
+                    showToast(errorMsg, 'error');
                     btn.disabled = false;
                     btn.textContent = '❌ Reddet';
                 });

@@ -324,7 +324,10 @@
             const offerCheckboxes = document.querySelectorAll('input[name^="offer_item["]:checked');
             if (offerCheckboxes.length === 0) {
                 e.preventDefault();
-                showToast('Lütfen en az 1 ürün seçin (vermek istediğiniz)', 'error');
+                const errorMsg = (window.hdhMessages && window.hdhMessages.ajax && window.hdhMessages.ajax.select_at_least_one_gift) 
+                    ? window.hdhMessages.ajax.select_at_least_one_gift 
+                    : 'Lütfen en az 1 ürün seçin (vermek istediğiniz)';
+                showToast(errorMsg, 'error');
                 scrollToElement(document.getElementById('offer-items-grid'));
                 return false;
             }
