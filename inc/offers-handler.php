@@ -14,13 +14,13 @@ if (!defined('ABSPATH')) {
 function hdh_handle_make_offer() {
     // Verify nonce
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_make_offer')) {
-        wp_send_json_error(array('message' => 'Güvenlik doğrulaması başarısız.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'security_verification_failed', 'Güvenlik doğrulaması başarısız.')));
         return;
     }
     
     // Check if user is logged in
     if (!is_user_logged_in()) {
-        wp_send_json_error(array('message' => 'Teklif yapmak için giriş yapmalısınız.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'login_required', 'Teklif yapmak için giriş yapmalısınız.')));
         return;
     }
     
@@ -31,21 +31,21 @@ function hdh_handle_make_offer() {
     
     // Validate
     if (!$listing_id || !$wanted_qty || empty($offer_items)) {
-        wp_send_json_error(array('message' => 'Lütfen tüm alanları doldurun.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'fill_all_fields', 'Lütfen tüm alanları doldurun.')));
         return;
     }
     
     // Check if listing exists
     $listing = get_post($listing_id);
     if (!$listing || $listing->post_type !== 'hayday_trade') {
-        wp_send_json_error(array('message' => 'İlan bulunamadı.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'listing_not_found', 'İlan bulunamadı.')));
         return;
     }
     
     // Check if user is not the owner
     $current_user_id = get_current_user_id();
     if ($listing->post_author == $current_user_id) {
-        wp_send_json_error(array('message' => 'Kendi ilanınıza teklif yapamazsınız.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'cannot_offer_own_listing', 'Kendi ilanınıza teklif yapamazsınız.')));
         return;
     }
     
@@ -62,7 +62,7 @@ function hdh_handle_make_offer() {
     }
     
     if (empty($offer_items_data)) {
-        wp_send_json_error(array('message' => 'En az bir hediye seçmelisiniz.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'select_at_least_one_gift', 'En az bir hediye seçmelisiniz.')));
         return;
     }
     
@@ -75,7 +75,7 @@ function hdh_handle_make_offer() {
     ));
     
     if (is_wp_error($offer_id)) {
-        wp_send_json_error(array('message' => 'Teklif oluşturulurken bir hata oluştu.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'offer_create_error', 'Teklif oluşturulurken bir hata oluştu.')));
         return;
     }
     
@@ -86,7 +86,7 @@ function hdh_handle_make_offer() {
     update_post_meta($offer_id, '_hdh_offer_status', 'pending');
     
     wp_send_json_success(array(
-        'message' => 'Teklifiniz başarıyla gönderildi!',
+        'message' => hdh_get_message('ajax', 'offer_created_success', 'Teklifiniz başarıyla gönderildi!'),
         'offer_id' => $offer_id
     ));
 }
