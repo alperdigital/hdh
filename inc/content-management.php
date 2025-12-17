@@ -123,6 +123,7 @@ function hdh_get_default_content($page) {
         'trade_single' => array(
             'login_button_text' => 'Giriş Yap',
             'offer_button_text' => 'Teklif Ver',
+            'offer_submit_button_text' => 'Teklif Gönder',
             'message_button_text' => 'Mesaj Gönder',
             'accept_button_text' => 'Kabul Et',
             'reject_button_text' => 'Reddet',
@@ -157,6 +158,31 @@ function hdh_get_default_content($page) {
             'delete_button_text' => 'Sil',
             'close_button_text' => 'Kapat',
         ),
+        'navigation' => array(
+            'search_label' => 'Ara',
+            'treasure_label' => 'Hazine',
+            'create_label' => 'İlan Ver',
+            'raffle_label' => 'Çekiliş',
+            'profile_label' => 'Profil',
+        ),
+        'footer' => array(
+            'terms_link_text' => 'Üyelik Sözleşmesi',
+            'privacy_link_text' => 'Gizlilik Politikası & KVKK',
+        ),
+        'error_404' => array(
+            'page_title' => 'Sayfa Bulunamadı',
+            'error_code' => '404',
+            'main_message' => 'Aradığınız sayfa bulunamadı. Bu sayfaya ulaşmaya çalışırken bir sorun oluşmuş olabilir.',
+            'sub_message' => 'Muhtemelen aradığınız sayfa taşınmış, silinmiş veya hiç var olmamış olabilir.',
+            'search_title' => 'Ne Arıyordunuz?',
+            'home_link_text' => 'Ana Sayfa',
+            'search_link_text' => 'İlan Ara',
+            'create_link_text' => 'İlan Ver',
+            'raffle_link_text' => 'Çekiliş',
+            'treasure_link_text' => 'Hazine',
+            'profile_link_text' => 'Profil',
+            'help_text' => 'Sorun devam ediyorsa, lütfen <a href="{support_url}">destek</a> ile iletişime geçin.',
+        ),
     );
     
     return isset($defaults[$page]) ? $defaults[$page] : array();
@@ -166,7 +192,7 @@ function hdh_get_default_content($page) {
  * Initialize default content (migration)
  */
 function hdh_init_default_content() {
-    $pages = array('homepage', 'auth', 'trade_create', 'trade_search', 'trade_single', 'lottery', 'decorations', 'profile');
+    $pages = array('homepage', 'auth', 'trade_create', 'trade_search', 'trade_single', 'lottery', 'decorations', 'profile', 'navigation', 'footer', 'error_404');
     
     foreach ($pages as $page) {
         $defaults = hdh_get_default_content($page);

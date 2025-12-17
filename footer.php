@@ -31,9 +31,9 @@
                 
                 <!-- Legal Links -->
                 <div class="footer-legal-links">
-                    <a href="<?php echo esc_url(home_url('/uyelik-sozlesmesi')); ?>" class="footer-legal-link">Üyelik Sözleşmesi</a>
+                    <a href="<?php echo esc_url(home_url('/uyelik-sozlesmesi')); ?>" class="footer-legal-link"><?php echo esc_html(hdh_get_content('footer', 'terms_link_text', 'Üyelik Sözleşmesi')); ?></a>
                     <span class="footer-legal-separator">•</span>
-                    <a href="<?php echo esc_url(home_url('/gizlilik-politikasi')); ?>" class="footer-legal-link">Gizlilik Politikası & KVKK</a>
+                    <a href="<?php echo esc_url(home_url('/gizlilik-politikasi')); ?>" class="footer-legal-link"><?php echo esc_html(hdh_get_content('footer', 'privacy_link_text', 'Gizlilik Politikası & KVKK')); ?></a>
                 </div>
                 
                 <?php if (get_theme_mod('mi_show_social_footer', true)) : ?>
@@ -49,23 +49,23 @@
     <nav class="bottom-navigation" id="bottom-navigation" role="navigation" aria-label="Ana Navigasyon">
         <a href="<?php echo esc_url(home_url('/ara')); ?>" class="bottom-nav-item" data-nav="search">
             <span class="bottom-nav-icon">🔍</span>
-            <span class="bottom-nav-label">Ara</span>
+            <span class="bottom-nav-label"><?php echo esc_html(hdh_get_content('navigation', 'search_label', 'Ara')); ?></span>
         </a>
         <a href="<?php echo esc_url(home_url('/hazine')); ?>" class="bottom-nav-item" data-nav="treasure">
             <span class="bottom-nav-icon">💎</span>
-            <span class="bottom-nav-label">Hazine</span>
+            <span class="bottom-nav-label"><?php echo esc_html(hdh_get_content('navigation', 'treasure_label', 'Hazine')); ?></span>
         </a>
         <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="bottom-nav-item bottom-nav-center" data-nav="create">
             <span class="bottom-nav-center-icon">+</span>
-            <span class="bottom-nav-center-label">İlan Ver</span>
+            <span class="bottom-nav-center-label"><?php echo esc_html(hdh_get_content('navigation', 'create_label', 'İlan Ver')); ?></span>
         </a>
         <a href="<?php echo esc_url(home_url('/cekilis')); ?>" class="bottom-nav-item" data-nav="raffle">
             <span class="bottom-nav-icon">🎫</span>
-            <span class="bottom-nav-label">Çekiliş</span>
+            <span class="bottom-nav-label"><?php echo esc_html(hdh_get_content('navigation', 'raffle_label', 'Çekiliş')); ?></span>
         </a>
         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="bottom-nav-item" data-nav="profile">
             <span class="bottom-nav-icon">👤</span>
-            <span class="bottom-nav-label">Profil</span>
+            <span class="bottom-nav-label"><?php echo esc_html(hdh_get_content('navigation', 'profile_label', 'Profil')); ?></span>
         </a>
     </nav>
     

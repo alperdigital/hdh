@@ -209,7 +209,7 @@ if (!have_posts()) :
                         <div class="trade-item-section">
                             <div class="trade-item-header">
                                 <span class="trade-item-icon">🤍</span>
-                                <span class="trade-item-label">Hediye İstiyor</span>
+                                <span class="trade-item-label"><?php echo esc_html(hdh_get_content('trade_single', 'wanted_label', 'Hediye İstiyor')); ?></span>
                             </div>
                             <div class="trade-item-box wanted-box">
                             <?php 
@@ -231,7 +231,7 @@ if (!have_posts()) :
                         <div class="trade-item-section">
                             <div class="trade-item-header">
                                 <span class="trade-item-icon">🎁</span>
-                                <span class="trade-item-label">Hediye Ediyor</span>
+                                <span class="trade-item-label"><?php echo esc_html(hdh_get_content('trade_single', 'offering_label', 'Hediye Ediyor')); ?></span>
                     </div>
                             <div class="trade-item-box offer-box">
                                     <?php foreach ($offer_items as $offer) : 
@@ -380,7 +380,7 @@ if (!have_posts()) :
                                 </div>
                                 
                                 <button type="submit" class="btn-submit-offer">
-                                    📤 Teklif Gönder
+                                    📤 <?php echo esc_html(hdh_get_content('trade_single', 'offer_submit_button_text', 'Teklif Gönder')); ?>
                                 </button>
                             </form>
             </div>

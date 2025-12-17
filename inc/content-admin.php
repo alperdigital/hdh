@@ -93,6 +93,21 @@ function hdh_render_content_admin_page() {
             'icon' => '👤',
             'description' => 'Profil sayfası metinleri',
         ),
+        'navigation' => array(
+            'title' => 'Navigasyon',
+            'icon' => '🧭',
+            'description' => 'Alt menü ve navigasyon metinleri',
+        ),
+        'footer' => array(
+            'title' => 'Footer',
+            'icon' => '📄',
+            'description' => 'Footer link metinleri',
+        ),
+        'error_404' => array(
+            'title' => '404 Sayfası',
+            'icon' => '⚠️',
+            'description' => '404 hata sayfası metinleri',
+        ),
     );
     
     // Get current page content
