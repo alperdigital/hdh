@@ -116,7 +116,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                     <?php elseif ($task['id'] === 'verify_email') : ?>
                                         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php elseif ($task['id'] === 'create_first_listing') : ?>
-                                        <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task">Yap</a>
+                                        <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php elseif ($task['id'] === 'invite_friend' || $task['id'] === 'friend_exchange') : ?>
                                         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php else : ?>
