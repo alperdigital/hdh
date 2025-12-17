@@ -11,17 +11,17 @@ if (!defined('ABSPATH')) exit;
  */
 function hdh_send_email_verification_code($user_id) {
     if (!$user_id) {
-        return new WP_Error('invalid_user', 'Geçersiz kullanıcı');
+        return new WP_Error('invalid_user', hdh_get_message('ajax', 'invalid_user', 'Geçersiz kullanıcı'));
     }
     
     $user = get_userdata($user_id);
     if (!$user || !$user->user_email) {
-        return new WP_Error('no_email', 'Kullanıcının e-posta adresi bulunamadı');
+        return new WP_Error('no_email', hdh_get_message('ajax', 'no_email', 'Kullanıcının e-posta adresi bulunamadı'));
     }
     
     // Check if already verified
     if (get_user_meta($user_id, 'hdh_email_verified', true)) {
-        return new WP_Error('already_verified', 'E-posta zaten doğrulanmış');
+        return new WP_Error('already_verified', hdh_get_message('ajax', 'already_verified', 'E-posta zaten doğrulanmış'));
     }
     
     // Generate 6-digit code
@@ -35,7 +35,7 @@ function hdh_send_email_verification_code($user_id) {
     $attempt_key = 'hdh_email_verify_attempts_' . $user_id;
     $attempts = get_transient($attempt_key) ?: 0;
     if ($attempts >= 5) {
-        return new WP_Error('rate_limit', 'Çok fazla deneme. Lütfen 1 saat sonra tekrar deneyin.');
+        return new WP_Error('rate_limit', hdh_get_message('ajax', 'rate_limit', 'Çok fazla deneme. Lütfen 1 saat sonra tekrar deneyin.'));
     }
     set_transient($attempt_key, $attempts + 1, HOUR_IN_SECONDS);
     
@@ -84,7 +84,7 @@ function hdh_send_email_verification_code($user_id) {
         
         return true;
     } else {
-        return new WP_Error('send_failed', 'E-posta gönderilemedi. Lütfen daha sonra tekrar deneyin.');
+        return new WP_Error('send_failed', hdh_get_message('ajax', 'send_failed', 'E-posta gönderilemedi. Lütfen daha sonra tekrar deneyin.'));
     }
 }
 
@@ -93,12 +93,12 @@ function hdh_send_email_verification_code($user_id) {
  */
 function hdh_verify_email_code($user_id, $code) {
     if (!$user_id || !$code) {
-        return new WP_Error('invalid_params', 'Geçersiz parametreler');
+        return new WP_Error('invalid_params', hdh_get_message('ajax', 'invalid_parameters', 'Geçersiz parametreler'));
     }
     
     // Check if already verified
     if (get_user_meta($user_id, 'hdh_email_verified', true)) {
-        return new WP_Error('already_verified', 'E-posta zaten doğrulanmış');
+        return new WP_Error('already_verified', hdh_get_message('ajax', 'already_verified', 'E-posta zaten doğrulanmış'));
     }
     
     // Get stored code
@@ -106,7 +106,7 @@ function hdh_verify_email_code($user_id, $code) {
     $stored_code = get_transient($transient_key);
     
     if (!$stored_code) {
-        return new WP_Error('code_expired', 'Doğrulama kodu süresi dolmuş. Lütfen yeni kod isteyin.');
+        return new WP_Error('code_expired', hdh_get_message('ajax', 'code_expired', 'Doğrulama kodu süresi dolmuş. Lütfen yeni kod isteyin.'));
     }
     
     // Verify code
@@ -119,7 +119,7 @@ function hdh_verify_email_code($user_id, $code) {
             ));
         }
         
-        return new WP_Error('invalid_code', 'Doğrulama kodu hatalı');
+        return new WP_Error('invalid_code', hdh_get_message('ajax', 'invalid_code', 'Doğrulama kodu hatalı'));
     }
     
     // Code is valid - verify email

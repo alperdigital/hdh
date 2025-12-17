@@ -303,13 +303,13 @@ function hdh_reset_daily_tasks($user_id) {
  */
 function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
     if (!$user_id || !$task_id) {
-        return new WP_Error('invalid_params', 'Geçersiz parametreler');
+        return new WP_Error('invalid_params', hdh_get_message('ajax', 'invalid_parameters', 'Geçersiz parametreler'));
     }
     
     $config = $is_daily ? hdh_get_daily_tasks_config() : hdh_get_one_time_tasks_config();
     
     if (!isset($config[$task_id])) {
-        return new WP_Error('invalid_task', 'Geçersiz görev');
+        return new WP_Error('invalid_task', hdh_get_message('ajax', 'invalid_task', 'Geçersiz görev'));
     }
     
     $task_config = $config[$task_id];
@@ -370,7 +370,7 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
         
         // Check if there are unclaimed progress milestones
         if ($progress <= $claimed_progress) {
-            return new WP_Error('already_claimed', 'Bu görevin ödülü zaten alınmış');
+            return new WP_Error('already_claimed', hdh_get_message('ajax', 'already_claimed', 'Bu görevin ödülü zaten alınmış'));
         }
         
         // Award reward for only ONE milestone at a time
@@ -456,12 +456,12 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
     } else {
         // For one-time tasks: check if task is completed
         if ($progress < $task_config['max_progress']) {
-            return new WP_Error('not_completed', 'Görev henüz tamamlanmamış');
+            return new WP_Error('not_completed', hdh_get_message('ajax', 'not_completed', 'Görev henüz tamamlanmamış'));
         }
         
         // Check if already claimed
         if (get_user_meta($user_id, $claimed_key, true)) {
-            return new WP_Error('already_claimed', 'Bu görevin ödülü zaten alınmış');
+            return new WP_Error('already_claimed', hdh_get_message('ajax', 'already_claimed', 'Bu görevin ödülü zaten alınmış'));
         }
         
         // Mark as claimed

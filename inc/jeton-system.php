@@ -28,7 +28,7 @@ function hdh_add_jeton($user_id, $amount, $reason = '', $metadata = array()) {
 function hdh_spend_jeton($user_id, $amount, $reason = '', $metadata = array()) {
     if (!$user_id || $amount <= 0) return new WP_Error('invalid_params', 'Invalid');
     $current = hdh_get_user_jeton_balance($user_id);
-    if ($current < $amount) return new WP_Error('insufficient_balance', 'Yetersiz jeton');
+    if ($current < $amount) return new WP_Error('insufficient_balance', hdh_get_message('ajax', 'insufficient_balance', 'Yetersiz jeton'));
     $new = $current - $amount;
     update_user_meta($user_id, 'hdh_jeton_balance', $new);
     hdh_log_jeton_transaction($user_id, $amount, 'spend', $reason, $metadata);
@@ -76,7 +76,7 @@ function hdh_can_claim_daily_jeton($user_id) {
 
 function hdh_claim_daily_jeton($user_id) {
     if (!hdh_can_claim_daily_jeton($user_id)) {
-        return new WP_Error('already_claimed', 'Bugün zaten jeton aldınız');
+        return new WP_Error('already_claimed', hdh_get_message('ajax', 'daily_claim_limit', 'Bugün zaten jeton aldınız'));
     }
     $result = hdh_add_jeton($user_id, 1, 'daily_claim');
     if (is_wp_error($result)) return $result;
@@ -102,7 +102,7 @@ function hdh_award_exchange_jetons($user1_id, $user2_id) {
         return new WP_Error('invalid_users', 'Invalid');
     }
     if (!hdh_can_earn_exchange_reward($user1_id, $user2_id)) {
-        return new WP_Error('abuse_prevention', 'Bu kullanıcıyla bugün zaten ödül aldınız');
+        return new WP_Error('abuse_prevention', hdh_get_message('ajax', 'abuse_prevention', 'Bu kullanıcıyla bugün zaten ödül aldınız'));
     }
     hdh_add_jeton($user1_id, 5, 'completed_exchange', array('other_user_id' => $user2_id));
     hdh_add_jeton($user2_id, 5, 'completed_exchange', array('other_user_id' => $user1_id));

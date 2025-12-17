@@ -40,12 +40,12 @@ function hdh_get_firebase_uid($user_id) {
  */
 function hdh_verify_email_via_firebase($user_id, $firebase_id_token) {
     if (!$user_id || !$firebase_id_token) {
-        return new WP_Error('invalid_params', 'Geçersiz parametreler');
+        return new WP_Error('invalid_params', hdh_get_message('ajax', 'invalid_parameters', 'Geçersiz parametreler'));
     }
     
     // Check if already verified
     if (get_user_meta($user_id, 'hdh_email_verified', true)) {
-        return new WP_Error('already_verified', 'E-posta zaten doğrulanmış');
+        return new WP_Error('already_verified', hdh_get_message('ajax', 'already_verified', 'E-posta zaten doğrulanmış'));
     }
     
     // Verify Firebase token via AJAX endpoint
@@ -89,7 +89,7 @@ function hdh_verify_email_via_firebase($user_id, $firebase_id_token) {
  */
 function hdh_verify_phone_via_firebase($user_id, $firebase_id_token, $phone_number) {
     // Phone verification is disabled - return error
-    return new WP_Error('phone_verification_disabled', 'Telefon doğrulaması devre dışı bırakılmıştır.');
+    return new WP_Error('phone_verification_disabled', hdh_get_message('ajax', 'phone_verification_disabled', 'Telefon doğrulaması devre dışı bırakılmıştır.'));
 }
 
 /**
