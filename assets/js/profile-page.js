@@ -33,13 +33,19 @@
                 const listingId = this.getAttribute('data-listing-id');
                 const listingItem = this.closest('.my-listing-item');
                 
-                if (!confirm('Bu ilanı pasife almak istediğinize emin misiniz? Pasife alınan ilanlar tekrar aktif edilemez.')) {
+                const confirmMsg = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.deactivate_listing_confirm) 
+                    ? hdhProfile.messages.profile.deactivate_listing_confirm 
+                    : 'Bu ilanı pasife almak istediğinize emin misiniz? Pasife alınan ilanlar tekrar aktif edilemez.';
+                if (!confirm(confirmMsg)) {
                     return;
                 }
                 
                 // Disable button and show loading
                 btn.disabled = true;
-                btn.textContent = '⏳ İşleniyor...';
+                const processingMsg = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.processing_text) 
+                    ? hdhProfile.messages.profile.processing_text 
+                    : 'İşleniyor...';
+                btn.textContent = '⏳ ' + processingMsg;
                 
                 // AJAX request
                 fetch(hdhProfile.ajaxUrl, {
@@ -64,25 +70,43 @@
                         if (statusSpan) {
                             statusSpan.classList.remove('status-active');
                             statusSpan.classList.add('status-inactive');
-                            statusSpan.textContent = '⏸️ Pasif';
+                            const inactiveStatus = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.listing_status_inactive) 
+                                ? hdhProfile.messages.profile.listing_status_inactive 
+                                : '⏸️ Pasif';
+                            statusSpan.textContent = inactiveStatus;
                         }
                         
                         // Remove button
                         btn.remove();
                         
                         // Show success toast
-                        showToast('İlan başarıyla pasife alındı.', 'success');
+                        const successMsg = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.listing_deactivated_success) 
+                            ? hdhProfile.messages.profile.listing_deactivated_success 
+                            : 'İlan başarıyla pasife alındı.';
+                        showToast(successMsg, 'success');
                     } else {
-                        showToast(data.data.message || 'Bir hata oluştu.', 'error');
+                        const errorMsg = data.data.message || (hdhProfile.messages && hdhProfile.messages.ajax && hdhProfile.messages.ajax.generic_error) 
+                            ? hdhProfile.messages.ajax.generic_error 
+                            : 'Bir hata oluştu.';
+                        showToast(errorMsg, 'error');
                         btn.disabled = false;
-                        btn.textContent = '⏸️ Pasife Al';
+                        const deactivateText = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.deactivate_button_text) 
+                            ? hdhProfile.messages.profile.deactivate_button_text 
+                            : '⏸️ Pasife Al';
+                        btn.textContent = deactivateText;
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showToast('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+                    const errorMsg = (hdhProfile.messages && hdhProfile.messages.ajax && hdhProfile.messages.ajax.generic_error_retry) 
+                        ? hdhProfile.messages.ajax.generic_error_retry 
+                        : 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                    showToast(errorMsg, 'error');
                     btn.disabled = false;
-                    btn.textContent = '⏸️ Pasife Al';
+                    const deactivateText = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.deactivate_button_text) 
+                        ? hdhProfile.messages.profile.deactivate_button_text 
+                        : '⏸️ Pasife Al';
+                    btn.textContent = deactivateText;
                 });
             });
         });

@@ -98,6 +98,7 @@ function hdh_get_default_content($page) {
             'error_generic' => 'Giriş yapılırken bir hata oluştu.',
             'email_verify_message' => 'E-posta\'nı doğrula +1 bilet kazan',
             'phone_verify_message' => 'Telefon numaranı doğrula +4 bilet kazan',
+            'password_strength_label' => 'Şifre gücü: ',
         ),
         'trade_create' => array(
             'page_title' => 'Hediyeleşme Başlasın',
@@ -141,6 +142,7 @@ function hdh_get_default_content($page) {
             'join_button_text' => 'Katıl',
             'login_button_text' => 'Giriş Yap',
             'countdown_ended_text' => 'Çekiliş Tamamlandı! 🎉',
+            'countdown_ended_button_text' => 'Çekiliş Tamamlandı',
             'lottery_description' => 'Çekilişe katılarak ödüller kazanabilirsiniz.',
         ),
         'decorations' => array(
@@ -157,6 +159,7 @@ function hdh_get_default_content($page) {
             'my_listings_title' => 'İlanlarım',
             'settings_title' => 'Ayarlar',
             'create_listing_button' => 'İlan Oluştur',
+            'profile_updated_success' => 'Profil başarıyla güncellendi!',
             'edit_button_text' => 'Düzenle',
             'delete_button_text' => 'Sil',
             'close_button_text' => 'Kapat',

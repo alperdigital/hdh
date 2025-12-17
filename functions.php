@@ -182,6 +182,13 @@ function hdh_enqueue_scripts() {
             '1.0.0',
             true
         );
+        $js_messages_auth = hdh_get_js_messages();
+        $js_messages_auth['auth'] = array(
+            'password_strength_label' => hdh_get_content('auth', 'password_strength_label', 'Şifre gücü: '),
+        );
+        wp_localize_script('hdh-auth-screen', 'hdhAuth', array(
+            'messages' => $js_messages_auth,
+        ));
         
         // Profile page interactions (for logged-in users)
         wp_enqueue_script(
@@ -308,6 +315,10 @@ function hdh_enqueue_scripts() {
             true
         );
         $js_messages = hdh_get_js_messages();
+        $js_messages['lottery'] = array(
+            'countdown_ended_text' => hdh_get_content('lottery', 'countdown_ended_text', 'Çekiliş Tamamlandı! 🎉'),
+            'countdown_ended_button_text' => hdh_get_content('lottery', 'countdown_ended_button_text', 'Çekiliş Tamamlandı'),
+        );
         $lottery_confirm = hdh_get_message('ui', 'confirm_join_lottery', 'Çekilişe katılmak için {cost} bilet harcanacak. Devam etmek istiyor musunuz?');
         wp_localize_script('hdh-lottery-page', 'hdhLottery', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
@@ -315,17 +326,33 @@ function hdh_enqueue_scripts() {
             'messages' => $js_messages,
             'confirmJoinLottery' => $lottery_confirm,
         ));
+        wp_localize_script('hdh-lottery-countdown', 'hdhLottery', array(
+            'messages' => $js_messages,
+        ));
     }
     
     // Enqueue profile page script with localized data
     if (is_page_template('page-profil.php') && is_user_logged_in()) {
+            $js_messages_profile = hdh_get_js_messages();
+            $js_messages_profile['profile'] = array(
+                'profile_updated_success' => hdh_get_content('profile', 'profile_updated_success', 'Profil başarıyla güncellendi!'),
+                'deactivate_listing_confirm' => hdh_get_content('profile', 'deactivate_listing_confirm', 'Bu ilanı pasife almak istediğinize emin misiniz? Pasife alınan ilanlar tekrar aktif edilemez.'),
+                'listing_deactivated_success' => hdh_get_content('profile', 'listing_deactivated_success', 'İlan başarıyla pasife alındı.'),
+                'listing_status_inactive' => hdh_get_content('profile', 'listing_status_inactive', '⏸️ Pasif'),
+                'deactivate_button_text' => hdh_get_content('profile', 'deactivate_button_text', '⏸️ Pasife Al'),
+                'processing_text' => hdh_get_content('profile', 'processing_text', 'İşleniyor...'),
+            );
             wp_localize_script('hdh-profile-page', 'hdhProfile', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('hdh_listing_actions'),
+                'messages' => $js_messages_profile,
             ));
             
             // Localize email verification script
             $js_messages = hdh_get_js_messages();
+            $js_messages['profile'] = array(
+                'profile_updated_success' => hdh_get_content('profile', 'profile_updated_success', 'Profil başarıyla güncellendi!'),
+            );
             wp_localize_script('hdh-email-verification', 'hdhProfile', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('hdh_email_verification'),
