@@ -183,8 +183,9 @@ function hdh_ajax_verify_email_code() {
     if (is_wp_error($result)) {
         wp_send_json_error(array('message' => $result->get_error_message()));
     } else {
+        $success_message = hdh_get_message('verification', 'email_verified', 'E-posta adresiniz başarıyla doğrulandı!') . ' +1 bilet kazandınız.';
         wp_send_json_success(array(
-            'message' => 'E-posta adresiniz başarıyla doğrulandı! +1 bilet kazandınız.',
+            'message' => $success_message,
             'bilet_balance' => function_exists('hdh_get_user_jeton_balance') 
                 ? hdh_get_user_jeton_balance($user_id) 
                 : 0
