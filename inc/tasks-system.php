@@ -408,8 +408,10 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
             
             // Award XP for 1 milestone only
             if (function_exists('hdh_add_xp')) {
-                // Convert level to XP (1 level = 100 XP)
-                $xp_amount = $task_config['reward_level'] * 100; // No multiplication
+                // Convert level to XP using configurable XP per level
+                // 1 level reward = xp_per_level XP (default: 100 XP)
+                $xp_per_level = function_exists('hdh_get_xp_per_level') ? hdh_get_xp_per_level() : 100;
+                $xp_amount = $task_config['reward_level'] * $xp_per_level;
                 hdh_add_xp($user_id, $xp_amount, 'task_reward', array(
                     'task_id' => $task_id,
                     'is_daily' => $is_daily,
@@ -484,8 +486,10 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
             $old_level = $user_state_before ? $user_state_before['level'] : 1;
             
             if (function_exists('hdh_add_xp')) {
-                // Convert level to XP (1 level = 100 XP)
-                $xp_amount = $task_config['reward_level'] * 100;
+                // Convert level to XP using configurable XP per level
+                // 1 level reward = xp_per_level XP (default: 100 XP)
+                $xp_per_level = function_exists('hdh_get_xp_per_level') ? hdh_get_xp_per_level() : 100;
+                $xp_amount = $task_config['reward_level'] * $xp_per_level;
                 hdh_add_xp($user_id, $xp_amount, 'task_reward', array(
                     'task_id' => $task_id,
                     'is_daily' => $is_daily,
@@ -506,7 +510,7 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
                 'rewards' => array(
                     'bilet' => $task_config['reward_bilet'],
                     'level' => $actual_level_gain,
-                    'xp_reward' => $task_config['reward_level'] * 100,
+                    'xp_reward' => (function_exists('hdh_get_xp_per_level') ? hdh_get_xp_per_level() : 100) * $task_config['reward_level'],
                 ),
             ));
         }

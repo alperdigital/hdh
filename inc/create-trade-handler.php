@@ -215,9 +215,10 @@ function hdh_handle_create_trade() {
             'fields' => 'ids',
         ));
         
-        // If this is the first listing, award +1 level (100 XP)
+        // If this is the first listing, award +1 level (xp_per_level XP)
         if (count($listings) === 1 && function_exists('hdh_add_xp')) {
-            hdh_add_xp($user_id, 100, 'first_listing_created', array('post_id' => $post_id));
+            $xp_per_level = function_exists('hdh_get_xp_per_level') ? hdh_get_xp_per_level() : 100;
+            hdh_add_xp($user_id, $xp_per_level, 'first_listing_created', array('post_id' => $post_id));
         }
         
         // Trigger listing created hook for quest/task tracking
