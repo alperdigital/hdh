@@ -79,6 +79,7 @@ require_once get_template_directory() . '/inc/quest-system.php';
 require_once get_template_directory() . '/inc/tasks-system.php';
 require_once get_template_directory() . '/inc/tasks-handler.php';
 require_once get_template_directory() . '/inc/tasks-admin.php';
+require_once get_template_directory() . '/inc/items-admin.php';
 require_once get_template_directory() . '/social-share.php';
 
 // Enqueue styles and scripts
