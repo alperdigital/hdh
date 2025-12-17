@@ -63,11 +63,14 @@ function hdh_get_user_state($user_id) {
         'ban_until' => get_user_meta($user_id, 'hdh_ban_until', true),
     );
     
-    // Calculate derived values
+    // Calculate derived values (linear XP system)
+    $xp_per_level = hdh_get_xp_per_level();
     $state['xp_to_next_level'] = hdh_calculate_xp_for_level($state['level'] + 1);
     $state['xp_progress'] = hdh_calculate_xp_for_level($state['level']);
-    $state['level_progress_percent'] = $state['xp_to_next_level'] > 0 
-        ? round((($state['xp'] - $state['xp_progress']) / ($state['xp_to_next_level'] - $state['xp_progress'])) * 100, 1)
+    $state['xp_needed_for_next_level'] = $xp_per_level; // Always constant in linear system
+    $state['xp_in_current_level'] = $state['xp'] - $state['xp_progress']; // XP gained in current level
+    $state['level_progress_percent'] = $xp_per_level > 0 
+        ? round(($state['xp_in_current_level'] / $xp_per_level) * 100, 1)
         : 0;
     
     $state['trust_rating'] = hdh_calculate_trust_rating($state['trust_plus'], $state['trust_minus']);
