@@ -97,7 +97,7 @@ function hdh_verify_phone_via_firebase($user_id, $firebase_id_token, $phone_numb
  */
 function hdh_ajax_verify_email_firebase() {
     if (!is_user_logged_in()) {
-        wp_send_json_error(array('message' => 'Giriş yapmalısınız.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'login_required', 'Giriş yapmalısınız.')));
         return;
     }
     
@@ -108,7 +108,7 @@ function hdh_ajax_verify_email_firebase() {
     $firebase_uid = isset($_POST['firebase_uid']) ? sanitize_text_field($_POST['firebase_uid']) : '';
     
     if (empty($id_token)) {
-        wp_send_json_error(array('message' => 'Firebase token gerekli.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'invalid_parameters', 'Firebase token gerekli.')));
         return;
     }
     
@@ -122,8 +122,9 @@ function hdh_ajax_verify_email_firebase() {
     if (is_wp_error($result)) {
         wp_send_json_error(array('message' => $result->get_error_message()));
     } else {
+        $success_message = hdh_get_message('verification', 'email_verified', 'E-posta adresiniz başarıyla doğrulandı!') . ' +1 bilet kazandınız.';
         wp_send_json_success(array(
-            'message' => 'E-posta adresiniz başarıyla doğrulandı! +1 bilet kazandınız.',
+            'message' => $success_message,
             'bilet_balance' => function_exists('hdh_get_user_jeton_balance') 
                 ? hdh_get_user_jeton_balance($user_id) 
                 : 0
@@ -137,7 +138,7 @@ add_action('wp_ajax_hdh_verify_email_firebase', 'hdh_ajax_verify_email_firebase'
  * NOTE: Phone verification is disabled - phone is optional, no rewards
  */
 function hdh_ajax_verify_phone_firebase() {
-    wp_send_json_error(array('message' => 'Telefon doğrulaması devre dışı bırakılmıştır.'));
+    wp_send_json_error(array('message' => hdh_get_message('ajax', 'generic_error', 'Telefon doğrulaması devre dışı bırakılmıştır.')));
 }
 add_action('wp_ajax_hdh_verify_phone_firebase', 'hdh_ajax_verify_phone_firebase');
 
@@ -148,7 +149,7 @@ add_action('wp_ajax_hdh_verify_phone_firebase', 'hdh_ajax_verify_phone_firebase'
  */
 function hdh_ajax_send_firebase_email_verification() {
     if (!is_user_logged_in()) {
-        wp_send_json_error(array('message' => 'Giriş yapmalısınız.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'login_required', 'Giriş yapmalısınız.')));
         return;
     }
     
@@ -159,7 +160,7 @@ function hdh_ajax_send_firebase_email_verification() {
     $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : $user->user_email;
     
     if (empty($email)) {
-        wp_send_json_error(array('message' => 'E-posta adresi gerekli.'));
+        wp_send_json_error(array('message' => hdh_get_message('ajax', 'invalid_parameters', 'E-posta adresi gerekli.')));
         return;
     }
     

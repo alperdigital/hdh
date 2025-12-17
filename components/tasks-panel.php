@@ -120,7 +120,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                     <?php elseif ($task['id'] === 'invite_friend' || $task['id'] === 'friend_exchange') : ?>
                                         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php else : ?>
-                                        <span class="task-status">Beklemede</span>
+                                        <span class="task-status"><?php echo esc_html(hdh_get_content('tasks', 'pending_status', 'Beklemede')); ?></span>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                     <?php elseif ($task['id'] === 'invite_friends' || $task['id'] === 'friend_exchanges') : ?>
                                         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php else : ?>
-                                        <span class="task-status">Beklemede</span>
+                                        <span class="task-status"><?php echo esc_html(hdh_get_content('tasks', 'pending_status', 'Beklemede')); ?></span>
                                     <?php endif; ?>
                                 </div>
                             </div>
