@@ -38,6 +38,10 @@ function hdh_get_js_messages() {
             'email_verified' => hdh_get_message('verification', 'email_verified', 'E-posta adresiniz başarıyla doğrulandı!'),
             'code_invalid' => hdh_get_message('verification', 'code_invalid', 'Doğrulama kodu geçersiz veya süresi dolmuş.'),
         ),
+        'ajax' => array(
+            'invalid_parameters' => hdh_get_message('ajax', 'invalid_parameters', 'Geçersiz parametreler'),
+            'generic_error' => hdh_get_message('ajax', 'generic_error', 'Bir hata oluştu'),
+        ),
     );
 }
 

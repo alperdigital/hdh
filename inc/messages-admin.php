@@ -75,6 +75,12 @@ function hdh_get_default_messages() {
             'phone_verified' => 'Telefon numaranız başarıyla doğrulandı!',
             'code_invalid' => 'Doğrulama kodu geçersiz veya süresi dolmuş.',
             'code_expired' => 'Doğrulama kodu süresi dolmuş. Lütfen yeni kod isteyin.',
+            'email_subject' => '[%s] E-posta Doğrulama Kodu',
+            'email_body_greeting' => 'Merhaba %s,',
+            'email_body_code' => 'Doğrulama Kodu: %s',
+            'email_body_validity' => 'Bu kod 15 dakika süreyle geçerlidir.',
+            'email_body_warning' => 'Eğer bu işlemi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.',
+            'email_body_signature' => 'Saygılarımızla,',
         ),
         'ui' => array(
             'loading' => 'Yükleniyor...',

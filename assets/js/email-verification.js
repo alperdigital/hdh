@@ -95,7 +95,10 @@
             const originalText = btn.textContent;
             
             btn.disabled = true;
-            btn.textContent = 'Doğrulanıyor...';
+            const verifyingMsg = (hdhProfile.messages && hdhProfile.messages.ui && hdhProfile.messages.ui.processing) 
+                ? hdhProfile.messages.ui.processing 
+                : 'Doğrulanıyor...';
+            btn.textContent = verifyingMsg;
             
             fetch(hdhProfile.ajaxUrl, {
                 method: 'POST',

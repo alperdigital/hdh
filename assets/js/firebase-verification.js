@@ -121,7 +121,10 @@
         // Initialize Firebase
         if (!initFirebase()) {
             if (emailMessage) {
-                emailMessage.textContent = 'Firebase yapılandırması bulunamadı.';
+                const errorMsg = (hdhFirebase.messages && hdhFirebase.messages.ajax && hdhFirebase.messages.ajax.generic_error) 
+                    ? hdhFirebase.messages.ajax.generic_error 
+                    : 'Firebase yapılandırması bulunamadı.';
+                emailMessage.textContent = errorMsg;
                 emailMessage.className = 'verification-message verification-error';
                 emailMessage.style.display = 'block';
             }
@@ -220,7 +223,10 @@
                 const originalText = btn.textContent;
                 
                 btn.disabled = true;
-                btn.textContent = 'Kontrol ediliyor...';
+                const checkingMsg = (hdhFirebase.messages && hdhFirebase.messages.ui && hdhFirebase.messages.ui.processing) 
+                    ? hdhFirebase.messages.ui.processing 
+                    : 'Kontrol ediliyor...';
+                btn.textContent = checkingMsg;
                 
                 try {
                     // Get current Firebase user
