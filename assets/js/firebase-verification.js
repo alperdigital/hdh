@@ -198,7 +198,10 @@
                         })
                     });
                     
-                    showMessage(emailMessage, 'success', 'Doğrulama e-postası gönderildi. E-posta kutunuzu kontrol edin.');
+                    const successMsg = (hdhFirebase.messages && hdhFirebase.messages.verification && hdhFirebase.messages.verification.firebase_email_sent) 
+                        ? hdhFirebase.messages.verification.firebase_email_sent 
+                        : 'Doğrulama e-postası gönderildi. E-posta kutunuzu kontrol edin.';
+                    showMessage(emailMessage, 'success', successMsg);
                     
                     // Show check button
                     if (emailCheckBtn) {
@@ -206,7 +209,10 @@
                     }
                 } catch (error) {
                     console.error('Firebase email verification error:', error);
-                    showMessage(emailMessage, 'error', error.message || 'E-posta gönderilemedi. Lütfen tekrar deneyin.');
+                    const errorMsg = error.message || (hdhFirebase.messages && hdhFirebase.messages.verification && hdhFirebase.messages.verification.firebase_email_send_failed) 
+                        ? hdhFirebase.messages.verification.firebase_email_send_failed 
+                        : 'E-posta gönderilemedi. Lütfen tekrar deneyin.';
+                    showMessage(emailMessage, 'error', errorMsg);
                 }
             } catch (error) {
                 showMessage(emailMessage, 'error', error.message || 'Bir hata oluştu');
@@ -288,7 +294,10 @@
                             throw new Error('Token alınamadı');
                         }
                     } else {
-                        showMessage(emailMessage, 'error', 'E-posta henüz doğrulanmamış. Lütfen e-posta kutunuzu kontrol edin.');
+                        const notVerifiedMsg = (hdhFirebase.messages && hdhFirebase.messages.verification && hdhFirebase.messages.verification.firebase_email_not_verified) 
+                            ? hdhFirebase.messages.verification.firebase_email_not_verified 
+                            : 'E-posta henüz doğrulanmamış. Lütfen e-posta kutunuzu kontrol edin.';
+                        showMessage(emailMessage, 'error', notVerifiedMsg);
                     }
                 } catch (error) {
                     showMessage(emailMessage, 'error', error.message || 'Bir hata oluştu');

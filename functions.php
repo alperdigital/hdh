@@ -280,6 +280,7 @@ function hdh_enqueue_scripts() {
             true
         );
         $js_messages = hdh_get_js_messages();
+        $js_messages['ui']['complete_exchange_button'] = hdh_get_content('trade_single', 'complete_exchange_button', 'Hediyeleşmeyi Tamamladım');
         wp_localize_script('hdh-single-trade', 'hdhSingleTrade', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'makeOfferNonce' => wp_create_nonce('hdh_make_offer'),

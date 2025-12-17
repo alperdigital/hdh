@@ -373,7 +373,10 @@
                 strengthIndicator.remove();
             } else {
                 strengthIndicator.className = 'password-strength ' + strengthClass;
-                strengthIndicator.textContent = 'Şifre gücü: ' + strengthText;
+                const strengthLabel = (hdhAuth.messages && hdhAuth.messages.auth && hdhAuth.messages.auth.password_strength_label) 
+                    ? hdhAuth.messages.auth.password_strength_label 
+                    : 'Şifre gücü: ';
+                strengthIndicator.textContent = strengthLabel + strengthText;
             }
         }
     }

@@ -134,6 +134,7 @@ function hdh_get_default_content($page) {
             'wanted_label' => 'Hediye İstiyor',
             'offering_label' => 'Hediye Ediyor',
             'share_label' => 'Burada paylaş:',
+            'complete_exchange_button' => 'Hediyeleşmeyi Tamamladım',
         ),
         'lottery' => array(
             'page_title' => 'Çekiliş',

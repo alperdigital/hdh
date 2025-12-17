@@ -73,7 +73,10 @@
                 
                 // Show "Çekiliş Tamamlandı" message
                 if (targetDateEl) {
-                    targetDateEl.textContent = 'Çekiliş Tamamlandı! 🎉';
+                    const endedText = (hdhLottery.messages && hdhLottery.messages.lottery && hdhLottery.messages.lottery.countdown_ended_text) 
+                        ? hdhLottery.messages.lottery.countdown_ended_text 
+                        : 'Çekiliş Tamamlandı! 🎉';
+                    targetDateEl.textContent = endedText;
                     targetDateEl.style.color = 'var(--farm-green)';
                     targetDateEl.style.fontWeight = '700';
                     targetDateEl.style.fontSize = '1.2rem';
@@ -85,7 +88,10 @@
                     if (!btn.disabled) {
                         btn.disabled = true;
                         btn.classList.add('disabled');
-                        btn.textContent = 'Çekiliş Tamamlandı';
+                        const endedButtonText = (hdhLottery.messages && hdhLottery.messages.lottery && hdhLottery.messages.lottery.countdown_ended_button_text) 
+                            ? hdhLottery.messages.lottery.countdown_ended_button_text 
+                            : 'Çekiliş Tamamlandı';
+                        btn.textContent = endedButtonText;
                     }
                 });
                 

@@ -38,6 +38,9 @@ function hdh_get_js_messages() {
             'email_verified' => hdh_get_message('verification', 'email_verified', 'E-posta adresiniz başarıyla doğrulandı!'),
             'code_invalid' => hdh_get_message('verification', 'code_invalid', 'Doğrulama kodu geçersiz veya süresi dolmuş.'),
             'code_length_error' => hdh_get_message('verification', 'code_length_error', 'Lütfen 6 haneli doğrulama kodunu girin.'),
+            'firebase_email_sent' => hdh_get_message('verification', 'firebase_email_sent', 'Doğrulama e-postası gönderildi. E-posta kutunuzu kontrol edin.'),
+            'firebase_email_send_failed' => hdh_get_message('verification', 'firebase_email_send_failed', 'E-posta gönderilemedi. Lütfen tekrar deneyin.'),
+            'firebase_email_not_verified' => hdh_get_message('verification', 'firebase_email_not_verified', 'E-posta henüz doğrulanmamış. Lütfen e-posta kutunuzu kontrol edin.'),
         ),
         'ajax' => array(
             'invalid_parameters' => hdh_get_message('ajax', 'invalid_parameters', 'Geçersiz parametreler'),

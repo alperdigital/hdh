@@ -339,7 +339,10 @@
                     } else {
                         showToast(data.data.message || 'Bir hata oluştu.', 'error');
                         confirmExchangeBtn.disabled = false;
-                        confirmExchangeBtn.textContent = 'Hediyeleşmeyi Tamamladım';
+                        const completeText = (hdhSingleTrade.messages && hdhSingleTrade.messages.ui && hdhSingleTrade.messages.ui.complete_exchange_button) 
+                            ? hdhSingleTrade.messages.ui.complete_exchange_button 
+                            : 'Hediyeleşmeyi Tamamladım';
+                        confirmExchangeBtn.textContent = completeText;
                     }
                 })
                 .catch(error => {

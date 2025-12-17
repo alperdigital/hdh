@@ -15,7 +15,10 @@
             const form = document.getElementById('profile-edit-form-element');
             if (form) {
                 const successMsg = document.createElement('div');
-                successMsg.textContent = 'Profil başarıyla güncellendi!';
+                const successText = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.profile_updated_success) 
+                    ? hdhProfile.messages.profile.profile_updated_success 
+                    : 'Profil başarıyla güncellendi!';
+                successMsg.textContent = successText;
                 successMsg.style.cssText = 'background: var(--farm-green); color: #FFFFFF; padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: center; font-weight: 600;';
                 form.parentNode.insertBefore(successMsg, form);
                 setTimeout(function() { successMsg.remove(); }, 3000);
