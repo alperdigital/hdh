@@ -42,22 +42,28 @@ function hdh_send_email_verification_code($user_id) {
     // Prepare email
     $site_name = get_bloginfo('name');
     $site_url = home_url();
-    $subject = sprintf('[%s] E-posta Doğrulama Kodu', $site_name);
+    $subject = sprintf(
+        hdh_get_message('verification', 'email_subject', '[%s] E-posta Doğrulama Kodu'),
+        $site_name
+    );
     
-    $message = sprintf(
-        "Merhaba %s,\n\n" .
-        "E-posta adresinizi doğrulamak için aşağıdaki kodu kullanın:\n\n" .
-        "Doğrulama Kodu: %s\n\n" .
-        "Bu kod 15 dakika süreyle geçerlidir.\n\n" .
-        "Eğer bu işlemi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.\n\n" .
-        "Saygılarımızla,\n" .
-        "%s Ekibi\n" .
-        "%s",
-        $user->display_name,
-        $code,
+    $greeting = sprintf(
+        hdh_get_message('verification', 'email_body_greeting', 'Merhaba %s,'),
+        $user->display_name
+    );
+    $code_text = sprintf(
+        hdh_get_message('verification', 'email_body_code', 'Doğrulama Kodu: %s'),
+        $code
+    );
+    $validity = hdh_get_message('verification', 'email_body_validity', 'Bu kod 15 dakika süreyle geçerlidir.');
+    $warning = hdh_get_message('verification', 'email_body_warning', 'Eğer bu işlemi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.');
+    $signature = sprintf(
+        hdh_get_message('verification', 'email_body_signature', 'Saygılarımızla,') . "\n%s Ekibi\n%s",
         $site_name,
         $site_url
     );
+    
+    $message = $greeting . "\n\n" . "E-posta adresinizi doğrulamak için aşağıdaki kodu kullanın:\n\n" . $code_text . "\n\n" . $validity . "\n\n" . $warning . "\n\n" . $signature;
     
     // Send email
     $headers = array(

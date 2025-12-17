@@ -86,7 +86,10 @@
             const code = codeInput.value.trim();
             
             if (!code || code.length !== 6) {
-                showMessage('error', 'Lütfen 6 haneli doğrulama kodunu girin.');
+                const errorMsg = (hdhProfile.messages && hdhProfile.messages.verification && hdhProfile.messages.verification.code_length_error) 
+                    ? hdhProfile.messages.verification.code_length_error 
+                    : 'Lütfen 6 haneli doğrulama kodunu girin.';
+                showMessage('error', errorMsg);
                 codeInput.focus();
                 return;
             }

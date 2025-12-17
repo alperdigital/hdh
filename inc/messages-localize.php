@@ -37,6 +37,7 @@ function hdh_get_js_messages() {
             'email_sent' => hdh_get_message('verification', 'email_sent', 'Doğrulama kodu e-posta adresinize gönderildi. Lütfen e-posta kutunuzu kontrol edin.'),
             'email_verified' => hdh_get_message('verification', 'email_verified', 'E-posta adresiniz başarıyla doğrulandı!'),
             'code_invalid' => hdh_get_message('verification', 'code_invalid', 'Doğrulama kodu geçersiz veya süresi dolmuş.'),
+            'code_length_error' => hdh_get_message('verification', 'code_length_error', 'Lütfen 6 haneli doğrulama kodunu girin.'),
         ),
         'ajax' => array(
             'invalid_parameters' => hdh_get_message('ajax', 'invalid_parameters', 'Geçersiz parametreler'),
