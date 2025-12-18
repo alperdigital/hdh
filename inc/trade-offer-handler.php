@@ -76,8 +76,15 @@ function hdh_handle_complete_exchange() {
     }
     if ($author_confirmed === '1' && $offerer_confirmed === '1') {
         update_post_meta($listing_id, '_hdh_trade_status', 'completed');
-        if (function_exists('hdh_award_exchange_jetons')) hdh_award_exchange_jetons($listing_author_id, $accepted_offerer_id);
-        wp_send_json_success(array('message' => hdh_get_message('ajax', 'exchange_completed', 'Hediyeleşme tamamlandı!')));
+        
+        // NOTE: Bilet ödülleri artık görevlerden alınacak, burada otomatik ödül verilmiyor
+        // Kullanıcılar görevlerden "Ödülünü Al" butonuna tıklayarak ödüllerini alacaklar
+        
+        // Trigger exchange completed hook for quest/task tracking (progress update only, no auto-reward)
+        do_action('hdh_exchange_completed', $listing_author_id, $listing_id);
+        do_action('hdh_exchange_completed', $accepted_offerer_id, $listing_id);
+        
+        wp_send_json_success(array('message' => hdh_get_message('ajax', 'exchange_completed', 'Hediyeleşme tamamlandı! Görevlerden ödüllerinizi alabilirsiniz.')));
     } else {
         wp_send_json_success(array('message' => hdh_get_message('ajax', 'exchange_confirmation_saved', 'Onayınız kaydedildi. Diğer tarafın onayını bekliyoruz.')));
     }

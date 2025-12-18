@@ -417,18 +417,15 @@ function hdh_handle_confirm_exchange() {
         // Complete the trade
         update_post_meta($listing_id, '_hdh_trade_status', 'completed');
         
-        // Award jetons
-        if (function_exists('hdh_add_jeton')) {
-            hdh_add_jeton($listing->post_author, 5, 'complete_trade', array('listing_id' => $listing_id));
-            hdh_add_jeton($accepted_offerer_id, 5, 'complete_trade', array('listing_id' => $listing_id));
-        }
+        // NOTE: Bilet ödülleri artık görevlerden alınacak, burada otomatik ödül verilmiyor
+        // Kullanıcılar görevlerden "Ödülünü Al" butonuna tıklayarak ödüllerini alacaklar
         
-        // Trigger exchange completed hook for quest tracking
+        // Trigger exchange completed hook for quest/task tracking (progress update only, no auto-reward)
         do_action('hdh_exchange_completed', $listing->post_author, $listing_id);
         do_action('hdh_exchange_completed', $accepted_offerer_id, $listing_id);
         
         wp_send_json_success(array(
-            'message' => 'Hediyeleşme tamamlandı! Her iki taraf da +5 bilet kazandı.',
+            'message' => 'Hediyeleşme tamamlandı! Görevlerden ödüllerinizi alabilirsiniz.',
             'completed' => true
         ));
     } else {

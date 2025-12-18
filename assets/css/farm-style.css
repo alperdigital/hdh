@@ -4129,6 +4129,7 @@ footer,
     overflow: hidden;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    outline: none;
 }
 
 .listing-unified-block:active {
@@ -4154,6 +4155,8 @@ footer,
     background: transparent;
     border: none;
     border-bottom: 1px solid rgba(201, 184, 138, 0.3);
+    outline: none;
+    box-shadow: none;
 }
 
 /* Old star styles removed - replaced by .hdh-level-badge */
@@ -4245,11 +4248,16 @@ footer,
     align-items: flex-start;
     padding: 0;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .listing-column {
     flex: 1;
     min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .listing-column-divider {
@@ -4276,6 +4284,10 @@ footer,
     font-size: 12px;
     color: var(--newspaper-text);
     line-height: 1.4;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-width: 0;
 }
 
 .listing-item-icon {
@@ -4391,6 +4403,9 @@ footer,
         padding-top: 0;
         padding-bottom: 10px;
         gap: 5px;
+        border: none;
+        outline: none;
+        box-shadow: none;
     }
     
     .listing-header-split {
@@ -4414,6 +4429,13 @@ footer,
     
     .listing-content-columns-unified {
         gap: 10px;
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    .listing-column {
+        overflow: hidden;
+        min-width: 0;
     }
     
     .listing-header-split {
@@ -5575,9 +5597,90 @@ footer,
     overflow-wrap: break-word;
     max-width: 100%;
 }
-.btn-join-lottery { width: 100%; background: var(--farm-green); color: #FFFFFF; font-size: 16px; font-weight: 600; padding: 14px 24px; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+.btn-join-lottery { width: 100%; background: var(--farm-green); color: #FFFFFF; font-size: 16px; font-weight: 600; padding: 14px 24px; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; margin-top: 12px; }
 .btn-join-lottery:active:not(:disabled) { background: var(--farm-green-dark); transform: scale(0.98); }
 .btn-join-lottery:disabled, .btn-join-lottery.disabled { opacity: 0.5; cursor: not-allowed; }
+
+.lottery-participants {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(201, 184, 138, 0.3);
+}
+
+.lottery-participants-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    margin: 0 0 8px 0;
+}
+
+.lottery-participants-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.lottery-participant-name {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--newspaper-text);
+    background: rgba(201, 184, 138, 0.15);
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Mobile responsive for lottery participants */
+@media (max-width: 768px) {
+    .lottery-participants-list {
+        gap: 4px;
+    }
+    
+    .lottery-participant-name {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+    
+    .lottery-participants-title {
+        font-size: 12px;
+    }
+    
+    .btn-start-lottery {
+        font-size: 14px;
+        padding: 12px 20px;
+    }
+}
+
+.btn-start-lottery {
+    width: 100%;
+    background: var(--warm-orange);
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 12px;
+}
+
+.btn-start-lottery:hover {
+    background: #E67E22;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(232, 111, 51, 0.3);
+}
+
+.btn-start-lottery:active {
+    transform: scale(0.98);
+}
 
 /* ============================================
    TASKS PANEL (STEP 5)
@@ -5790,6 +5893,7 @@ footer,
     overflow-wrap: break-word;
     max-width: 100%;
     box-sizing: border-box;
+    gap: 12px;
 }
 
 .task-item:hover {
@@ -5809,6 +5913,10 @@ footer,
     align-items: flex-start;
     gap: 12px;
     flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .task-icon {
@@ -5927,6 +6035,21 @@ footer,
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.task-status {
+    font-size: 14px;
+    color: var(--newspaper-text);
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .tasks-section {
@@ -6032,6 +6155,9 @@ footer,
     .task-actions {
         width: 100%;
         justify-content: center;
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .btn-claim-task,
@@ -6039,6 +6165,19 @@ footer,
         width: 100%;
         max-width: 100%;
         padding: 12px 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        box-sizing: border-box;
+    }
+    
+    .task-status {
+        width: 100%;
+        text-align: center;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     
     .task-name {
@@ -6050,6 +6189,12 @@ footer,
     .task-progress {
         display: inline-block;
         margin-left: 6px;
+    }
+    
+    .task-item {
+        overflow: hidden;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 }
 
@@ -6098,6 +6243,29 @@ footer,
     .decoration-content { padding: 16px; }
     .decoration-name { font-size: 16px; }
     .btn-get-decoration { padding: 14px 24px; font-size: 16px; }
+    
+    .lottery-card {
+        padding: 16px;
+    }
+    
+    .lottery-participants {
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+    
+    .lottery-participants-list {
+        gap: 4px;
+    }
+    
+    .lottery-participant-name {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+    
+    .btn-start-lottery {
+        font-size: 14px;
+        padding: 12px 20px;
+    }
     .countdown-value { font-size: 32px; }
     .profile-edit-form .form-actions, .offer-actions { flex-direction: column; }
     .btn-save-profile, .btn-cancel-edit, .btn-accept-offer, .btn-reject-offer, .btn-create-listing-profile { width: 100%; }

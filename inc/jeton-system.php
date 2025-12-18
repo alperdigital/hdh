@@ -12,6 +12,60 @@ function hdh_get_user_jeton_balance($user_id) {
 
 function hdh_add_jeton($user_id, $amount, $reason = '', $metadata = array()) {
     if (!$user_id || $amount <= 0) return new WP_Error('invalid_params', 'Invalid');
+    
+    // Generate unique transaction ID if not provided
+    if (!isset($metadata['transaction_id'])) {
+        $metadata['transaction_id'] = wp_generate_uuid4();
+    }
+    $transaction_id = $metadata['transaction_id'];
+    
+    // Check if this transaction ID was already processed (prevent duplicate rewards)
+    $processed_transactions = get_user_meta($user_id, 'hdh_processed_transactions', true);
+    if (!is_array($processed_transactions)) {
+        $processed_transactions = array();
+    }
+    
+    // Check if transaction ID already exists
+    if (in_array($transaction_id, $processed_transactions)) {
+        // Transaction already processed, return error
+        return new WP_Error('duplicate_transaction', hdh_get_message('ajax', 'duplicate_transaction', 'Bu ödül zaten verilmiş'));
+    }
+    
+    // Rate limiting: Check if same reason + metadata combination was used in last 5 minutes
+    $recent_transactions = hdh_get_jeton_transactions($user_id, 20);
+    $five_minutes_ago = current_time('timestamp') - 300; // 5 minutes in seconds
+    
+    foreach ($recent_transactions as $transaction) {
+        if ($transaction['type'] === 'add' && 
+            $transaction['reason'] === $reason &&
+            isset($transaction['metadata']['transaction_id']) &&
+            $transaction['metadata']['transaction_id'] !== $transaction_id) {
+            
+            // Check if metadata matches (excluding transaction_id)
+            $transaction_meta = $transaction['metadata'];
+            $current_meta = $metadata;
+            unset($transaction_meta['transaction_id']);
+            unset($current_meta['transaction_id']);
+            
+            if ($transaction_meta === $current_meta) {
+                $transaction_time = strtotime($transaction['timestamp']);
+                if ($transaction_time > $five_minutes_ago) {
+                    // Same reward was given in last 5 minutes, prevent duplicate
+                    return new WP_Error('rate_limit', hdh_get_message('ajax', 'rate_limit_bilet', 'Aynı ödül çok kısa süre önce verildi'));
+                }
+            }
+        }
+    }
+    
+    // Mark transaction as processed BEFORE adding bilet (prevent race conditions)
+    $processed_transactions[] = $transaction_id;
+    // Keep only last 1000 transaction IDs to prevent memory issues
+    if (count($processed_transactions) > 1000) {
+        $processed_transactions = array_slice($processed_transactions, -1000);
+    }
+    update_user_meta($user_id, 'hdh_processed_transactions', $processed_transactions);
+    
+    // Now safely add the bilet
     $current = hdh_get_user_jeton_balance($user_id);
     $new = $current + $amount;
     update_user_meta($user_id, 'hdh_jeton_balance', $new);
@@ -104,7 +158,9 @@ function hdh_award_exchange_jetons($user1_id, $user2_id) {
     if (!hdh_can_earn_exchange_reward($user1_id, $user2_id)) {
         return new WP_Error('abuse_prevention', hdh_get_message('ajax', 'abuse_prevention', 'Bu kullanıcıyla bugün zaten ödül aldınız'));
     }
-    hdh_add_jeton($user1_id, 5, 'completed_exchange', array('other_user_id' => $user2_id));
-    hdh_add_jeton($user2_id, 5, 'completed_exchange', array('other_user_id' => $user1_id));
+    $timestamp = current_time('timestamp');
+    $transaction_id_base = 'exchange_' . min($user1_id, $user2_id) . '_' . max($user1_id, $user2_id) . '_' . $timestamp;
+    hdh_add_jeton($user1_id, 5, 'completed_exchange', array('other_user_id' => $user2_id, 'transaction_id' => $transaction_id_base . '_user1'));
+    hdh_add_jeton($user2_id, 5, 'completed_exchange', array('other_user_id' => $user1_id, 'transaction_id' => $transaction_id_base . '_user2'));
     return true;
 }

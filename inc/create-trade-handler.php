@@ -208,9 +208,11 @@ function hdh_handle_create_trade() {
         
         // Award +2 bilet for creating a listing
         if (function_exists('hdh_add_bilet')) {
-            hdh_add_bilet($user_id, 2, 'listing_created', array('post_id' => $post_id));
+            $transaction_id = 'listing_' . $post_id . '_' . $user_id . '_' . current_time('timestamp');
+            hdh_add_bilet($user_id, 2, 'listing_created', array('post_id' => $post_id, 'transaction_id' => $transaction_id));
         } elseif (function_exists('hdh_add_jeton')) {
-            hdh_add_jeton($user_id, 2, 'listing_created', array('post_id' => $post_id));
+            $transaction_id = 'listing_' . $post_id . '_' . $user_id . '_' . current_time('timestamp');
+            hdh_add_jeton($user_id, 2, 'listing_created', array('post_id' => $post_id, 'transaction_id' => $transaction_id));
         }
         
         // Check if this is the first listing - if so, award level reward too

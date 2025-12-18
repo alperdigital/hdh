@@ -10,6 +10,8 @@ if (!defined('ABSPATH')) exit;
 require_once get_template_directory() . '/inc/admin-registry.php';
 require_once get_template_directory() . '/inc/admin-history.php';
 require_once get_template_directory() . '/inc/admin-panel-handlers.php';
+require_once get_template_directory() . '/inc/lottery-management.php';
+require_once get_template_directory() . '/inc/lottery-admin.php';
 
 /**
  * Add new admin menu structure
@@ -84,6 +86,16 @@ function hdh_add_premium_admin_menu() {
         'manage_options',
         'hdh-components',
         'hdh_render_components_page'
+    );
+    
+    // Lottery Management
+    add_submenu_page(
+        'hdh-dashboard',
+        'Çekiliş Yönetimi',
+        'Çekiliş',
+        'manage_options',
+        'hdh-lottery',
+        'hdh_render_lottery_admin_page'
     );
     
     // Advanced

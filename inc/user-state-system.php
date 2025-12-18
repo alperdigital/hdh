@@ -278,7 +278,8 @@ function hdh_calculate_level_from_xp($xp) {
 function hdh_award_level_up_rewards($user_id, $level) {
     // Award bilets based on level
     $bilet_reward = min($level, 10); // Max 10 bilets per level
-    hdh_add_bilet($user_id, $bilet_reward, 'level_up', array('level' => $level));
+    $transaction_id = 'levelup_' . $level . '_' . $user_id . '_' . current_time('timestamp');
+    hdh_add_bilet($user_id, $bilet_reward, 'level_up', array('level' => $level, 'transaction_id' => $transaction_id));
     
     // Award badges at milestone levels
     $milestones = array(5, 10, 25, 50, 100);
@@ -395,7 +396,8 @@ function hdh_verify_email($user_id) {
         update_user_meta($user_id, 'hdh_email_verified_at', current_time('mysql'));
         
         // Award bilet for verification
-        hdh_add_bilet($user_id, 1, 'email_verification');
+        $transaction_id = 'email_verify_' . $user_id . '_' . current_time('timestamp');
+        hdh_add_bilet($user_id, 1, 'email_verification', array('transaction_id' => $transaction_id));
         
         // Log verification event
         hdh_log_event($user_id, 'email_verified', array(

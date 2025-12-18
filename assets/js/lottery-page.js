@@ -14,10 +14,7 @@
                 alert(invalidMsg); 
                 return; 
             }
-            const confirmMsg = hdhLottery.confirmJoinLottery 
-                ? hdhLottery.confirmJoinLottery.replace('{cost}', jetonCost) 
-                : 'Çekilişe katılmak için ' + jetonCost + ' bilet harcanacak. Devam etmek istiyor musunuz?';
-            if (!confirm(confirmMsg)) return;
+            // Confirm dialog removed - direct join
             this.disabled = true;
             const originalText = this.textContent;
             const processingMsg = (hdhLottery.messages && hdhLottery.messages.ui && hdhLottery.messages.ui.processing) 
@@ -48,6 +45,51 @@
                         this.textContent = originalText;
                     }
                 }).catch(error => { console.error('Error:', error); alert('Bir hata oluştu'); this.disabled = false; this.textContent = originalText; });
+            });
+        });
+        
+        // Handle lottery start button (admin only)
+        const startButtons = document.querySelectorAll('.btn-start-lottery');
+        startButtons.forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const lotteryType = this.getAttribute('data-lottery-type');
+                if (!lotteryType) {
+                    alert('Geçersiz çekiliş tipi');
+                    return;
+                }
+                
+                if (!confirm('Çekilişi başlatmak istediğinize emin misiniz? Bu işlem geri alınamaz.')) {
+                    return;
+                }
+                
+                this.disabled = true;
+                const originalText = this.textContent;
+                this.textContent = 'Başlatılıyor...';
+                
+                const formData = new FormData();
+                formData.append('action', 'hdh_start_lottery');
+                formData.append('lottery_type', lotteryType);
+                formData.append('nonce', hdhLottery.nonce);
+                
+                fetch(hdhLottery.ajaxUrl, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Çekiliş başarıyla başlatıldı! Kazanan: ' + (data.data.winner_name || 'Bilinmiyor'));
+                        window.location.reload();
+                    } else {
+                        alert(data.data.message || 'Bir hata oluştu');
+                        this.disabled = false;
+                        this.textContent = originalText;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Bir hata oluştu');
+                    this.disabled = false;
+                    this.textContent = originalText;
+                });
             });
         });
     });

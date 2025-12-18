@@ -124,8 +124,11 @@ function hdh_get_default_messages() {
             'task_system_inactive' => 'Görev sistemi aktif değil',
             'reward_claimed_success' => 'Ödül başarıyla alındı!',
             'insufficient_tickets' => 'Yetersiz bilet',
-            'lottery_max_entries' => 'Bugün bu çekilişe maksimum 3 kez katılabilirsiniz',
+            'lottery_max_entries' => 'Bugün bu çekilişe maksimum %d kez katılabilirsiniz',
             'lottery_join_success' => 'Çekilişe başarıyla katıldınız!',
+            'lottery_not_active' => 'Bu çekiliş şu anda aktif değil',
+            'lottery_ended' => 'Bu çekiliş sona ermiştir',
+            'system_error' => 'Sistem hatası. Lütfen daha sonra tekrar deneyin.',
             'offer_create_error' => 'Teklif oluşturulurken bir hata oluştu.',
             'generic_error' => 'Bir hata oluştu',
             'generic_error_retry' => 'Bir hata oluştu. Lütfen tekrar deneyin.',
@@ -143,6 +146,8 @@ function hdh_get_default_messages() {
             'invalid_task' => 'Geçersiz görev',
             'daily_claim_limit' => 'Bugün zaten jeton aldınız',
             'abuse_prevention' => 'Bu kullanıcıyla bugün zaten ödül aldınız',
+            'duplicate_transaction' => 'Bu ödül zaten verilmiş',
+            'rate_limit_bilet' => 'Aynı ödül çok kısa süre önce verildi',
         ),
     );
 }

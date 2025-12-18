@@ -387,14 +387,25 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
         if ($task_config['reward_bilet'] > 0) {
             $total_bilet = $task_config['reward_bilet']; // No multiplication, just the base reward
             if (function_exists('hdh_add_bilet')) {
-                hdh_add_bilet($user_id, $total_bilet, 'task_reward', array(
+                // Generate unique transaction ID for this specific reward claim
+                $transaction_id = 'task_' . $task_id . '_' . ($is_daily ? 'daily' : 'onetime') . '_' . $user_id . '_' . $new_claimed_progress . '_' . current_time('timestamp');
+                
+                $result = hdh_add_bilet($user_id, $total_bilet, 'task_reward', array(
                     'task_id' => $task_id,
                     'is_daily' => $is_daily,
                     'milestones' => $claimable_milestones,
                     'progress' => $progress,
                     'claimed_progress' => $claimed_progress,
                     'new_claimed_progress' => $new_claimed_progress,
+                    'transaction_id' => $transaction_id,
                 ));
+                
+                // If bilet addition failed (duplicate transaction), revert claimed progress
+                if (is_wp_error($result)) {
+                    // Revert claimed progress update
+                    update_user_meta($user_id, $claimed_key, $claimed_progress);
+                    return $result;
+                }
             }
         }
         
@@ -470,10 +481,21 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
         // Award bilet
         if ($task_config['reward_bilet'] > 0) {
             if (function_exists('hdh_add_bilet')) {
-                hdh_add_bilet($user_id, $task_config['reward_bilet'], 'task_reward', array(
+                // Generate unique transaction ID for this specific reward claim
+                $transaction_id = 'task_' . $task_id . '_onetime_' . $user_id . '_' . current_time('timestamp');
+                
+                $result = hdh_add_bilet($user_id, $task_config['reward_bilet'], 'task_reward', array(
                     'task_id' => $task_id,
                     'is_daily' => $is_daily,
+                    'transaction_id' => $transaction_id,
                 ));
+                
+                // If bilet addition failed (duplicate transaction), revert claimed status
+                if (is_wp_error($result)) {
+                    // Revert claimed status
+                    delete_user_meta($user_id, $claimed_key);
+                    return $result;
+                }
             }
         }
         
@@ -595,11 +617,31 @@ function hdh_track_listing_creation($user_id, $listing_id) {
 add_action('hdh_listing_created', 'hdh_track_listing_creation', 10, 2);
 
 /**
- * Track exchange completion for daily task
+ * Track exchange completion for daily task and one-time task
  */
 function hdh_track_exchange_completion($user_id, $trade_id) {
     // Update daily task progress
     hdh_update_daily_task_progress($user_id, 'complete_exchanges', 1);
+    
+    // Update completed exchanges count for one-time task tracking
+    $completed_count = (int) get_user_meta($user_id, 'hdh_completed_exchanges', true);
+    $completed_count++;
+    update_user_meta($user_id, 'hdh_completed_exchanges', $completed_count);
+    
+    // If this is the first exchange, mark the one-time task as completed (but NOT claimed)
+    // User must manually claim the reward via "Ödülünü Al" button
+    if ($completed_count === 1) {
+        update_user_meta($user_id, 'hdh_task_progress_complete_first_exchange', 1);
+        
+        // Log task completion (but don't mark as claimed - user must claim manually)
+        if (function_exists('hdh_log_event')) {
+            hdh_log_event($user_id, 'task_completed', array(
+                'task_id' => 'complete_first_exchange',
+                'reason' => 'first_exchange_completed',
+                'note' => 'Reward must be claimed manually via task panel',
+            ));
+        }
+    }
 }
 add_action('hdh_exchange_completed', 'hdh_track_exchange_completion', 10, 2);
 

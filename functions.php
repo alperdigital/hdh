@@ -56,6 +56,8 @@ require_once get_template_directory() . '/inc/widgets.php';
 require_once get_template_directory() . '/inc/social-functions.php';
 require_once get_template_directory() . '/inc/ajax-handlers.php';
 require_once get_template_directory() . '/inc/lottery-config.php';
+require_once get_template_directory() . '/inc/lottery-management.php';
+require_once get_template_directory() . '/inc/lottery-handler.php';
 require_once get_template_directory() . '/inc/auth-redirect.php';
 require_once get_template_directory() . '/inc/asset-loader.php';
 require_once get_template_directory() . '/inc/trade-integrity.php';
@@ -328,6 +330,7 @@ function hdh_enqueue_scripts() {
             'nonce' => wp_create_nonce('hdh_join_lottery'),
             'messages' => $js_messages,
             'confirmJoinLottery' => $lottery_confirm,
+            'isAdmin' => current_user_can('administrator'),
         ));
         wp_localize_script('hdh-lottery-countdown', 'hdhLottery', array(
             'messages' => $js_messages,
