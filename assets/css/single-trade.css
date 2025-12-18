@@ -1166,6 +1166,43 @@
     text-align: center;
 }
 
+.farm-codes-preview {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 1px solid rgba(201, 184, 138, 0.2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.farm-code-preview-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.farm-code-preview-label {
+    font-size: 0.9rem;
+    color: var(--newspaper-text-light);
+    font-weight: 600;
+}
+
+.farm-code-preview-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--farm-green-dark);
+    font-family: 'Courier New', monospace;
+    padding: 8px 12px;
+    background: rgba(139, 195, 74, 0.1);
+    border: 1px solid rgba(139, 195, 74, 0.3);
+    border-radius: 8px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
 .btn-start-trade {
     min-height: 56px;
 }

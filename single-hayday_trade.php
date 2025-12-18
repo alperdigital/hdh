@@ -63,6 +63,9 @@ if (!have_posts()) :
         $author_farm_number = get_user_meta($author_id, 'hayday_farm_number', true);
         $completed_count = function_exists('hdh_get_completed_gift_count') ? hdh_get_completed_gift_count($author_id) : 0;
         
+        // Get current user farm number (for starter)
+        $current_user_farm_number = $current_user_id ? get_user_meta($current_user_id, 'hayday_farm_number', true) : '';
+        
         // Get user level
         $user_level = 1;
         if (function_exists('hdh_get_user_state')) {
@@ -127,15 +130,12 @@ if (!have_posts()) :
                             <div class="trade-author-info-simplified">
                                 <div class="trade-author-name-simplified"><?php echo esc_html($author_name); ?></div>
                                 <div class="trade-meta-row-simplified">
-                                    <?php if ($completed_count > 0) : ?>
-                                        <div class="trade-completed-badge-simplified">
-                                            <span class="completed-icon">✅</span>
-                                            <span class="completed-count"><?php echo esc_html($completed_count); ?></span>
-                                            <span class="completed-label">başarılı hediyeleşme</span>
-                                        </div>
-                                    <?php endif; ?>
+                                    <div class="trade-completed-badge-simplified">
+                                        <span class="completed-icon">✅</span>
+                                        <span class="completed-count"><?php echo esc_html($completed_count); ?></span>
+                                        <span class="completed-label">başarılı hediyeleşme</span>
+                                    </div>
                                     <div class="trade-time-simplified">
-                                        <span class="time-icon">📅</span>
                                         <span class="time-text"><?php echo esc_html($relative_time); ?></span>
                                     </div>
                                 </div>
@@ -166,8 +166,24 @@ if (!have_posts()) :
                         <!-- Roadmap Section -->
                         <?php hdh_render_trade_roadmap($session, $post_id, $current_user_id); ?>
                     <?php elseif (is_user_logged_in() && !$is_owner && $trade_status === 'open') : ?>
-                        <!-- Start Trade Button -->
+                        <!-- Start Trade Button with Farm Codes -->
                         <div class="trade-start-section">
+                            <?php if ($author_farm_number || $current_user_farm_number) : ?>
+                                <div class="farm-codes-preview">
+                                    <?php if ($author_farm_number) : ?>
+                                        <div class="farm-code-preview-item">
+                                            <span class="farm-code-preview-label">İlan Sahibinin Çiftlik Kodu:</span>
+                                            <span class="farm-code-preview-value"><?php echo esc_html($author_farm_number); ?></span>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if ($current_user_farm_number) : ?>
+                                        <div class="farm-code-preview-item">
+                                            <span class="farm-code-preview-label">Senin Çiftlik Kodun:</span>
+                                            <span class="farm-code-preview-value"><?php echo esc_html($current_user_farm_number); ?></span>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
                             <button type="button" 
                                     id="btn-start-trade" 
                                     class="btn-primary btn-start-trade"

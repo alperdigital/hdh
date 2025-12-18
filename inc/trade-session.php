@@ -153,18 +153,18 @@ function hdh_get_trade_session($session_id = null, $listing_id = null, $user_id 
 }
 
 /**
- * Get current step number (1-6)
+ * Get current step number (1-5)
  */
 function hdh_get_trade_session_current_step($session) {
     if ($session['status'] === 'COMPLETED') {
-        return 6;
+        return 5; // Completed = step 5 done
     }
     if ($session['status'] === 'DISPUTED') {
         return 0; // Disputed state
     }
     
     if ($session['step5_starter_done_at']) {
-        return 6;
+        return 5; // Step 5 done = completed
     }
     if ($session['step4_owner_done_at']) {
         return 5;

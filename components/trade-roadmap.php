@@ -1,7 +1,7 @@
 <?php
 /**
  * HDH: Trade Roadmap Component
- * Step-by-step gift exchange stepper
+ * Step-by-step gift exchange stepper (5 steps)
  */
 
 if (!defined('ABSPATH')) exit;
@@ -13,22 +13,19 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
     
     $is_starter = ($session['starter_user_id'] == $current_user_id);
     $is_owner = ($session['owner_user_id'] == $current_user_id);
-    $current_step = $session['current_step'];
+    $current_step = hdh_get_trade_session_current_step($session);
     $status = $session['status'];
     
     // Get user info
     $owner_info = get_userdata($session['owner_user_id']);
     $starter_info = get_userdata($session['starter_user_id']);
     $owner_farm_number = get_user_meta($session['owner_user_id'], 'hayday_farm_number', true);
+    $starter_farm_number = get_user_meta($session['starter_user_id'], 'hayday_farm_number', true);
     
     // Get listing data
     $trade_data = hdh_get_trade_data($listing_id);
-    $wanted_label = hdh_get_item_label($trade_data['wanted_item']);
-    $offer_items = array_filter($trade_data['offer_items'], function($item) {
-        return !empty($item['item']) && !empty($item['qty']);
-    });
     
-    // Step definitions
+    // Step definitions (5 steps)
     $steps = array(
         1 => array(
             'icon' => '👥',
@@ -36,41 +33,39 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
             'description' => 'İlan sahibinin çiftlik kodunu kopyalayıp oyunda arkadaşlık isteği gönderin',
             'user_role' => 'starter',
             'button_text' => 'Arkadaşlık isteği gönderdim',
+            'show_farm_code' => 'owner', // Show owner's farm code
         ),
         2 => array(
             'icon' => '✅',
-            'title' => 'İstek kabul edildi',
+            'title' => 'Arkadaşlık isteğini kabul edin',
             'description' => 'Arkadaşlık isteğini kabul edin',
             'user_role' => 'owner',
             'button_text' => 'Arkadaşlık isteğini kabul ettim',
+            'show_farm_code' => 'starter', // Show starter's farm code
         ),
         3 => array(
             'icon' => '🎁',
-            'title' => 'Sen hediyeni hazırla',
-            'description' => 'Vereceğiniz hediyeyi hazırlayın',
+            'title' => 'Vereceğiniz hediyeyi hazırlayıp dükkana koyun',
+            'description' => 'Vereceğiniz hediyeyi hazırlayıp dükkana koyun',
             'user_role' => 'starter',
             'button_text' => 'Hediyemi hazırladım',
+            'show_farm_code' => false,
         ),
         4 => array(
             'icon' => '📦',
-            'title' => 'İlan sahibi hediyeni aldı ve kendi hediyesini hazırladı',
+            'title' => 'Hediyeni al ve hediyeni hazırla',
             'description' => 'Hediyeyi aldıktan sonra kendi hediyenizi hazırlayın',
             'user_role' => 'owner',
             'button_text' => 'Hediyeni aldım ve kendi hediyemi hazırladım',
+            'show_farm_code' => false,
         ),
         5 => array(
             'icon' => '🎉',
-            'title' => 'Sen hediyeni aldın',
+            'title' => 'Hediyeni al',
             'description' => 'İlan sahibinin gönderdiği hediyeyi aldığınızı onaylayın',
             'user_role' => 'starter',
             'button_text' => 'Hediyemi aldım',
-        ),
-        6 => array(
-            'icon' => '✨',
-            'title' => 'Hediyeleşme tamamlandı',
-            'description' => 'Hediyeleşme başarıyla tamamlandı!',
-            'user_role' => 'none',
-            'button_text' => '',
+            'show_farm_code' => false,
         ),
     );
     
@@ -82,9 +77,9 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
                 <span class="roadmap-text">Hediyeleşme Yol Haritası</span>
             </h2>
             <div class="roadmap-progress">
-                <span class="progress-text"><?php echo esc_html($current_step); ?>/6 tamamlandı</span>
+                <span class="progress-text"><?php echo esc_html($current_step); ?>/5 tamamlandı</span>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: <?php echo esc_attr(($current_step / 6) * 100); ?>%"></div>
+                    <div class="progress-fill" style="width: <?php echo esc_attr(($current_step / 5) * 100); ?>%"></div>
                 </div>
             </div>
         </div>
@@ -131,11 +126,6 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
                     $step_current = ($current_step == 5 && $status === 'ACTIVE');
                     $can_complete = ($is_starter && $step_current && !$step_done);
                     $step_locked = ($current_step < 5);
-                } elseif ($step_num == 6) {
-                    $step_done = ($status === 'COMPLETED');
-                    $step_current = false;
-                    $can_complete = false;
-                    $step_locked = false;
                 }
                 
                 $step_status = 'locked';
@@ -150,8 +140,12 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
                 }
                 
                 $waiting_for_other = ($step_current && !$can_complete);
+                
+                // Determine alignment: starter steps (1,3,5) = right, owner steps (2,4) = left
+                $step_alignment = ($step['user_role'] === 'starter') ? 'right' : 'left';
+                $step_class = 'roadmap-step-' . $step_alignment;
             ?>
-                <div class="roadmap-step roadmap-step-<?php echo esc_attr($step_status); ?>" data-step="<?php echo esc_attr($step_num); ?>">
+                <div class="roadmap-step roadmap-step-<?php echo esc_attr($step_status); ?> <?php echo esc_attr($step_class); ?>" data-step="<?php echo esc_attr($step_num); ?>">
                     <div class="step-header">
                         <div class="step-icon-wrapper">
                             <span class="step-icon"><?php echo esc_html($step['icon']); ?></span>
@@ -167,14 +161,30 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
                         </div>
                     </div>
                     
-                    <?php if ($step_num == 1 && $step_current && $can_complete && $owner_farm_number) : ?>
+                    <?php 
+                    // Show farm code for step 1 (owner's code for starter) and step 2 (starter's code for owner)
+                    $show_farm_code = false;
+                    $farm_code_to_show = '';
+                    if ($step_num == 1 && $step_current && $can_complete && $step['show_farm_code'] === 'owner' && $owner_farm_number) {
+                        $show_farm_code = true;
+                        $farm_code_to_show = $owner_farm_number;
+                    } elseif ($step_num == 2 && $step_current && $can_complete && $step['show_farm_code'] === 'starter' && $starter_farm_number) {
+                        $show_farm_code = true;
+                        $farm_code_to_show = $starter_farm_number;
+                    }
+                    
+                    if ($show_farm_code) : ?>
                         <div class="step-farm-code">
                             <div class="farm-code-display">
                                 <span class="farm-code-label">Çiftlik Kodu:</span>
-                                <span class="farm-code-value" id="farm-code-value"><?php echo esc_html($owner_farm_number); ?></span>
-                                <button type="button" class="btn-copy-farm-code" data-farm-code="<?php echo esc_attr($owner_farm_number); ?>">
-                                    📋 Kopyala
-                                </button>
+                                <span class="farm-code-value" id="farm-code-value-<?php echo esc_attr($step_num); ?>"><?php echo esc_html($farm_code_to_show); ?></span>
+                                <?php if ($step_num == 1) : ?>
+                                    <button type="button" class="btn-copy-farm-code" data-farm-code="<?php echo esc_attr($farm_code_to_show); ?>">
+                                        📋 Kopyala
+                                    </button>
+                                <?php else : ?>
+                                    <span class="farm-code-readonly">(Yazılı olarak gösteriliyor)</span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -264,4 +274,3 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
     </div>
     <?php
 }
-
