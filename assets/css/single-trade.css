@@ -180,6 +180,54 @@
     font-weight: 700;
 }
 
+/* Trade Description Meta Row */
+.trade-description-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(201, 184, 138, 0.2);
+}
+
+.trade-meta-farm-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    flex-shrink: 0;
+}
+
+.trade-meta-time {
+    font-size: 0.9rem;
+    color: var(--newspaper-text-light);
+    flex-shrink: 0;
+}
+
+.trade-meta-completed {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--newspaper-text-light);
+    flex-shrink: 0;
+}
+
+.trade-meta-completed .completed-icon {
+    font-size: 1rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.trade-meta-completed .completed-count {
+    font-weight: 600;
+    color: var(--farm-green-dark);
+}
+
+.trade-meta-completed .completed-label {
+    font-size: 0.85rem;
+}
+
 /* Header (Old - Keep for compatibility) */
 .trade-header {
     margin-bottom: 24px;
@@ -1207,9 +1255,7 @@
     overflow-wrap: break-word;
 }
 
-.btn-start-trade {
-    min-height: 56px;
-}
+/* .btn-start-trade uses .btn-primary styles - consistent with site buttons */
 
 /* Owner Message */
 .trade-owner-message {
@@ -1606,6 +1652,22 @@
         font-size: 1rem;
     }
     
+    .trade-description-meta {
+        gap: 10px;
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+    
+    .trade-meta-farm-name,
+    .trade-meta-time,
+    .trade-meta-completed {
+        font-size: 0.85rem;
+    }
+    
+    .trade-meta-completed .completed-label {
+        font-size: 0.8rem;
+    }
+    
     .trade-header {
         margin-bottom: 20px;
         padding-bottom: 16px;
@@ -1870,6 +1932,24 @@
     .trade-description-text {
         font-size: 0.95rem;
         line-height: 1.6;
+    }
+    
+    .trade-description-meta {
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .trade-meta-farm-name,
+    .trade-meta-time,
+    .trade-meta-completed {
+        font-size: 0.8rem;
+    }
+    
+    .trade-meta-completed .completed-label {
+        font-size: 0.75rem;
     }
     
     .trade-title {

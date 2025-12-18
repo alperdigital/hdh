@@ -120,30 +120,7 @@ if (!have_posts()) :
                 
                 <!-- Main Trade Card -->
                 <article class="single-trade-card">
-                    <!-- Header: Level, Name, Completed Count, Time -->
-                    <header class="trade-header-simplified">
-                        <div class="trade-header-meta">
-                            <div class="hdh-level-badge lvl-d<?php echo strlen((string)$user_level); ?>" 
-                                 aria-label="Seviye <?php echo esc_attr($user_level); ?>">
-                                <?php echo esc_html($user_level); ?>
-                            </div>
-                            <div class="trade-author-info-simplified">
-                                <div class="trade-author-name-simplified"><?php echo esc_html($author_name); ?></div>
-                                <div class="trade-meta-row-simplified">
-                                    <div class="trade-completed-badge-simplified">
-                                        <span class="completed-icon">✅</span>
-                                        <span class="completed-count"><?php echo esc_html($completed_count); ?></span>
-                                        <span class="completed-label">başarılı hediyeleşme</span>
-                                    </div>
-                                    <div class="trade-time-simplified">
-                                        <span class="time-text"><?php echo esc_html($relative_time); ?></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
-                    
-                    <!-- Trade Description (Text Only) -->
+                    <!-- Trade Description (Text Only) with Meta Info -->
                     <div class="trade-description-simplified">
                         <p class="trade-description-text">
                             <strong><?php echo esc_html($author_name); ?></strong> senden 
@@ -159,6 +136,22 @@ if (!have_posts()) :
                             ?> 
                             verecek.
                         </p>
+                        <!-- Meta Info Row: Level, Farm Name, Time, Completed Count -->
+                        <div class="trade-description-meta">
+                            <div class="hdh-level-badge lvl-d<?php echo strlen((string)$user_level); ?>" 
+                                 aria-label="Seviye <?php echo esc_attr($user_level); ?>">
+                                <?php echo esc_html($user_level); ?>
+                            </div>
+                            <span class="trade-meta-farm-name"><?php echo esc_html($author_name); ?></span>
+                            <span class="trade-meta-time"><?php echo esc_html($relative_time); ?></span>
+                            <?php if ($completed_count > 0) : ?>
+                                <span class="trade-meta-completed">
+                                    <span class="completed-icon">✅</span>
+                                    <span class="completed-count"><?php echo esc_html($completed_count); ?></span>
+                                    <span class="completed-label">hediyeleşme</span>
+                                </span>
+                            <?php endif; ?>
+                        </div>
                     </div>
                     
                     <!-- Start Trade Button or Roadmap -->
