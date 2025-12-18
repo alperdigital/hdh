@@ -34,25 +34,26 @@ function hdh_get_completed_gift_count($user_id) {
         return 0;
     }
     
-    $query = new WP_Query(array(
-        'post_type' => 'hayday_trade',
-        'author' => $user_id,
-        'post_status' => 'publish',
-        'meta_query' => array(
-            array(
-                'key' => '_hdh_trade_status',
-                'value' => 'completed',
-                'compare' => '='
-            )
-        ),
-        'posts_per_page' => -1,
-        'fields' => 'ids'
+    // Try to get from user meta first (cached)
+    $cached = get_user_meta($user_id, 'hdh_completed_gifts', true);
+    if ($cached !== '' && $cached !== false) {
+        return (int) $cached;
+    }
+    
+    // Fallback: count from trade sessions
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'hdh_trade_sessions';
+    
+    $count = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table_name WHERE (owner_user_id = %d OR starter_user_id = %d) AND status = 'COMPLETED'",
+        $user_id,
+        $user_id
     ));
     
-    $count = $query->found_posts;
-    wp_reset_postdata();
+    // Cache it
+    update_user_meta($user_id, 'hdh_completed_gifts', (int) $count);
     
-    return $count;
+    return (int) $count;
 }
 
 /**

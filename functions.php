@@ -43,6 +43,7 @@ add_action('after_setup_theme', function() {
 require_once get_template_directory() . '/inc/items-config.php';
 require_once get_template_directory() . '/components/item-card.php';
 require_once get_template_directory() . '/components/trade-card.php';
+require_once get_template_directory() . '/components/trade-roadmap.php';
 require_once get_template_directory() . '/inc/trade-offers.php';
 require_once get_template_directory() . '/inc/jeton-system.php';
 require_once get_template_directory() . '/inc/create-trade-handler.php';
@@ -61,6 +62,9 @@ require_once get_template_directory() . '/inc/lottery-handler.php';
 require_once get_template_directory() . '/inc/auth-redirect.php';
 require_once get_template_directory() . '/inc/asset-loader.php';
 require_once get_template_directory() . '/inc/trade-integrity.php';
+require_once get_template_directory() . '/inc/trade-session.php';
+require_once get_template_directory() . '/inc/trade-session-handlers.php';
+require_once get_template_directory() . '/inc/trade-session-admin.php';
 require_once get_template_directory() . '/inc/event-system.php';
 require_once get_template_directory() . '/inc/user-state-system.php';
 require_once get_template_directory() . '/inc/kvkk-compliance.php';
@@ -282,8 +286,30 @@ function hdh_enqueue_scripts() {
             true
         );
     
-    // Enqueue single trade page script
+    // Enqueue single trade page script and roadmap
     if (is_singular('hayday_trade')) {
+        // Roadmap CSS
+        wp_enqueue_style(
+            'hdh-trade-roadmap',
+            get_template_directory_uri() . '/assets/css/trade-roadmap.css',
+            array(),
+            '1.0.0'
+        );
+        
+        // Roadmap JS
+        wp_enqueue_script(
+            'hdh-trade-roadmap',
+            get_template_directory_uri() . '/assets/js/trade-roadmap.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        wp_localize_script('hdh-trade-roadmap', 'hdhTradeRoadmapData', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_trade_session'),
+        ));
+        
+        // Legacy single trade script (if exists)
         wp_enqueue_script(
             'hdh-single-trade',
             get_template_directory_uri() . '/assets/js/single-trade.js',
