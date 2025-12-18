@@ -60,11 +60,21 @@ if (!have_posts()) :
         
         // Get author info
         $author_name = get_the_author_meta('display_name', $author_id);
-        $author_farm_number = get_user_meta($author_id, 'hayday_farm_number', true);
+        // Get farm tag (Çiftlik Etiketi) from registration, fallback to hayday_farm_number
+        $author_farm_number = get_user_meta($author_id, 'farm_tag', true);
+        if (empty($author_farm_number)) {
+            $author_farm_number = get_user_meta($author_id, 'hayday_farm_number', true);
+        }
         $completed_count = function_exists('hdh_get_completed_gift_count') ? hdh_get_completed_gift_count($author_id) : 0;
         
         // Get current user farm number (for starter)
-        $current_user_farm_number = $current_user_id ? get_user_meta($current_user_id, 'hayday_farm_number', true) : '';
+        $current_user_farm_number = '';
+        if ($current_user_id) {
+            $current_user_farm_number = get_user_meta($current_user_id, 'farm_tag', true);
+            if (empty($current_user_farm_number)) {
+                $current_user_farm_number = get_user_meta($current_user_id, 'hayday_farm_number', true);
+            }
+        }
         
         // Get user level
         $user_level = 1;

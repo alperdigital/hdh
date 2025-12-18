@@ -19,8 +19,15 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
     // Get user info
     $owner_info = get_userdata($session['owner_user_id']);
     $starter_info = get_userdata($session['starter_user_id']);
-    $owner_farm_number = get_user_meta($session['owner_user_id'], 'hayday_farm_number', true);
-    $starter_farm_number = get_user_meta($session['starter_user_id'], 'hayday_farm_number', true);
+    // Get farm tag (Çiftlik Etiketi) from registration, fallback to hayday_farm_number
+    $owner_farm_number = get_user_meta($session['owner_user_id'], 'farm_tag', true);
+    if (empty($owner_farm_number)) {
+        $owner_farm_number = get_user_meta($session['owner_user_id'], 'hayday_farm_number', true);
+    }
+    $starter_farm_number = get_user_meta($session['starter_user_id'], 'farm_tag', true);
+    if (empty($starter_farm_number)) {
+        $starter_farm_number = get_user_meta($session['starter_user_id'], 'hayday_farm_number', true);
+    }
     
     // Get user levels
     $owner_level = 1;
