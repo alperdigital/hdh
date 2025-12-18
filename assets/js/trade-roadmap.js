@@ -35,6 +35,11 @@
                 btn.addEventListener('click', this.handleOpenDispute.bind(this));
             });
             
+            // Copy farm code buttons (including participant cards)
+            document.querySelectorAll('.btn-copy-farm-code').forEach(btn => {
+                btn.addEventListener('click', this.handleCopyFarmCode.bind(this));
+            });
+            
             // Dispute modal
             const disputeModal = document.getElementById('dispute-modal');
             if (disputeModal) {

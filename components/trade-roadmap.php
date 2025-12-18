@@ -22,6 +22,24 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
     $owner_farm_number = get_user_meta($session['owner_user_id'], 'hayday_farm_number', true);
     $starter_farm_number = get_user_meta($session['starter_user_id'], 'hayday_farm_number', true);
     
+    // Get user levels
+    $owner_level = 1;
+    $starter_level = 1;
+    if (function_exists('hdh_get_user_state')) {
+        $owner_state = hdh_get_user_state($session['owner_user_id']);
+        $starter_state = hdh_get_user_state($session['starter_user_id']);
+        $owner_level = $owner_state['level'] ?? 1;
+        $starter_level = $starter_state['level'] ?? 1;
+    }
+    
+    // Get user display names
+    $owner_name = $owner_info ? $owner_info->display_name : 'Bilinmeyen';
+    $starter_name = $starter_info ? $starter_info->display_name : 'Bilinmeyen';
+    
+    // Determine digit classes
+    $owner_digit_class = strlen((string)$owner_level) === 1 ? 'lvl-d1' : (strlen((string)$owner_level) === 2 ? 'lvl-d2' : 'lvl-d3');
+    $starter_digit_class = strlen((string)$starter_level) === 1 ? 'lvl-d1' : (strlen((string)$starter_level) === 2 ? 'lvl-d2' : 'lvl-d3');
+    
     // Get listing data
     $trade_data = hdh_get_trade_data($listing_id);
     
@@ -80,6 +98,56 @@ function hdh_render_trade_roadmap($session, $listing_id, $current_user_id) {
                 <span class="progress-text"><?php echo esc_html($current_step); ?>/5 tamamlandı</span>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: <?php echo esc_attr(($current_step / 5) * 100); ?>%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Participants Info Cards -->
+        <div class="roadmap-participants">
+            <!-- Owner Card -->
+            <div class="participant-card participant-owner">
+                <div class="participant-header">
+                    <div class="hdh-level-badge <?php echo esc_attr($owner_digit_class); ?>" 
+                         aria-label="Seviye <?php echo esc_attr($owner_level); ?>">
+                        <?php echo esc_html($owner_level); ?>
+                    </div>
+                    <div class="participant-name"><?php echo esc_html($owner_name); ?></div>
+                </div>
+                <div class="participant-farm-code">
+                    <span class="farm-code-label">Çiftlik Kodu:</span>
+                    <span class="farm-code-value"><?php echo esc_html($owner_farm_number ?: 'Belirtilmemiş'); ?></span>
+                    <?php if ($owner_farm_number) : ?>
+                        <button type="button" class="btn-copy-farm-code" data-farm-code="<?php echo esc_attr($owner_farm_number); ?>">
+                            📋 Kopyala
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+            
+            <!-- Arrow with Gift Icon -->
+            <div class="participant-arrow-wrapper">
+                <div class="participant-gift-icon">🎁</div>
+                <div class="participant-arrow-left">→</div>
+                <div class="participant-arrow-right">→</div>
+            </div>
+            
+            <!-- Starter Card -->
+            <div class="participant-card participant-starter">
+                <div class="participant-header">
+                    <div class="hdh-level-badge <?php echo esc_attr($starter_digit_class); ?>" 
+                         aria-label="Seviye <?php echo esc_attr($starter_level); ?>">
+                        <?php echo esc_html($starter_level); ?>
+                    </div>
+                    <div class="participant-name"><?php echo esc_html($starter_name); ?></div>
+                </div>
+                <div class="participant-farm-code">
+                    <span class="farm-code-label">Çiftlik Kodu:</span>
+                    <span class="farm-code-value"><?php echo esc_html($starter_farm_number ?: 'Belirtilmemiş'); ?></span>
+                    <?php if ($starter_farm_number) : ?>
+                        <button type="button" class="btn-copy-farm-code" data-farm-code="<?php echo esc_attr($starter_farm_number); ?>">
+                            📋 Kopyala
+                        </button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

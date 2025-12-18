@@ -60,6 +60,129 @@
     transition: width 0.3s ease;
 }
 
+/* Participants Info Cards */
+.roadmap-participants {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 24px 0;
+    padding: 20px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 1px solid rgba(201, 184, 138, 0.2);
+    border-radius: 12px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.participant-card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    padding: 16px;
+    background: rgba(201, 184, 138, 0.08);
+    border: 1px solid rgba(201, 184, 138, 0.3);
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.participant-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.participant-card .hdh-level-badge {
+    flex-shrink: 0;
+}
+
+.participant-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    flex: 1;
+    min-width: 0;
+}
+
+.participant-farm-code {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px solid rgba(201, 184, 138, 0.2);
+}
+
+.participant-farm-code .farm-code-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--newspaper-text-light);
+    white-space: nowrap;
+}
+
+.participant-farm-code .farm-code-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--farm-green-dark);
+    font-family: 'Courier New', monospace;
+    padding: 4px 10px;
+    background: rgba(201, 184, 138, 0.1);
+    border: 1px solid rgba(139, 195, 74, 0.3);
+    border-radius: 6px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    flex: 1;
+    min-width: 0;
+}
+
+.participant-farm-code .btn-copy-farm-code {
+    padding: 6px 12px;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.participant-farm-code .btn-copy-farm-code:hover {
+    background: var(--farm-green-dark);
+    transform: translateY(-1px);
+}
+
+/* Arrow with Gift Icon */
+.participant-arrow-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    position: relative;
+    min-width: 60px;
+}
+
+.participant-gift-icon {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.participant-arrow-left,
+.participant-arrow-right {
+    font-size: 1.5rem;
+    color: var(--farm-green-dark);
+    line-height: 1;
+    font-weight: 700;
+}
+
 /* Dispute Alert */
 .roadmap-dispute-alert {
     display: flex;
@@ -628,6 +751,53 @@
         font-size: 1.2rem;
     }
     
+    .roadmap-participants {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        margin: 20px 0;
+    }
+    
+    .participant-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+    
+    .participant-arrow-wrapper {
+        transform: rotate(90deg);
+        min-width: 40px;
+    }
+    
+    .participant-gift-icon {
+        font-size: 1.5rem;
+    }
+    
+    .participant-arrow-left,
+    .participant-arrow-right {
+        font-size: 1.2rem;
+    }
+    
+    .participant-farm-code {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .participant-farm-code .farm-code-label {
+        font-size: 0.8rem;
+    }
+    
+    .participant-farm-code .farm-code-value {
+        font-size: 0.85rem;
+        text-align: center;
+    }
+    
+    .participant-farm-code .btn-copy-farm-code {
+        width: 100%;
+        font-size: 0.8rem;
+    }
+    
     .roadmap-step {
         padding: 14px;
         max-width: 90%;
@@ -703,6 +873,54 @@
 }
 
 @media (max-width: 480px) {
+    .roadmap-participants {
+        padding: 12px;
+        margin: 16px 0;
+    }
+    
+    .participant-card {
+        padding: 12px;
+    }
+    
+    .participant-header {
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .participant-name {
+        font-size: 0.9rem;
+    }
+    
+    .participant-farm-code {
+        padding-top: 10px;
+    }
+    
+    .participant-farm-code .farm-code-label {
+        font-size: 0.75rem;
+    }
+    
+    .participant-farm-code .farm-code-value {
+        font-size: 0.8rem;
+    }
+    
+    .participant-farm-code .btn-copy-farm-code {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+    }
+    
+    .participant-arrow-wrapper {
+        min-width: 30px;
+    }
+    
+    .participant-gift-icon {
+        font-size: 1.2rem;
+    }
+    
+    .participant-arrow-left,
+    .participant-arrow-right {
+        font-size: 1rem;
+    }
+    
     .roadmap-step {
         padding: 12px;
         max-width: 95%;
