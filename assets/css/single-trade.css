@@ -80,7 +80,7 @@
 .trade-author-info-simplified {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     flex: 1;
     min-width: 0;
 }
@@ -92,6 +92,17 @@
     line-height: 1.4;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    background: transparent;
+    padding: 0;
+    border: none;
+}
+
+.trade-meta-row-simplified {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    min-width: 0;
 }
 
 .trade-completed-badge-simplified {
@@ -100,21 +111,46 @@
     gap: 6px;
     font-size: 0.9rem;
     color: var(--newspaper-text-light);
+    flex-shrink: 0;
 }
 
 .completed-icon {
     font-size: 1rem;
     line-height: 1;
+    flex-shrink: 0;
 }
 
 .completed-count {
     font-weight: 600;
     color: var(--farm-green-dark);
+    white-space: nowrap;
 }
 
 .completed-label {
     font-size: 0.85rem;
     line-height: 1.4;
+    white-space: nowrap;
+}
+
+.trade-time-simplified {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--newspaper-text-light);
+    flex-shrink: 0;
+}
+
+.time-icon {
+    font-size: 1rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.time-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    white-space: nowrap;
 }
 
 /* Trade Description (Text Only) */
@@ -1505,6 +1541,21 @@
         font-size: 1.1rem;
     }
     
+    .trade-meta-row-simplified {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .trade-completed-badge-simplified,
+    .trade-time-simplified {
+        font-size: 0.85rem;
+    }
+    
+    .completed-label,
+    .time-text {
+        font-size: 0.8rem;
+    }
+    
     .trade-description-simplified {
         margin: 20px 0;
         padding: 16px;
@@ -1752,6 +1803,22 @@
     
     .trade-author-name-simplified {
         font-size: 1rem;
+    }
+    
+    .trade-meta-row-simplified {
+        gap: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .trade-completed-badge-simplified,
+    .trade-time-simplified {
+        font-size: 0.8rem;
+    }
+    
+    .completed-label,
+    .time-text {
+        font-size: 0.75rem;
     }
     
     .trade-description-simplified {

@@ -117,7 +117,7 @@ if (!have_posts()) :
                 
                 <!-- Main Trade Card -->
                 <article class="single-trade-card">
-                    <!-- Header: Level, Name, Completed Count -->
+                    <!-- Header: Level, Name, Completed Count, Time -->
                     <header class="trade-header-simplified">
                         <div class="trade-header-meta">
                             <div class="hdh-level-badge lvl-d<?php echo strlen((string)$user_level); ?>" 
@@ -126,13 +126,19 @@ if (!have_posts()) :
                             </div>
                             <div class="trade-author-info-simplified">
                                 <div class="trade-author-name-simplified"><?php echo esc_html($author_name); ?></div>
-                                <?php if ($completed_count > 0) : ?>
-                                    <div class="trade-completed-badge-simplified">
-                                        <span class="completed-icon">✅</span>
-                                        <span class="completed-count"><?php echo esc_html($completed_count); ?></span>
-                                        <span class="completed-label">başarılı hediyeleşme</span>
+                                <div class="trade-meta-row-simplified">
+                                    <?php if ($completed_count > 0) : ?>
+                                        <div class="trade-completed-badge-simplified">
+                                            <span class="completed-icon">✅</span>
+                                            <span class="completed-count"><?php echo esc_html($completed_count); ?></span>
+                                            <span class="completed-label">başarılı hediyeleşme</span>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="trade-time-simplified">
+                                        <span class="time-icon">📅</span>
+                                        <span class="time-text"><?php echo esc_html($relative_time); ?></span>
                                     </div>
-                                <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </header>
