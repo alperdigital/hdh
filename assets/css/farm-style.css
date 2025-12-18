@@ -4149,14 +4149,35 @@ footer,
     align-items: center;
     gap: 6px;
     margin-top: 0;
-    margin-bottom: 12px;
+    margin-bottom: 0;
     padding-top: 0;
-    padding-bottom: 12px;
+    padding-bottom: 0;
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(201, 184, 138, 0.3);
     outline: none;
     box-shadow: none;
+}
+
+/* Simplified listing (title + meta only) */
+.listing-simplified {
+    padding: 16px;
+}
+
+.listing-simplified .listing-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.listing-simplified .listing-meta-row-unified {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 /* Old star styles removed - replaced by .hdh-level-badge */
