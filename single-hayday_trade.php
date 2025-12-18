@@ -117,104 +117,41 @@ if (!have_posts()) :
                 
                 <!-- Main Trade Card -->
                 <article class="single-trade-card">
-                    <!-- Header: Level, Name, Time -->
-                    <header class="trade-header">
-                        <div class="trade-header-top">
-                            <div class="trade-author-meta">
-                                <div class="hdh-level-badge lvl-d<?php echo strlen((string)$user_level); ?>" 
-                                     aria-label="Seviye <?php echo esc_attr($user_level); ?>">
-                                    <?php echo esc_html($user_level); ?>
-                                </div>
-                                <div class="trade-author-info">
-                                    <div class="trade-author-name"><?php echo esc_html($author_name); ?></div>
-                                    <?php if ($completed_count > 0) : ?>
-                                        <div class="trade-author-stats">
-                                            <span class="trade-completed-count"><?php echo esc_html($completed_count); ?></span>
-                                            <span class="trade-stats-label">başarılı hediyeleşme</span>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
+                    <!-- Header: Level, Name, Completed Count -->
+                    <header class="trade-header-simplified">
+                        <div class="trade-header-meta">
+                            <div class="hdh-level-badge lvl-d<?php echo strlen((string)$user_level); ?>" 
+                                 aria-label="Seviye <?php echo esc_attr($user_level); ?>">
+                                <?php echo esc_html($user_level); ?>
                             </div>
-                            <div class="trade-time"><?php echo esc_html($relative_time); ?></div>
-                        </div>
-                    </header>
-                    
-                    <!-- Trade Items: Split Layout -->
-                    <div class="trade-items-section">
-                        <!-- Left: Hediye Ediyor -->
-                        <div class="trade-items-column trade-items-offering">
-                            <div class="trade-items-header">
-                                <span class="trade-items-icon">🎁</span>
-                                <span class="trade-items-title">Hediye Ediyor</span>
-                            </div>
-                            <div class="trade-items-list">
-                                <?php if (!empty($offer_items)) : ?>
-                                    <?php foreach ($offer_items as $offer) : 
-                                        $offer_slug = $offer['item'];
-                                        $offer_image = hdh_get_item_image($offer_slug);
-                                        $offer_label = hdh_get_item_label($offer_slug);
-                                    ?>
-                                        <div class="trade-item-card">
-                                            <?php if ($offer_image) : ?>
-                                                <img src="<?php echo esc_url($offer_image); ?>" 
-                                                     alt="<?php echo esc_attr($offer_label); ?>" 
-                                                     class="trade-item-img"
-                                                     loading="lazy"
-                                                     decoding="async">
-                                            <?php endif; ?>
-                                            <div class="trade-item-details">
-                                                <div class="trade-item-qty"><?php echo esc_html($offer['qty']); ?>x</div>
-                                                <div class="trade-item-name"><?php echo esc_html($offer_label); ?></div>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php else : ?>
-                                    <div class="trade-item-empty">—</div>
+                            <div class="trade-author-info-simplified">
+                                <div class="trade-author-name-simplified"><?php echo esc_html($author_name); ?></div>
+                                <?php if ($completed_count > 0) : ?>
+                                    <div class="trade-completed-badge-simplified">
+                                        <span class="completed-icon">✅</span>
+                                        <span class="completed-count"><?php echo esc_html($completed_count); ?></span>
+                                        <span class="completed-label">başarılı hediyeleşme</span>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                         </div>
-                        
-                        <!-- Divider -->
-                        <div class="trade-items-divider"></div>
-                        
-                        <!-- Right: İstek -->
-                        <div class="trade-items-column trade-items-wanted">
-                            <div class="trade-items-header">
-                                <span class="trade-items-icon">🤍</span>
-                                <span class="trade-items-title">Hediye İstiyor</span>
-                            </div>
-                            <div class="trade-items-list">
-                                <div class="trade-item-card trade-item-wanted">
-                                    <?php if ($wanted_image) : ?>
-                                        <img src="<?php echo esc_url($wanted_image); ?>" 
-                                             alt="<?php echo esc_attr($wanted_label); ?>" 
-                                             class="trade-item-img"
-                                             loading="lazy"
-                                             decoding="async">
-                                    <?php endif; ?>
-                                    <div class="trade-item-details">
-                                        <div class="trade-item-qty"><?php echo esc_html($trade_data['wanted_qty']); ?>x</div>
-                                        <div class="trade-item-name"><?php echo esc_html($wanted_label); ?></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </header>
                     
-                    <!-- Simple Summary -->
-                    <div class="trade-summary">
-                        <p class="summary-text">
-                            <strong><?php echo esc_html($author_name); ?></strong>, senden 
-                            <strong><?php echo esc_html($wanted_label); ?> ×<?php echo esc_html($trade_data['wanted_qty']); ?></strong> istiyor. 
-                            Karşılığında sana 
+                    <!-- Trade Description (Text Only) -->
+                    <div class="trade-description-simplified">
+                        <p class="trade-description-text">
+                            <strong><?php echo esc_html($author_name); ?></strong> senden 
+                            <strong><?php echo esc_html($trade_data['wanted_qty']); ?> <?php echo esc_html($wanted_label); ?></strong> istiyor. 
+                            Sana 
                             <?php 
                             $offer_labels = array();
                             foreach ($offer_items as $offer) {
-                                $offer_labels[] = hdh_get_item_label($offer['item']) . ' ×' . $offer['qty'];
+                                $offer_label = hdh_get_item_label($offer['item']);
+                                $offer_labels[] = $offer['qty'] . ' ' . $offer_label;
                             }
                             echo esc_html(implode(', ', $offer_labels));
                             ?> 
-                            hediye edecek.
+                            verecek.
                         </p>
                     </div>
                     

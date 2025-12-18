@@ -6,7 +6,7 @@
 /* Main Container */
 .single-trade-main {
     padding: 20px 0 120px;
-    background: #FFF6D8;
+    background: transparent;
     min-height: calc(100vh - 200px);
 }
 
@@ -24,8 +24,8 @@
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    background: #FFF6D8;
-    border: 2px solid rgba(201, 184, 138, 0.4);
+    background: rgba(201, 184, 138, 0.05);
+    border: 1px solid rgba(201, 184, 138, 0.3);
     border-radius: 10px;
     color: var(--newspaper-text);
     text-decoration: none;
@@ -53,17 +53,94 @@
 
 /* Main Trade Card */
 .single-trade-card {
-    background: #FFF6D8;
-    border: 2px solid rgba(201, 184, 138, 0.4);
-    border-radius: 12px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
     width: 100%;
     box-sizing: border-box;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
+    padding: 0;
+    box-shadow: none;
+    overflow: visible;
 }
 
-/* Header */
+/* Simplified Header */
+.trade-header-simplified {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(201, 184, 138, 0.2);
+}
+
+.trade-header-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.trade-author-info-simplified {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
+.trade-author-name-simplified {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.trade-completed-badge-simplified {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--newspaper-text-light);
+}
+
+.completed-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.completed-count {
+    font-weight: 600;
+    color: var(--farm-green-dark);
+}
+
+.completed-label {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Trade Description (Text Only) */
+.trade-description-simplified {
+    margin: 24px 0;
+    padding: 20px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 1px solid rgba(201, 184, 138, 0.2);
+    border-radius: 12px;
+}
+
+.trade-description-text {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--newspaper-text);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.trade-description-text strong {
+    color: var(--farm-green-dark);
+    font-weight: 700;
+}
+
+/* Header (Old - Keep for compatibility) */
 .trade-header {
     margin-bottom: 24px;
     padding-bottom: 20px;
@@ -1022,7 +1099,7 @@
     line-height: 1;
 }
 
-/* Trade Summary */
+/* Trade Summary (Old - Keep for compatibility) */
 .trade-summary {
     margin: 24px 0;
     padding: 16px;
@@ -1416,7 +1493,25 @@
     }
     
     .single-trade-card {
-        padding: 20px 16px;
+        padding: 0;
+    }
+    
+    .trade-header-simplified {
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+    }
+    
+    .trade-author-name-simplified {
+        font-size: 1.1rem;
+    }
+    
+    .trade-description-simplified {
+        margin: 20px 0;
+        padding: 16px;
+    }
+    
+    .trade-description-text {
+        font-size: 1rem;
     }
     
     .trade-header {
@@ -1647,7 +1742,26 @@
 
 @media (max-width: 480px) {
     .single-trade-card {
-        padding: 16px 12px;
+        padding: 0;
+    }
+    
+    .trade-header-simplified {
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+    }
+    
+    .trade-author-name-simplified {
+        font-size: 1rem;
+    }
+    
+    .trade-description-simplified {
+        margin: 16px 0;
+        padding: 14px;
+    }
+    
+    .trade-description-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
     
     .trade-title {
