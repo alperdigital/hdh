@@ -5757,9 +5757,17 @@ footer,
         bottom: 110px;
         right: 24px;
         left: auto;
-        width: 500px;
+        width: 600px;
         max-width: calc(100vw - 48px);
-        max-height: 700px;
+        max-height: 750px;
+    }
+    
+    .tasks-panel-header {
+        padding: 18px 24px;
+    }
+    
+    .tasks-panel-content {
+        padding: 24px;
     }
     
     .task-name {
@@ -5768,14 +5776,24 @@ footer,
         text-overflow: clip;
         word-wrap: break-word;
         overflow-wrap: break-word;
+        font-size: 17px;
+        line-height: 1.4;
     }
     
     .task-item {
-        padding: 18px;
+        padding: 20px;
     }
     
     .task-details {
-        gap: 6px;
+        gap: 8px;
+    }
+    
+    .task-progress {
+        font-size: 15px;
+    }
+    
+    .task-reward {
+        font-size: 14px;
     }
 }
 
