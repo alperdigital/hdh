@@ -21,6 +21,9 @@
         $user_level = $user_state ? $user_state['level'] : 1;
         $bilet_balance = $user_state ? $user_state['bilet_balance'] : 0;
         
+        // Get completed gift count
+        $completed_gift_count = function_exists('hdh_get_completed_gift_count') ? hdh_get_completed_gift_count($current_user_id) : 0;
+        
         // Determine digit class based on level
         $level_int = (int) $user_level;
         $digits = strlen((string)$level_int);
@@ -36,8 +39,8 @@
                 <span class="hdh-farm-name"><?php echo esc_html($farm_name); ?></span>
                 <div class="hdh-farm-stats">
                     <span class="hdh-stat-item">
-                        <span class="hdh-stat-emoji">⭐</span>
-                        <span class="hdh-stat-value"><?php echo esc_html($user_level); ?></span>
+                        <span class="hdh-stat-emoji">🎁</span>
+                        <span class="hdh-stat-value"><?php echo esc_html($completed_gift_count); ?></span>
                     </span>
                     <span class="hdh-stat-item">
                         <span class="hdh-stat-emoji">🎟️</span>
