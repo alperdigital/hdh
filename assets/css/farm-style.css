@@ -5812,6 +5812,10 @@ footer,
         text-overflow: ellipsis;
         white-space: nowrap;
         box-sizing: border-box;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .task-status {
