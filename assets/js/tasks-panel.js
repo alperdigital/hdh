@@ -175,7 +175,7 @@
                         parts.push(`+${bilet} 🎟️ Bilet`);
                     }
                     if (level > 0) {
-                        parts.push(`+${level} ⭐ Seviye`);
+                        parts.push(`+${level} Seviye`);
                     }
                     if (parts.length > 0) {
                         message = parts.join(' + ') + ' kazandınız!';

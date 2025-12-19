@@ -165,7 +165,7 @@ function hdh_render_tasks_admin_page() {
                                             
                                             <div class="hdh-field-group hdh-reward-field">
                                                 <label>
-                                                    <strong>⭐ Seviye Ödülü <span class="required">*</span></strong>
+                                                    <strong>Seviye Ödülü <span class="required">*</span></strong>
                                                     <input type="number" name="one_time_tasks[<?php echo esc_attr($task_id); ?>][reward_level]" 
                                                            value="<?php echo esc_attr($task['reward_level']); ?>" 
                                                            min="0" 
@@ -286,7 +286,7 @@ function hdh_render_tasks_admin_page() {
                                             
                                             <div class="hdh-field-group hdh-reward-field">
                                                 <label>
-                                                    <strong>⭐ Seviye Ödülü <span class="required">*</span></strong>
+                                                    <strong>Seviye Ödülü <span class="required">*</span></strong>
                                                     <input type="number" name="daily_tasks[<?php echo esc_attr($task_id); ?>][reward_level]" 
                                                            value="<?php echo esc_attr($task['reward_level']); ?>" 
                                                            min="0" 
@@ -383,7 +383,7 @@ function hdh_render_tasks_admin_page() {
                         </div>
                         <div class="hdh-field-group hdh-reward-field">
                             <label>
-                                <strong>⭐ Seviye Ödülü <span class="required">*</span></strong>
+                                <strong>Seviye Ödülü <span class="required">*</span></strong>
                                 <input type="number" name="one_time_tasks[{{taskId}}][reward_level]" value="1" min="0" max="10" required class="small-text" />
                                 <span class="description">Tamamlandığında verilecek seviye miktarı</span>
                             </label>
@@ -446,7 +446,7 @@ function hdh_render_tasks_admin_page() {
                         </div>
                         <div class="hdh-field-group hdh-reward-field">
                             <label>
-                                <strong>⭐ Seviye Ödülü <span class="required">*</span></strong>
+                                <strong>Seviye Ödülü <span class="required">*</span></strong>
                                 <input type="number" name="daily_tasks[{{taskId}}][reward_level]" value="0" min="0" max="10" required class="small-text" />
                                 <span class="description">Her milestone için verilecek seviye miktarı</span>
                             </label>
