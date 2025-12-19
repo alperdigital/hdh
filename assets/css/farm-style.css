@@ -5757,9 +5757,25 @@ footer,
         bottom: 110px;
         right: 24px;
         left: auto;
-        width: 400px;
+        width: 500px;
         max-width: calc(100vw - 48px);
-        max-height: 650px;
+        max-height: 700px;
+    }
+    
+    .task-name {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .task-item {
+        padding: 18px;
+    }
+    
+    .task-details {
+        gap: 6px;
     }
 }
 
