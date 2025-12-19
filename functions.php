@@ -304,9 +304,31 @@ function hdh_enqueue_scripts() {
             '1.0.0',
             true
         );
+        // Get session data if exists
+        $session_data = null;
+        $listing_id = 0;
+        if (is_singular('hayday_trade')) {
+            $listing_id = get_the_ID();
+            $current_user_id = get_current_user_id();
+            if ($current_user_id && function_exists('hdh_get_trade_session')) {
+                $session = hdh_get_trade_session(null, $listing_id, $current_user_id);
+                if ($session) {
+                    $session_data = array(
+                        'id' => $session['id'],
+                        'current_step' => $session['current_step'],
+                        'status' => $session['status'],
+                    );
+                }
+            }
+        }
+        
         wp_localize_script('hdh-trade-roadmap', 'hdhTradeRoadmapData', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_trade_session'),
+            'sessionId' => $session_data ? $session_data['id'] : 0,
+            'listingId' => $listing_id,
+            'currentStep' => $session_data ? $session_data['current_step'] : 0,
+            'sessionStatus' => $session_data ? $session_data['status'] : '',
         ));
         
         // Legacy single trade script (if exists)

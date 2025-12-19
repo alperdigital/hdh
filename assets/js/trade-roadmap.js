@@ -10,6 +10,12 @@
         ajaxUrl: '',
         nonce: '',
         session: null,
+        sessionId: 0,
+        listingId: 0,
+        currentStep: 0,
+        sessionStatus: '',
+        pollingInterval: null,
+        isPolling: false,
         
         init: function() {
             if (typeof hdhTradeRoadmapData === 'undefined') {
@@ -18,6 +24,10 @@
             
             this.ajaxUrl = hdhTradeRoadmapData.ajaxUrl;
             this.nonce = hdhTradeRoadmapData.nonce;
+            this.sessionId = hdhTradeRoadmapData.sessionId || 0;
+            this.listingId = hdhTradeRoadmapData.listingId || 0;
+            this.currentStep = hdhTradeRoadmapData.currentStep || 0;
+            this.sessionStatus = hdhTradeRoadmapData.sessionStatus || '';
             
             // Start trade button
             const startBtn = document.getElementById('btn-start-trade');
@@ -71,6 +81,117 @@
             document.querySelectorAll('.btn-copy-farm-code').forEach(btn => {
                 btn.addEventListener('click', this.handleCopyFarmCode.bind(this));
             });
+            
+            // Start polling if session exists
+            if (this.sessionId > 0 || this.listingId > 0) {
+                this.startPolling();
+            }
+            
+            // Stop polling when page becomes hidden
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    this.stopPolling();
+                } else if (this.sessionId > 0 || this.listingId > 0) {
+                    this.startPolling();
+                }
+            });
+        },
+        
+        startPolling: function() {
+            if (this.isPolling) {
+                return;
+            }
+            
+            // Don't poll if session is completed or disputed
+            if (this.sessionStatus === 'COMPLETED' || this.sessionStatus === 'DISPUTED') {
+                return;
+            }
+            
+            this.isPolling = true;
+            
+            // Poll every 3 seconds
+            this.pollingInterval = setInterval(() => {
+                this.checkSessionStatus();
+            }, 3000);
+            
+            // Also check immediately
+            this.checkSessionStatus();
+        },
+        
+        stopPolling: function() {
+            if (this.pollingInterval) {
+                clearInterval(this.pollingInterval);
+                this.pollingInterval = null;
+            }
+            this.isPolling = false;
+        },
+        
+        checkSessionStatus: function() {
+            // Don't poll if page is hidden
+            if (document.hidden) {
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('action', 'hdh_get_trade_session');
+            formData.append('nonce', this.nonce);
+            
+            if (this.sessionId > 0) {
+                formData.append('session_id', this.sessionId);
+            } else if (this.listingId > 0) {
+                formData.append('listing_id', this.listingId);
+            } else {
+                return;
+            }
+            
+            fetch(this.ajaxUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data && data.data.session) {
+                    const session = data.data.session;
+                    const newStep = session.current_step || 0;
+                    const newStatus = session.status || '';
+                    
+                    // Check if step or status changed
+                    if (newStep !== this.currentStep || newStatus !== this.sessionStatus) {
+                        this.currentStep = newStep;
+                        this.sessionStatus = newStatus;
+                        this.sessionId = session.id || this.sessionId;
+                        
+                        // Update UI
+                        this.updateRoadmapUI(session);
+                        
+                        // Stop polling if completed or disputed
+                        if (newStatus === 'COMPLETED' || newStatus === 'DISPUTED') {
+                            this.stopPolling();
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Polling error:', error);
+            });
+        },
+        
+        updateRoadmapUI: function(session) {
+            // Update session data
+            this.sessionId = session.id || this.sessionId;
+            this.currentStep = session.current_step || this.currentStep;
+            this.sessionStatus = session.status || this.sessionStatus;
+            
+            // Show notification that other party completed a step
+            if (this.currentStep > 0) {
+                this.showToast('Karşı taraf bir adımı tamamladı! Yol haritası güncelleniyor...', 'success');
+            }
+            
+            // Reload the page to show updated roadmap
+            // This is the simplest approach - could be optimized later with partial updates
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         },
         
         handleStartTrade: function(e) {
@@ -99,6 +220,18 @@
             .then(data => {
                 if (data.success) {
                     this.showToast('Hediyeleşme başlatıldı!', 'success');
+                    
+                    // Update session data if returned
+                    if (data.data && data.data.session) {
+                        const session = data.data.session;
+                        this.sessionId = session.id || 0;
+                        this.currentStep = session.current_step || 0;
+                        this.sessionStatus = session.status || '';
+                    }
+                    
+                    // Start polling for real-time updates
+                    this.startPolling();
+                    
                     // Reload page with roadmap param to trigger scroll
                     const url = new URL(window.location.href);
                     url.searchParams.set('roadmap', 'true');
@@ -151,10 +284,25 @@
             .then(data => {
                 if (data.success) {
                     this.showToast('Adım tamamlandı!', 'success');
-                    // Reload to update UI
+                    
+                    // Update session data if returned
+                    if (data.data && data.data.session) {
+                        const session = data.data.session;
+                        this.sessionId = session.id || this.sessionId;
+                        this.currentStep = session.current_step || this.currentStep;
+                        this.sessionStatus = session.status || this.sessionStatus;
+                    }
+                    
+                    // Restart polling to check for other party's actions
+                    this.stopPolling();
+                    setTimeout(() => {
+                        this.startPolling();
+                    }, 500);
+                    
+                    // Reload to update UI after a short delay
                     setTimeout(() => {
                         window.location.reload();
-                    }, 1000);
+                    }, 1500);
                 } else {
                     this.showToast(data.data.message || 'Bir hata oluştu', 'error');
                     btn.disabled = false;
