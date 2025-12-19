@@ -20,7 +20,7 @@ function hdh_get_one_time_tasks_config() {
         $tasks = array(
             'verify_email' => array(
                 'id' => 'verify_email',
-                'title' => 'Mail Adresini Doğrula',
+                'title' => 'Doğrulama',
                 'description' => 'E-posta adresinizi doğrulayın',
                 'reward_bilet' => 1,
                 'reward_level' => 1,
@@ -28,7 +28,7 @@ function hdh_get_one_time_tasks_config() {
             ),
             'create_first_listing' => array(
                 'id' => 'create_first_listing',
-                'title' => 'İlk İlanını Oluştur',
+                'title' => 'İlk ilan',
                 'description' => 'İlk ilanınızı oluşturun',
                 'reward_bilet' => 2,
                 'reward_level' => 1,
@@ -36,7 +36,7 @@ function hdh_get_one_time_tasks_config() {
             ),
             'complete_first_exchange' => array(
                 'id' => 'complete_first_exchange',
-                'title' => 'İlk Hediyeleşmeni Tamamla',
+                'title' => 'İlk hediyeleşme',
                 'description' => 'İlk hediyeleşmenizi tamamlayın',
                 'reward_bilet' => 5,
                 'reward_level' => 2,
@@ -44,7 +44,7 @@ function hdh_get_one_time_tasks_config() {
             ),
             'invite_friend' => array(
                 'id' => 'invite_friend',
-                'title' => 'Arkadaşını Davet Et',
+                'title' => 'Davet et',
                 'description' => 'Bir arkadaşınızı davet edin',
                 'reward_bilet' => 2,
                 'reward_level' => 1,
@@ -52,7 +52,7 @@ function hdh_get_one_time_tasks_config() {
             ),
             'friend_exchange' => array(
                 'id' => 'friend_exchange',
-                'title' => 'Arkadaşın Hediyeleşsin',
+                'title' => 'Hediyeleşme',
                 'description' => 'Davet ettiğiniz arkadaşınız hediyeleşme yapsın',
                 'reward_bilet' => 5,
                 'reward_level' => 2,
@@ -88,7 +88,7 @@ function hdh_get_daily_tasks_config() {
             ),
             'complete_exchanges' => array(
                 'id' => 'complete_exchanges',
-                'title' => 'Hediyeleşme Tamamla',
+                'title' => 'Hediyeleşme',
                 'description' => 'Günde 5 hediyeleşme tamamlayın',
                 'reward_bilet' => 4,
                 'reward_level' => 1,
@@ -96,7 +96,7 @@ function hdh_get_daily_tasks_config() {
             ),
             'invite_friends' => array(
                 'id' => 'invite_friends',
-                'title' => 'Arkadaşını Davet Et',
+                'title' => 'Davet et',
                 'description' => 'Günde 5 arkadaş davet edin',
                 'reward_bilet' => 2,
                 'reward_level' => 0,
@@ -104,7 +104,7 @@ function hdh_get_daily_tasks_config() {
             ),
             'friend_exchanges' => array(
                 'id' => 'friend_exchanges',
-                'title' => 'Arkadaşın Hediyeleşsin',
+                'title' => 'Hediyeleşme',
                 'description' => 'Davet ettiğiniz arkadaşlarınız hediyeleşme yapsın',
                 'reward_bilet' => 5,
                 'reward_level' => 2,
