@@ -5763,11 +5763,27 @@ footer,
     }
     
     .tasks-panel-header {
-        padding: 18px 24px;
+        padding: 14px 16px;
     }
     
     .tasks-panel-content {
-        padding: 24px;
+        padding: 16px;
+        max-height: calc(750px - 60px);
+    }
+    
+    .tasks-section-title {
+        font-size: 1rem;
+    }
+    
+    .task-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 16px;
+    }
+    
+    .task-info {
+        width: 100%;
     }
     
     .task-name {
@@ -5776,24 +5792,35 @@ footer,
         text-overflow: clip;
         word-wrap: break-word;
         overflow-wrap: break-word;
-        font-size: 17px;
-        line-height: 1.4;
     }
     
-    .task-item {
-        padding: 20px;
+    .task-actions {
+        width: 100%;
+        justify-content: center;
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
     }
     
-    .task-details {
-        gap: 8px;
+    .btn-claim-daily,
+    .btn-do-task,
+    .btn-claim-task {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        box-sizing: border-box;
     }
     
-    .task-progress {
-        font-size: 15px;
-    }
-    
-    .task-reward {
-        font-size: 14px;
+    .task-status {
+        width: 100%;
+        text-align: center;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
