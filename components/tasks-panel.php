@@ -98,7 +98,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                                 +<?php echo esc_html($task['reward_bilet']); ?> 🎟️
                                             <?php endif; ?>
                                             <?php if ($task['reward_level'] > 0) : ?>
-                                                <?php echo $task['reward_bilet'] > 0 ? ' ' : ''; ?>
+                                                <?php echo $task['reward_bilet'] > 0 ? '  ' : ''; ?>
                                                 +<?php echo esc_html($task['reward_level']); ?> Seviye
                                             <?php endif; ?>
                                         </span>
@@ -161,7 +161,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                                 +<?php echo esc_html($task['reward_bilet']); ?> 🎟️
                                             <?php endif; ?>
                                             <?php if ($task['reward_level'] > 0) : ?>
-                                                <?php echo $task['reward_bilet'] > 0 ? ' ' : ''; ?>
+                                                <?php echo $task['reward_bilet'] > 0 ? '  ' : ''; ?>
                                                 +<?php echo esc_html($task['reward_level']); ?> Seviye
                                             <?php endif; ?>
                                         </span>
