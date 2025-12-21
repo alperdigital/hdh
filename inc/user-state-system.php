@@ -395,13 +395,15 @@ function hdh_verify_email($user_id) {
         update_user_meta($user_id, 'hdh_email_verified', true);
         update_user_meta($user_id, 'hdh_email_verified_at', current_time('mysql'));
         
-        // Award bilet for verification
-        $transaction_id = 'email_verify_' . $user_id . '_' . current_time('timestamp');
-        hdh_add_bilet($user_id, 1, 'email_verification', array('transaction_id' => $transaction_id));
+        // Increment task progress (NO REWARD - user must claim manually)
+        if (function_exists('hdh_increment_task_progress')) {
+            hdh_increment_task_progress($user_id, 'verify_email', 'lifetime');
+        }
         
         // Log verification event
         hdh_log_event($user_id, 'email_verified', array(
             'verified_at' => current_time('mysql'),
+            'note' => 'Task progress incremented, reward must be claimed manually'
         ));
     }
     

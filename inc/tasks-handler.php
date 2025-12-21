@@ -45,12 +45,16 @@ function hdh_handle_claim_task_reward() {
     $user_state = function_exists('hdh_get_user_state') ? hdh_get_user_state($user_id) : null;
     $new_level = $user_state ? $user_state['level'] : 1;
     
+    // Get claimable_remaining from result (if available from atomic claim engine)
+    $claimable_remaining = isset($result['claimable_remaining']) ? (int) $result['claimable_remaining'] : 0;
+    
     wp_send_json_success(array(
         'message' => hdh_get_message('ajax', 'reward_claimed_success', 'Ödül başarıyla alındı!'),
         'bilet' => $result['bilet'],
         'level' => $result['level'],
         'new_bilet' => $new_bilet,
         'new_level' => $new_level,
+        'claimable_remaining' => $claimable_remaining,
     ));
 }
 add_action('wp_ajax_hdh_claim_task_reward', 'hdh_handle_claim_task_reward');

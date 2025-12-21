@@ -275,6 +275,9 @@ if (!$is_logged_in) {
                     </div>
                     
                     <div class="profile-actions">
+                        <a href="<?php echo esc_url(home_url('/hazine')); ?>" class="btn-treasure-room">
+                            💎 Hazine Odası
+                        </a>
                         <button class="btn-edit-profile" id="btn-edit-profile">
                             ✏️ Profili Düzenle
                         </button>

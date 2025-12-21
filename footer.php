@@ -47,13 +47,13 @@
     
     <!-- HDH: Bottom Navigation (Mobile & Desktop) -->
     <nav class="bottom-navigation" id="bottom-navigation" role="navigation" aria-label="Ana Navigasyon">
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="bottom-nav-item" data-nav="home">
+            <span class="bottom-nav-icon">🏠</span>
+            <span class="bottom-nav-label"><?php echo esc_html(hdh_get_content('navigation', 'home_label', 'Anasayfa')); ?></span>
+        </a>
         <a href="<?php echo esc_url(home_url('/ara')); ?>" class="bottom-nav-item" data-nav="search">
             <span class="bottom-nav-icon">🔍</span>
             <span class="bottom-nav-label"><?php echo esc_html(hdh_get_content('navigation', 'search_label', 'Ara')); ?></span>
-        </a>
-        <a href="<?php echo esc_url(home_url('/hazine')); ?>" class="bottom-nav-item" data-nav="treasure">
-            <span class="bottom-nav-icon">💎</span>
-            <span class="bottom-nav-label"><?php echo esc_html(hdh_get_content('navigation', 'treasure_label', 'Hazine')); ?></span>
         </a>
         <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="bottom-nav-item bottom-nav-center" data-nav="create">
             <span class="bottom-nav-center-icon">+</span>

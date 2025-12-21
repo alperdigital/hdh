@@ -85,7 +85,11 @@ require_once get_template_directory() . '/inc/email-verification.php';
 require_once get_template_directory() . '/inc/firebase-config.php';
 require_once get_template_directory() . '/inc/firebase-verification.php';
 require_once get_template_directory() . '/inc/quest-system.php';
-require_once get_template_directory() . '/inc/tasks-system.php';
+require_once get_template_directory() . '/inc/tasks-database.php';
+require_once get_template_directory() . '/inc/tasks-system.php'; // Must be loaded first (defines config functions)
+require_once get_template_directory() . '/inc/tasks-progress.php';
+require_once get_template_directory() . '/inc/tasks-claim-atomic.php';
+require_once get_template_directory() . '/inc/tasks-migration.php';
 require_once get_template_directory() . '/inc/tasks-handler.php';
 require_once get_template_directory() . '/inc/tasks-admin.php';
 require_once get_template_directory() . '/inc/items-admin.php';

@@ -202,34 +202,12 @@ function hdh_handle_create_trade() {
         }
     }
     
-    // Award rewards for creating a listing (only if published)
+    // Track listing creation for tasks (only if published)
+    // NO AUTOMATIC REWARDS - user must claim manually via task panel
     if ($post_status === 'publish') {
         $user_id = get_current_user_id();
         
-        // Award +2 bilet for creating a listing
-        if (function_exists('hdh_add_bilet')) {
-            $transaction_id = 'listing_' . $post_id . '_' . $user_id . '_' . current_time('timestamp');
-            hdh_add_bilet($user_id, 2, 'listing_created', array('post_id' => $post_id, 'transaction_id' => $transaction_id));
-        } elseif (function_exists('hdh_add_jeton')) {
-            $transaction_id = 'listing_' . $post_id . '_' . $user_id . '_' . current_time('timestamp');
-            hdh_add_jeton($user_id, 2, 'listing_created', array('post_id' => $post_id, 'transaction_id' => $transaction_id));
-        }
-        
-        // Check if this is the first listing - if so, award level reward too
-        $listings = get_posts(array(
-            'post_type' => 'hayday_trade',
-            'author' => $user_id,
-            'posts_per_page' => 1,
-            'fields' => 'ids',
-        ));
-        
-        // If this is the first listing, award +1 level (xp_per_level XP)
-        if (count($listings) === 1 && function_exists('hdh_add_xp')) {
-            $xp_per_level = function_exists('hdh_get_xp_per_level') ? hdh_get_xp_per_level() : 100;
-            hdh_add_xp($user_id, $xp_per_level, 'first_listing_created', array('post_id' => $post_id));
-        }
-        
-        // Trigger listing created hook for quest/task tracking
+        // Trigger listing created hook for quest/task tracking (progress increment only)
         do_action('hdh_listing_created', $user_id, $post_id);
     }
     

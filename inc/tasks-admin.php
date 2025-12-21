@@ -77,6 +77,36 @@ function hdh_render_tasks_admin_page() {
         <h1>📋 Görev Yönetimi</h1>
         <p class="description">Buradan görevleri ekleyebilir, düzenleyebilir ve silebilirsiniz. Görev türünü (Tek Seferlik/Günlük), ödülleri ve diğer ayarları belirleyebilirsiniz.</p>
         
+        <!-- Migration Section -->
+        <div class="hdh-migration-section" style="background: #fff; border: 1px solid #ccd0d4; border-left: 4px solid #2271b1; padding: 15px; margin: 20px 0;">
+            <h2 style="margin-top: 0;">🔄 Veri Migrasyonu</h2>
+            <p>Eski user_meta verilerini yeni veritabanı tablolarına taşıyın. Bu işlem sadece bir kez çalıştırılmalıdır.</p>
+            <?php
+            // Handle migration request
+            if (isset($_POST['hdh_run_migration']) && check_admin_referer('hdh_run_migration')) {
+                $dry_run = isset($_POST['hdh_migration_dry_run']) && $_POST['hdh_migration_dry_run'] === '1';
+                $results = hdh_migrate_task_data_to_tables($dry_run);
+                
+                if ($dry_run) {
+                    echo '<div class="notice notice-info"><p><strong>Test Modu:</strong> ' . $results['users_processed'] . ' kullanıcı işlendi, ' . $results['tasks_migrated'] . ' görev migrate edilecek.</p></div>';
+                } else {
+                    echo '<div class="notice notice-success"><p><strong>Migrasyon Tamamlandı:</strong> ' . $results['users_processed'] . ' kullanıcı işlendi, ' . $results['tasks_migrated'] . ' görev migrate edildi.</p></div>';
+                }
+            }
+            ?>
+            <form method="post" action="" style="margin-top: 15px;">
+                <?php wp_nonce_field('hdh_run_migration'); ?>
+                <label>
+                    <input type="checkbox" name="hdh_migration_dry_run" value="1" checked>
+                    Test modu (değişiklik yapmadan simüle et)
+                </label>
+                <br><br>
+                <button type="submit" name="hdh_run_migration" class="button button-secondary" onclick="return confirm('Migrasyonu çalıştırmak istediğinizden emin misiniz?');">
+                    Migrasyonu Çalıştır
+                </button>
+            </form>
+        </div>
+        
         <form method="post" action="" id="hdh-tasks-form">
             <?php wp_nonce_field('hdh_save_tasks'); ?>
             

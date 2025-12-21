@@ -120,6 +120,7 @@ function hdh_get_daily_tasks_config() {
 
 /**
  * Get user's one-time tasks with progress
+ * Uses new progress table system
  */
 function hdh_get_user_one_time_tasks($user_id) {
     if (!$user_id) return array();
@@ -128,40 +129,61 @@ function hdh_get_user_one_time_tasks($user_id) {
     $tasks = array();
     
     foreach ($config as $task_id => $task_config) {
-        $progress_key = 'hdh_task_progress_' . $task_id;
-        $claimed_key = 'hdh_task_claimed_' . $task_id;
+        $period_key = 'lifetime';
         
-        $progress = (int) get_user_meta($user_id, $progress_key, true);
-        $claimed = (bool) get_user_meta($user_id, $claimed_key, true);
+        // Get progress from new table
+        $progress_data = hdh_get_task_progress($user_id, $task_id, $period_key);
         
-        // Check task-specific completion
-        $is_completed = false;
-        switch ($task_id) {
-            case 'verify_email':
-                $is_completed = (bool) get_user_meta($user_id, 'hdh_email_verified', true);
-                break;
-            case 'create_first_listing':
-                $listings = get_posts(array(
-                    'post_type' => 'hayday_trade',
-                    'author' => $user_id,
-                    'posts_per_page' => 1,
-                    'fields' => 'ids',
-                ));
-                $is_completed = !empty($listings);
-                break;
-            case 'complete_first_exchange':
-                $completed = (int) get_user_meta($user_id, 'hdh_completed_exchanges', true);
-                $is_completed = $completed > 0;
-                break;
-            case 'invite_friend':
-            case 'friend_exchange':
-                // Placeholder - will be implemented later
-                $is_completed = false;
-                break;
+        $completed_count = $progress_data ? (int) $progress_data['completed_count'] : 0;
+        $claimed_count = $progress_data ? (int) $progress_data['claimed_count'] : 0;
+        
+        // Fallback: Check task-specific completion if no progress record exists
+        if ($completed_count === 0) {
+            $is_completed = false;
+            switch ($task_id) {
+                case 'verify_email':
+                    $is_completed = (bool) get_user_meta($user_id, 'hdh_email_verified', true);
+                    break;
+                case 'create_first_listing':
+                    $listings = get_posts(array(
+                        'post_type' => 'hayday_trade',
+                        'author' => $user_id,
+                        'posts_per_page' => 1,
+                        'fields' => 'ids',
+                    ));
+                    $is_completed = !empty($listings);
+                    break;
+                case 'complete_first_exchange':
+                    $existing_progress = hdh_get_task_progress($user_id, 'complete_first_exchange', 'lifetime');
+                    $is_completed = $existing_progress && (int) $existing_progress['completed_count'] > 0;
+                    break;
+                case 'invite_friend':
+                case 'friend_exchange':
+                    // Placeholder - will be implemented later
+                    $is_completed = false;
+                    break;
+            }
+            
+            if ($is_completed) {
+                $completed_count = $task_config['max_progress'];
+            }
         }
         
-        if ($is_completed) {
-            $progress = $task_config['max_progress'];
+        // Calculate claimable count
+        $claimable_count = max(0, $completed_count - $claimed_count);
+        
+        // Determine CTA state
+        $cta_state = 'locked';
+        if ($completed_count >= $task_config['max_progress']) {
+            if ($claimable_count > 0) {
+                $cta_state = 'claim';
+            } elseif ($claimed_count > 0) {
+                $cta_state = 'done';
+            } else {
+                $cta_state = 'claim'; // Should not happen, but safety check
+            }
+        } elseif ($completed_count > 0) {
+            $cta_state = 'in_progress';
         }
         
         $tasks[] = array(
@@ -170,11 +192,14 @@ function hdh_get_user_one_time_tasks($user_id) {
             'description' => $task_config['description'],
             'reward_bilet' => $task_config['reward_bilet'],
             'reward_level' => $task_config['reward_level'],
-            'progress' => $progress,
+            'progress' => $completed_count,
             'max_progress' => $task_config['max_progress'],
-            'completed' => $progress >= $task_config['max_progress'],
-            'claimed' => $claimed,
-            'can_claim' => ($progress >= $task_config['max_progress']) && !$claimed,
+            'completed' => $completed_count >= $task_config['max_progress'],
+            'claimed' => $claimed_count > 0,
+            'claimed_count' => $claimed_count,
+            'claimable_count' => $claimable_count,
+            'can_claim' => $claimable_count > 0,
+            'cta_state' => $cta_state,
         );
     }
     
@@ -183,11 +208,12 @@ function hdh_get_user_one_time_tasks($user_id) {
 
 /**
  * Get user's daily tasks with progress
+ * Uses new progress table system
  */
 function hdh_get_user_daily_tasks($user_id) {
     if (!$user_id) return array();
     
-    // Reset daily tasks if needed
+    // Reset daily tasks if needed (for old user_meta system compatibility)
     $today = date('Y-m-d');
     $last_reset = get_user_meta($user_id, 'hdh_daily_tasks_reset_date', true);
     if ($last_reset !== $today) {
@@ -198,68 +224,38 @@ function hdh_get_user_daily_tasks($user_id) {
     $tasks = array();
     
     foreach ($config as $task_id => $task_config) {
-        $progress_key = 'hdh_daily_task_progress_' . $task_id;
-        $claimed_key = 'hdh_daily_task_claimed_' . $task_id;
+        $period_key = $today;
         
-        $progress = (int) get_user_meta($user_id, $progress_key, true);
-        // For daily tasks, claimed_key stores claimed_progress (number), not a boolean
-        // For backward compatibility, check if it's a boolean (old data) and convert
-        $claimed_meta = get_user_meta($user_id, $claimed_key, true);
-        if ($claimed_meta === true || $claimed_meta === '1' || $claimed_meta === 1) {
-            // Old format: boolean true means all progress claimed, set to max_progress
-            $claimed_progress = $task_config['max_progress'];
-            update_user_meta($user_id, $claimed_key, $claimed_progress);
-        } else {
-            $claimed_progress = (int) $claimed_meta;
+        // Get progress from new table
+        $progress_data = hdh_get_task_progress($user_id, $task_id, $period_key);
+        
+        $completed_count = $progress_data ? (int) $progress_data['completed_count'] : 0;
+        $claimed_count = $progress_data ? (int) $progress_data['claimed_count'] : 0;
+        
+        // Fallback: Check task-specific progress if no progress record exists
+        // This is for backward compatibility during migration
+        if ($completed_count === 0) {
+            $old_progress_key = 'hdh_daily_task_progress_' . $task_id;
+            $old_progress = (int) get_user_meta($user_id, $old_progress_key, true);
+            if ($old_progress > 0) {
+                $completed_count = $old_progress;
+            }
         }
         
-        // Check task-specific progress
-        switch ($task_id) {
-            case 'create_listings':
-                $today_start = strtotime('today');
-                $today_end = strtotime('tomorrow') - 1;
-                $today_listings = new WP_Query(array(
-                    'post_type' => 'hayday_trade',
-                    'author' => $user_id,
-                    'post_status' => 'publish',
-                    'date_query' => array(array(
-                        'after' => date('Y-m-d H:i:s', $today_start),
-                        'before' => date('Y-m-d H:i:s', $today_end),
-                    )),
-                    'posts_per_page' => -1,
-                    'fields' => 'ids',
-                ));
-                $progress = min($task_config['max_progress'], $today_listings->found_posts);
-                wp_reset_postdata();
-                update_user_meta($user_id, $progress_key, $progress);
-                break;
-            case 'complete_exchanges':
-                $today_start = strtotime('today');
-                $today_end = strtotime('tomorrow') - 1;
-                $transactions = function_exists('hdh_get_jeton_transactions') ? hdh_get_jeton_transactions($user_id, 100) : array();
-                $count = 0;
-                foreach ($transactions as $transaction) {
-                    if (isset($transaction['reason']) && $transaction['reason'] === 'completed_exchange') {
-                        $timestamp = strtotime($transaction['timestamp']);
-                        if ($timestamp >= $today_start && $timestamp <= $today_end) {
-                            $count++;
-                        }
-                    }
-                }
-                $progress = min($task_config['max_progress'], $count);
-                update_user_meta($user_id, $progress_key, $progress);
-                break;
-            case 'invite_friends':
-            case 'friend_exchanges':
-                // Placeholder - will be implemented later
-                $progress = 0;
-                break;
-        }
+        // Calculate claimable count
+        $claimable_count = max(0, $completed_count - $claimed_count);
         
-        // For daily tasks: check if there are unclaimed progress milestones
-        // claimed_progress = how many progress milestones have been claimed
-        // can_claim = true if progress > claimed_progress (at least 1 milestone available)
-        $can_claim = $progress > $claimed_progress;
+        // Determine CTA state
+        $cta_state = 'locked';
+        if ($completed_count > 0) {
+            if ($claimable_count > 0) {
+                $cta_state = 'claim';
+            } elseif ($completed_count >= $task_config['max_progress']) {
+                $cta_state = 'done';
+            } else {
+                $cta_state = 'in_progress';
+            }
+        }
         
         $tasks[] = array(
             'id' => $task_id,
@@ -267,11 +263,13 @@ function hdh_get_user_daily_tasks($user_id) {
             'description' => $task_config['description'],
             'reward_bilet' => $task_config['reward_bilet'],
             'reward_level' => $task_config['reward_level'],
-            'progress' => $progress,
+            'progress' => $completed_count,
             'max_progress' => $task_config['max_progress'],
-            'completed' => $progress >= $task_config['max_progress'],
-            'can_claim' => $can_claim,
-            'claimed_progress' => $claimed_progress,
+            'completed' => $completed_count >= $task_config['max_progress'],
+            'can_claim' => $claimable_count > 0,
+            'claimed_count' => $claimed_count,
+            'claimable_count' => $claimable_count,
+            'cta_state' => $cta_state,
         );
     }
     
@@ -300,8 +298,19 @@ function hdh_reset_daily_tasks($user_id) {
 
 /**
  * Claim task reward
+ * Wrapper function that calls the atomic claim engine
+ * 
+ * @deprecated The actual implementation is in hdh_claim_task_reward_atomic()
+ * This function is kept for backward compatibility and redirects to the atomic version
  */
 function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
+    // Use atomic claim engine if available
+    if (function_exists('hdh_claim_task_reward_atomic')) {
+        return hdh_claim_task_reward_atomic($user_id, $task_id, $is_daily);
+    }
+    
+    // Fallback to old implementation (should not happen)
+    global $wpdb;
     if (!$user_id || !$task_id) {
         return new WP_Error('invalid_params', hdh_get_message('ajax', 'invalid_parameters', 'Geçersiz parametreler'));
     }
@@ -581,10 +590,16 @@ function hdh_update_daily_task_progress($user_id, $task_id, $increment = 1) {
 
 /**
  * Track listing creation for daily task and one-time task
+ * Uses new progress table system (NO AUTOMATIC REWARDS)
  */
 function hdh_track_listing_creation($user_id, $listing_id) {
-    // Update daily task progress
-    hdh_update_daily_task_progress($user_id, 'create_listings', 1);
+    if (!$user_id || !function_exists('hdh_increment_task_progress')) {
+        return;
+    }
+    
+    // Increment daily task progress (create_listings)
+    $today = date('Y-m-d');
+    hdh_increment_task_progress($user_id, 'create_listings', $today);
     
     // Check if this is the first listing (one-time task)
     $listings = get_posts(array(
@@ -594,22 +609,16 @@ function hdh_track_listing_creation($user_id, $listing_id) {
         'fields' => 'ids',
     ));
     
-    // If this is the first listing, update one-time task progress
-    // Note: Reward is already given in create-trade-handler.php, so we just mark the task as completed
+    // If this is the first listing, increment one-time task progress
     if (count($listings) === 1) {
-        // This is the first listing, mark the task as completed
-        update_user_meta($user_id, 'hdh_task_progress_create_first_listing', 1);
+        hdh_increment_task_progress($user_id, 'create_first_listing', 'lifetime');
         
-        // Mark as claimed since reward was already given directly
-        // This prevents double-rewarding when user clicks "Ödülünü Al" button
-        update_user_meta($user_id, 'hdh_task_claimed_create_first_listing', true);
-        
-        // Log task completion
+        // Log task completion (progress only, no reward)
         if (function_exists('hdh_log_event')) {
             hdh_log_event($user_id, 'task_completed', array(
                 'task_id' => 'create_first_listing',
                 'reason' => 'first_listing_created',
-                'note' => 'Reward given directly in create-trade-handler',
+                'note' => 'Progress incremented, reward must be claimed manually',
             ));
         }
     }
@@ -620,27 +629,29 @@ add_action('hdh_listing_created', 'hdh_track_listing_creation', 10, 2);
  * Track exchange completion for daily task and one-time task
  */
 function hdh_track_exchange_completion($user_id, $trade_id) {
-    // Update daily task progress
-    hdh_update_daily_task_progress($user_id, 'complete_exchanges', 1);
+    if (!$user_id || !function_exists('hdh_increment_task_progress')) {
+        return;
+    }
     
-    // Update completed exchanges count for one-time task tracking
-    $completed_count = (int) get_user_meta($user_id, 'hdh_completed_exchanges', true);
-    $completed_count++;
-    update_user_meta($user_id, 'hdh_completed_exchanges', $completed_count);
+    // Increment daily task progress (complete_exchanges)
+    $today = date('Y-m-d');
+    hdh_increment_task_progress($user_id, 'complete_exchanges', $today);
     
-    // If this is the first exchange, mark the one-time task as completed (but NOT claimed)
-    // User must manually claim the reward via "Ödülünü Al" button
-    if ($completed_count === 1) {
-        update_user_meta($user_id, 'hdh_task_progress_complete_first_exchange', 1);
-        
-        // Log task completion (but don't mark as claimed - user must claim manually)
-        if (function_exists('hdh_log_event')) {
-            hdh_log_event($user_id, 'task_completed', array(
-                'task_id' => 'complete_first_exchange',
-                'reason' => 'first_exchange_completed',
-                'note' => 'Reward must be claimed manually via task panel',
-            ));
-        }
+    // Check if this is the first exchange (one-time task)
+    // Get completed exchanges count from progress table
+    $progress = hdh_get_task_progress($user_id, 'complete_first_exchange', 'lifetime');
+    $completed_count = $progress ? (int) $progress['completed_count'] : 0;
+    
+    // Increment one-time task progress
+    hdh_increment_task_progress($user_id, 'complete_first_exchange', 'lifetime');
+    
+    // Log task completion (progress only, no reward)
+    if (function_exists('hdh_log_event')) {
+        hdh_log_event($user_id, 'task_completed', array(
+            'task_id' => 'complete_first_exchange',
+            'reason' => 'exchange_completed',
+            'note' => 'Progress incremented, reward must be claimed manually',
+        ));
     }
 }
 add_action('hdh_exchange_completed', 'hdh_track_exchange_completion', 10, 2);

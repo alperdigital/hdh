@@ -4838,6 +4838,9 @@ footer,
 .jeton-balance { font-size: 32px; font-weight: 700; color: var(--newspaper-text); line-height: 1; }
 .jeton-label { font-size: 14px; color: var(--newspaper-text-light); opacity: 0.7; }
 .profile-actions { text-align: center; }
+.btn-treasure-room { flex: 1; background: var(--farm-green); color: #FFFFFF; font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid var(--farm-green); border-radius: 10px; text-decoration: none; display: inline-block; text-align: center; transition: all 0.2s ease; margin-right: 8px; }
+.btn-treasure-room:hover { background: var(--farm-green-dark); border-color: var(--farm-green-dark); color: #FFFFFF; }
+.btn-treasure-room:active { transform: scale(0.98); }
 .btn-edit-profile { background: transparent; color: var(--farm-green); font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid var(--farm-green); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
 .btn-edit-profile:active { background: var(--farm-green); color: #FFFFFF; transform: scale(0.98); }
 .profile-edit-form { background: #FFF6D8; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
@@ -4936,8 +4939,11 @@ footer,
 .stat-label { font-size: 12px; color: var(--newspaper-text-light); opacity: 0.7; }
 
 /* Profile Actions */
-.profile-actions { display: flex; gap: 12px; }
-.btn-logout { flex: 1; background: transparent; color: var(--newspaper-text); font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 10px; text-decoration: none; display: inline-block; text-align: center; transition: all 0.2s ease; }
+.profile-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-treasure-room { flex: 1; background: var(--farm-green); color: #FFFFFF; font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid var(--farm-green); border-radius: 10px; text-decoration: none; display: inline-block; text-align: center; transition: all 0.2s ease; min-width: 0; }
+.btn-treasure-room:hover { background: var(--farm-green-dark); border-color: var(--farm-green-dark); color: #FFFFFF; }
+.btn-treasure-room:active { transform: scale(0.98); }
+.btn-logout { flex: 1; background: transparent; color: var(--newspaper-text); font-size: 15px; font-weight: 600; padding: 12px 24px; border: 2px solid rgba(201, 184, 138, 0.4); border-radius: 10px; text-decoration: none; display: inline-block; text-align: center; transition: all 0.2s ease; min-width: 0; }
 .btn-logout:hover { background: rgba(201, 184, 138, 0.1); border-color: rgba(201, 184, 138, 0.6); color: var(--newspaper-text); }
 
 /* ============================================

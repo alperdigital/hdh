@@ -183,13 +183,37 @@
                     
                     showToast(message, 'success');
                     
+                    // Update UI: claimable_count and badge
+                    const claimableRemaining = data.data.claimable_remaining !== undefined ? data.data.claimable_remaining : 0;
+                    const taskContainer = btn.closest('.task-item');
+                    if (taskContainer) {
+                        // Update button state based on remaining claimable count
+                        if (claimableRemaining > 0) {
+                            // Still has claimable rewards, keep button enabled
+                            btn.disabled = false;
+                            btn.textContent = originalText;
+                        } else {
+                            // No more claimable rewards, show "Ödül Alındı" or disable button
+                            const claimedMsg = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.reward_claimed_text) 
+                                ? hdhTasks.messages.tasks.reward_claimed_text 
+                                : '✅ Ödül Alındı';
+                            btn.textContent = claimedMsg;
+                            btn.disabled = true;
+                            btn.classList.add('claimed');
+                        }
+                    }
+                    
+                    // Update badge count
+                    updateBadgeCount();
+                    
                     // Log for debugging (only in development)
                     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                         console.log('HDH Tasks: Reward claimed', {
                             bilet: bilet,
                             level: level,
                             new_bilet: new_bilet,
-                            new_level: new_level
+                            new_level: new_level,
+                            claimable_remaining: claimableRemaining
                         });
                     }
                     
@@ -512,22 +536,44 @@
         }
         
         /**
-         * Update tasks badge count
+         * Update badge count based on claimable_count
+         */
+        function updateBadgeCount() {
+            // Reload tasks panel to get fresh claimable_count data
+            // This is a simple approach - could be optimized with AJAX call to get only counts
+            const taskItems = document.querySelectorAll('.task-item');
+            let claimableCount = 0;
+            
+            taskItems.forEach(function(item) {
+                const claimBtn = item.querySelector('.btn-claim-task');
+                if (claimBtn && !claimBtn.disabled && !claimBtn.classList.contains('claimed')) {
+                    claimableCount++;
+                }
+            });
+            
+            const badge = document.getElementById('tasks-icon-badge');
+            if (badge) {
+                if (claimableCount > 0) {
+                    badge.textContent = claimableCount;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+        
+        /**
+         * Update tasks badge count (legacy function name, kept for compatibility)
          */
         function updateTasksBadge() {
-            const badge = document.getElementById('tasks-icon-badge');
-            if (!badge) return;
-            
-            // Count tasks that are completed but not claimed
-            const claimButtons = document.querySelectorAll('.btn-claim-task');
-            const count = claimButtons.length;
-            
-            if (count > 0) {
-                badge.textContent = count;
-                badge.style.display = 'flex';
-            } else {
-                badge.style.display = 'none';
-            }
+            updateBadgeCount();
+        }
+        
+        /**
+         * Update tasks badge count (uses claimable_count from task data)
+         */
+        function updateTasksBadge() {
+            updateBadgeCount();
         }
         
         // Initial badge update

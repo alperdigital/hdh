@@ -130,42 +130,34 @@ function hdh_update_quest_progress($user_id, $quest_id, $increment = 1) {
 /**
  * Complete quest and award rewards
  */
+/**
+ * Complete quest (DEPRECATED - Quest system is not actively used)
+ * This function awards rewards automatically, but quest system is being phased out
+ * in favor of the new task system. This function is kept for backward compatibility
+ * but should not be called for new quests.
+ * 
+ * @deprecated Use task system instead (hdh_increment_task_progress + hdh_claim_task_reward)
+ */
 function hdh_complete_quest($user_id, $quest_id, $quest_data) {
+    // DISABLED: Quest system is deprecated, rewards should be claimed via task system
+    // This function is kept for backward compatibility but does not award rewards
+    // All rewards must be claimed manually through the task system
+    
+    // Just mark as completed (for UI purposes) but don't award rewards
     $completed_key = 'hdh_quest_completed_' . $quest_id;
-    
-    // Check if already completed
-    if (get_user_meta($user_id, $completed_key, true)) {
-        return false;
+    if (!get_user_meta($user_id, $completed_key, true)) {
+        update_user_meta($user_id, $completed_key, true);
     }
     
-    // Mark as completed
-    update_user_meta($user_id, $completed_key, true);
-    
-    // Award rewards
-    if (isset($quest_data['reward_tickets']) && $quest_data['reward_tickets'] > 0) {
-        if (function_exists('hdh_add_bilet')) {
-            hdh_add_bilet($user_id, $quest_data['reward_tickets'], 'quest_completed', array('quest_id' => $quest_id));
-        }
-    }
-    
-    if (isset($quest_data['reward_xp']) && $quest_data['reward_xp'] > 0) {
-        if (function_exists('hdh_add_xp')) {
-            hdh_add_xp($user_id, $quest_data['reward_xp'], 'quest_completed', array('quest_id' => $quest_id));
-        }
-    }
-    
-    // Log event
+    // Log that quest was "completed" but no reward given (must be claimed via task system)
     if (function_exists('hdh_log_event')) {
-        hdh_log_event($user_id, 'quest_completed', array(
+        hdh_log_event($user_id, 'quest_completed_no_reward', array(
             'quest_id' => $quest_id,
-            'rewards' => array(
-                'tickets' => $quest_data['reward_tickets'] ?? 0,
-                'xp' => $quest_data['reward_xp'] ?? 0,
-            ),
+            'note' => 'Quest marked as completed but no reward given - use task system to claim rewards',
         ));
     }
     
-    return true;
+    return false; // Return false to indicate no reward was given
 }
 
 /**

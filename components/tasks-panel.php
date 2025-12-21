@@ -36,14 +36,16 @@ if (!function_exists('hdh_render_tasks_panel')) {
             $daily_tasks = array();
         }
         
-        // Count incomplete tasks for badge (tasks that can be claimed)
+        // Count tasks with claimable rewards for badge (claimable_count > 0)
         foreach ($one_time_tasks as $task) {
-            if (isset($task['can_claim']) && $task['can_claim']) {
+            $claimable_count = isset($task['claimable_count']) ? (int) $task['claimable_count'] : 0;
+            if ($claimable_count > 0) {
                 $incomplete_count++;
             }
         }
         foreach ($daily_tasks as $task) {
-            if (isset($task['can_claim']) && $task['can_claim']) {
+            $claimable_count = isset($task['claimable_count']) ? (int) $task['claimable_count'] : 0;
+            if ($claimable_count > 0) {
                 $incomplete_count++;
             }
         }

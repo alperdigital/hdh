@@ -40,12 +40,6 @@
             // Normalize path - remove trailing slash
             const normalizedPath = currentPath.replace(/\/$/, '');
             
-            // Check if we're on homepage - NO active item
-            if (normalizedPath === '' || normalizedPath === '/index.php') {
-                setActiveItem(null);
-                return;
-            }
-            
             // Check specific pages first (most specific to least specific)
             // Order matters! Check longer/more specific paths first
             
@@ -54,24 +48,6 @@
                 const createItem = bottomNav.querySelector('[data-nav="create"]');
                 if (createItem) {
                     setActiveItem(createItem);
-                    return;
-                }
-            }
-            
-            // Check if we're on treasure page (hazine)
-            if (normalizedPath === '/hazine') {
-                const treasureItem = bottomNav.querySelector('[data-nav="treasure"]');
-                if (treasureItem) {
-                    setActiveItem(treasureItem);
-                    return;
-                }
-            }
-            
-            // Check if we're on lottery page (cekilis)
-            if (normalizedPath === '/cekilis') {
-                const raffleItem = bottomNav.querySelector('[data-nav="raffle"]');
-                if (raffleItem) {
-                    setActiveItem(raffleItem);
                     return;
                 }
             }
@@ -85,7 +61,16 @@
                 }
             }
             
-            // Check if we're on search page (ara) - check this LAST
+            // Check if we're on lottery page (cekilis)
+            if (normalizedPath === '/cekilis') {
+                const raffleItem = bottomNav.querySelector('[data-nav="raffle"]');
+                if (raffleItem) {
+                    setActiveItem(raffleItem);
+                    return;
+                }
+            }
+            
+            // Check if we're on search page (ara) - check this before homepage
             // because "ara" might appear in other URLs
             if (normalizedPath === '/ara') {
                 const searchItem = bottomNav.querySelector('[data-nav="search"]');
@@ -93,6 +78,23 @@
                     setActiveItem(searchItem);
                     return;
                 }
+            }
+            
+            // Check if we're on homepage - set home as active
+            if (normalizedPath === '' || normalizedPath === '/index.php' || normalizedPath === '/') {
+                const homeItem = bottomNav.querySelector('[data-nav="home"]');
+                if (homeItem) {
+                    setActiveItem(homeItem);
+                    return;
+                }
+            }
+            
+            // Check if we're on treasure page (hazine) - now accessed from profile
+            // Menu item is now "Anasayfa" (home), so we don't activate it from /hazine
+            if (normalizedPath === '/hazine') {
+                // Don't activate any menu item for treasure room (it's accessed from profile)
+                setActiveItem(null);
+                return;
             }
             
             // For other pages (like single trade posts), no active item
