@@ -270,31 +270,31 @@
             const levelClass = `lvl-d${levelDigits}`;
             const actionBadge = trade.requires_action ? '<span class="gift-trade-action-badge">Aksiyon Gerekli</span>' : '';
             
+            // Determine if trade is completed
+            const isCompleted = session.status === 'COMPLETED';
+            const completedClass = isCompleted ? 'trade-completed' : '';
+            
             html += `
-                <div class="gift-trade-detailed-item" data-session-id="${session.id}">
-                    <div class="gift-trade-detailed-header">
-                        <h4 class="gift-trade-detailed-title">${escapeHtml(listing.title || 'İlan')}</h4>
-                        ${actionBadge}
-                    </div>
-                    
-                    <div class="gift-trade-detailed-counterpart">
-                        <a href="/profil?user=${trade.counterpart_id}" class="gift-trade-user">
-                            <div class="hdh-level-badge ${levelClass}" aria-label="Seviye ${trade.counterpart_level}">
-                                ${trade.counterpart_level || 1}
+                <div class="gift-trade-detailed-item ${completedClass}" data-session-id="${session.id}">
+                    <div class="gift-trade-detailed-info">
+                        <div class="gift-trade-detailed-icon">🎁</div>
+                        <div class="gift-trade-detailed-details">
+                            <div class="gift-trade-detailed-name">
+                                ${escapeHtml(listing.title || 'İlan')}
+                                ${actionBadge}
                             </div>
-                            <span class="gift-trade-farm-name">${escapeHtml(trade.counterpart_name || 'Bilinmeyen')}</span>
-                            <span class="gift-trade-presence">${escapeHtml(trade.counterpart_presence || '3+ gün önce')}</span>
-                        </a>
-                    </div>
-                    
-                    <div class="gift-trade-detailed-summary">
-                        <div class="summary-item">
-                            <span class="summary-label">İstediği:</span>
-                            <span class="summary-value">${escapeHtml(listing.wanted_item || 'N/A')}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Verebileceği:</span>
-                            <span class="summary-value">${escapeHtml(listing.offer_items || 'N/A')}</span>
+                            <div class="gift-trade-detailed-progress-text">
+                                ${currentStep} / 5 adım tamamlandı
+                            </div>
+                            <div class="gift-trade-detailed-description">
+                                <a href="/profil?user=${trade.counterpart_id}" class="gift-trade-user">
+                                    <div class="hdh-level-badge ${levelClass}" aria-label="Seviye ${trade.counterpart_level}">
+                                        ${trade.counterpart_level || 1}
+                                    </div>
+                                    <span class="gift-trade-farm-name">${escapeHtml(trade.counterpart_name || 'Bilinmeyen')}</span>
+                                    <span class="gift-trade-presence">${escapeHtml(trade.counterpart_presence || '3+ gün önce')}</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     
@@ -302,7 +302,6 @@
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${(currentStep / 5) * 100}%"></div>
                         </div>
-                        <span class="progress-text">${currentStep} / 5 adım tamamlandı</span>
                     </div>
                     
                     <div class="gift-trade-detailed-steps">
@@ -518,16 +517,7 @@
                     <h3 class="gift-detail-title">${escapeHtml(listing.title || 'İlan')}</h3>
                 </div>
                 
-                <div class="gift-detail-summary">
-                    <div class="summary-item">
-                        <span class="summary-label">İstediği:</span>
-                        <span class="summary-value">${escapeHtml(listing.wanted_item || 'N/A')}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Verebileceği:</span>
-                        <span class="summary-value">${escapeHtml(listing.offer_items || 'N/A')}</span>
-                    </div>
-                </div>
+                <!-- İstediği/Verebileceği blokları kaldırıldı -->
                 
                 <div class="gift-detail-progress">
                     <div class="progress-bar">
@@ -586,7 +576,7 @@
     }
     
     /**
-     * Render a step
+     * Render a step as chat bubble
      */
     function renderStep(stepNum, icon, title, done, current, canComplete, isUserTurn, farmCode, sessionId = null) {
         let statusClass = 'locked';
@@ -595,6 +585,11 @@
         } else if (current) {
             statusClass = 'current';
         }
+        
+        // Determine if this is user's step (right) or counterpart's step (left)
+        // Steps 1, 3, 5 are user's steps (starter), steps 2, 4 are counterpart's (owner)
+        const isUserStep = (stepNum === 1 || stepNum === 3 || stepNum === 5);
+        const bubbleClass = isUserStep ? 'step-user' : 'step-counterpart';
         
         let actionHtml = '';
         if (canComplete) {
@@ -615,7 +610,7 @@
             : '';
         
         return `
-            <div class="gift-detail-step step-${statusClass}" data-step="${stepNum}">
+            <div class="gift-detail-step step-${statusClass} ${bubbleClass}" data-step="${stepNum}">
                 <div class="step-header">
                     <span class="step-icon">${icon}</span>
                     <span class="step-title">${escapeHtml(title)}</span>
