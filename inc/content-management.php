@@ -69,7 +69,7 @@ function hdh_save_content($page, $key, $value) {
 function hdh_get_default_content($page) {
     $defaults = array(
         'homepage' => array(
-            'headline' => 'Diğer çiftliklerle hediyeleşmeye başla',
+            'headline' => 'Hediyeleşmeye başla',
             'subtitle' => 'Diğer çiftliklerle güvenle hediyeleş',
             'cta_search_text' => 'İlan Ara',
             'cta_create_text' => 'İlan Ver',

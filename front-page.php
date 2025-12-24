@@ -42,8 +42,12 @@ if (function_exists('hdh_get_listings_with_presence')) {
     <!-- 1. TOP SECTION - PRIMARY ACTION -->
     <section class="homepage-hero">
         <div class="container">
-            <h1 class="homepage-headline"><?php echo esc_html(hdh_get_content('homepage', 'headline', 'Diğer çiftliklerle hediyeleşmeye başla')); ?></h1>
+            <h1 class="homepage-headline"><?php echo esc_html(hdh_get_content('homepage', 'headline', 'Hediyeleşmeye başla')); ?></h1>
             <p class="homepage-subtitle"><?php echo esc_html(hdh_get_content('homepage', 'subtitle', 'Diğer çiftliklerle güvenle hediyeleş')); ?></p>
+            
+            <!-- LOBBY CHAT SECTION -->
+            <?php hdh_render_lobby_chat(); ?>
+            
             <div class="homepage-cta-buttons">
                 <a href="<?php echo esc_url(home_url('/ara')); ?>" class="homepage-primary-cta homepage-cta-search">
                     <?php echo esc_html(hdh_get_content('homepage', 'cta_search_text', 'İlan Ara')); ?>
@@ -72,9 +76,6 @@ if (function_exists('hdh_get_listings_with_presence')) {
     <?php endif; 
     wp_reset_postdata();
     ?>
-    
-    <!-- 2.5. LOBBY CHAT SECTION -->
-    <?php hdh_render_lobby_chat(); ?>
     
     <!-- 3. TRUST INDICATOR (MINIMAL) -->
     <?php if ($total_exchanges > 0) : ?>

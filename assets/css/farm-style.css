@@ -1496,6 +1496,9 @@ h6 { font-size: 1.1rem; }
     gap: 24px;
     margin-bottom: 40px;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .trade-pagination {
@@ -2029,6 +2032,17 @@ h6 { font-size: 1.1rem; }
     
     .trade-cards-grid {
         grid-template-columns: 1fr;
+        min-width: 0;
+        max-width: 100%;
+        overflow-x: hidden;
+        padding: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .listing-unified-block {
+        min-width: 0;
+        max-width: 100%;
     }
     
     /* Visual Filter Grid - Mobile */
@@ -4125,6 +4139,8 @@ footer,
     -webkit-tap-highlight-color: transparent;
     transition: all 0.2s ease;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     box-sizing: border-box;
     overflow: hidden;
     word-wrap: break-word;
@@ -4388,6 +4404,9 @@ footer,
     gap: 24px;
     margin-bottom: 40px;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 /* Fallback for older browsers that don't support grid */
@@ -4737,6 +4756,9 @@ footer,
 .homepage-recent-listings {
     padding: 40px 20px;
     background: #FFF6D8;
+    overflow-x: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .homepage-section-title {
