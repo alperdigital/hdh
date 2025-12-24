@@ -8,11 +8,16 @@
     
     // Configuration
     const config = {
-        ajaxUrl: hdhLobbyChat?.ajaxUrl || '/wp-admin/admin-ajax.php',
-        nonce: hdhLobbyChat?.nonce || '',
+        ajaxUrl: (typeof hdhLobbyChat !== 'undefined' && hdhLobbyChat?.ajaxUrl) ? hdhLobbyChat.ajaxUrl : '/wp-admin/admin-ajax.php',
+        nonce: (typeof hdhLobbyChat !== 'undefined' && hdhLobbyChat?.nonce) ? hdhLobbyChat.nonce : '',
         pollInterval: 5000, // 5 seconds
         messagesPerPage: 50,
     };
+    
+    // Debug: Log config if nonce is missing
+    if (!config.nonce) {
+        console.warn('HDH Lobby Chat: Nonce is missing. Check if hdhLobbyChat is properly localized.');
+    }
     
     // State
     let pollTimer = null;
@@ -107,6 +112,16 @@
         if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="send-icon">⏳</span>';
+        }
+        
+        // Validate nonce
+        if (!config.nonce) {
+            showToast('Güvenlik hatası. Sayfayı yenileyin.', 'error');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span class="send-icon">📨</span>';
+            }
+            return;
         }
         
         // Send message
