@@ -418,6 +418,59 @@ if (!$is_logged_in) {
                     </form>
                 </div>
                 
+                <!-- User's Active Listings Section (for profile viewing) -->
+                <div class="user-listings-section">
+                    <h3 class="user-listings-title">📋 Kullanıcının İlanları</h3>
+                    <?php
+                    // Get user's active listings (published, open trades only)
+                    $active_listings_args = array(
+                        'post_type' => 'hayday_trade',
+                        'author' => $user_id,
+                        'posts_per_page' => 10,
+                        'post_status' => 'publish',
+                        'meta_query' => array(
+                            array(
+                                'key' => '_hdh_trade_status',
+                                'value' => 'open',
+                                'compare' => '='
+                            )
+                        ),
+                    );
+                    
+                    // Use presence-based sorting if available
+                    if (function_exists('hdh_get_listings_with_presence')) {
+                        $active_listings = hdh_get_listings_with_presence($active_listings_args, 'presence');
+                    } else {
+                        $active_listings_args['orderby'] = 'date';
+                        $active_listings_args['order'] = 'DESC';
+                        $active_listings = new WP_Query($active_listings_args);
+                    }
+                    
+                    if ($active_listings->have_posts()) : ?>
+                        <div class="user-listings-grid trade-cards-grid">
+                            <?php while ($active_listings->have_posts()) : $active_listings->the_post(); ?>
+                                <?php hdh_render_trade_card(get_the_ID()); ?>
+                            <?php endwhile; ?>
+                        </div>
+                        <?php
+                        // Check if there are more listings
+                        $total_active = $active_listings->found_posts;
+                        if ($total_active > 10) : ?>
+                            <div class="user-listings-more">
+                                <a href="<?php echo esc_url(add_query_arg('author', $user_id, home_url('/ara'))); ?>" class="btn-view-all-listings">
+                                    Tüm ilanları gör (<?php echo esc_html($total_active); ?>)
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                    <?php else : ?>
+                        <div class="no-user-listings-message">
+                            <p>Henüz ilan yok</p>
+                        </div>
+                    <?php endif; 
+                    wp_reset_postdata();
+                    ?>
+                </div>
+                
                 <!-- My Listings Section -->
                 <div class="my-listings-section">
                     <h3 class="my-listings-title">📋 <?php echo esc_html(hdh_get_content('profile', 'my_listings_title', 'İlanlarım')); ?></h3>

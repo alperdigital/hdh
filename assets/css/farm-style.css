@@ -4209,6 +4209,38 @@ footer,
     font-weight: 500;
 }
 
+/* Presence label styles */
+.listing-presence-online {
+    color: var(--farm-green);
+    font-weight: 600;
+}
+
+.listing-presence-5min {
+    color: var(--farm-green-dark);
+    font-weight: 500;
+}
+
+.listing-presence-1hour {
+    color: var(--wood-brown);
+    font-weight: 500;
+}
+
+.listing-presence-today {
+    color: var(--newspaper-text-light);
+    font-weight: 400;
+}
+
+.listing-presence-yesterday {
+    color: var(--newspaper-text-light);
+    font-weight: 400;
+}
+
+.listing-presence-3plus-days {
+    color: var(--newspaper-text-light);
+    font-weight: 400;
+    opacity: 0.7;
+}
+
 /* Listing Header/Footer: Split with Divider */
 .listing-header-split {
     display: flex;

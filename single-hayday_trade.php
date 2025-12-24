@@ -104,6 +104,18 @@ if (!have_posts()) :
             $session = hdh_get_trade_session(null, $post_id, $current_user_id);
         }
         
+        // Get trade request if exists (for non-owner users)
+        $trade_request = null;
+        if ($current_user_id && !$is_owner && function_exists('hdh_get_trade_request_for_listing')) {
+            $trade_request = hdh_get_trade_request_for_listing($post_id, $current_user_id);
+        }
+        
+        // Get pending requests for owner
+        $pending_requests = array();
+        if ($is_owner && function_exists('hdh_get_pending_requests_for_owner')) {
+            $pending_requests = hdh_get_pending_requests_for_owner($author_id);
+        }
+        
         // Calculate relative time
         $post_time = get_post_time('U', false, $post_id);
         $current_time = current_time('timestamp');
@@ -164,28 +176,101 @@ if (!have_posts()) :
                         </div>
                     </div>
                     
-                    <!-- Start Trade Button or Roadmap -->
+                    <!-- Trade Request Status or Roadmap -->
                     <?php if ($session) : ?>
                         <!-- Roadmap Section -->
                         <?php hdh_render_trade_roadmap($session, $post_id, $current_user_id); ?>
-                    <?php elseif (is_user_logged_in() && !$is_owner && $trade_status === 'open') : ?>
-                        <!-- Start Trade Button -->
-                        <div class="trade-start-section">
-                            <?php if ($current_user_farm_number) : ?>
-                                <div class="farm-codes-preview">
-                                    <div class="farm-code-preview-item">
-                                        <span class="farm-code-preview-label">Senin Çiftlik Kodun:</span>
-                                        <span class="farm-code-preview-value"><?php echo esc_html($current_user_farm_number); ?></span>
+                    <?php elseif ($is_owner && !empty($pending_requests)) : ?>
+                        <!-- Owner: Pending Requests Section -->
+                        <div class="trade-pending-requests-section">
+                            <h3 class="pending-requests-title">Bekleyen Teklifler</h3>
+                            <div class="pending-requests-list">
+                                <?php foreach ($pending_requests as $request) : 
+                                    $requester_id = $request['requester_user_id'];
+                                    $requester_name = get_user_meta($requester_id, 'display_name', true) ?: get_userdata($requester_id)->display_name;
+                                    $expires_timestamp = strtotime($request['expires_at']);
+                                    $current_timestamp = current_time('timestamp');
+                                    $time_remaining = max(0, $expires_timestamp - $current_timestamp);
+                                ?>
+                                    <div class="pending-request-item" data-request-id="<?php echo esc_attr($request['id']); ?>">
+                                        <div class="request-info">
+                                            <span class="request-requester"><?php echo esc_html($requester_name); ?></span>
+                                            <span class="request-time-remaining" data-expires-at="<?php echo esc_attr($request['expires_at']); ?>">
+                                                <?php echo esc_html(sprintf('%d saniye kaldı', $time_remaining)); ?>
+                                            </span>
+                                        </div>
+                                        <div class="request-actions">
+                                            <button type="button" 
+                                                    class="btn-accept-request" 
+                                                    data-request-id="<?php echo esc_attr($request['id']); ?>">
+                                                ✅ Kabul Et
+                                            </button>
+                                            <button type="button" 
+                                                    class="btn-reject-request" 
+                                                    data-request-id="<?php echo esc_attr($request['id']); ?>">
+                                                ❌ Reddet
+                                            </button>
+                                        </div>
                                     </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php elseif (is_user_logged_in() && !$is_owner && $trade_status === 'open') : ?>
+                        <!-- Non-Owner: Send Trade Request Section -->
+                        <div class="trade-request-section">
+                            <?php if ($trade_request) : 
+                                $request_status = $trade_request['status'];
+                                $expires_timestamp = strtotime($trade_request['expires_at']);
+                                $current_timestamp = current_time('timestamp');
+                                $time_remaining = max(0, $expires_timestamp - $current_timestamp);
+                            ?>
+                                <!-- Request Status -->
+                                <div class="trade-request-status" data-request-id="<?php echo esc_attr($trade_request['id']); ?>">
+                                    <?php if ($request_status === 'pending') : ?>
+                                        <div class="request-status-pending">
+                                            <span class="status-icon">⏳</span>
+                                            <span class="status-text">Teklif Gönderildi - Bekleniyor...</span>
+                                            <div class="request-countdown" data-expires-at="<?php echo esc_attr($trade_request['expires_at']); ?>">
+                                                <span class="countdown-text"><?php echo esc_html(sprintf('%d saniye kaldı', $time_remaining)); ?></span>
+                                            </div>
+                                        </div>
+                                    <?php elseif ($request_status === 'accepted') : ?>
+                                        <div class="request-status-accepted">
+                                            <span class="status-icon">✅</span>
+                                            <span class="status-text">Teklif Kabul Edildi</span>
+                                            <p class="status-message">İlan sahibi teklifinizi kabul etti. Hediyeleşme başlatılıyor...</p>
+                                        </div>
+                                    <?php elseif ($request_status === 'rejected') : ?>
+                                        <div class="request-status-rejected">
+                                            <span class="status-icon">❌</span>
+                                            <span class="status-text">Teklif Reddedildi</span>
+                                            <button type="button" class="btn-send-new-request" data-listing-id="<?php echo esc_attr($post_id); ?>">
+                                                Yeni Teklif Gönder
+                                            </button>
+                                        </div>
+                                    <?php elseif ($request_status === 'expired') : ?>
+                                        <div class="request-status-expired">
+                                            <span class="status-icon">⏰</span>
+                                            <span class="status-text">Teklif Süresi Doldu</span>
+                                            <button type="button" class="btn-send-new-request" data-listing-id="<?php echo esc_attr($post_id); ?>">
+                                                Yeni Teklif Gönder
+                                            </button>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php else : ?>
+                                <!-- Send Request Button -->
+                                <div class="trade-send-request-section">
+                                    <button type="button" 
+                                            id="btn-send-trade-request" 
+                                            class="btn-primary btn-send-trade-request"
+                                            data-listing-id="<?php echo esc_attr($post_id); ?>">
+                                        <span class="btn-icon">📨</span>
+                                        <span class="btn-text">Teklif Gönder</span>
+                                    </button>
+                                    <p class="request-help-text">İlan sahibi teklifinizi 120 saniye içinde kabul etmeli.</p>
                                 </div>
                             <?php endif; ?>
-                            <button type="button" 
-                                    id="btn-start-trade" 
-                                    class="btn-primary btn-start-trade"
-                                    data-listing-id="<?php echo esc_attr($post_id); ?>">
-                                <span class="btn-icon">🚀</span>
-                                <span class="btn-text">Hediyeleşmeyi Başlat</span>
-                            </button>
                         </div>
                     <?php elseif (!is_user_logged_in()) : 
                         $login_url = function_exists('hdh_get_login_url_with_return') 

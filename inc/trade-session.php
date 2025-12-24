@@ -397,6 +397,108 @@ function hdh_resolve_trade_dispute($session_id, $resolution_note, $action = 'res
 }
 
 /**
+ * Get active trade sessions for a user
+ * 
+ * @param int $user_id User ID
+ * @param bool $require_action_only If true, only return trades requiring user action
+ * @return array Array of trade sessions
+ */
+function hdh_get_user_active_trades($user_id, $require_action_only = false) {
+    if (!$user_id) {
+        return array();
+    }
+    
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'hdh_trade_sessions';
+    
+    // Get all active trades for user
+    $sessions = $wpdb->get_results($wpdb->prepare(
+        "SELECT * FROM {$table_name}
+         WHERE (owner_user_id = %d OR starter_user_id = %d)
+         AND status = 'ACTIVE'
+         ORDER BY updated_at DESC",
+        $user_id,
+        $user_id
+    ), ARRAY_A);
+    
+    if (empty($sessions)) {
+        return array();
+    }
+    
+    $active_trades = array();
+    
+    foreach ($sessions as $session) {
+        // Enrich with listing and user data
+        $listing = get_post($session['listing_id']);
+        if (!$listing) {
+            continue; // Skip if listing deleted
+        }
+        
+        $session['listing_title'] = $listing->post_title;
+        $session['listing_id'] = $session['listing_id'];
+        
+        // Determine counterpart
+        if ($session['owner_user_id'] == $user_id) {
+            $counterpart_id = $session['starter_user_id'];
+            $session['is_owner'] = true;
+            $session['is_starter'] = false;
+        } else {
+            $counterpart_id = $session['owner_user_id'];
+            $session['is_owner'] = false;
+            $session['is_starter'] = true;
+        }
+        
+        $counterpart = get_userdata($counterpart_id);
+        if (!$counterpart) {
+            continue; // Skip if user deleted
+        }
+        
+        $session['counterpart_id'] = $counterpart_id;
+        $session['counterpart_name'] = $counterpart->display_name;
+        $session['counterpart_level'] = 1;
+        if (function_exists('hdh_get_user_state')) {
+            $counterpart_state = hdh_get_user_state($counterpart_id);
+            $session['counterpart_level'] = $counterpart_state['level'] ?? 1;
+        }
+        
+        // Get presence label
+        $session['counterpart_presence'] = '3+ gün önce';
+        if (function_exists('hdh_get_presence_bucket') && function_exists('hdh_format_presence_label')) {
+            $presence_bucket = hdh_get_presence_bucket($counterpart_id);
+            $session['counterpart_presence'] = hdh_format_presence_label($presence_bucket, null);
+        }
+        
+        // Get current step
+        $session['current_step'] = hdh_get_trade_session_current_step($session);
+        
+        // Check if requires user action
+        $requires_action = false;
+        if ($session['current_step'] == 1 && $session['is_starter']) {
+            $requires_action = true; // Starter needs to do step 1
+        } elseif ($session['current_step'] == 2 && $session['is_owner']) {
+            $requires_action = true; // Owner needs to do step 2
+        } elseif ($session['current_step'] == 3 && $session['is_starter']) {
+            $requires_action = true; // Starter needs to do step 3
+        } elseif ($session['current_step'] == 4 && $session['is_owner']) {
+            $requires_action = true; // Owner needs to do step 4
+        } elseif ($session['current_step'] == 5 && $session['is_starter']) {
+            $requires_action = true; // Starter needs to do step 5
+        }
+        
+        $session['requires_action'] = $requires_action;
+        
+        // Filter if only requiring action
+        if ($require_action_only && !$requires_action) {
+            continue;
+        }
+        
+        $active_trades[] = $session;
+    }
+    
+    return $active_trades;
+}
+
+/**
  * Increment completed gift count
  */
 function hdh_increment_completed_gift_count($user_id) {

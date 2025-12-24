@@ -69,3 +69,5 @@ function hdh_handle_deactivate_listing() {
 }
 add_action('wp_ajax_hdh_deactivate_listing', 'hdh_handle_deactivate_listing');
 
+
+

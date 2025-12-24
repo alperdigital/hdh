@@ -98,6 +98,26 @@ function hdh_add_premium_admin_menu() {
         'hdh_render_lottery_admin_page'
     );
     
+    // Presence Settings
+    add_submenu_page(
+        'hdh-dashboard',
+        'Presence Ayarları',
+        'Presence',
+        'manage_options',
+        'hdh-presence',
+        'hdh_render_presence_admin_page'
+    );
+    
+    // Chat Management
+    add_submenu_page(
+        'hdh-dashboard',
+        'Chat Yönetimi',
+        'Chat',
+        'manage_options',
+        'hdh-chat',
+        'hdh_render_chat_admin_page'
+    );
+    
     // Advanced
     add_submenu_page(
         'hdh-dashboard',

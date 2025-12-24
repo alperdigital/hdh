@@ -2041,13 +2041,285 @@
     transition: all 0.2s ease;
 }
 
+/* ============================================
+   TRADE REQUEST UI
+   ============================================ */
+
+/* Trade Request Section */
+.trade-request-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid rgba(201, 184, 138, 0.3);
+}
+
+.trade-send-request-section {
+    text-align: center;
+}
+
+.btn-send-trade-request {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.request-help-text {
+    font-size: 0.85rem;
+    color: var(--newspaper-text-light);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Trade Request Status */
+.trade-request-status {
+    padding: 20px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.request-status-pending,
+.request-status-accepted,
+.request-status-rejected,
+.request-status-expired {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.status-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    margin: 0;
+}
+
+.status-message {
+    font-size: 0.95rem;
+    color: var(--newspaper-text-light);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.request-countdown,
+.request-time-remaining {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--farm-green-dark);
+    padding: 8px 16px;
+    background: rgba(139, 195, 74, 0.1);
+    border: 1px solid rgba(139, 195, 74, 0.3);
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.request-status-accepted .status-icon {
+    color: var(--farm-green);
+}
+
+.request-status-rejected .status-icon {
+    color: #DC3545;
+}
+
+.request-status-expired .status-icon {
+    color: var(--newspaper-text-light);
+}
+
+.btn-send-new-request {
+    margin-top: 12px;
+}
+
+/* Pending Requests (Owner View) */
+.trade-pending-requests-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid rgba(201, 184, 138, 0.3);
+}
+
+.pending-requests-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 20px 0;
+}
+
+.pending-requests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pending-request-item {
+    padding: 16px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.request-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.request-requester {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+}
+
+.request-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-accept-request,
+.btn-reject-request {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-accept-request {
+    background: var(--farm-green);
+    color: #FFFFFF;
+}
+
+.btn-accept-request:hover:not(:disabled) {
+    background: var(--farm-green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-reject-request {
+    background: transparent;
+    color: var(--newspaper-text);
+    border: 2px solid rgba(201, 184, 138, 0.4);
+}
+
+.btn-reject-request:hover:not(:disabled) {
+    background: rgba(201, 184, 138, 0.1);
+    border-color: rgba(201, 184, 138, 0.6);
+}
+
+.btn-accept-request:disabled,
+.btn-reject-request:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Toast Notifications */
+.trade-request-toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--newspaper-text);
+    color: #FFFFFF;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    z-index: 10000;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.trade-request-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.trade-request-toast.toast-success {
+    background: var(--farm-green);
+}
+
+.trade-request-toast.toast-error {
+    background: #FF6347;
+}
+
+/* Mobile Responsive for Trade Request */
+@media (max-width: 768px) {
+    .trade-request-section {
+        margin-top: 24px;
+        padding-top: 20px;
+    }
+    
+    .trade-request-status {
+        padding: 16px;
+    }
+    
+    .status-icon {
+        font-size: 1.5rem;
+    }
+    
+    .status-text {
+        font-size: 1rem;
+    }
+    
+    .request-countdown,
+    .request-time-remaining {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .pending-requests-title {
+        font-size: 1.2rem;
+        margin-bottom: 16px;
+    }
+    
+    .pending-request-item {
+        padding: 14px;
+    }
+    
+    .request-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .request-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .btn-accept-request,
+    .btn-reject-request {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
 /* Print styles */
 @media print {
     .btn-back-single,
     .offer-actions,
     .message-form,
     .btn-primary,
-    .share-section-wrapper {
+    .share-section-wrapper,
+    .trade-request-section,
+    .trade-pending-requests-section {
         display: none;
     }
 }

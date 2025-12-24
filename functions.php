@@ -67,6 +67,14 @@ require_once get_template_directory() . '/inc/trade-session-handlers.php';
 require_once get_template_directory() . '/inc/trade-session-admin.php';
 require_once get_template_directory() . '/inc/event-system.php';
 require_once get_template_directory() . '/inc/user-state-system.php';
+require_once get_template_directory() . '/inc/presence-system.php';
+require_once get_template_directory() . '/inc/trade-request-system.php';
+require_once get_template_directory() . '/inc/notification-system.php';
+require_once get_template_directory() . '/inc/trade-request-handlers.php';
+require_once get_template_directory() . '/inc/chat-system.php';
+require_once get_template_directory() . '/inc/chat-moderation.php';
+require_once get_template_directory() . '/inc/chat-handlers.php';
+require_once get_template_directory() . '/inc/chat-admin.php';
 require_once get_template_directory() . '/inc/kvkk-compliance.php';
 require_once get_template_directory() . '/inc/moderation-system.php';
 require_once get_template_directory() . '/inc/admin-moderation-ui.php';
@@ -74,6 +82,15 @@ require_once get_template_directory() . '/inc/trust-display.php';
 require_once get_template_directory() . '/components/user-badge.php';
 require_once get_template_directory() . '/components/quest-panel.php';
 require_once get_template_directory() . '/components/tasks-panel.php';
+require_once get_template_directory() . '/components/lobby-chat.php';
+require_once get_template_directory() . '/components/notification-bell.php';
+require_once get_template_directory() . '/components/gift-overlay.php';
+require_once get_template_directory() . '/components/trade-report-modal.php';
+require_once get_template_directory() . '/inc/trade-ping-system.php';
+require_once get_template_directory() . '/inc/trade-ping-handlers.php';
+require_once get_template_directory() . '/inc/trade-report-system.php';
+require_once get_template_directory() . '/inc/trade-report-handlers.php';
+require_once get_template_directory() . '/inc/presence-admin.php';
 
 // Premium Admin Panel (load before old admin files)
 require_once get_template_directory() . '/inc/admin-panel.php';
@@ -185,6 +202,52 @@ function hdh_enqueue_scripts() {
         ));
     }
     
+    // Enqueue gift overlay scripts (all pages, logged-in users)
+    if (is_user_logged_in()) {
+        wp_enqueue_style(
+            'hdh-gift-overlay',
+            get_template_directory_uri() . '/assets/css/gift-overlay.css',
+            array('hdh-farm-style'),
+            '1.0.0'
+        );
+        
+        wp_enqueue_script(
+            'hdh-gift-overlay',
+            get_template_directory_uri() . '/assets/js/gift-overlay.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+        
+        wp_localize_script('hdh-gift-overlay', 'hdhGiftOverlay', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_trade_session'),
+        ));
+    }
+    
+    // Enqueue lobby chat scripts on homepage
+    if (is_front_page()) {
+        wp_enqueue_style(
+            'hdh-lobby-chat',
+            get_template_directory_uri() . '/assets/css/lobby-chat.css',
+            array('hdh-farm-style'),
+            '1.0.0'
+        );
+        
+        wp_enqueue_script(
+            'hdh-lobby-chat',
+            get_template_directory_uri() . '/assets/js/lobby-chat.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+        
+        wp_localize_script('hdh-lobby-chat', 'hdhLobbyChat', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_chat_message'),
+        ));
+    }
+    
     // Enqueue profile page script on profil page
     if (is_page_template('page-profil.php')) {
         // Auth screen (for logged-out users)
@@ -270,7 +333,32 @@ function hdh_enqueue_scripts() {
         ));
     }
     
-        // Enqueue quest panel script on homepage
+        // Enqueue lobby chat on homepage
+    if (is_front_page()) {
+        wp_enqueue_style(
+            'hdh-lobby-chat',
+            get_template_directory_uri() . '/assets/css/lobby-chat.css',
+            array('hdh-farm-style'),
+            '1.0.0'
+        );
+        
+        wp_enqueue_script(
+            'hdh-lobby-chat',
+            get_template_directory_uri() . '/assets/js/lobby-chat.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+        
+        $chat_max_length = (int) get_option('hdh_chat_max_length', 200);
+        wp_localize_script('hdh-lobby-chat', 'hdhLobbyChat', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_lobby_chat'),
+            'maxLength' => $chat_max_length,
+        ));
+    }
+    
+    // Enqueue quest panel script on homepage
         if (is_front_page() && is_user_logged_in()) {
             wp_enqueue_script(
                 'hdh-quest-panel',
@@ -299,6 +387,19 @@ function hdh_enqueue_scripts() {
             array(),
             '1.0.0'
         );
+        
+        // Trade Request JS
+        wp_enqueue_script(
+            'hdh-trade-request',
+            get_template_directory_uri() . '/assets/js/trade-request.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+        wp_localize_script('hdh-trade-request', 'hdhTradeRequest', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_trade_request'),
+        ));
         
         // Roadmap JS
         wp_enqueue_script(

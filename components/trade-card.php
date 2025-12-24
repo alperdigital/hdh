@@ -33,20 +33,41 @@ if (!function_exists('hdh_render_trade_card')) {
             'qty' => $trade_data['wanted_qty']
         );
         
-        // Calculate relative time
-        $post_time = get_post_time('U', false, $post_id);
-        $current_time = current_time('timestamp');
-        $time_diff = $current_time - $post_time;
+        // Get presence bucket and label
+        $presence_bucket = '3+ days';
+        $presence_label = '3+ gün önce';
+        $presence_timestamp = null;
         
-        if ($time_diff < 60) {
-            $relative_time = $time_diff . 's';
-        } elseif ($time_diff < 3600) {
-            $relative_time = floor($time_diff / 60) . 'dk';
-        } elseif ($time_diff < 86400) {
-            $relative_time = floor($time_diff / 3600) . 's';
+        if (function_exists('hdh_get_presence_bucket')) {
+            $presence_bucket = hdh_get_presence_bucket($author_id);
+            $presence_data = hdh_get_user_presence($author_id);
+            if ($presence_data && isset($presence_data['last_seen_at'])) {
+                $presence_timestamp = strtotime($presence_data['last_seen_at']);
+            }
+            
+            if (function_exists('hdh_format_presence_label')) {
+                $presence_label = hdh_format_presence_label($presence_bucket, $presence_timestamp);
+            }
         } else {
-            $relative_time = floor($time_diff / 86400) . 'g';
+            // Fallback to relative time if presence system not available
+            $post_time = get_post_time('U', false, $post_id);
+            $current_time = current_time('timestamp');
+            $time_diff = $current_time - $post_time;
+            
+            if ($time_diff < 60) {
+                $presence_label = $time_diff . 's';
+            } elseif ($time_diff < 3600) {
+                $presence_label = floor($time_diff / 60) . 'dk';
+            } elseif ($time_diff < 86400) {
+                $presence_label = floor($time_diff / 3600) . 's';
+            } else {
+                $presence_label = floor($time_diff / 86400) . 'g';
+            }
         }
+        
+        // Get listing creation time for secondary display (optional)
+        $post_time = get_post_time('U', false, $post_id);
+        $listing_creation_time = get_the_date('d.m.Y H:i', $post_id);
         
         // Build title: "X istiyorum Y verebilirim"
         $wanted_label = hdh_get_item_label($wanted_slug);
@@ -86,7 +107,9 @@ if (!function_exists('hdh_render_trade_card')) {
                 <span class="listing-meta-farm-name">
                     <?php echo esc_html($author_name); ?>
                 </span>
-                <span class="listing-meta-time"><?php echo esc_html($relative_time); ?></span>
+                <span class="listing-meta-time listing-presence-<?php echo esc_attr(str_replace(array('+', ' '), array('plus', '-'), $presence_bucket)); ?>">
+                    <?php echo esc_html($presence_label); ?>
+                </span>
             </div>
         </a>
         <?php

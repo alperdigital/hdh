@@ -23,10 +23,17 @@ $recent_listings_args = array(
             'compare' => '='
         )
     ),
-    'orderby' => 'date',
-    'order' => 'DESC',
 );
-$recent_listings = new WP_Query($recent_listings_args);
+
+// Use presence-based sorting if available (default: presence)
+if (function_exists('hdh_get_listings_with_presence')) {
+    $recent_listings = hdh_get_listings_with_presence($recent_listings_args, 'presence');
+} else {
+    // Fallback to standard query
+    $recent_listings_args['orderby'] = 'date';
+    $recent_listings_args['order'] = 'DESC';
+    $recent_listings = new WP_Query($recent_listings_args);
+}
 ?>
 
 <!-- Homepage: Action Starter -->
@@ -65,6 +72,9 @@ $recent_listings = new WP_Query($recent_listings_args);
     <?php endif; 
     wp_reset_postdata();
     ?>
+    
+    <!-- 2.5. LOBBY CHAT SECTION -->
+    <?php hdh_render_lobby_chat(); ?>
     
     <!-- 3. TRUST INDICATOR (MINIMAL) -->
     <?php if ($total_exchanges > 0) : ?>

@@ -1,0 +1,812 @@
+/**
+ * HDH: Gift Overlay Styles
+ * Mobile-first gift overlay button and panel styles
+ */
+
+/* ============================================
+   GIFT OVERLAY BUTTON
+   ============================================ */
+
+.hdh-gift-overlay-container {
+    position: fixed;
+    bottom: 100px;
+    left: 20px;
+    z-index: 999;
+}
+
+.hdh-gift-overlay-button {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    background: var(--farm-green);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    line-height: 1;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.hdh-gift-overlay-button:hover {
+    background: var(--farm-green-dark);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.hdh-gift-overlay-button:active {
+    transform: scale(0.95);
+}
+
+.gift-icon {
+    display: block;
+    line-height: 1;
+}
+
+.gift-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 22px;
+    height: 22px;
+    padding: 2px 6px;
+    background: #FF4444;
+    color: #FFFFFF;
+    border-radius: 11px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================
+   GIFT OVERLAY PANEL
+   ============================================ */
+
+.hdh-gift-overlay-panel {
+    position: fixed;
+    bottom: 170px;
+    left: 20px;
+    width: 360px;
+    max-width: calc(100vw - 40px);
+    max-height: 600px;
+    background: #FFFFFF;
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.gift-overlay-header {
+    padding: 16px;
+    border-bottom: 2px solid rgba(201, 184, 138, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: rgba(201, 184, 138, 0.05);
+}
+
+.gift-overlay-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0;
+}
+
+.gift-overlay-close {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: var(--newspaper-text);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gift-overlay-close:hover {
+    background: rgba(201, 184, 138, 0.2);
+}
+
+.gift-overlay-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px;
+}
+
+.gift-overlay-empty {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    line-height: 1;
+    opacity: 0.3;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.empty-text {
+    font-size: 0.95rem;
+    color: var(--newspaper-text-light);
+    margin: 0;
+}
+
+/* ============================================
+   GIFT TRADE ITEMS
+   ============================================ */
+
+.gift-overlay-trades-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gift-trade-item {
+    padding: 16px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 1px solid rgba(201, 184, 138, 0.2);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.gift-trade-item:hover {
+    border-color: rgba(201, 184, 138, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.gift-trade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.gift-trade-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    margin: 0;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.gift-trade-action-badge {
+    padding: 4px 8px;
+    background: rgba(255, 193, 7, 0.2);
+    color: #856404;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.gift-trade-counterpart {
+    margin-bottom: 12px;
+}
+
+.gift-trade-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--newspaper-text);
+    transition: all 0.2s ease;
+}
+
+.gift-trade-user:hover {
+    opacity: 0.8;
+}
+
+.gift-trade-farm-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.gift-trade-presence {
+    font-size: 0.8rem;
+    color: var(--newspaper-text-light);
+    opacity: 0.7;
+}
+
+.gift-trade-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: rgba(201, 184, 138, 0.1);
+    border-radius: 8px;
+}
+
+.progress-label {
+    font-size: 0.85rem;
+    color: var(--newspaper-text-light);
+}
+
+.progress-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+}
+
+.btn-open-trade {
+    width: 100%;
+    padding: 10px 16px;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-open-trade:hover {
+    background: var(--farm-green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* ============================================
+   GIFT TRADE DETAIL VIEW
+   ============================================ */
+
+.gift-trade-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.gift-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(201, 184, 138, 0.2);
+}
+
+.btn-back-to-list {
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid rgba(201, 184, 138, 0.4);
+    border-radius: 6px;
+    color: var(--newspaper-text);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-back-to-list:hover {
+    background: rgba(201, 184, 138, 0.1);
+}
+
+.gift-detail-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0;
+    flex: 1;
+}
+
+.gift-detail-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(201, 184, 138, 0.05);
+    border-radius: 8px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-label {
+    font-size: 0.9rem;
+    color: var(--newspaper-text-light);
+    font-weight: 600;
+}
+
+.summary-value {
+    font-size: 0.9rem;
+    color: var(--newspaper-text);
+    font-weight: 500;
+}
+
+.gift-detail-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(201, 184, 138, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--farm-green);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.85rem;
+    color: var(--newspaper-text-light);
+    text-align: center;
+}
+
+.gift-detail-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gift-detail-step {
+    padding: 12px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 1px solid rgba(201, 184, 138, 0.2);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.gift-detail-step.step-current {
+    border-color: var(--farm-green);
+    background: rgba(116, 195, 101, 0.05);
+}
+
+.gift-detail-step.step-completed {
+    opacity: 0.7;
+}
+
+.gift-detail-step.step-locked {
+    opacity: 0.5;
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.step-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.step-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--newspaper-text);
+    flex: 1;
+}
+
+.step-check {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.step-farm-code {
+    padding: 8px;
+    background: rgba(201, 184, 138, 0.1);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--newspaper-text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-copy-code {
+    padding: 4px 8px;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.step-action {
+    margin-top: 8px;
+}
+
+.btn-step-complete {
+    width: 100%;
+    padding: 8px 12px;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-step-complete:hover {
+    background: var(--farm-green-dark);
+}
+
+.step-waiting,
+.step-done,
+.step-locked {
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 0.85rem;
+    border-radius: 6px;
+}
+
+.step-waiting {
+    background: rgba(255, 193, 7, 0.1);
+    color: #856404;
+}
+
+.step-done {
+    background: rgba(116, 195, 101, 0.1);
+    color: var(--farm-green-dark);
+}
+
+.step-locked {
+    background: rgba(201, 184, 138, 0.1);
+    color: var(--newspaper-text-light);
+}
+
+.gift-detail-completed {
+    padding: 16px;
+    background: rgba(116, 195, 101, 0.1);
+    border: 2px solid var(--farm-green);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--farm-green-dark);
+    font-size: 1rem;
+}
+
+.gift-detail-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 2px solid rgba(201, 184, 138, 0.2);
+}
+
+.btn-ping-trade,
+.btn-report-issue {
+    flex: 1;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid rgba(201, 184, 138, 0.4);
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-ping-trade:hover {
+    background: rgba(116, 195, 101, 0.1);
+    border-color: var(--farm-green);
+}
+
+.btn-report-issue:hover {
+    background: rgba(255, 193, 7, 0.1);
+    border-color: #FFC107;
+}
+
+.gift-trade-detail-error {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.gift-trade-detail-error p {
+    margin-bottom: 16px;
+    color: var(--newspaper-text-light);
+}
+
+/* ============================================
+   TRADE REPORT MODAL
+   ============================================ */
+
+.trade-report-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.report-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.report-modal-content {
+    position: relative;
+    background: #FFFFFF;
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+}
+
+.report-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(201, 184, 138, 0.2);
+}
+
+.report-modal-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0;
+}
+
+.report-modal-close {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--newspaper-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.report-modal-close:hover {
+    background: rgba(201, 184, 138, 0.1);
+}
+
+.trade-report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 2px solid rgba(201, 184, 138, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.radio-label:hover {
+    background: rgba(201, 184, 138, 0.1);
+    border-color: rgba(201, 184, 138, 0.4);
+}
+
+.radio-label input[type="radio"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+.radio-label input[type="radio"]:checked + .radio-text {
+    font-weight: 600;
+    color: var(--farm-green-dark);
+}
+
+.radio-label:has(input[type="radio"]:checked) {
+    background: rgba(116, 195, 101, 0.1);
+    border-color: var(--farm-green);
+}
+
+.radio-text {
+    font-size: 0.95rem;
+    color: var(--newspaper-text);
+    flex: 1;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #FFFFFF;
+    color: var(--newspaper-text);
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 80px;
+    max-height: 150px;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--farm-green);
+    box-shadow: 0 0 0 3px rgba(116, 195, 101, 0.1);
+}
+
+.form-hint {
+    font-size: 0.85rem;
+    color: var(--newspaper-text-light);
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.btn-cancel-report,
+.btn-submit-report {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.btn-cancel-report {
+    background: transparent;
+    border: 1px solid rgba(201, 184, 138, 0.4);
+    color: var(--newspaper-text);
+}
+
+.btn-cancel-report:hover {
+    background: rgba(201, 184, 138, 0.1);
+}
+
+.btn-submit-report {
+    background: var(--farm-green);
+    border: none;
+    color: #FFFFFF;
+}
+
+.btn-submit-report:hover {
+    background: var(--farm-green-dark);
+}
+
+.btn-submit-report:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .report-modal-content {
+        padding: 16px;
+        max-width: calc(100vw - 32px);
+    }
+    
+    .report-modal-title {
+        font-size: 1.1rem;
+    }
+    
+    .radio-label {
+        padding: 10px;
+    }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .hdh-gift-overlay-container {
+        bottom: 80px;
+        left: 16px;
+    }
+    
+    .hdh-gift-overlay-button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+    }
+    
+    .gift-badge {
+        min-width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+    }
+    
+    .hdh-gift-overlay-panel {
+        bottom: 140px;
+        left: 16px;
+        width: calc(100vw - 32px);
+        max-height: 500px;
+    }
+    
+    .gift-overlay-header {
+        padding: 12px;
+    }
+    
+    .gift-overlay-title {
+        font-size: 1.1rem;
+    }
+    
+    .gift-trade-item {
+        padding: 12px;
+    }
+    
+    .gift-trade-title {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hdh-gift-overlay-container {
+        bottom: 70px;
+        left: 12px;
+    }
+    
+    .hdh-gift-overlay-button {
+        width: 48px;
+        height: 48px;
+        font-size: 1.6rem;
+    }
+    
+    .hdh-gift-overlay-panel {
+        bottom: 130px;
+        left: 12px;
+        width: calc(100vw - 24px);
+        max-height: 400px;
+    }
+}
+

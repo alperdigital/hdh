@@ -194,3 +194,78 @@ function hdh_ajax_resolve_trade_dispute() {
 }
 add_action('wp_ajax_hdh_resolve_trade_dispute', 'hdh_ajax_resolve_trade_dispute');
 
+/**
+ * Get active trades for user
+ */
+function hdh_ajax_get_active_trades() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $user_id = get_current_user_id();
+    
+    if (!function_exists('hdh_get_user_active_trades')) {
+        wp_send_json_error(array('message' => 'Fonksiyon bulunamadı'));
+        return;
+    }
+    
+    $all_trades = hdh_get_user_active_trades($user_id, false);
+    $action_required_trades = hdh_get_user_active_trades($user_id, true);
+    
+    wp_send_json_success(array(
+        'trades' => $all_trades,
+        'action_required_count' => count($action_required_trades),
+    ));
+}
+add_action('wp_ajax_hdh_get_active_trades', 'hdh_ajax_get_active_trades');
+
+/**
+ * Get listing data for gift overlay
+ */
+function hdh_ajax_get_listing_data() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $listing_id = isset($_POST['listing_id']) ? absint($_POST['listing_id']) : 0;
+    
+    if (!$listing_id) {
+        wp_send_json_error(array('message' => 'Geçersiz ilan ID'));
+        return;
+    }
+    
+    $listing = get_post($listing_id);
+    if (!$listing || $listing->post_type !== 'hayday_trade') {
+        wp_send_json_error(array('message' => 'İlan bulunamadı'));
+        return;
+    }
+    
+    $trade_data = hdh_get_trade_data($listing_id);
+    
+    wp_send_json_success(array(
+        'listing' => array(
+            'id' => $listing_id,
+            'title' => $listing->post_title,
+            'wanted_item' => hdh_get_item_label($trade_data['wanted_item']),
+            'offer_items' => implode(', ', array_map(function($item) {
+                return hdh_get_item_label($item['item']) . ' x' . $item['qty'];
+            }, array_filter($trade_data['offer_items'], function($item) {
+                return !empty($item['item']) && !empty($item['qty']);
+            }))),
+        )
+    ));
+}
+add_action('wp_ajax_hdh_get_listing_data', 'hdh_ajax_get_listing_data');
+

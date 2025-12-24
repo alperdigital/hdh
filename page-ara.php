@@ -108,8 +108,6 @@ get_header();
                             'compare' => '='
                         )
                     ),
-                    'orderby' => 'date',
-                    'order' => 'DESC',
                 );
                 
                 // Exclude blocked users (server-side filtering)
@@ -121,7 +119,24 @@ get_header();
                     }
                 }
                 
-                $trade_query = new WP_Query($args);
+                // Get user sorting preference (default: presence)
+                $sort_by = 'presence';
+                if (is_user_logged_in()) {
+                    $user_sort_pref = get_user_meta($current_user_id, 'hdh_listing_sort_preference', true);
+                    if ($user_sort_pref === 'newest') {
+                        $sort_by = 'newest';
+                    }
+                }
+                
+                // Use presence-based sorting if available
+                if (function_exists('hdh_get_listings_with_presence')) {
+                    $trade_query = hdh_get_listings_with_presence($args, $sort_by);
+                } else {
+                    // Fallback to standard query
+                    $args['orderby'] = 'date';
+                    $args['order'] = 'DESC';
+                    $trade_query = new WP_Query($args);
+                }
                 
                 if ($trade_query->have_posts()) : ?>
                     <?php while ($trade_query->have_posts()) : $trade_query->the_post(); ?>

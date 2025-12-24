@@ -39,8 +39,6 @@ function hdh_filter_trades_by_offer_item() {
         'posts_per_page' => 20,
         'paged' => $page,
         'post_status' => 'publish',
-        'orderby' => 'date',
-        'order' => 'DESC',
     );
     
     // Build meta query: always filter by status (open trades only)
@@ -93,7 +91,24 @@ function hdh_filter_trades_by_offer_item() {
         }
     }
     
-    $trade_query = new WP_Query($args);
+    // Use presence-based sorting if available (default: presence)
+    $sort_by = 'presence';
+    if (is_user_logged_in()) {
+        $user_sort_pref = get_user_meta($current_user_id, 'hdh_listing_sort_preference', true);
+        if ($user_sort_pref === 'newest') {
+            $sort_by = 'newest';
+        }
+    }
+    
+    // Use presence-based sorting if available
+    if (function_exists('hdh_get_listings_with_presence')) {
+        $trade_query = hdh_get_listings_with_presence($args, $sort_by);
+    } else {
+        // Fallback to standard query
+        $args['orderby'] = 'date';
+        $args['order'] = 'DESC';
+        $trade_query = new WP_Query($args);
+    }
     
     ob_start();
     
