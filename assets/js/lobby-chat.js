@@ -513,7 +513,7 @@
      */
     function showToast(message, type = 'info') {
         const toast = document.createElement('div');
-        toast.className = `lobby-chat-toast toast-${type}`;
+        toast.className = `lobby-chat-toast lobby-chat-toast-${type}`;
         toast.textContent = message;
         
         document.body.appendChild(toast);
