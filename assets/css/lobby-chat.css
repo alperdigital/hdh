@@ -526,3 +526,60 @@
         font-size: 0.85rem;
     }
 }
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+
+.lobby-chat-toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--newspaper-text);
+    color: #FFFFFF;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    text-align: center;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.lobby-chat-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.lobby-chat-toast-success {
+    background: var(--farm-green);
+}
+
+.lobby-chat-toast-error {
+    background: #DC143C;
+}
+
+.lobby-chat-toast-info {
+    background: var(--sky-blue-dark);
+    color: var(--newspaper-text);
+}
+
+@media (max-width: 768px) {
+    .lobby-chat-toast {
+        bottom: 80px;
+        left: 20px;
+        right: 20px;
+        transform: translateY(20px);
+        max-width: calc(100% - 40px);
+    }
+    
+    .lobby-chat-toast.show {
+        transform: translateY(0);
+    }
+}
