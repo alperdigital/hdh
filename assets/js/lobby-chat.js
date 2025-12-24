@@ -40,6 +40,18 @@
             chatForm.addEventListener('submit', handleSendMessage);
         }
         
+        // Also handle button click directly (fallback)
+        const sendBtn = document.getElementById('btn-send-chat-message');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = document.getElementById('lobby-chat-form');
+                if (form) {
+                    handleSendMessage(new Event('submit'));
+                }
+            });
+        }
+        
         // Character count
         const chatInput = document.getElementById('lobby-chat-input');
         if (chatInput) {

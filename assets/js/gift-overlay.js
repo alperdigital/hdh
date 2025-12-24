@@ -139,7 +139,7 @@
     }
     
     /**
-     * Render trades list
+     * Render trades list with full details (direct view, no "Aç" button needed)
      */
     function renderTradesList(trades) {
         const content = document.getElementById('hdh-gift-overlay-content');
@@ -152,22 +152,132 @@
             return;
         }
         
-        let html = '<div class="gift-overlay-trades-list" id="hdh-gift-trades-list">';
+        // Load all trade details in parallel
+        const tradePromises = trades.map(trade => {
+            return fetch(config.ajaxUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    action: 'hdh_get_trade_session',
+                    nonce: config.nonce,
+                    session_id: trade.id,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.session) {
+                    return {
+                        session: data.data.session,
+                        listing: null, // Will be loaded separately
+                        trade: trade
+                    };
+                }
+                return null;
+            })
+            .catch(error => {
+                console.error('Error loading trade detail:', error);
+                return null;
+            });
+        });
         
-        trades.forEach(trade => {
+        // Wait for all session data
+        Promise.all(tradePromises).then(results => {
+            const validResults = results.filter(r => r !== null);
+            
+            // Load listing data for each trade
+            const listingPromises = validResults.map(result => {
+                return fetch(config.ajaxUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        action: 'hdh_get_listing_data',
+                        nonce: config.nonce,
+                        listing_id: result.session.listing_id,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.listing) {
+                        result.listing = data.data.listing;
+                    }
+                    return result;
+                })
+                .catch(error => {
+                    console.error('Error loading listing data:', error);
+                    return result;
+                });
+            });
+            
+            Promise.all(listingPromises).then(finalResults => {
+                renderTradesWithDetails(finalResults);
+            });
+        });
+    }
+    
+    /**
+     * Render all trades with full detail view
+     */
+    function renderTradesWithDetails(tradeDetails) {
+        const content = document.getElementById('hdh-gift-overlay-content');
+        if (!content) {
+            return;
+        }
+        
+        if (tradeDetails.length === 0) {
+            renderEmptyState();
+            return;
+        }
+        
+        let html = '<div class="gift-overlay-trades-detailed" id="hdh-gift-trades-detailed">';
+        
+        tradeDetails.forEach(({session, listing, trade}) => {
+            if (!session || !listing) {
+                return;
+            }
+            
+            const currentStep = session.current_step || 1;
+            const isStarter = session.is_starter || false;
+            const isOwner = session.is_owner || false;
+            
+            // Determine which steps are done
+            const step1Done = !!session.step1_starter_done_at;
+            const step2Done = !!session.step2_owner_done_at;
+            const step3Done = !!session.step3_starter_done_at;
+            const step4Done = !!session.step4_owner_done_at;
+            const step5Done = !!session.step5_starter_done_at;
+            
+            // Determine which step can be completed
+            let canCompleteStep = null;
+            if (currentStep === 1 && isStarter && !step1Done) {
+                canCompleteStep = 1;
+            } else if (currentStep === 2 && isOwner && !step2Done) {
+                canCompleteStep = 2;
+            } else if (currentStep === 3 && isStarter && !step3Done) {
+                canCompleteStep = 3;
+            } else if (currentStep === 4 && isOwner && !step4Done) {
+                canCompleteStep = 4;
+            } else if (currentStep === 5 && isStarter && !step5Done) {
+                canCompleteStep = 5;
+            }
+            
+            const ownerFarmCode = session.owner_farm_code || '';
+            const starterFarmCode = session.starter_farm_code || '';
             const levelDigits = String(trade.counterpart_level || 1).length;
             const levelClass = `lvl-d${levelDigits}`;
             const actionBadge = trade.requires_action ? '<span class="gift-trade-action-badge">Aksiyon Gerekli</span>' : '';
             
             html += `
-                <div class="gift-trade-item" 
-                     data-session-id="${trade.id}"
-                     data-listing-id="${trade.listing_id}">
-                    <div class="gift-trade-header">
-                        <h4 class="gift-trade-title">${escapeHtml(trade.listing_title || 'İlan')}</h4>
+                <div class="gift-trade-detailed-item" data-session-id="${session.id}">
+                    <div class="gift-trade-detailed-header">
+                        <h4 class="gift-trade-detailed-title">${escapeHtml(listing.title || 'İlan')}</h4>
                         ${actionBadge}
                     </div>
-                    <div class="gift-trade-counterpart">
+                    
+                    <div class="gift-trade-detailed-counterpart">
                         <a href="/profil?user=${trade.counterpart_id}" class="gift-trade-user">
                             <div class="hdh-level-badge ${levelClass}" aria-label="Seviye ${trade.counterpart_level}">
                                 ${trade.counterpart_level || 1}
@@ -176,21 +286,84 @@
                             <span class="gift-trade-presence">${escapeHtml(trade.counterpart_presence || '3+ gün önce')}</span>
                         </a>
                     </div>
-                    <div class="gift-trade-progress">
-                        <span class="progress-label">İlerleme:</span>
-                        <span class="progress-value">${trade.current_step || 1} / 5</span>
+                    
+                    <div class="gift-trade-detailed-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">İstediği:</span>
+                            <span class="summary-value">${escapeHtml(listing.wanted_item || 'N/A')}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Verebileceği:</span>
+                            <span class="summary-value">${escapeHtml(listing.offer_items || 'N/A')}</span>
+                        </div>
                     </div>
-                    <button type="button" 
-                            class="btn-open-trade" 
-                            data-session-id="${trade.id}">
-                        Aç
-                    </button>
+                    
+                    <div class="gift-trade-detailed-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${(currentStep / 5) * 100}%"></div>
+                        </div>
+                        <span class="progress-text">${currentStep} / 5 adım tamamlandı</span>
+                    </div>
+                    
+                    <div class="gift-trade-detailed-steps">
+                        ${renderStep(1, '👥', 'Arkadaş olarak ekle', step1Done, currentStep === 1 && !step1Done, canCompleteStep === 1, isStarter, ownerFarmCode, session.id)}
+                        ${renderStep(2, '✅', 'Arkadaşlık isteğini kabul edin', step2Done, currentStep === 2 && !step2Done, canCompleteStep === 2, isOwner, starterFarmCode, session.id)}
+                        ${renderStep(3, '🎁', 'Vereceğiniz hediyeyi hazırlayın', step3Done, currentStep === 3 && !step3Done, canCompleteStep === 3, isStarter, '', session.id)}
+                        ${renderStep(4, '📦', 'Hediyeni al ve hediyeni hazırla', step4Done, currentStep === 4 && !step4Done, canCompleteStep === 4, isOwner, '', session.id)}
+                        ${renderStep(5, '🎉', 'Hediyeni al', step5Done, currentStep === 5 && !step5Done, canCompleteStep === 5, isStarter, '', session.id)}
+                    </div>
+                    
+                    ${session.status === 'COMPLETED' ? '<div class="gift-trade-detailed-completed">✅ Hediyeleşme tamamlandı!</div>' : ''}
+                    
+                    <div class="gift-trade-detailed-actions">
+                        <button type="button" class="btn-ping-trade" data-session-id="${session.id}" id="btn-ping-${session.id}">
+                            📨 Ping / Kontrol Et
+                        </button>
+                        <button type="button" class="btn-report-issue" data-session-id="${session.id}" id="btn-report-${session.id}">
+                            ⚠️ Sorun Bildir
+                        </button>
+                    </div>
                 </div>
             `;
         });
         
         html += '</div>';
         content.innerHTML = html;
+        
+        // Add event listeners for all trades
+        document.querySelectorAll('.btn-step-complete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const step = parseInt(this.getAttribute('data-step'));
+                const sessionId = parseInt(this.getAttribute('data-session-id'));
+                completeStep(sessionId, step);
+            });
+        });
+        
+        document.querySelectorAll('.btn-ping-trade').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const sessionId = parseInt(this.getAttribute('data-session-id'));
+                sendPing(sessionId);
+            });
+        });
+        
+        document.querySelectorAll('.btn-report-issue').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const sessionId = parseInt(this.getAttribute('data-session-id'));
+                openReportModal(sessionId);
+            });
+        });
+        
+        document.querySelectorAll('.btn-copy-code').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const code = this.getAttribute('data-code');
+                navigator.clipboard.writeText(code).then(() => {
+                    showToast('Çiftlik kodu kopyalandı!', 'success');
+                });
+            });
+        });
+        
+        // Start polling for all trades
+        startPolling();
     }
     
     /**
@@ -415,7 +588,7 @@
     /**
      * Render a step
      */
-    function renderStep(stepNum, icon, title, done, current, canComplete, isUserTurn, farmCode) {
+    function renderStep(stepNum, icon, title, done, current, canComplete, isUserTurn, farmCode, sessionId = null) {
         let statusClass = 'locked';
         if (done) {
             statusClass = 'completed';
@@ -425,7 +598,8 @@
         
         let actionHtml = '';
         if (canComplete) {
-            actionHtml = `<button type="button" class="btn-step-complete" data-step="${stepNum}">Tamamla</button>`;
+            const sessionAttr = sessionId ? `data-session-id="${sessionId}"` : '';
+            actionHtml = `<button type="button" class="btn-step-complete" data-step="${stepNum}" ${sessionAttr}>Tamamla</button>`;
         } else if (current && !canComplete) {
             actionHtml = '<div class="step-waiting">⏳ Karşı tarafın işlemi bekleniyor...</div>';
         } else if (done) {
@@ -475,8 +649,8 @@
         .then(data => {
             if (data.success) {
                 showToast('Adım tamamlandı!', 'success');
-                // Reload detail view
-                openTradeDetail(sessionId);
+                // Reload all trades (since we show all trades directly now)
+                loadActiveTrades();
             } else {
                 showToast(data.data?.message || 'Adım tamamlanamadı', 'error');
             }

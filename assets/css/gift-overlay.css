@@ -271,7 +271,145 @@
 }
 
 /* ============================================
-   GIFT TRADE DETAIL VIEW
+   GIFT TRADE DETAILED VIEW (Direct, no "Aç" button)
+   ============================================ */
+
+.gift-overlay-trades-detailed {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.gift-trade-detailed-item {
+    padding: 16px;
+    background: rgba(201, 184, 138, 0.05);
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.gift-trade-detailed-item:hover {
+    border-color: rgba(201, 184, 138, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.gift-trade-detailed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201, 184, 138, 0.2);
+}
+
+.gift-trade-detailed-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0;
+    flex: 1;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.gift-trade-detailed-counterpart {
+    margin-bottom: 12px;
+    padding: 8px 0;
+}
+
+.gift-trade-detailed-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(201, 184, 138, 0.05);
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.gift-trade-detailed-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.gift-trade-detailed-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.gift-trade-detailed-completed {
+    padding: 12px;
+    background: rgba(116, 195, 101, 0.1);
+    border: 1px solid rgba(116, 195, 101, 0.3);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--farm-green-dark);
+    margin-bottom: 12px;
+}
+
+.gift-trade-detailed-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(201, 184, 138, 0.2);
+}
+
+.gift-trade-detailed-actions .btn-ping-trade,
+.gift-trade-detailed-actions .btn-report-issue {
+    flex: 1;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid rgba(201, 184, 138, 0.4);
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gift-trade-detailed-actions .btn-ping-trade:hover {
+    background: rgba(116, 195, 101, 0.1);
+    border-color: var(--farm-green);
+}
+
+.gift-trade-detailed-actions .btn-report-issue:hover {
+    background: rgba(255, 193, 7, 0.1);
+    border-color: #FFC107;
+}
+
+/* Reuse existing step styles from gift-detail-step */
+.gift-trade-detailed-steps .gift-detail-step {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(201, 184, 138, 0.3);
+    border-radius: 8px;
+}
+
+.gift-trade-detailed-steps .gift-detail-step.step-completed {
+    background: rgba(116, 195, 101, 0.1);
+    border-color: rgba(116, 195, 101, 0.3);
+}
+
+.gift-trade-detailed-steps .gift-detail-step.step-current {
+    background: rgba(255, 193, 7, 0.1);
+    border-color: rgba(255, 193, 7, 0.3);
+}
+
+.gift-trade-detailed-steps .gift-detail-step.step-locked {
+    background: rgba(201, 184, 138, 0.05);
+    opacity: 0.6;
+}
+
+/* ============================================
+   GIFT TRADE DETAIL VIEW (Single trade view - kept for backward compatibility)
    ============================================ */
 
 .gift-trade-detail {
