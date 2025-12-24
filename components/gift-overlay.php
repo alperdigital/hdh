@@ -95,11 +95,7 @@ function hdh_render_gift_overlay() {
                                     <span class="progress-label">İlerleme:</span>
                                     <span class="progress-value"><?php echo esc_html($trade['current_step']); ?> / 5</span>
                                 </div>
-                                <button type="button" 
-                                        class="btn-open-trade" 
-                                        data-session-id="<?php echo esc_attr($trade['id']); ?>">
-                                    Aç
-                                </button>
+                                <!-- Note: Trade details will be loaded directly via JS, no "Aç" button needed -->
                             </div>
                         <?php endforeach; ?>
                     </div>
