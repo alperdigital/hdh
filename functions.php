@@ -242,9 +242,11 @@ function hdh_enqueue_scripts() {
             true
         );
         
+        $chat_max_length = (int) get_option('hdh_chat_max_message_length', 200);
         wp_localize_script('hdh-lobby-chat', 'hdhLobbyChat', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_chat_message'),
+            'maxLength' => $chat_max_length,
         ));
     }
     
@@ -333,30 +335,6 @@ function hdh_enqueue_scripts() {
         ));
     }
     
-        // Enqueue lobby chat on homepage
-    if (is_front_page()) {
-        wp_enqueue_style(
-            'hdh-lobby-chat',
-            get_template_directory_uri() . '/assets/css/lobby-chat.css',
-            array('hdh-farm-style'),
-            '1.0.0'
-        );
-        
-        wp_enqueue_script(
-            'hdh-lobby-chat',
-            get_template_directory_uri() . '/assets/js/lobby-chat.js',
-            array('jquery'),
-            '1.0.0',
-            true
-        );
-        
-        $chat_max_length = (int) get_option('hdh_chat_max_length', 200);
-        wp_localize_script('hdh-lobby-chat', 'hdhLobbyChat', array(
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('hdh_lobby_chat'),
-            'maxLength' => $chat_max_length,
-        ));
-    }
     
     // Enqueue quest panel script on homepage
         if (is_front_page() && is_user_logged_in()) {
