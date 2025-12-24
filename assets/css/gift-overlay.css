@@ -80,10 +80,10 @@
     width: 360px;
     max-width: calc(100vw - 40px);
     max-height: 600px;
-    background: #FFFFFF;
-    border: 2px solid rgba(201, 184, 138, 0.3);
+    background: #FFF6D8; /* Görevler ile aynı krem ton */
+    border: 2px solid rgba(201, 184, 138, 0.4); /* Görevler ile aynı */
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Görevler ile aynı */
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -91,31 +91,32 @@
 }
 
 .gift-overlay-header {
-    padding: 16px;
-    border-bottom: 2px solid rgba(201, 184, 138, 0.2);
+    padding: 16px 20px; /* Görevler ile aynı */
+    border-bottom: 2px solid rgba(201, 184, 138, 0.3); /* Görevler ile aynı */
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    background: rgba(201, 184, 138, 0.05);
+    background: rgba(201, 184, 138, 0.1); /* Görevler ile aynı */
 }
 
 .gift-overlay-title {
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* Görevler ile aynı */
     font-weight: 700;
     color: var(--newspaper-text);
     margin: 0;
+    font-family: 'Baloo 2', 'Poppins', sans-serif; /* Görevler ile aynı */
 }
 
 .gift-overlay-close {
     width: 32px;
     height: 32px;
     padding: 0;
-    background: transparent;
+    background: none; /* Görevler ile aynı */
     border: none;
-    border-radius: 50%;
+    border-radius: 6px; /* Görevler ile aynı */
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.8rem; /* Görevler ile aynı */
     line-height: 1;
     color: var(--newspaper-text);
     transition: all 0.2s ease;
@@ -125,14 +126,18 @@
 }
 
 .gift-overlay-close:hover {
-    background: rgba(201, 184, 138, 0.2);
+    background: rgba(201, 184, 138, 0.2); /* Görevler ile aynı */
+    transform: scale(1.1); /* Görevler ile aynı */
 }
 
 .gift-overlay-content {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding: 12px;
+    padding: 20px; /* Görevler ile aynı */
+    min-height: 0;
+    max-height: 100%;
 }
 
 .gift-overlay-empty {
@@ -286,31 +291,31 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
-    background: #FFFFFF;
-    border: 2px solid rgba(201, 184, 138, 0.3);
-    border-radius: 12px;
+    padding: 16px; /* Görevler task-item ile aynı */
+    background: #FFFFFF; /* Görevler task-item ile aynı */
+    border: 2px solid rgba(201, 184, 138, 0.3); /* Görevler task-item ile aynı */
+    border-radius: 12px; /* Görevler task-item ile aynı */
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Görevler task-item ile aynı */
     overflow: hidden;
     word-wrap: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
     box-sizing: border-box;
-    gap: 12px;
+    gap: 12px; /* Görevler task-item ile aynı */
     flex-direction: column;
 }
 
 .gift-trade-detailed-item:hover {
-    border-color: rgba(201, 184, 138, 0.5);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    transform: translateY(-1px);
+    border-color: rgba(201, 184, 138, 0.5); /* Görevler task-item ile aynı */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); /* Görevler task-item ile aynı */
+    transform: translateY(-1px); /* Görevler task-item ile aynı */
 }
 
 .gift-trade-detailed-item.trade-completed {
-    opacity: 0.7;
-    background: rgba(116, 195, 101, 0.15);
-    border-color: var(--farm-green);
+    opacity: 0.7; /* Görevler task-completed ile aynı */
+    background: rgba(116, 195, 101, 0.15); /* Görevler task-completed ile aynı */
+    border-color: var(--farm-green); /* Görevler task-completed ile aynı */
 }
 
 .gift-trade-detailed-info {
@@ -325,7 +330,7 @@
 }
 
 .gift-trade-detailed-icon {
-    font-size: 28px;
+    font-size: 28px; /* Görevler task-icon ile aynı */
     line-height: 1;
     flex-shrink: 0;
 }
@@ -343,10 +348,10 @@
 }
 
 .gift-trade-detailed-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--newspaper-text);
-    line-height: 1.3;
+    font-size: 16px; /* Görevler task-name ile aynı */
+    font-weight: 700; /* Görevler task-name ile aynı */
+    color: var(--newspaper-text); /* Görevler task-name ile aynı */
+    line-height: 1.3; /* Görevler task-name ile aynı */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -358,16 +363,16 @@
 }
 
 .gift-trade-detailed-progress-text {
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(44, 44, 44, 0.6);
+    font-size: 14px; /* Görevler task-progress ile aynı */
+    font-weight: 600; /* Görevler task-progress ile aynı */
+    color: rgba(44, 44, 44, 0.6); /* Görevler task-progress ile aynı */
     white-space: nowrap;
 }
 
 .gift-trade-detailed-description {
-    font-size: 13px;
-    color: rgba(44, 44, 44, 0.7);
-    line-height: 1.4;
+    font-size: 13px; /* Görevler task-description ile aynı */
+    color: rgba(44, 44, 44, 0.7); /* Görevler task-description ile aynı */
+    line-height: 1.4; /* Görevler task-description ile aynı */
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -453,201 +458,249 @@
 .gift-trade-detailed-actions .btn-ping-trade,
 .gift-trade-detailed-actions .btn-report-issue {
     flex: 1;
-    padding: 10px 12px;
-    background: transparent;
-    border: 1px solid rgba(201, 184, 138, 0.4);
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.9rem;
+    background: var(--farm-green); /* Görevler btn-do-task ile aynı */
+    color: #FFFFFF; /* Görevler btn-do-task ile aynı */
+    font-size: 14px; /* Görevler btn-do-task ile aynı */
+    font-weight: 700; /* Görevler btn-do-task ile aynı */
+    padding: 10px 20px; /* Görevler btn-do-task ile aynı */
+    border: none;
+    border-radius: 10px; /* Görevler btn-do-task ile aynı */
     cursor: pointer;
+    text-decoration: none;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    box-sizing: border-box;
+    display: inline-block;
 }
 
-.gift-trade-detailed-actions .btn-ping-trade:hover {
-    background: rgba(116, 195, 101, 0.1);
-    border-color: var(--farm-green);
-}
-
+.gift-trade-detailed-actions .btn-ping-trade:hover,
 .gift-trade-detailed-actions .btn-report-issue:hover {
-    background: rgba(255, 193, 7, 0.1);
-    border-color: #FFC107;
+    background: var(--farm-green-dark); /* Görevler btn-do-task:hover ile aynı */
+    transform: translateY(-1px); /* Görevler btn-do-task:hover ile aynı */
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3); /* Görevler btn-do-task:hover ile aynı */
+}
+
+.gift-trade-detailed-actions .btn-ping-trade:active,
+.gift-trade-detailed-actions .btn-report-issue:active {
+    transform: translateY(0); /* Görevler btn-do-task:active ile aynı */
 }
 
 /* ============================================
-   CHAT BUBBLE STYLE STEPS
+   TASK CARD STYLE STEPS (Görevler ile aynı)
    ============================================ */
 
 .gift-trade-detailed-steps {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 12px; /* Görevler tasks-list ile aynı gap */
     margin-bottom: 16px;
 }
 
 .gift-trade-detailed-steps .gift-detail-step {
     display: flex;
-    flex-direction: column;
-    padding: 12px 16px;
-    border-radius: 16px;
-    max-width: 85%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px; /* Görevler task-item'dan biraz küçük (mini versiyon) */
+    background: #FFFFFF; /* Görevler task-item ile aynı */
+    border: 2px solid rgba(201, 184, 138, 0.3); /* Görevler task-item ile aynı */
+    border-radius: 12px; /* Görevler task-item ile aynı */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Görevler task-item ile aynı */
+    transition: all 0.2s ease;
+    overflow: hidden;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    max-width: 100%;
+    box-sizing: border-box;
+    gap: 12px; /* Görevler task-item ile aynı */
     position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
 }
 
-/* User's steps (right side) - Steps 1, 3, 5 */
+/* User's steps (right side) - Steps 1, 3, 5 for offerer, Steps 2, 4 for initiator */
 .gift-trade-detailed-steps .gift-detail-step.step-user {
     align-self: flex-end;
-    background: var(--farm-green);
-    color: #FFFFFF;
-    border-bottom-right-radius: 4px;
+    max-width: 85%;
 }
 
-.gift-trade-detailed-steps .gift-detail-step.step-user .step-header {
-    color: #FFFFFF;
-}
-
-.gift-trade-detailed-steps .gift-detail-step.step-user .step-title {
-    color: #FFFFFF;
-}
-
-/* Counterpart's steps (left side) - Steps 2, 4 */
+/* Counterpart's steps (left side) - Steps 2, 4 for offerer, Steps 1, 3, 5 for initiator */
 .gift-trade-detailed-steps .gift-detail-step.step-counterpart {
     align-self: flex-start;
-    background: rgba(201, 184, 138, 0.2);
-    color: var(--newspaper-text);
-    border-bottom-left-radius: 4px;
+    max-width: 85%;
 }
 
-/* Completed steps */
+/* Completed steps - Görevler task-completed ile aynı */
 .gift-trade-detailed-steps .gift-detail-step.step-completed {
-    opacity: 0.7;
-    background: rgba(116, 195, 101, 0.2);
-    border-color: rgba(116, 195, 101, 0.4);
-}
-
-.gift-trade-detailed-steps .gift-detail-step.step-completed.step-user {
-    background: rgba(116, 195, 101, 0.3);
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.gift-trade-detailed-steps .gift-detail-step.step-completed.step-counterpart {
-    background: rgba(116, 195, 101, 0.2);
+    opacity: 0.7; /* Görevler task-completed ile aynı */
+    background: rgba(116, 195, 101, 0.15); /* Görevler task-completed ile aynı */
+    border-color: var(--farm-green); /* Görevler task-completed ile aynı */
 }
 
 /* Current step (highlighted) */
 .gift-trade-detailed-steps .gift-detail-step.step-current {
-    border: 2px solid rgba(255, 193, 7, 0.6);
-    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+    border-color: rgba(201, 184, 138, 0.5); /* Görevler task-item:hover ile aynı */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); /* Görevler task-item:hover ile aynı */
+}
+
+.gift-trade-detailed-steps .gift-detail-step:hover {
+    border-color: rgba(201, 184, 138, 0.5); /* Görevler task-item:hover ile aynı */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); /* Görevler task-item:hover ile aynı */
+    transform: translateY(-1px); /* Görevler task-item:hover ile aynı */
 }
 
 /* Locked steps */
 .gift-trade-detailed-steps .gift-detail-step.step-locked {
-    opacity: 0.5;
-    background: rgba(201, 184, 138, 0.1);
+    opacity: 0.6;
 }
 
-.gift-trade-detailed-steps .gift-detail-step.step-locked.step-user {
-    background: rgba(116, 195, 101, 0.1);
+/* Step info - Görevler task-info ile aynı yapı */
+.gift-trade-detailed-steps .gift-detail-step .step-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px; /* Görevler task-info ile aynı */
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
-.gift-trade-detailed-steps .gift-detail-step.step-locked.step-counterpart {
-    background: rgba(201, 184, 138, 0.1);
-}
-
-/* Step header inside bubble */
 .gift-trade-detailed-steps .gift-detail-step .step-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .gift-trade-detailed-steps .gift-detail-step .step-icon {
-    font-size: 20px;
+    font-size: 24px; /* Görevler task-icon'dan biraz küçük (28px) */
     line-height: 1;
     flex-shrink: 0;
 }
 
-.gift-trade-detailed-steps .gift-detail-step .step-title {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
+.gift-trade-detailed-steps .gift-detail-step .step-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Görevler task-details ile aynı */
     flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.gift-trade-detailed-steps .gift-detail-step .step-title {
+    font-size: 14px; /* Görevler task-name'den biraz küçük (16px) */
+    font-weight: 700; /* Görevler task-name ile aynı */
+    color: var(--newspaper-text); /* Görevler task-name ile aynı */
+    line-height: 1.3; /* Görevler task-name ile aynı */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.gift-trade-detailed-steps .gift-detail-step .step-label {
+    font-size: 11px; /* "Adım 1/5" etiketi için küçük */
+    font-weight: 600;
+    color: rgba(44, 44, 44, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
 }
 
 .gift-trade-detailed-steps .gift-detail-step .step-check {
     font-size: 16px;
     margin-left: auto;
+    flex-shrink: 0;
 }
 
-/* Step action inside bubble */
+/* Step action - Görevler task-actions ile aynı */
 .gift-trade-detailed-steps .gift-detail-step .step-action {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.gift-trade-detailed-steps .gift-detail-step.step-user .step-action {
-    border-top-color: rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .gift-trade-detailed-steps .gift-detail-step .btn-step-complete {
-    padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 6px;
-    color: #FFFFFF;
-    font-size: 0.85rem;
-    font-weight: 600;
+    background: var(--farm-green); /* Görevler btn-do-task ile aynı */
+    color: #FFFFFF; /* Görevler btn-do-task ile aynı */
+    font-size: 12px; /* Görevler btn-do-task'dan biraz küçük (14px) */
+    font-weight: 700; /* Görevler btn-do-task ile aynı */
+    padding: 8px 16px; /* Görevler btn-do-task'dan biraz küçük (10px 20px) */
+    border: none;
+    border-radius: 10px; /* Görevler btn-do-task ile aynı */
     cursor: pointer;
+    text-decoration: none;
     transition: all 0.2s ease;
-}
-
-.gift-trade-detailed-steps .gift-detail-step.step-user .btn-step-complete {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-.gift-trade-detailed-steps .gift-detail-step.step-counterpart .btn-step-complete {
-    background: var(--farm-green);
-    border-color: var(--farm-green-dark);
-    color: #FFFFFF;
+    white-space: nowrap;
+    flex-shrink: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    display: inline-block;
 }
 
 .gift-trade-detailed-steps .gift-detail-step .btn-step-complete:hover {
-    background: rgba(255, 255, 255, 0.35);
-    transform: translateY(-1px);
+    background: var(--farm-green-dark); /* Görevler btn-do-task:hover ile aynı */
+    transform: translateY(-1px); /* Görevler btn-do-task:hover ile aynı */
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3); /* Görevler btn-do-task:hover ile aynı */
+}
+
+.gift-trade-detailed-steps .gift-detail-step .btn-step-complete:active {
+    transform: translateY(0); /* Görevler btn-do-task:active ile aynı */
 }
 
 .gift-trade-detailed-steps .gift-detail-step .step-waiting,
 .gift-trade-detailed-steps .gift-detail-step .step-done,
 .gift-trade-detailed-steps .gift-detail-step .step-locked {
-    font-size: 0.8rem;
-    color: rgba(0, 0, 0, 0.6);
-    font-style: italic;
+    font-size: 12px;
+    color: rgba(44, 44, 44, 0.6);
+    font-weight: 600;
+    white-space: nowrap;
 }
 
-.gift-trade-detailed-steps .gift-detail-step.step-user .step-waiting,
-.gift-trade-detailed-steps .gift-detail-step.step-user .step-done,
-.gift-trade-detailed-steps .gift-detail-step.step-user .step-locked {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* Farm code display */
+/* Farm code display - Görevler task-description ile uyumlu */
 .gift-trade-detailed-steps .gift-detail-step .step-farm-code {
-    margin-top: 8px;
-    padding: 8px;
-    background: rgba(0, 0, 0, 0.05);
+    margin-top: 6px;
+    padding: 8px 10px;
+    background: rgba(201, 184, 138, 0.1); /* Görevler task-description ile uyumlu */
     border-radius: 6px;
-    font-size: 0.85rem;
+    font-size: 12px; /* Görevler task-description ile uyumlu (13px'den biraz küçük) */
+    color: rgba(44, 44, 44, 0.7); /* Görevler task-description ile uyumlu */
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-.gift-trade-detailed-steps .gift-detail-step.step-user .step-farm-code {
-    background: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.95);
+.gift-trade-detailed-steps .gift-detail-step .step-farm-code strong {
+    font-weight: 700;
+    color: var(--newspaper-text);
+}
+
+.gift-trade-detailed-steps .gift-detail-step .btn-copy-code {
+    padding: 4px 8px;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.gift-trade-detailed-steps .gift-detail-step .btn-copy-code:hover {
+    background: var(--farm-green-dark);
+    transform: translateY(-1px);
 }
 
 /* ============================================
@@ -1156,62 +1209,14 @@
    MOBILE RESPONSIVE
    ============================================ */
 
-@media (max-width: 768px) {
-    /* Gift overlay button positioning for mobile */
-    .hdh-gift-overlay-container {
-        bottom: 164px; /* Görevler butonunun üstünde */
-        right: 20px;
-        left: auto;
-    }
-    
-    /* Ensure buttons don't overlap with bottom nav */
-    .hdh-gift-overlay-button {
-        width: 56px;
-        height: 56px;
-        box-shadow: 0 4px 12px rgba(116, 195, 101, 0.4);
-    }
-    
-    /* Panel adjustments */
-    .hdh-gift-overlay-panel {
-        bottom: 240px;
-        right: 20px;
-        left: 20px;
-        width: auto;
-        max-width: calc(100vw - 40px);
-        max-height: calc(100vh - 280px);
-    }
-    
-    /* Chat bubble steps - mobile adjustments */
-    .gift-trade-detailed-steps .gift-detail-step {
-        max-width: 90%;
-        padding: 10px 14px;
-    }
-    
-    .gift-trade-detailed-steps .gift-detail-step .step-title {
-        font-size: 13px;
-    }
-    
-    .gift-trade-detailed-steps .gift-detail-step .step-icon {
-        font-size: 18px;
-    }
-}
+/* ============================================
+   MOBILE RESPONSIVE (Görevler ile uyumlu)
+   ============================================ */
 
-/* Safe area support for iPhone */
-@supports (padding: max(0px)) {
+@media (max-width: 768px) {
+    /* Gift overlay button positioning for mobile - Safe area uyumu */
     .hdh-gift-overlay-container {
         bottom: max(164px, env(safe-area-inset-bottom, 0px) + 164px);
-    }
-    
-    @media (max-width: 768px) {
-        .hdh-gift-overlay-container {
-            bottom: max(164px, env(safe-area-inset-bottom, 0px) + 164px);
-        }
-    }
-}
-
-    /* Gift overlay button positioning for mobile */
-    .hdh-gift-overlay-container {
-        bottom: 164px; /* Görevler butonunun üstünde */
         right: 20px;
         left: auto;
     }
@@ -1223,36 +1228,72 @@
         box-shadow: 0 4px 12px rgba(116, 195, 101, 0.4);
     }
     
-    /* Panel adjustments */
+    /* Panel adjustments - Görevler tasks-panel ile uyumlu */
     .hdh-gift-overlay-panel {
-        bottom: 240px;
-        right: 20px;
-        left: 20px;
+        bottom: max(90px, env(safe-area-inset-bottom, 0px) + 90px);
+        right: 16px;
+        left: 16px;
         width: auto;
-        max-width: calc(100vw - 40px);
-        max-height: calc(100vh - 280px);
-    }
-    
-    /* Chat bubble steps - mobile adjustments */
-    .gift-trade-detailed-steps .gift-detail-step {
-        max-width: 90%;
-        padding: 10px 14px;
-    }
-    
-    .gift-trade-detailed-steps .gift-detail-step .step-title {
-        font-size: 13px;
-    }
-    
-    .gift-trade-detailed-steps .gift-detail-step .step-icon {
-        font-size: 18px;
+        max-width: calc(100vw - 32px);
+        max-height: calc(70vh - 60px);
     }
     
     .gift-overlay-header {
-        padding: 12px;
+        padding: 14px 16px; /* Görevler tasks-panel-header ile aynı */
     }
     
     .gift-overlay-title {
-        font-size: 1.1rem;
+        font-size: 1.2rem; /* Görevler tasks-panel-title ile aynı */
+    }
+    
+    .gift-overlay-content {
+        padding: 16px; /* Görevler tasks-panel-content ile aynı */
+        max-height: calc(70vh - 60px);
+    }
+    
+    /* Task card steps - mobile adjustments */
+    .gift-trade-detailed-steps .gift-detail-step {
+        max-width: 92%;
+        padding: 10px 12px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .gift-trade-detailed-steps .gift-detail-step .step-info {
+        width: 100%;
+    }
+    
+    .gift-trade-detailed-steps .gift-detail-step .step-action {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .gift-trade-detailed-steps .gift-detail-step .step-title {
+        font-size: 13px;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+    
+    .gift-trade-detailed-steps .gift-detail-step .step-icon {
+        font-size: 20px;
+    }
+    
+    .gift-trade-detailed-steps .gift-detail-step .btn-step-complete {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .gift-trade-detailed-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .gift-trade-detailed-actions .btn-ping-trade,
+    .gift-trade-detailed-actions .btn-report-issue {
+        width: 100%;
+        max-width: 100%;
     }
     
     .gift-trade-item {

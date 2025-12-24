@@ -316,7 +316,7 @@
                     
                     <div class="gift-trade-detailed-actions">
                         <button type="button" class="btn-ping-trade" data-session-id="${session.id}" id="btn-ping-${session.id}">
-                            📨 Ping / Kontrol Et
+                            📨 Titreşim Gönder
                         </button>
                         <button type="button" class="btn-report-issue" data-session-id="${session.id}" id="btn-report-${session.id}">
                             ⚠️ Sorun Bildir
@@ -527,18 +527,18 @@
                 </div>
                 
                 <div class="gift-detail-steps">
-                    ${renderStep(1, '👥', 'Arkadaş olarak ekle', step1Done, currentStep === 1 && !step1Done, canCompleteStep === 1, isStarter, ownerFarmCode)}
-                    ${renderStep(2, '✅', 'Arkadaşlık isteğini kabul edin', step2Done, currentStep === 2 && !step2Done, canCompleteStep === 2, isOwner, starterFarmCode)}
-                    ${renderStep(3, '🎁', 'Vereceğiniz hediyeyi hazırlayın', step3Done, currentStep === 3 && !step3Done, canCompleteStep === 3, isStarter, '')}
-                    ${renderStep(4, '📦', 'Hediyeni al ve hediyeni hazırla', step4Done, currentStep === 4 && !step4Done, canCompleteStep === 4, isOwner, '')}
-                    ${renderStep(5, '🎉', 'Hediyeni al', step5Done, currentStep === 5 && !step5Done, canCompleteStep === 5, isStarter, '')}
+                    ${renderStep(1, '👥', 'Arkadaş olarak ekle', step1Done, currentStep === 1 && !step1Done, canCompleteStep === 1, isStarter, ownerFarmCode, session.id)}
+                    ${renderStep(2, '✅', 'Arkadaşlık isteğini kabul edin', step2Done, currentStep === 2 && !step2Done, canCompleteStep === 2, isStarter, starterFarmCode, session.id)}
+                    ${renderStep(3, '🎁', 'Vereceğiniz hediyeyi hazırlayın', step3Done, currentStep === 3 && !step3Done, canCompleteStep === 3, isStarter, '', session.id)}
+                    ${renderStep(4, '📦', 'Hediyeni al ve hediyeni hazırla', step4Done, currentStep === 4 && !step4Done, canCompleteStep === 4, isStarter, '', session.id)}
+                    ${renderStep(5, '🎉', 'Hediyeni al', step5Done, currentStep === 5 && !step5Done, canCompleteStep === 5, isStarter, '', session.id)}
                 </div>
                 
                 ${status === 'COMPLETED' ? '<div class="gift-detail-completed">✅ Hediyeleşme tamamlandı!</div>' : ''}
                 
                 <div class="gift-detail-actions">
                     <button type="button" class="btn-ping-trade" data-session-id="${session.id}" id="btn-ping-${session.id}">
-                        📨 Ping / Kontrol Et
+                        📨 Titreşim Gönder
                     </button>
                     <button type="button" class="btn-report-issue" data-session-id="${session.id}" id="btn-report-${session.id}">
                         ⚠️ Sorun Bildir
@@ -576,9 +576,12 @@
     }
     
     /**
-     * Render a step as chat bubble
+     * Render a step as mini task card (Görevler ile aynı format)
+     * Rol bazlı sağ/sol hizalama:
+     * - Initiator (isStarter=true): Adımlar 2,4 sağda (kullanıcı), 1,3,5 solda (karşı taraf)
+     * - Offerer (isStarter=false): Adımlar 1,3,5 sağda (kullanıcı), 2,4 solda (karşı taraf)
      */
-    function renderStep(stepNum, icon, title, done, current, canComplete, isUserTurn, farmCode, sessionId = null) {
+    function renderStep(stepNum, icon, title, done, current, canComplete, isStarter, farmCode, sessionId = null) {
         let statusClass = 'locked';
         if (done) {
             statusClass = 'completed';
@@ -586,37 +589,47 @@
             statusClass = 'current';
         }
         
-        // Determine if this is user's step (right) or counterpart's step (left)
-        // Steps 1, 3, 5 are user's steps (starter), steps 2, 4 are counterpart's (owner)
-        const isUserStep = (stepNum === 1 || stepNum === 3 || stepNum === 5);
-        const bubbleClass = isUserStep ? 'step-user' : 'step-counterpart';
+        // Rol bazlı sağ/sol hizalama
+        let isUserStep = false;
+        if (isStarter) {
+            // Initiator: Adımlar 2, 4 kullanıcıya yakın (sağ)
+            isUserStep = (stepNum === 2 || stepNum === 4);
+        } else {
+            // Offerer: Adımlar 1, 3, 5 kullanıcıya yakın (sağ)
+            isUserStep = (stepNum === 1 || stepNum === 3 || stepNum === 5);
+        }
+        const alignmentClass = isUserStep ? 'step-user' : 'step-counterpart';
         
         let actionHtml = '';
         if (canComplete) {
             const sessionAttr = sessionId ? `data-session-id="${sessionId}"` : '';
             actionHtml = `<button type="button" class="btn-step-complete" data-step="${stepNum}" ${sessionAttr}>Tamamla</button>`;
         } else if (current && !canComplete) {
-            actionHtml = '<div class="step-waiting">⏳ Karşı tarafın işlemi bekleniyor...</div>';
+            actionHtml = '<div class="step-waiting">⏳ Bekleniyor</div>';
         } else if (done) {
             actionHtml = '<div class="step-done">✅ Tamamlandı</div>';
         } else {
             actionHtml = '<div class="step-locked">🔒 Kilitli</div>';
         }
         
-        const farmCodeHtml = (stepNum === 1 && current && canComplete && farmCode) 
+        // Çiftlik kodu görünürlüğü
+        const farmCodeHtml = (stepNum === 1 && current && canComplete && farmCode && !isStarter) 
             ? `<div class="step-farm-code">Çiftlik Kodu: <strong>${escapeHtml(farmCode)}</strong> <button type="button" class="btn-copy-code" data-code="${escapeHtml(farmCode)}">📋</button></div>`
-            : (stepNum === 2 && current && canComplete && farmCode)
-            ? `<div class="step-farm-code">Çiftlik Kodu: <strong>${escapeHtml(farmCode)}</strong></div>`
+            : (stepNum === 2 && current && canComplete && farmCode && isStarter)
+            ? `<div class="step-farm-code">Çiftlik Kodu: <strong>${escapeHtml(farmCode)}</strong> <button type="button" class="btn-copy-code" data-code="${escapeHtml(farmCode)}">📋</button></div>`
             : '';
         
         return `
-            <div class="gift-detail-step step-${statusClass} ${bubbleClass}" data-step="${stepNum}">
-                <div class="step-header">
+            <div class="gift-detail-step step-${statusClass} ${alignmentClass}" data-step="${stepNum}">
+                <div class="step-info">
                     <span class="step-icon">${icon}</span>
-                    <span class="step-title">${escapeHtml(title)}</span>
+                    <div class="step-details">
+                        <div class="step-label">Adım ${stepNum}/5</div>
+                        <div class="step-title">${escapeHtml(title)}</div>
+                        ${farmCodeHtml}
+                    </div>
                     ${done ? '<span class="step-check">✅</span>' : ''}
                 </div>
-                ${farmCodeHtml}
                 <div class="step-action">
                     ${actionHtml}
                 </div>
