@@ -214,8 +214,8 @@ function hdh_create_gift_exchange($listing_id, $offerer_user_id) {
         array('%d', '%d', '%d', '%s')
     );
     
-    if ($result === false) {
-        return new WP_Error('db_error', 'Veritabanı hatası');
+    if ($result === false || $wpdb->last_error) {
+        return new WP_Error('db_error', 'Veritabanı hatası: ' . ($wpdb->last_error ?: 'Bilinmeyen hata'));
     }
     
     $exchange_id = $wpdb->insert_id;
@@ -249,13 +249,26 @@ function hdh_create_gift_exchange($listing_id, $offerer_user_id) {
  * Get gift exchange
  */
 function hdh_get_gift_exchange($exchange_id, $user_id = null) {
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'hdh_gift_exchanges';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return null;
+    }
     
     $exchange = $wpdb->get_row($wpdb->prepare(
         "SELECT * FROM $table_name WHERE id = %d",
         $exchange_id
     ), ARRAY_A);
+    
+    // Check for database errors after query
+    if ($wpdb->last_error) {
+        return null;
+    }
     
     if (!$exchange) {
         return null;
