@@ -94,15 +94,8 @@ function hdh_ensure_gift_tables_exist() {
     $tables_checked = true;
 }
 
-// Initialize tables on init hook (works on both frontend and backend)
-add_action('init', function() {
-    // Only create tables if they don't exist
-    if (!did_action('hdh_gift_tables_created')) {
-        hdh_create_gift_exchanges_table();
-        hdh_create_gift_messages_table();
-        do_action('hdh_gift_tables_created');
-    }
-}, 20);
+// Don't create tables on init hook - use lazy loading only
+// Tables will be created automatically when first needed via hdh_ensure_gift_tables_exist()
 
 /**
  * Create gift messages table
