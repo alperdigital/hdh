@@ -42,8 +42,8 @@ function hdh_create_gift_exchanges_table() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
 }
-add_action('after_switch_theme', 'hdh_create_gift_exchanges_table');
-add_action('admin_init', 'hdh_create_gift_exchanges_table');
+// Run on init hook (works on both frontend and backend)
+add_action('init', 'hdh_create_gift_exchanges_table', 20);
 
 /**
  * Create gift messages table
@@ -77,8 +77,8 @@ function hdh_create_gift_messages_table() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
 }
-add_action('after_switch_theme', 'hdh_create_gift_messages_table');
-add_action('admin_init', 'hdh_create_gift_messages_table');
+// Run on init hook (works on both frontend and backend)
+add_action('init', 'hdh_create_gift_messages_table', 20);
 
 /**
  * ============================================
