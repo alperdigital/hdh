@@ -540,16 +540,30 @@ function hdh_get_total_unread_count($user_id) {
 
 /**
  * Increment completed gift count
+ * Note: This function is already defined in inc/trade-session.php or inc/trade-offers.php
+ * We use function_exists check to avoid duplicate definition errors
  */
-function hdh_increment_completed_gift_count($user_id) {
-    $current = (int) get_user_meta($user_id, 'hdh_completed_gifts', true);
-    update_user_meta($user_id, 'hdh_completed_gifts', $current + 1);
+if (!function_exists('hdh_increment_completed_gift_count')) {
+    function hdh_increment_completed_gift_count($user_id) {
+        if (!$user_id) {
+            return;
+        }
+        $current = (int) get_user_meta($user_id, 'hdh_completed_gifts', true);
+        update_user_meta($user_id, 'hdh_completed_gifts', $current + 1);
+    }
 }
 
 /**
  * Get completed gift count
+ * Note: This function is already defined in inc/trade-offers.php
+ * We use function_exists check to avoid duplicate definition errors
  */
-function hdh_get_completed_gift_count($user_id) {
-    return (int) get_user_meta($user_id, 'hdh_completed_gifts', true);
+if (!function_exists('hdh_get_completed_gift_count')) {
+    function hdh_get_completed_gift_count($user_id) {
+        if (!$user_id) {
+            return 0;
+        }
+        return (int) get_user_meta($user_id, 'hdh_completed_gifts', true);
+    }
 }
 
