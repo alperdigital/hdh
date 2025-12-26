@@ -180,8 +180,14 @@ if (!have_posts()) :
                     
                     <!-- Trade Request Status or Roadmap -->
                     <?php if ($session) : ?>
-                        <!-- Roadmap Section -->
-                        <?php hdh_render_trade_roadmap($session, $post_id, $current_user_id); ?>
+                        <!-- Roadmap Section - Removed (trade-roadmap.php deleted) -->
+                        <?php if (function_exists('hdh_render_trade_roadmap')) : ?>
+                            <?php hdh_render_trade_roadmap($session, $post_id, $current_user_id); ?>
+                        <?php else : ?>
+                            <div class="trade-session-info">
+                                <p>Takas oturumu aktif. Detaylar yakında eklenecek.</p>
+                            </div>
+                        <?php endif; ?>
                     <?php elseif ($is_owner && !empty($pending_requests)) : ?>
                         <!-- Owner: Pending Requests Section -->
                         <div class="trade-pending-requests-section">

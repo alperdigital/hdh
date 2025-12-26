@@ -43,7 +43,8 @@ add_action('after_setup_theme', function() {
 require_once get_template_directory() . '/inc/items-config.php';
 require_once get_template_directory() . '/components/item-card.php';
 require_once get_template_directory() . '/components/trade-card.php';
-require_once get_template_directory() . '/components/trade-roadmap.php';
+// trade-roadmap.php removed - no longer needed
+// require_once get_template_directory() . '/components/trade-roadmap.php';
 require_once get_template_directory() . '/inc/trade-offers.php';
 require_once get_template_directory() . '/inc/jeton-system.php';
 require_once get_template_directory() . '/inc/create-trade-handler.php';
@@ -378,16 +379,8 @@ function hdh_enqueue_scripts() {
             true
         );
     
-    // Enqueue single trade page script and roadmap
+    // Enqueue single trade page script (roadmap removed - no longer needed)
     if (is_singular('hayday_trade')) {
-        // Roadmap CSS
-        wp_enqueue_style(
-            'hdh-trade-roadmap',
-            get_template_directory_uri() . '/assets/css/trade-roadmap.css',
-            array(),
-            '1.0.0'
-        );
-        
         // Trade Request JS
         wp_enqueue_script(
             'hdh-trade-request',
@@ -400,38 +393,7 @@ function hdh_enqueue_scripts() {
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_trade_request'),
         ));
-        
-        // Roadmap JS
-        wp_enqueue_script(
-            'hdh-trade-roadmap',
-            get_template_directory_uri() . '/assets/js/trade-roadmap.js',
-            array(),
-            '1.0.0',
-            true
-        );
-        // Get session data if exists
-        $session_data = null;
-        $listing_id = 0;
-        if (is_singular('hayday_trade')) {
-            $listing_id = get_the_ID();
-            $current_user_id = get_current_user_id();
-            if ($current_user_id && function_exists('hdh_get_trade_session')) {
-                $session = hdh_get_trade_session(null, $listing_id, $current_user_id);
-                if ($session) {
-                    $session_data = array(
-                        'id' => $session['id'],
-                        'current_step' => $session['current_step'],
-                        'status' => $session['status'],
-                    );
-                }
-            }
-        }
-        
-        wp_localize_script('hdh-trade-roadmap', 'hdhTradeRoadmapData', array(
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('hdh_trade_session'),
-            'sessionId' => $session_data ? $session_data['id'] : 0,
-            'listingId' => $listing_id,
+    }
             'currentStep' => $session_data ? $session_data['current_step'] : 0,
             'sessionStatus' => $session_data ? $session_data['status'] : '',
         ));
