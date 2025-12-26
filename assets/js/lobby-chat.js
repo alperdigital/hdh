@@ -33,7 +33,7 @@
         // Get initial last message ID
         const messagesList = document.getElementById('lobby-chat-messages-list');
         if (messagesList) {
-            const lastMessage = messagesList.querySelector('.chat-message-item:last-child');
+            const lastMessage = messagesList.querySelector('.chat-message-wrapper:last-child');
             if (lastMessage) {
                 lastMessageId = parseInt(lastMessage.getAttribute('data-message-id')) || 0;
             }
