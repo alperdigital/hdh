@@ -410,17 +410,20 @@ function hdh_handle_chat_moderation_action() {
  * Render trade reports tab
  */
 function hdh_render_trade_reports_tab() {
-    // Handle actions
-    if (isset($_GET['action']) && isset($_GET['report_id']) && check_admin_referer('hdh_trade_report_action')) {
-        hdh_handle_trade_report_action();
-    }
-    
-    $status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'pending';
-    
+    // Check if trade report system is available first
     if (!function_exists('hdh_get_trade_reports')) {
         echo '<p>Rapor sistemi mevcut değil.</p>';
         return;
     }
+    
+    // Handle actions
+    if (isset($_GET['action']) && isset($_GET['report_id']) && check_admin_referer('hdh_trade_report_action')) {
+        if (function_exists('hdh_handle_trade_report_action')) {
+            hdh_handle_trade_report_action();
+        }
+    }
+    
+    $status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'pending';
     
     $reports = hdh_get_trade_reports($status, 50);
     
