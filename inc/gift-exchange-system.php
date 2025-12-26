@@ -21,18 +21,16 @@ function hdh_create_gift_exchanges_table() {
         return; // Table already exists
     }
     
-    // Only run dbDelta if upgrade.php is available
+    // Try to use dbDelta if available
+    $use_dbdelta = false;
     if (!function_exists('dbDelta')) {
         if (file_exists(ABSPATH . 'wp-admin/includes/upgrade.php')) {
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        } else {
-            return; // upgrade.php not available, skip table creation
         }
     }
     
-    // Check again after requiring upgrade.php
-    if (!function_exists('dbDelta')) {
-        return; // dbDelta not available, skip table creation
+    if (function_exists('dbDelta')) {
+        $use_dbdelta = true;
     }
     
     $sql = "CREATE TABLE $table_name (
@@ -53,7 +51,19 @@ function hdh_create_gift_exchanges_table() {
         KEY status (status)
     ) $charset_collate;";
     
-    dbDelta($sql);
+    if ($use_dbdelta) {
+        dbDelta($sql);
+    } else {
+        // Fallback: Direct SQL query (only if table doesn't exist)
+        // This is safer than dbDelta but less flexible
+        $wpdb->query($sql);
+        
+        // Check for errors
+        if ($wpdb->last_error) {
+            // Silently fail - table might already exist or there's a permission issue
+            return;
+        }
+    }
 }
 
 /**
