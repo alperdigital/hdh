@@ -77,18 +77,51 @@ function hdh_ensure_gift_tables_exist() {
         return; // Already checked in this request
     }
     
+    // Prevent infinite loops
+    if (defined('HDH_CREATING_GIFT_TABLES')) {
+        return;
+    }
+    
+    // Check if WordPress is ready
+    if (!isset($GLOBALS['wpdb'])) {
+        return; // WordPress not ready yet
+    }
+    
     global $wpdb;
+    
+    // Check if wpdb is ready
+    if (!$wpdb || !method_exists($wpdb, 'get_var')) {
+        return; // wpdb not ready
+    }
+    
     $exchanges_table = $wpdb->prefix . 'hdh_gift_exchanges';
     $messages_table = $wpdb->prefix . 'hdh_gift_messages';
     
-    $exchanges_exists = $wpdb->get_var("SHOW TABLES LIKE '$exchanges_table'") == $exchanges_table;
-    $messages_exists = $wpdb->get_var("SHOW TABLES LIKE '$messages_table'") == $messages_table;
-    
-    if (!$exchanges_exists) {
-        hdh_create_gift_exchanges_table();
-    }
-    if (!$messages_exists) {
-        hdh_create_gift_messages_table();
+    // Use try-catch to prevent fatal errors
+    try {
+        $exchanges_exists = $wpdb->get_var("SHOW TABLES LIKE '$exchanges_table'") == $exchanges_table;
+        $messages_exists = $wpdb->get_var("SHOW TABLES LIKE '$messages_table'") == $messages_table;
+        
+        if (!$exchanges_exists) {
+            define('HDH_CREATING_GIFT_TABLES', true);
+            hdh_create_gift_exchanges_table();
+        }
+        if (!$messages_exists) {
+            if (!defined('HDH_CREATING_GIFT_TABLES')) {
+                define('HDH_CREATING_GIFT_TABLES', true);
+            }
+            hdh_create_gift_messages_table();
+        }
+    } catch (Exception $e) {
+        // Silently fail - log error if debug mode is on
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('HDH Gift Exchange: Error ensuring tables exist: ' . $e->getMessage());
+        }
+    } catch (Error $e) {
+        // Catch fatal errors too
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('HDH Gift Exchange: Fatal error ensuring tables exist: ' . $e->getMessage());
+        }
     }
     
     $tables_checked = true;
