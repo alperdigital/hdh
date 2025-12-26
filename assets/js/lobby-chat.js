@@ -223,7 +223,7 @@
         }
         
         // Get current last message ID
-        const currentLastMessage = messagesList.querySelector('.chat-message-item:last-child');
+        const currentLastMessage = messagesList.querySelector('.chat-message-wrapper:last-child');
         const currentLastId = currentLastMessage ? parseInt(currentLastMessage.getAttribute('data-message-id')) || 0 : 0;
         
         // Fetch latest messages
@@ -366,21 +366,27 @@
     }
     
     /**
-     * Create message element
+     * Create message element (WhatsApp style)
      */
     function createMessageElement(message) {
-        const div = document.createElement('div');
-        div.className = 'chat-message-item';
-        div.setAttribute('data-message-id', message.id);
+        const currentUserId = (typeof hdhLobbyChat !== 'undefined' && hdhLobbyChat?.currentUserId) ? parseInt(hdhLobbyChat.currentUserId) : 0;
+        const isOwnMessage = (parseInt(message.user_id) === currentUserId);
+        
+        const wrapper = document.createElement('div');
+        wrapper.className = `chat-message-wrapper ${isOwnMessage ? 'message-own' : 'message-other'}`;
+        wrapper.setAttribute('data-message-id', message.id);
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-message-bubble';
         
         const userLevel = message.user_level || 1;
         const levelDigits = String(userLevel).length;
         const levelClass = `lvl-d${levelDigits}`;
         
-        const timeAgo = formatTimeAgo(message.created_at);
+        const timeFormatted = formatTimeWhatsApp(message.created_at);
         const isCensored = message.status === 'censored';
         
-        // Use textContent for user data to prevent XSS
+        // Header with user info
         const headerDiv = document.createElement('div');
         headerDiv.className = 'chat-message-header';
         
@@ -399,14 +405,9 @@
         
         userLink.appendChild(levelBadge);
         userLink.appendChild(farmName);
-        
-        const timeSpan = document.createElement('span');
-        timeSpan.className = 'chat-message-time';
-        timeSpan.textContent = timeAgo;
-        
         headerDiv.appendChild(userLink);
-        headerDiv.appendChild(timeSpan);
         
+        // Content
         const contentDiv = document.createElement('div');
         contentDiv.className = `chat-message-content ${isCensored ? 'message-censored' : ''}`;
         // Message content is already sanitized by wp_kses_post on backend
@@ -420,32 +421,56 @@
             contentDiv.appendChild(censoredBadge);
         }
         
-        div.appendChild(headerDiv);
-        div.appendChild(contentDiv);
+        // Footer with timestamp
+        const footerDiv = document.createElement('div');
+        footerDiv.className = 'chat-message-footer';
         
-        return div;
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'chat-message-time';
+        timeSpan.textContent = timeFormatted;
+        
+        footerDiv.appendChild(timeSpan);
+        
+        // Assemble bubble
+        bubble.appendChild(headerDiv);
+        bubble.appendChild(contentDiv);
+        bubble.appendChild(footerDiv);
+        
+        wrapper.appendChild(bubble);
+        
+        return wrapper;
     }
     
     /**
-     * Format time ago
+     * Format time WhatsApp style (HH:MM or dd.MM.yyyy HH:MM)
+     */
+    function formatTimeWhatsApp(timestamp) {
+        const time = new Date(timestamp);
+        const now = new Date();
+        
+        const messageDate = new Date(time.getFullYear(), time.getMonth(), time.getDate());
+        const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        
+        const hours = String(time.getHours()).padStart(2, '0');
+        const minutes = String(time.getMinutes()).padStart(2, '0');
+        
+        if (messageDate.getTime() === todayDate.getTime()) {
+            // Today: show only time
+            return `${hours}:${minutes}`;
+        } else {
+            // Not today: show date and time
+            const day = String(time.getDate()).padStart(2, '0');
+            const month = String(time.getMonth() + 1).padStart(2, '0');
+            const year = time.getFullYear();
+            return `${day}.${month}.${year} ${hours}:${minutes}`;
+        }
+    }
+    
+    /**
+     * Format time ago (kept for backward compatibility if needed)
      */
     function formatTimeAgo(timestamp) {
-        const now = new Date();
-        const time = new Date(timestamp);
-        const diff = Math.floor((now - time) / 1000);
-        
-        if (diff < 60) {
-            return 'Az önce';
-        } else if (diff < 3600) {
-            const minutes = Math.floor(diff / 60);
-            return `${minutes} dakika önce`;
-        } else if (diff < 86400) {
-            const hours = Math.floor(diff / 3600);
-            return `${hours} saat önce`;
-        } else {
-            const days = Math.floor(diff / 86400);
-            return `${days} gün önce`;
-        }
+        return formatTimeWhatsApp(timestamp);
     }
     
     /**

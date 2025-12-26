@@ -121,31 +121,38 @@ function hdh_render_lobby_chat() {
                                     $message_text = $message['message'];
                                     $message_time = $message['created_at'];
                                     $is_censored = ($message['status'] === 'censored');
+                                    $is_own_message = ($user_id === $current_user_id);
                                     
-                                    // Format timestamp
-                                    $time_ago = human_time_diff(strtotime($message_time), current_time('timestamp'));
-                                    if ($time_ago === '0 saniye') {
-                                        $time_ago = 'Az önce';
-                                    } else {
-                                        $time_ago = $time_ago . ' önce';
+                                    // Format timestamp - WhatsApp style (HH:MM)
+                                    $time_formatted = date('H:i', strtotime($message_time));
+                                    
+                                    // Format date if not today
+                                    $message_date = date('Y-m-d', strtotime($message_time));
+                                    $today_date = date('Y-m-d', current_time('timestamp'));
+                                    if ($message_date !== $today_date) {
+                                        $time_formatted = date('d.m.Y H:i', strtotime($message_time));
                                     }
                                 ?>
-                                    <div class="chat-message-item" data-message-id="<?php echo esc_attr($message['id']); ?>">
-                                        <div class="chat-message-header">
-                                            <a href="<?php echo esc_url(home_url('/profil?user=' . $user_id)); ?>" class="chat-message-user">
-                                                <div class="hdh-level-badge lvl-d<?php echo strlen((string)$user_level); ?>" 
-                                                     aria-label="Seviye <?php echo esc_attr($user_level); ?>">
-                                                    <?php echo esc_html($user_level); ?>
-                                                </div>
-                                                <span class="chat-message-farm-name"><?php echo esc_html($user_name); ?></span>
-                                            </a>
-                                            <span class="chat-message-time"><?php echo esc_html($time_ago); ?></span>
-                                        </div>
-                                        <div class="chat-message-content <?php echo $is_censored ? 'message-censored' : ''; ?>">
-                                            <?php echo wp_kses_post($message_text); ?>
-                                            <?php if ($is_censored) : ?>
-                                                <span class="censored-badge" title="Bu mesaj moderasyon tarafından düzenlendi">⚠️</span>
-                                            <?php endif; ?>
+                                    <div class="chat-message-wrapper <?php echo $is_own_message ? 'message-own' : 'message-other'; ?>" data-message-id="<?php echo esc_attr($message['id']); ?>">
+                                        <div class="chat-message-bubble">
+                                            <div class="chat-message-header">
+                                                <a href="<?php echo esc_url(home_url('/profil?user=' . $user_id)); ?>" class="chat-message-user">
+                                                    <div class="hdh-level-badge lvl-d<?php echo strlen((string)$user_level); ?>" 
+                                                         aria-label="Seviye <?php echo esc_attr($user_level); ?>">
+                                                        <?php echo esc_html($user_level); ?>
+                                                    </div>
+                                                    <span class="chat-message-farm-name"><?php echo esc_html($user_name); ?></span>
+                                                </a>
+                                            </div>
+                                            <div class="chat-message-content <?php echo $is_censored ? 'message-censored' : ''; ?>">
+                                                <?php echo wp_kses_post($message_text); ?>
+                                                <?php if ($is_censored) : ?>
+                                                    <span class="censored-badge" title="Bu mesaj moderasyon tarafından düzenlendi">⚠️</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="chat-message-footer">
+                                                <span class="chat-message-time"><?php echo esc_html($time_formatted); ?></span>
+                                            </div>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>

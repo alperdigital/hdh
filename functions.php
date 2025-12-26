@@ -270,6 +270,7 @@ function hdh_enqueue_scripts() {
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_chat_message'),
             'maxLength' => $chat_max_length,
+            'currentUserId' => get_current_user_id(),
         ));
     }
     

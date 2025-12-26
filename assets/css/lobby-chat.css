@@ -184,35 +184,59 @@
     font-weight: 600;
 }
 
-/* Chat Messages List */
-.chat-message-item {
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(201, 184, 138, 0.2);
-    border-radius: 10px;
-    transition: all 0.2s ease;
+/* Chat Messages List - WhatsApp Style */
+.chat-message-wrapper {
+    display: flex;
+    margin-bottom: 8px;
+    padding: 0 4px;
 }
 
-.chat-message-item:hover {
-    border-color: rgba(201, 184, 138, 0.4);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.chat-message-wrapper.message-own {
+    justify-content: flex-end;
+}
+
+.chat-message-wrapper.message-other {
+    justify-content: flex-start;
+}
+
+.chat-message-bubble {
+    max-width: 75%;
+    min-width: 120px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    position: relative;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Own message (right side) - WhatsApp green */
+.chat-message-wrapper.message-own .chat-message-bubble {
+    background: #DCF8C6;
+    border-bottom-right-radius: 4px;
+    margin-right: 8px;
+}
+
+/* Other message (left side) - WhatsApp white */
+.chat-message-wrapper.message-other .chat-message-bubble {
+    background: #FFFFFF;
+    border-bottom-left-radius: 4px;
+    margin-left: 8px;
+    border: 1px solid rgba(201, 184, 138, 0.2);
 }
 
 .chat-message-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
 }
 
 .chat-message-user {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     text-decoration: none;
-    color: var(--newspaper-text);
     transition: all 0.2s ease;
 }
 
@@ -222,27 +246,25 @@
 
 .chat-message-user .hdh-level-badge {
     flex-shrink: 0;
+    font-size: 0.75rem;
 }
 
 .chat-message-farm-name {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--newspaper-text);
-}
-
-.chat-message-time {
-    font-size: 0.75rem;
-    color: var(--newspaper-text-light);
-    opacity: 0.7;
-    white-space: nowrap;
+    line-height: 1.2;
 }
 
 .chat-message-content {
     font-size: 0.95rem;
     color: var(--newspaper-text);
-    line-height: 1.5;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.chat-message-wrapper.message-own .chat-message-content {
+    color: #1a1a1a;
 }
 
 .chat-message-content.message-censored {
@@ -255,6 +277,25 @@
     margin-left: 6px;
     font-size: 0.85rem;
     opacity: 0.6;
+}
+
+.chat-message-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 4px;
+    gap: 4px;
+}
+
+.chat-message-time {
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.chat-message-wrapper.message-own .chat-message-time {
+    color: rgba(0, 0, 0, 0.6);
 }
 
 /* Empty State */
@@ -462,18 +503,30 @@
         padding: 10px;
     }
     
-    .chat-message-item {
-        padding: 10px;
+    .chat-message-bubble {
+        max-width: 85%;
+        min-width: 100px;
+        padding: 8px 10px;
     }
     
-    .chat-message-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
+    .chat-message-wrapper.message-own .chat-message-bubble {
+        margin-right: 4px;
+    }
+    
+    .chat-message-wrapper.message-other .chat-message-bubble {
+        margin-left: 4px;
     }
     
     .chat-message-content {
         font-size: 0.9rem;
+    }
+    
+    .chat-message-farm-name {
+        font-size: 0.8rem;
+    }
+    
+    .chat-message-time {
+        font-size: 0.65rem;
     }
     
     .chat-input-wrapper {
@@ -518,12 +571,22 @@
         padding: 8px;
     }
     
-    .chat-message-item {
-        padding: 8px;
+    .chat-message-bubble {
+        max-width: 90%;
+        min-width: 80px;
+        padding: 6px 8px;
     }
     
     .chat-message-content {
         font-size: 0.85rem;
+    }
+    
+    .chat-message-farm-name {
+        font-size: 0.75rem;
+    }
+    
+    .chat-message-time {
+        font-size: 0.6rem;
     }
 }
 
