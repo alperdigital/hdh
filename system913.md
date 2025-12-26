@@ -718,3 +718,9 @@ Aşağıdaki dosyalarda `function_exists()` kontrolleri yapılıyor:
 - **Çözüm:** `inc/gift-exchange-system.php` içindeki fonksiyon adı `hdh_get_gift_exchange_unread_count` olarak değiştirildi ve `function_exists` kontrolü eklendi.
 - **Dosyalar:** `inc/gift-exchange-system.php` (line 718, 386)
 
+**🔧 Düzeltme 5: Syntax Error - Fazladan Kapanış Parantezi (2024-12-19)**
+- **Sorun:** `functions.php` line 397-415 arası yanlış girintilenmiş kod ve line 415'te fazladan `}` parantezi.
+- **Kök Sebep:** Line 396'da `if (is_singular('hayday_trade'))` bloğu kapanıyor, ama line 397-414 arası kodlar `if` bloğunun dışında ve line 415'te fazladan `}` var. Bu "Parse error: syntax error, unexpected '}'" hatasına sebep olur.
+- **Çözüm:** Line 397-414 arası kodlar düzgün bir `if` bloğu içine alındı ve fazladan `}` kaldırıldı.
+- **Dosyalar:** `functions.php` (line 397-415)
+

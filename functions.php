@@ -394,7 +394,9 @@ function hdh_enqueue_scripts() {
             'nonce' => wp_create_nonce('hdh_trade_request'),
         ));
     }
-        // Legacy single trade script (if exists)
+    
+    // Legacy single trade script (if exists)
+    if (is_singular('hayday_trade')) {
         wp_enqueue_script(
             'hdh-single-trade',
             get_template_directory_uri() . '/assets/js/single-trade.js',
