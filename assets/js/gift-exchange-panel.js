@@ -46,6 +46,8 @@
             }
             document.body.style.overflow = 'hidden'; // Prevent background scroll
             loadExchanges();
+            startListPolling(); // Start polling for list updates
+            requestNotificationPermission(); // Request notification permission if needed
         }
         
         /**
@@ -58,6 +60,7 @@
             }
             document.body.style.overflow = ''; // Restore scroll
             stopPolling();
+            stopListPolling();
             currentExchangeId = null;
         }
         
@@ -160,9 +163,7 @@
                 
                 if (data.success && data.data.exchanges && data.data.exchanges.length > 0) {
                     // Check for new messages and show notifications
-                    if (typeof checkForNewMessages === 'function') {
-                        checkForNewMessages(data.data.exchanges);
-                    }
+                    checkForNewMessages(data.data.exchanges);
                     renderExchangesList(data.data.exchanges);
                     updateBadgeCount(data.data.total_unread || 0);
                 } else {
@@ -494,8 +495,17 @@
                     if (hasNewMessages) {
                         // Only update if there are new messages or force reload
                         if (forceFullReload || currentMessageIds.size === 0) {
-                            // Full reload - replace all
+                            // Full reload - replace all (only when necessary)
+                            const currentScroll = messagesContainer.scrollTop;
+                            const currentHeight = messagesContainer.scrollHeight;
                             messagesContainer.innerHTML = renderMessages(data.data.messages);
+                            
+                            // Restore scroll position if not at bottom
+                            if (!wasAtBottom && !scrollToBottom) {
+                                const newHeight = messagesContainer.scrollHeight;
+                                const heightDiff = newHeight - currentHeight;
+                                messagesContainer.scrollTop = currentScroll + heightDiff;
+                            }
                         } else {
                             // Incremental update - append only new messages
                             newMessages.forEach(msg => {
@@ -677,6 +687,93 @@
         }
         
         /**
+         * Check for new messages and show notifications
+         */
+        function checkForNewMessages(exchanges) {
+            exchanges.forEach(exchange => {
+                const exchangeId = exchange.id;
+                const currentUnread = exchange.unread_count || 0;
+                const lastUnread = lastExchangeUnreadCounts[exchangeId] || 0;
+                
+                // If unread count increased, show notification
+                if (currentUnread > lastUnread && currentUnread > 0) {
+                    const counterpartName = exchange.counterpart_name || 'Bilinmeyen';
+                    const listingTitle = exchange.listing_title || 'İlan';
+                    const newMessagesCount = currentUnread - lastUnread;
+                    
+                    // Only show notification if not currently viewing this exchange
+                    if (currentExchangeId !== exchangeId) {
+                        showNotification(
+                            `Yeni mesaj${newMessagesCount > 1 ? 'lar' : ''} (${newMessagesCount})`,
+                            `${counterpartName} - ${listingTitle}`,
+                            exchangeId
+                        );
+                    }
+                }
+                
+                // Update last known unread count
+                lastExchangeUnreadCounts[exchangeId] = currentUnread;
+            });
+        }
+        
+        /**
+         * Show notification for new message
+         */
+        function showNotification(title, subtitle, exchangeId) {
+            // Check if browser supports notifications
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: subtitle,
+                    icon: '/wp-content/themes/hdh/assets/images/favicon.png',
+                    tag: `gift-exchange-${exchangeId}`,
+                    requireInteraction: false
+                });
+            }
+            
+            // Also show in-app toast
+            showToast(`${title}: ${subtitle}`, 'info');
+        }
+        
+        /**
+         * Request notification permission
+         */
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+        
+        /**
+         * Start polling for list updates (when in list view)
+         */
+        function startListPolling() {
+            stopListPolling();
+            
+            // Only poll if panel is open and we're in list view (not chat view)
+            listPollTimer = setInterval(function() {
+                if (giftPanel.classList.contains('active')) {
+                    const chatView = document.querySelector('.gift-exchange-chat-view');
+                    if (!chatView) {
+                        // We're in list view, update the list
+                        loadExchanges();
+                    }
+                } else {
+                    stopListPolling();
+                }
+            }, config.pollInterval * 2); // Poll less frequently for list
+        }
+        
+        /**
+         * Stop list polling
+         */
+        function stopListPolling() {
+            if (listPollTimer) {
+                clearInterval(listPollTimer);
+                listPollTimer = null;
+            }
+        }
+        
+        /**
          * Update badge count
          */
         function updateBadgeCount(count) {
@@ -707,7 +804,15 @@
             const toast = document.createElement('div');
             toast.className = 'toast toast-' + type;
             toast.textContent = message;
-            toast.style.cssText = 'position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: ' + (type === 'success' ? 'var(--farm-green)' : '#dc3545') + '; color: #FFFFFF; padding: 14px 24px; border-radius: 10px; font-weight: 600; z-index: 10001; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-width: 90%; text-align: center; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;';
+            // Determine background color based on type
+            let bgColor = '#dc3545'; // default error
+            if (type === 'success') {
+                bgColor = 'var(--farm-green)';
+            } else if (type === 'info') {
+                bgColor = 'var(--sky-blue-dark)';
+            }
+            
+            toast.style.cssText = 'position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: ' + bgColor + '; color: #FFFFFF; padding: 14px 24px; border-radius: 10px; font-weight: 600; z-index: 10001; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-width: 90%; text-align: center; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;';
             document.body.appendChild(toast);
             
             setTimeout(function() { 
