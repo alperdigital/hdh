@@ -54,15 +54,19 @@ function hdh_create_gift_messages_table() {
     $charset_collate = $wpdb->get_charset_collate();
     
     // Check if table exists
-    $table_exists = $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) == $table_name;
+    $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name;
     
     if ($table_exists) {
         return; // Table already exists
     }
     
-    // Only run dbDelta if upgrade.php is available (admin area or after plugins_loaded)
+    // Only run dbDelta if upgrade.php is available
     if (!function_exists('dbDelta')) {
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        if (file_exists(ABSPATH . 'wp-admin/includes/upgrade.php')) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        } else {
+            return; // upgrade.php not available, skip table creation
+        }
     }
     
     // Check again after requiring upgrade.php
@@ -86,8 +90,10 @@ function hdh_create_gift_messages_table() {
     
     dbDelta($sql);
 }
-// Run on plugins_loaded hook (safer than init, runs after WordPress core is loaded)
-add_action('plugins_loaded', 'hdh_create_gift_messages_table', 20);
+// Initialize table on theme activation
+add_action('after_switch_theme', 'hdh_create_gift_messages_table');
+// Also create on admin init (for existing sites)
+add_action('admin_init', 'hdh_create_gift_messages_table');
 
 /**
  * ============================================
