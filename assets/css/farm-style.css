@@ -4196,6 +4196,55 @@ footer,
     border-bottom: none;
 }
 
+/* Gift Exchange Button */
+.listing-unified-block {
+    position: relative;
+}
+
+.listing-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.btn-start-gift-exchange {
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, var(--farm-green) 0%, var(--farm-green-dark) 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(116, 195, 101, 0.25);
+    font-family: 'Baloo 2', 'Poppins', sans-serif;
+}
+
+.btn-start-gift-exchange:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--farm-green-dark) 0%, var(--farm-green) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(116, 195, 101, 0.35);
+}
+
+.btn-start-gift-exchange:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(116, 195, 101, 0.25);
+}
+
+.btn-start-gift-exchange:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    background: rgba(116, 195, 101, 0.5);
+}
+
 /* Old star styles removed - replaced by .hdh-level-badge */
 
 .listing-meta-farm-name {

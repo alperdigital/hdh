@@ -1,10 +1,12 @@
 <?php
 /**
- * Single Trade Listing Template - Roadmap/Stepper Version
- * Step-by-step gift exchange with roadmap
+ * Single Trade Listing Template - Redirected
+ * This page redirects to listing search page
  */
 
-get_header();
+// 301 redirect to listing search page
+wp_redirect(home_url('/ara'), 301);
+exit;
 
 if (!have_posts()) : 
     $alternatives = function_exists('hdh_get_alternative_trades') ? hdh_get_alternative_trades(0, 3) : array();

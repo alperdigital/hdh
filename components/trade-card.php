@@ -92,26 +92,39 @@ if (!function_exists('hdh_render_trade_card')) {
         $level_int = (int) $user_level;
         $digits = strlen((string)$level_int);
         $digit_class = $digits === 1 ? 'lvl-d1' : ($digits === 2 ? 'lvl-d2' : 'lvl-d3');
+        $current_user_id = get_current_user_id();
+        $is_own_listing = ($current_user_id && $author_id == $current_user_id);
+        $can_start_gift = ($current_user_id && !$is_own_listing);
         ?>
-        <a href="<?php echo esc_url($post_url); ?>" class="listing-unified-block listing-simplified">
-            <!-- Title -->
-            <h3 class="listing-title"><?php echo esc_html($listing_title); ?></h3>
-            
-            <!-- Meta Row: Level + Farm Name + Time -->
-            <div class="listing-meta-row-unified">
-                <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
-                     aria-label="Seviye <?php echo esc_attr($user_level); ?>"
-                     title="Seviye <?php echo esc_attr($user_level); ?>">
-                    <?php echo esc_html($user_level); ?>
+        <div class="listing-unified-block listing-simplified">
+            <a href="<?php echo esc_url($post_url); ?>" class="listing-link">
+                <!-- Title -->
+                <h3 class="listing-title"><?php echo esc_html($listing_title); ?></h3>
+                
+                <!-- Meta Row: Level + Farm Name + Time -->
+                <div class="listing-meta-row-unified">
+                    <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
+                         aria-label="Seviye <?php echo esc_attr($user_level); ?>"
+                         title="Seviye <?php echo esc_attr($user_level); ?>">
+                        <?php echo esc_html($user_level); ?>
+                    </div>
+                    <span class="listing-meta-farm-name">
+                        <?php echo esc_html($author_name); ?>
+                    </span>
+                    <span class="listing-meta-time listing-presence-<?php echo esc_attr(str_replace(array('+', ' '), array('plus', '-'), $presence_bucket)); ?>">
+                        <?php echo esc_html($presence_label); ?>
+                    </span>
                 </div>
-                <span class="listing-meta-farm-name">
-                    <?php echo esc_html($author_name); ?>
-                </span>
-                <span class="listing-meta-time listing-presence-<?php echo esc_attr(str_replace(array('+', ' '), array('plus', '-'), $presence_bucket)); ?>">
-                    <?php echo esc_html($presence_label); ?>
-                </span>
-            </div>
-        </a>
+            </a>
+            
+            <?php if ($can_start_gift) : ?>
+                <button class="btn-start-gift-exchange" 
+                        data-listing-id="<?php echo esc_attr($post_id); ?>"
+                        aria-label="Hediyeleş">
+                    🎁 Hediyeleş
+                </button>
+            <?php endif; ?>
+        </div>
         <?php
     }
 }

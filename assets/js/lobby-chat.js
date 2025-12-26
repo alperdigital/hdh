@@ -111,7 +111,7 @@
         const submitBtn = document.getElementById('btn-send-chat-message');
         if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="send-icon">⏳</span>';
+            // Don't change icon, just disable
         }
         
         // Validate nonce
@@ -119,7 +119,6 @@
             showToast('Güvenlik hatası. Sayfayı yenileyin.', 'error');
             if (submitBtn) {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span class="send-icon">📨</span>';
             }
             return;
         }
@@ -143,14 +142,20 @@
                 input.value = '';
                 updateCharCount();
                 
-                // Reload messages to show new one
-                loadMessages(true);
+                // Force refresh messages (reset offset to get latest)
+                offset = 0;
+                lastMessageId = 0;
+                loadMessages(false); // Full reload
+                
+                // Restart polling
+                stopPolling();
+                setTimeout(startPolling, 1000);
             } else {
                 showToast(data.data?.message || 'Mesaj gönderilemedi', 'error');
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<span class="send-icon">📨</span>';
-                }
+            }
+            
+            if (submitBtn) {
+                submitBtn.disabled = false;
             }
         })
         .catch(error => {
@@ -158,7 +163,6 @@
             showToast('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
             if (submitBtn) {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span class="send-icon">📨</span>';
             }
         });
     }

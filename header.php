@@ -48,9 +48,7 @@
                     </span>
                 </div>
             </div>
-            <?php if (function_exists('hdh_render_notification_bell')) : ?>
-                <?php hdh_render_notification_bell(); ?>
-            <?php endif; ?>
+            <?php // Notification bell removed ?>
         </div>
     <?php endif; ?>
     

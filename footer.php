@@ -69,14 +69,14 @@
         </a>
     </nav>
     
-    <!-- HDH: Tasks Panel Toggle (Visible on all pages for logged-in users) -->
+    <!-- HDH: Tasks Panel & Gift Exchange Panel (Visible on all pages for logged-in users) -->
     <?php if (is_user_logged_in()) : 
         $current_user_id = get_current_user_id();
         if (function_exists('hdh_render_tasks_panel')) {
             hdh_render_tasks_panel($current_user_id);
         }
-        if (function_exists('hdh_render_gift_overlay')) {
-            hdh_render_gift_overlay();
+        if (function_exists('hdh_render_gift_exchange_panel')) {
+            hdh_render_gift_exchange_panel($current_user_id);
         }
     endif; ?>
     

@@ -83,8 +83,14 @@ require_once get_template_directory() . '/components/user-badge.php';
 require_once get_template_directory() . '/components/quest-panel.php';
 require_once get_template_directory() . '/components/tasks-panel.php';
 require_once get_template_directory() . '/components/lobby-chat.php';
-require_once get_template_directory() . '/components/notification-bell.php';
-require_once get_template_directory() . '/components/gift-overlay.php';
+// Old systems removed:
+// require_once get_template_directory() . '/components/notification-bell.php';
+// require_once get_template_directory() . '/components/gift-overlay.php';
+
+// New gift exchange system
+require_once get_template_directory() . '/inc/gift-exchange-system.php';
+require_once get_template_directory() . '/inc/gift-exchange-handlers.php';
+require_once get_template_directory() . '/components/gift-exchange-panel.php';
 require_once get_template_directory() . '/components/trade-report-modal.php';
 require_once get_template_directory() . '/inc/trade-ping-system.php';
 require_once get_template_directory() . '/inc/trade-ping-handlers.php';
@@ -200,28 +206,42 @@ function hdh_enqueue_scripts() {
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_filter_trades'),
         ));
-    }
-    
-    // Enqueue gift overlay scripts (all pages, logged-in users)
-    if (is_user_logged_in()) {
-        wp_enqueue_style(
-            'hdh-gift-overlay',
-            get_template_directory_uri() . '/assets/css/gift-overlay.css',
-            array('hdh-farm-style'),
-            '1.0.0'
-        );
         
+        // Enqueue gift exchange button handler
         wp_enqueue_script(
-            'hdh-gift-overlay',
-            get_template_directory_uri() . '/assets/js/gift-overlay.js',
+            'hdh-gift-exchange-button',
+            get_template_directory_uri() . '/assets/js/gift-exchange-button.js',
             array('jquery'),
             '1.0.0',
             true
         );
         
-        wp_localize_script('hdh-gift-overlay', 'hdhGiftOverlay', array(
+        wp_localize_script('hdh-gift-exchange-button', 'hdhGiftExchange', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('hdh_trade_session'),
+            'nonce' => wp_create_nonce('hdh_gift_exchange'),
+        ));
+    }
+    
+    // Enqueue gift exchange panel scripts (all pages, logged-in users)
+    if (is_user_logged_in()) {
+        wp_enqueue_style(
+            'hdh-gift-exchange-panel',
+            get_template_directory_uri() . '/assets/css/gift-exchange-panel.css',
+            array('hdh-farm-style'),
+            '1.0.0'
+        );
+        
+        wp_enqueue_script(
+            'hdh-gift-exchange-panel',
+            get_template_directory_uri() . '/assets/js/gift-exchange-panel.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+        
+        wp_localize_script('hdh-gift-exchange-panel', 'hdhGiftExchange', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_gift_exchange'),
             'currentUserId' => get_current_user_id(),
         ));
     }
