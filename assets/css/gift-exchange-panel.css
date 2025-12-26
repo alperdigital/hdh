@@ -244,6 +244,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.exchange-counterpart .hdh-level-badge {
+    flex-shrink: 0;
 }
 
 .exchange-listing {
@@ -326,6 +333,13 @@
     font-size: 1rem;
     font-weight: 700;
     color: var(--newspaper-text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chat-counterpart .hdh-level-badge {
+    flex-shrink: 0;
 }
 
 .chat-listing {
@@ -424,6 +438,23 @@
     font-style: italic;
     font-size: 0.85rem;
     padding: 10px 14px;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.message-header .hdh-level-badge {
+    flex-shrink: 0;
+}
+
+.message-user-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(44, 44, 44, 0.7);
 }
 
 .message-content {

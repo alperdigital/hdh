@@ -320,6 +320,13 @@ function hdh_get_gift_exchange($exchange_id, $user_id = null) {
         if ($counterpart) {
             $exchange['counterpart_id'] = $counterpart_id;
             $exchange['counterpart_name'] = $counterpart->display_name;
+            
+            // Get counterpart level
+            $exchange['counterpart_level'] = 1;
+            if (function_exists('hdh_get_user_state')) {
+                $user_state = hdh_get_user_state($counterpart_id);
+                $exchange['counterpart_level'] = $user_state['level'] ?? 1;
+            }
         }
     }
     
@@ -376,6 +383,13 @@ function hdh_get_user_gift_exchanges($user_id) {
         
         $exchange['counterpart_id'] = $counterpart_id;
         $exchange['counterpart_name'] = $counterpart->display_name;
+        
+        // Get counterpart level
+        $exchange['counterpart_level'] = 1;
+        if (function_exists('hdh_get_user_state')) {
+            $user_state = hdh_get_user_state($counterpart_id);
+            $exchange['counterpart_level'] = $user_state['level'] ?? 1;
+        }
         
         // Get listing info
         $listing = get_post($exchange['listing_id']);
@@ -651,6 +665,16 @@ function hdh_get_gift_messages($exchange_id, $user_id, $limit = 100) {
         $message_user = get_userdata($message['user_id']);
         if ($message_user) {
             $message['user_name'] = $message_user->display_name;
+            
+            // Get user level
+            $message['user_level'] = 1;
+            if (function_exists('hdh_get_user_state')) {
+                $user_state = hdh_get_user_state($message_user->ID);
+                $message['user_level'] = $user_state['level'] ?? 1;
+            }
+        } else {
+            $message['user_name'] = 'Silinmiş Kullanıcı';
+            $message['user_level'] = 1;
         }
         
         // Determine side (left/right) based on current user

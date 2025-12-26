@@ -31,8 +31,10 @@
         
         // State
         let pollTimer = null;
+        let listPollTimer = null;
         let currentExchangeId = null;
         let lastMessageId = 0;
+        let lastExchangeUnreadCounts = {}; // Track unread counts per exchange
         
         /**
          * Open gift exchange panel
@@ -157,6 +159,10 @@
                 if (loading) loading.style.display = 'none';
                 
                 if (data.success && data.data.exchanges && data.data.exchanges.length > 0) {
+                    // Check for new messages and show notifications
+                    if (typeof checkForNewMessages === 'function') {
+                        checkForNewMessages(data.data.exchanges);
+                    }
                     renderExchangesList(data.data.exchanges);
                     updateBadgeCount(data.data.total_unread || 0);
                 } else {
@@ -197,10 +203,17 @@
                     ? `<span class="exchange-unread-badge">${exchange.unread_count}</span>` 
                     : '';
                 
+                const counterpartLevel = exchange.counterpart_level || 1;
+                const levelDigits = String(counterpartLevel).length;
+                const levelClass = `lvl-d${levelDigits}`;
+                
                 html += `
                     <div class="exchange-item" data-exchange-id="${exchange.id}">
                         <div class="exchange-info">
-                            <div class="exchange-counterpart">${escapeHtml(exchange.counterpart_name || 'Bilinmeyen')}</div>
+                            <div class="exchange-counterpart">
+                                <div class="hdh-level-badge ${levelClass}" aria-label="Seviye ${counterpartLevel}">${counterpartLevel}</div>
+                                <span>${escapeHtml(exchange.counterpart_name || 'Bilinmeyen')}</span>
+                            </div>
                             <div class="exchange-listing">${escapeHtml(exchange.listing_title || 'İlan')}</div>
                         </div>
                         ${unreadBadge}
@@ -286,8 +299,11 @@
             let html = `
                 <div class="gift-exchange-chat-view">
                     <div class="chat-header">
-                        <button class="btn-back-to-list" id="btn-back-to-exchanges">← Listeye Dön</button>
-                        <div class="chat-counterpart">${escapeHtml(exchange.counterpart_name || 'Bilinmeyen')}</div>
+                        <button class="btn-back-to-list" id="btn-back-to-exchanges">← Geri Dön</button>
+                        <div class="chat-counterpart">
+                            ${exchange.counterpart_level ? `<div class="hdh-level-badge lvl-d${String(exchange.counterpart_level || 1).length}" aria-label="Seviye ${exchange.counterpart_level}">${exchange.counterpart_level}</div>` : ''}
+                            <span>${escapeHtml(exchange.counterpart_name || 'Bilinmeyen')}</span>
+                        </div>
                         <div class="chat-listing">${escapeHtml(exchange.listing_title || 'İlan')}</div>
                     </div>
                     
@@ -517,9 +533,16 @@
         function renderSingleMessage(msg) {
             const sideClass = msg.side || 'left';
             const timeStr = msg.created_at ? new Date(msg.created_at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) : '';
+            const userLevel = msg.user_level || 1;
+            const levelDigits = String(userLevel).length;
+            const levelClass = `lvl-d${levelDigits}`;
             
             return `
                 <div class="chat-message ${sideClass}" data-message-id="${msg.id}">
+                    <div class="message-header">
+                        <div class="hdh-level-badge ${levelClass}" aria-label="Seviye ${userLevel}">${userLevel}</div>
+                        <span class="message-user-name">${escapeHtml(msg.user_name || 'Bilinmeyen')}</span>
+                    </div>
                     <div class="message-content">${escapeHtml(msg.message)}</div>
                     ${timeStr ? `<div class="message-time">${timeStr}</div>` : ''}
                 </div>
