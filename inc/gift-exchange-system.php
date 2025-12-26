@@ -132,8 +132,11 @@ function hdh_create_gift_exchange($listing_id, $offerer_user_id) {
     
     $exchange_id = $wpdb->insert_id;
     
-    // Auto-send first message (only if function exists)
-    if (function_exists('hdh_send_gift_message')) {
+    // Get exchange data first
+    $exchange = hdh_get_gift_exchange($exchange_id, $offerer_user_id);
+    
+    // Auto-send first message (only if function exists and exchange is valid)
+    if ($exchange && function_exists('hdh_send_gift_message')) {
         $offerer_farm_code = get_user_meta($offerer_user_id, 'farm_tag', true);
         if (empty($offerer_farm_code)) {
             $offerer_farm_code = get_user_meta($offerer_user_id, 'hayday_farm_number', true);
@@ -146,9 +149,12 @@ function hdh_create_gift_exchange($listing_id, $offerer_user_id) {
         
         $first_message = 'Ekle beni Çiftlik kodum:' . $offerer_farm_code;
         hdh_send_gift_message($exchange_id, $offerer_user_id, $first_message, true);
+        
+        // Refresh exchange data after sending message
+        $exchange = hdh_get_gift_exchange($exchange_id, $offerer_user_id);
     }
     
-    return hdh_get_gift_exchange($exchange_id, $offerer_user_id);
+    return $exchange;
 }
 
 /**
