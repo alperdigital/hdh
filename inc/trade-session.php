@@ -21,6 +21,41 @@ function hdh_create_trade_session_table() {
         return; // Table already exists
     }
     
+    // Ensure dbDelta is available
+    if (!function_exists('dbDelta')) {
+        if (file_exists(ABSPATH . 'wp-admin/includes/upgrade.php')) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        } else {
+            // Fallback: direct SQL if dbDelta not available
+            $wpdb->query("CREATE TABLE IF NOT EXISTS $table_name (
+                id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                listing_id bigint(20) UNSIGNED NOT NULL,
+                owner_user_id bigint(20) UNSIGNED NOT NULL,
+                starter_user_id bigint(20) UNSIGNED NOT NULL,
+                status varchar(20) NOT NULL DEFAULT 'ACTIVE',
+                step1_starter_done_at datetime DEFAULT NULL,
+                step2_owner_done_at datetime DEFAULT NULL,
+                step3_starter_done_at datetime DEFAULT NULL,
+                step4_owner_done_at datetime DEFAULT NULL,
+                step5_starter_done_at datetime DEFAULT NULL,
+                completed_at datetime DEFAULT NULL,
+                dispute_reason varchar(100) DEFAULT NULL,
+                dispute_text text DEFAULT NULL,
+                dispute_created_at datetime DEFAULT NULL,
+                dispute_resolved_at datetime DEFAULT NULL,
+                dispute_resolution_note text DEFAULT NULL,
+                created_at datetime DEFAULT CURRENT_TIMESTAMP,
+                updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (id),
+                KEY listing_id (listing_id),
+                KEY owner_user_id (owner_user_id),
+                KEY starter_user_id (starter_user_id),
+                KEY status (status)
+            ) $charset_collate;");
+            return;
+        }
+    }
+    
     $sql = "CREATE TABLE $table_name (
         id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
         listing_id bigint(20) UNSIGNED NOT NULL,
@@ -47,8 +82,9 @@ function hdh_create_trade_session_table() {
         KEY status (status)
     ) $charset_collate;";
     
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
+    if (function_exists('dbDelta')) {
+        dbDelta($sql);
+    }
 }
 add_action('after_switch_theme', 'hdh_create_trade_session_table');
 add_action('admin_init', 'hdh_create_trade_session_table'); // Also create on admin init
