@@ -539,31 +539,8 @@ function hdh_get_total_unread_count($user_id) {
 }
 
 /**
- * Increment completed gift count
- * Note: This function is already defined in inc/trade-session.php or inc/trade-offers.php
- * We use function_exists check to avoid duplicate definition errors
+ * Note: hdh_increment_completed_gift_count and hdh_get_completed_gift_count
+ * are already defined in inc/trade-session.php and inc/trade-offers.php
+ * We don't redefine them here to avoid duplicate function errors.
  */
-if (!function_exists('hdh_increment_completed_gift_count')) {
-    function hdh_increment_completed_gift_count($user_id) {
-        if (!$user_id) {
-            return;
-        }
-        $current = (int) get_user_meta($user_id, 'hdh_completed_gifts', true);
-        update_user_meta($user_id, 'hdh_completed_gifts', $current + 1);
-    }
-}
-
-/**
- * Get completed gift count
- * Note: This function is already defined in inc/trade-offers.php
- * We use function_exists check to avoid duplicate definition errors
- */
-if (!function_exists('hdh_get_completed_gift_count')) {
-    function hdh_get_completed_gift_count($user_id) {
-        if (!$user_id) {
-            return 0;
-        }
-        return (int) get_user_meta($user_id, 'hdh_completed_gifts', true);
-    }
-}
 
