@@ -382,8 +382,8 @@ function hdh_get_user_gift_exchanges($user_id) {
         $exchange['listing_title'] = $listing->post_title;
         
         // Get unread count (only if function exists)
-        if (function_exists('hdh_get_unread_count')) {
-            $exchange['unread_count'] = hdh_get_unread_count($exchange['id'], $user_id);
+        if (function_exists('hdh_get_gift_exchange_unread_count')) {
+            $exchange['unread_count'] = hdh_get_gift_exchange_unread_count($exchange['id'], $user_id);
         } else {
             $exchange['unread_count'] = 0;
         }
@@ -714,8 +714,11 @@ function hdh_mark_messages_read($exchange_id, $user_id) {
 
 /**
  * Get unread count for an exchange
+ * NOTE: This function name conflicts with inc/notification-system.php
+ * Using a different function name to avoid conflicts
  */
-function hdh_get_unread_count($exchange_id, $user_id) {
+if (!function_exists('hdh_get_gift_exchange_unread_count')) {
+function hdh_get_gift_exchange_unread_count($exchange_id, $user_id) {
     // Ensure tables exist before querying
     hdh_ensure_gift_tables_exist();
     
@@ -752,6 +755,7 @@ function hdh_get_unread_count($exchange_id, $user_id) {
     }
     
     return (int) $count;
+}
 }
 
 /**

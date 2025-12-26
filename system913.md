@@ -710,3 +710,11 @@ Aşağıdaki dosyalarda `function_exists()` kontrolleri yapılıyor:
 - **Durum:** Kontrol edildi
 - **Sonuç:** Tüm referanslar güvenli hale getirildi
 
+**🔧 Düzeltme 4: Duplicate Function Name Conflict (2024-12-19)**
+- **Sorun:** `hdh_get_unread_count` fonksiyonu iki farklı dosyada tanımlı:
+  - `inc/notification-system.php` line 206: `hdh_get_unread_count($user_id)` - 1 parametre
+  - `inc/gift-exchange-system.php` line 718: `hdh_get_unread_count($exchange_id, $user_id)` - 2 parametre
+- **Kök Sebep:** Fonksiyon adı çakışması. `inc/gift-exchange-system.php` disabled olsa bile, eğer aktif edilirse "Cannot redeclare function" hatası verir.
+- **Çözüm:** `inc/gift-exchange-system.php` içindeki fonksiyon adı `hdh_get_gift_exchange_unread_count` olarak değiştirildi ve `function_exists` kontrolü eklendi.
+- **Dosyalar:** `inc/gift-exchange-system.php` (line 718, 386)
+
