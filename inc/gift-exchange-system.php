@@ -132,19 +132,21 @@ function hdh_create_gift_exchange($listing_id, $offerer_user_id) {
     
     $exchange_id = $wpdb->insert_id;
     
-    // Auto-send first message
-    $offerer_farm_code = get_user_meta($offerer_user_id, 'farm_tag', true);
-    if (empty($offerer_farm_code)) {
-        $offerer_farm_code = get_user_meta($offerer_user_id, 'hayday_farm_number', true);
+    // Auto-send first message (only if function exists)
+    if (function_exists('hdh_send_gift_message')) {
+        $offerer_farm_code = get_user_meta($offerer_user_id, 'farm_tag', true);
+        if (empty($offerer_farm_code)) {
+            $offerer_farm_code = get_user_meta($offerer_user_id, 'hayday_farm_number', true);
+        }
+        
+        // Format farm code with # prefix if not already
+        if (!empty($offerer_farm_code) && strpos($offerer_farm_code, '#') !== 0) {
+            $offerer_farm_code = '#' . $offerer_farm_code;
+        }
+        
+        $first_message = 'Ekle beni Çiftlik kodum:' . $offerer_farm_code;
+        hdh_send_gift_message($exchange_id, $offerer_user_id, $first_message, true);
     }
-    
-    // Format farm code with # prefix if not already
-    if (!empty($offerer_farm_code) && strpos($offerer_farm_code, '#') !== 0) {
-        $offerer_farm_code = '#' . $offerer_farm_code;
-    }
-    
-    $first_message = 'Ekle beni Çiftlik kodum:' . $offerer_farm_code;
-    hdh_send_gift_message($exchange_id, $offerer_user_id, $first_message, true);
     
     return hdh_get_gift_exchange($exchange_id, $offerer_user_id);
 }
@@ -238,8 +240,12 @@ function hdh_get_user_gift_exchanges($user_id) {
         
         $exchange['listing_title'] = $listing->post_title;
         
-        // Get unread count
-        $exchange['unread_count'] = hdh_get_unread_count($exchange['id'], $user_id);
+        // Get unread count (only if function exists)
+        if (function_exists('hdh_get_unread_count')) {
+            $exchange['unread_count'] = hdh_get_unread_count($exchange['id'], $user_id);
+        } else {
+            $exchange['unread_count'] = 0;
+        }
         
         $enriched_exchanges[] = $exchange;
     }
