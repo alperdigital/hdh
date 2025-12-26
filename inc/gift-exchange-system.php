@@ -174,12 +174,14 @@ function hdh_get_gift_exchange($exchange_id, $user_id = null) {
     $exchange['is_owner'] = ($user_id && $exchange['owner_user_id'] == $user_id);
     $exchange['is_offerer'] = ($user_id && $exchange['offerer_user_id'] == $user_id);
     
-    // Get counterpart info
-    $counterpart_id = ($exchange['owner_user_id'] == $user_id) ? $exchange['offerer_user_id'] : $exchange['owner_user_id'];
-    $counterpart = get_userdata($counterpart_id);
-    if ($counterpart) {
-        $exchange['counterpart_id'] = $counterpart_id;
-        $exchange['counterpart_name'] = $counterpart->display_name;
+    // Get counterpart info (only if user_id is provided)
+    if ($user_id) {
+        $counterpart_id = ($exchange['owner_user_id'] == $user_id) ? $exchange['offerer_user_id'] : $exchange['owner_user_id'];
+        $counterpart = get_userdata($counterpart_id);
+        if ($counterpart) {
+            $exchange['counterpart_id'] = $counterpart_id;
+            $exchange['counterpart_name'] = $counterpart->display_name;
+        }
     }
     
     // Get listing info
