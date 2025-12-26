@@ -84,6 +84,9 @@ function hdh_create_trade_session_table() {
     
     if (function_exists('dbDelta')) {
         dbDelta($sql);
+    } else {
+        // Fallback: direct SQL if dbDelta not available
+        $wpdb->query($sql);
     }
 }
 add_action('after_switch_theme', 'hdh_create_trade_session_table');
@@ -102,6 +105,13 @@ function hdh_create_trade_timeline_events_table() {
     
     if ($table_exists) {
         return; // Table already exists
+    }
+    
+    // Ensure dbDelta is available
+    if (!function_exists('dbDelta')) {
+        if (file_exists(ABSPATH . 'wp-admin/includes/upgrade.php')) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        }
     }
     
     $sql = "CREATE TABLE $table_name (
