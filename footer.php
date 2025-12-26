@@ -75,10 +75,9 @@
         if (function_exists('hdh_render_tasks_panel')) {
             hdh_render_tasks_panel($current_user_id);
         }
-        // Temporarily disabled for debugging
-        // if (function_exists('hdh_render_gift_exchange_panel')) {
-        //     hdh_render_gift_exchange_panel($current_user_id);
-        // }
+        if (function_exists('hdh_render_gift_exchange_panel')) {
+            hdh_render_gift_exchange_panel($current_user_id);
+        }
     endif; ?>
     
     <?php wp_footer(); ?>

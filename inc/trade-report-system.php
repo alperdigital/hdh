@@ -47,19 +47,17 @@ function hdh_create_trade_reports_table() {
 
 /**
  * Initialize trade reports table on theme activation
- * DISABLED - System temporarily disabled
  */
-// add_action('after_switch_theme', 'hdh_create_trade_reports_table');
+add_action('after_switch_theme', 'hdh_create_trade_reports_table');
 
 /**
  * Also create on admin init (for existing sites)
- * DISABLED - System temporarily disabled
  */
-// add_action('admin_init', function() {
-//     if (current_user_can('manage_options')) {
-//         hdh_create_trade_reports_table();
-//     }
-// }, 1);
+add_action('admin_init', function() {
+    if (current_user_can('manage_options')) {
+        hdh_create_trade_reports_table();
+    }
+}, 1);
 
 /**
  * ============================================

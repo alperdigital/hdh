@@ -5,9 +5,6 @@
  */
 if (!function_exists('hdh_render_gift_exchange_panel')) {
     function hdh_render_gift_exchange_panel($user_id) {
-        // DISABLED - Gift exchange system temporarily disabled
-        return;
-        
         if (!$user_id) return;
         
         // Ensure tables exist before rendering
