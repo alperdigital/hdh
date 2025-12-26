@@ -1347,3 +1347,377 @@
     }
 }
 
+/* ============================================
+   NEW 3-STEP SYSTEM STYLES
+   ============================================ */
+
+/* Status Badge */
+.trade-status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+}
+
+.trade-status-badge.status-active {
+    background: rgba(116, 195, 101, 0.15);
+    color: var(--farm-green-dark);
+    border: 1px solid rgba(116, 195, 101, 0.3);
+}
+
+.trade-status-badge.status-completed {
+    background: rgba(116, 195, 101, 0.2);
+    color: var(--farm-green-dark);
+    border: 1px solid var(--farm-green);
+}
+
+.trade-status-badge.status-disputed {
+    background: rgba(255, 68, 68, 0.15);
+    color: #FF4444;
+    border: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+/* Chat Timeline */
+.chat-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(201, 184, 138, 0.05);
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.chat-timeline-empty {
+    text-align: center;
+    color: rgba(44, 44, 44, 0.5);
+    font-size: 0.875rem;
+    padding: 20px;
+}
+
+.timeline-event {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.timeline-event.left {
+    align-self: flex-start;
+    background: rgba(201, 184, 138, 0.2);
+    border: 1px solid rgba(201, 184, 138, 0.3);
+}
+
+.timeline-event.right {
+    align-self: flex-end;
+    background: rgba(116, 195, 101, 0.2);
+    border: 1px solid rgba(116, 195, 101, 0.3);
+}
+
+.timeline-event.system {
+    align-self: center;
+    max-width: 90%;
+    background: rgba(44, 44, 44, 0.05);
+    border: 1px solid rgba(44, 44, 44, 0.1);
+    text-align: center;
+    font-style: italic;
+}
+
+.timeline-event-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.timeline-event-text {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--newspaper-text);
+}
+
+.timeline-event-farm-code {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.timeline-event-farm-code span {
+    font-weight: 700;
+    color: var(--farm-green-dark);
+    font-size: 0.875rem;
+}
+
+.timeline-event-time {
+    font-size: 0.7rem;
+    color: rgba(44, 44, 44, 0.5);
+    margin-top: 2px;
+}
+
+/* Trade Steps (3-Step System) */
+.gift-trade-detailed-steps .trade-step {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: #FFFFFF;
+    border: 2px solid rgba(201, 184, 138, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.gift-trade-detailed-steps .trade-step.locked {
+    opacity: 0.6;
+    background: rgba(201, 184, 138, 0.05);
+}
+
+.gift-trade-detailed-steps .trade-step.completed {
+    opacity: 0.7;
+    background: rgba(116, 195, 101, 0.15);
+    border-color: var(--farm-green);
+}
+
+.trade-step-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.trade-step-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.trade-step-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    flex: 1;
+}
+
+.trade-step-locked-badge {
+    font-size: 0.75rem;
+    color: rgba(44, 44, 44, 0.5);
+}
+
+.trade-step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.trade-step-text {
+    font-size: 0.875rem;
+    color: rgba(44, 44, 44, 0.7);
+    line-height: 1.5;
+}
+
+.trade-step-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.trade-step-sub-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px solid rgba(201, 184, 138, 0.2);
+}
+
+.step-completed-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(116, 195, 101, 0.2);
+    color: var(--farm-green-dark);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+/* Farm Code Display/Input */
+.farm-code-display,
+.farm-code-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(201, 184, 138, 0.1);
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.farm-code-text {
+    font-size: 0.875rem;
+    color: var(--newspaper-text);
+    flex: 1;
+    min-width: 0;
+}
+
+.farm-code-input input {
+    flex: 1;
+    min-width: 150px;
+    padding: 8px 12px;
+    border: 1px solid rgba(201, 184, 138, 0.3);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    background: #FFFFFF;
+}
+
+.farm-code-input input:focus {
+    outline: none;
+    border-color: var(--farm-green);
+    box-shadow: 0 0 0 2px rgba(116, 195, 101, 0.2);
+}
+
+/* Complete Trade Section */
+.gift-trade-complete-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px solid rgba(201, 184, 138, 0.3);
+}
+
+.btn-complete-trade {
+    width: 100%;
+    padding: 12px 20px;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-complete-trade:hover {
+    background: var(--farm-green-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-complete-trade:active {
+    transform: translateY(0);
+}
+
+/* Expandable Section */
+.gift-trade-detailed-expandable,
+.gift-detail-expandable {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+/* Button Styles for 3-Step System */
+.btn-share-farm-code,
+.btn-send-friend-request,
+.btn-accept-friend-request,
+.btn-mark-gift-ready,
+.btn-mark-gift-collected {
+    padding: 8px 16px;
+    background: var(--farm-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-share-farm-code:hover,
+.btn-send-friend-request:hover,
+.btn-accept-friend-request:hover,
+.btn-mark-gift-ready:hover,
+.btn-mark-gift-collected:hover {
+    background: var(--farm-green-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-share-farm-code:active,
+.btn-send-friend-request:active,
+.btn-accept-friend-request:active,
+.btn-mark-gift-ready:active,
+.btn-mark-gift-collected:active {
+    transform: translateY(0);
+}
+
+/* Mobile Responsive for 3-Step System */
+@media (max-width: 768px) {
+    .chat-timeline {
+        max-height: 250px;
+        padding: 12px;
+    }
+    
+    .timeline-event {
+        max-width: 90%;
+        padding: 8px 12px;
+    }
+    
+    .gift-trade-detailed-steps .trade-step {
+        padding: 12px;
+    }
+    
+    .trade-step-title {
+        font-size: 0.9rem;
+    }
+    
+    .trade-step-text {
+        font-size: 0.8rem;
+    }
+    
+    .farm-code-input {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .farm-code-input input {
+        width: 100%;
+    }
+    
+    .trade-step-actions,
+    .trade-step-sub-actions {
+        flex-direction: column;
+    }
+    
+    .btn-share-farm-code,
+    .btn-send-friend-request,
+    .btn-accept-friend-request,
+    .btn-mark-gift-ready,
+    .btn-mark-gift-collected {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-timeline {
+        max-height: 200px;
+        padding: 10px;
+    }
+    
+    .timeline-event {
+        max-width: 95%;
+        padding: 8px 10px;
+    }
+    
+    .gift-trade-detailed-steps .trade-step {
+        padding: 10px;
+    }
+}
+

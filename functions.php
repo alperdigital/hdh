@@ -222,6 +222,7 @@ function hdh_enqueue_scripts() {
         wp_localize_script('hdh-gift-overlay', 'hdhGiftOverlay', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_trade_session'),
+            'currentUserId' => get_current_user_id(),
         ));
     }
     

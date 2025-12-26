@@ -269,3 +269,347 @@ function hdh_ajax_get_listing_data() {
 }
 add_action('wp_ajax_hdh_get_listing_data', 'hdh_ajax_get_listing_data');
 
+/**
+ * ============================================
+ * NEW 3-STEP SYSTEM AJAX HANDLERS
+ * ============================================
+ */
+
+/**
+ * Share farm code (offerer only)
+ */
+function hdh_ajax_share_farm_code() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $session_id = isset($_POST['session_id']) ? absint($_POST['session_id']) : 0;
+    $farm_code = isset($_POST['farm_code']) ? sanitize_text_field($_POST['farm_code']) : '';
+    $user_id = get_current_user_id();
+    
+    if (!$session_id || !$farm_code) {
+        wp_send_json_error(array('message' => 'Geçersiz parametreler'));
+        return;
+    }
+    
+    if (!function_exists('hdh_share_farm_code')) {
+        wp_send_json_error(array('message' => 'Fonksiyon bulunamadı'));
+        return;
+    }
+    
+    $session = hdh_share_farm_code($session_id, $user_id, $farm_code);
+    
+    if (is_wp_error($session)) {
+        wp_send_json_error(array('message' => $session->get_error_message()));
+        return;
+    }
+    
+    // Get timeline events
+    $timeline_events = array();
+    if (function_exists('hdh_get_timeline_events')) {
+        $timeline_events = hdh_get_timeline_events($session_id);
+    }
+    
+    wp_send_json_success(array(
+        'session' => $session,
+        'timeline_events' => $timeline_events,
+        'message' => 'Çiftlik kodu paylaşıldı'
+    ));
+}
+add_action('wp_ajax_hdh_share_farm_code', 'hdh_ajax_share_farm_code');
+
+/**
+ * Send friend request (offerer only)
+ */
+function hdh_ajax_send_friend_request() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $session_id = isset($_POST['session_id']) ? absint($_POST['session_id']) : 0;
+    $user_id = get_current_user_id();
+    
+    if (!$session_id) {
+        wp_send_json_error(array('message' => 'Geçersiz parametreler'));
+        return;
+    }
+    
+    if (!function_exists('hdh_send_friend_request')) {
+        wp_send_json_error(array('message' => 'Fonksiyon bulunamadı'));
+        return;
+    }
+    
+    $session = hdh_send_friend_request($session_id, $user_id);
+    
+    if (is_wp_error($session)) {
+        wp_send_json_error(array('message' => $session->get_error_message()));
+        return;
+    }
+    
+    // Get timeline events
+    $timeline_events = array();
+    if (function_exists('hdh_get_timeline_events')) {
+        $timeline_events = hdh_get_timeline_events($session_id);
+    }
+    
+    wp_send_json_success(array(
+        'session' => $session,
+        'timeline_events' => $timeline_events,
+        'message' => 'İstek gönderildi'
+    ));
+}
+add_action('wp_ajax_hdh_send_friend_request', 'hdh_ajax_send_friend_request');
+
+/**
+ * Accept friend request (owner only)
+ */
+function hdh_ajax_accept_friend_request() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $session_id = isset($_POST['session_id']) ? absint($_POST['session_id']) : 0;
+    $user_id = get_current_user_id();
+    
+    if (!$session_id) {
+        wp_send_json_error(array('message' => 'Geçersiz parametreler'));
+        return;
+    }
+    
+    if (!function_exists('hdh_accept_friend_request')) {
+        wp_send_json_error(array('message' => 'Fonksiyon bulunamadı'));
+        return;
+    }
+    
+    $session = hdh_accept_friend_request($session_id, $user_id);
+    
+    if (is_wp_error($session)) {
+        wp_send_json_error(array('message' => $session->get_error_message()));
+        return;
+    }
+    
+    // Get timeline events
+    $timeline_events = array();
+    if (function_exists('hdh_get_timeline_events')) {
+        $timeline_events = hdh_get_timeline_events($session_id);
+    }
+    
+    wp_send_json_success(array(
+        'session' => $session,
+        'timeline_events' => $timeline_events,
+        'message' => 'İstek kabul edildi'
+    ));
+}
+add_action('wp_ajax_hdh_accept_friend_request', 'hdh_ajax_accept_friend_request');
+
+/**
+ * Mark gift as ready (both sides)
+ */
+function hdh_ajax_mark_gift_ready() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $session_id = isset($_POST['session_id']) ? absint($_POST['session_id']) : 0;
+    $user_id = get_current_user_id();
+    
+    if (!$session_id) {
+        wp_send_json_error(array('message' => 'Geçersiz parametreler'));
+        return;
+    }
+    
+    if (!function_exists('hdh_mark_gift_ready')) {
+        wp_send_json_error(array('message' => 'Fonksiyon bulunamadı'));
+        return;
+    }
+    
+    $session = hdh_mark_gift_ready($session_id, $user_id);
+    
+    if (is_wp_error($session)) {
+        wp_send_json_error(array('message' => $session->get_error_message()));
+        return;
+    }
+    
+    // Get timeline events
+    $timeline_events = array();
+    if (function_exists('hdh_get_timeline_events')) {
+        $timeline_events = hdh_get_timeline_events($session_id);
+    }
+    
+    wp_send_json_success(array(
+        'session' => $session,
+        'timeline_events' => $timeline_events,
+        'message' => 'Hediye hazır olarak işaretlendi'
+    ));
+}
+add_action('wp_ajax_hdh_mark_gift_ready', 'hdh_ajax_mark_gift_ready');
+
+/**
+ * Mark gift as collected (both sides)
+ */
+function hdh_ajax_mark_gift_collected() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $session_id = isset($_POST['session_id']) ? absint($_POST['session_id']) : 0;
+    $user_id = get_current_user_id();
+    
+    if (!$session_id) {
+        wp_send_json_error(array('message' => 'Geçersiz parametreler'));
+        return;
+    }
+    
+    if (!function_exists('hdh_mark_gift_collected')) {
+        wp_send_json_error(array('message' => 'Fonksiyon bulunamadı'));
+        return;
+    }
+    
+    $session = hdh_mark_gift_collected($session_id, $user_id);
+    
+    if (is_wp_error($session)) {
+        wp_send_json_error(array('message' => $session->get_error_message()));
+        return;
+    }
+    
+    // Get timeline events
+    $timeline_events = array();
+    if (function_exists('hdh_get_timeline_events')) {
+        $timeline_events = hdh_get_timeline_events($session_id);
+    }
+    
+    wp_send_json_success(array(
+        'session' => $session,
+        'timeline_events' => $timeline_events,
+        'message' => 'Hediye alındı olarak işaretlendi'
+    ));
+}
+add_action('wp_ajax_hdh_mark_gift_collected', 'hdh_ajax_mark_gift_collected');
+
+/**
+ * Complete trade (both sides) - New 3-step version
+ */
+function hdh_ajax_complete_trade_new() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $session_id = isset($_POST['session_id']) ? absint($_POST['session_id']) : 0;
+    $user_id = get_current_user_id();
+    
+    if (!$session_id) {
+        wp_send_json_error(array('message' => 'Geçersiz parametreler'));
+        return;
+    }
+    
+    if (!function_exists('hdh_complete_trade_new')) {
+        wp_send_json_error(array('message' => 'Fonksiyon bulunamadı'));
+        return;
+    }
+    
+    $session = hdh_complete_trade_new($session_id, $user_id);
+    
+    if (is_wp_error($session)) {
+        wp_send_json_error(array('message' => $session->get_error_message()));
+        return;
+    }
+    
+    // Get timeline events
+    $timeline_events = array();
+    if (function_exists('hdh_get_timeline_events')) {
+        $timeline_events = hdh_get_timeline_events($session_id);
+    }
+    
+    $message = 'Hediyeleşme tamamlandı';
+    if ($session['completed_owner_at'] && $session['completed_offerer_at']) {
+        $message = '✅ Hediyeleşme tamamlandı!';
+    } else {
+        $message = 'Karşı tarafın onayı bekleniyor';
+    }
+    
+    wp_send_json_success(array(
+        'session' => $session,
+        'timeline_events' => $timeline_events,
+        'message' => $message
+    ));
+}
+add_action('wp_ajax_hdh_complete_trade_new', 'hdh_ajax_complete_trade_new');
+
+/**
+ * Get timeline events for a session
+ */
+function hdh_ajax_get_timeline_events() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error(array('message' => 'Giriş yapmanız gerekiyor'));
+        return;
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hdh_trade_session')) {
+        wp_send_json_error(array('message' => 'Güvenlik kontrolü başarısız'));
+        return;
+    }
+    
+    $session_id = isset($_POST['session_id']) ? absint($_POST['session_id']) : 0;
+    $user_id = get_current_user_id();
+    
+    if (!$session_id) {
+        wp_send_json_error(array('message' => 'Geçersiz parametreler'));
+        return;
+    }
+    
+    // Verify user has access to this session
+    $session = hdh_get_trade_session($session_id, null, $user_id);
+    if (!$session) {
+        wp_send_json_error(array('message' => 'Oturum bulunamadı'));
+        return;
+    }
+    
+    if (!function_exists('hdh_get_timeline_events')) {
+        wp_send_json_error(array('message' => 'Fonksiyon bulunamadı'));
+        return;
+    }
+    
+    $timeline_events = hdh_get_timeline_events($session_id);
+    
+    wp_send_json_success(array(
+        'timeline_events' => $timeline_events
+    ));
+}
+add_action('wp_ajax_hdh_get_timeline_events', 'hdh_ajax_get_timeline_events');
+
