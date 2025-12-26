@@ -21,6 +21,20 @@ function hdh_create_gift_exchanges_table() {
         return; // Table already exists
     }
     
+    // Only run dbDelta if upgrade.php is available
+    if (!function_exists('dbDelta')) {
+        if (file_exists(ABSPATH . 'wp-admin/includes/upgrade.php')) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        } else {
+            return; // upgrade.php not available, skip table creation
+        }
+    }
+    
+    // Check again after requiring upgrade.php
+    if (!function_exists('dbDelta')) {
+        return; // dbDelta not available, skip table creation
+    }
+    
     $sql = "CREATE TABLE $table_name (
         id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
         listing_id bigint(20) UNSIGNED NOT NULL,
@@ -39,11 +53,12 @@ function hdh_create_gift_exchanges_table() {
         KEY status (status)
     ) $charset_collate;";
     
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
 }
-// Run on init hook (works on both frontend and backend)
-add_action('init', 'hdh_create_gift_exchanges_table', 20);
+// Initialize table on theme activation
+add_action('after_switch_theme', 'hdh_create_gift_exchanges_table');
+// Also create on admin init (for existing sites)
+add_action('admin_init', 'hdh_create_gift_exchanges_table');
 
 /**
  * Create gift messages table
