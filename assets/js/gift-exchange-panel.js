@@ -333,6 +333,8 @@
             const backBtn = document.getElementById('btn-back-to-exchanges');
             if (backBtn) {
                 backBtn.addEventListener('click', function() {
+                    stopPolling();
+                    currentExchangeId = null;
                     loadExchanges();
                 });
             }
@@ -386,15 +388,7 @@
             
             let html = '';
             messages.forEach(msg => {
-                const sideClass = msg.side || 'left';
-                const timeStr = msg.created_at ? new Date(msg.created_at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) : '';
-                
-                html += `
-                    <div class="chat-message ${sideClass}">
-                        <div class="message-content">${escapeHtml(msg.message)}</div>
-                        ${timeStr ? `<div class="message-time">${timeStr}</div>` : ''}
-                    </div>
-                `;
+                html += renderSingleMessage(msg);
             });
             
             return html;
@@ -431,7 +425,8 @@
                 
                 if (data.success) {
                     if (input) input.value = '';
-                    loadMessages(exchangeId, true);
+                    // Force full reload after sending to ensure message appears
+                    loadMessages(exchangeId, true, true);
                 } else {
                     showToast(data.data?.message || 'Mesaj gönderilemedi', 'error');
                 }
@@ -445,9 +440,9 @@
         }
         
         /**
-         * Load messages
+         * Load messages (optimized - only updates new messages)
          */
-        function loadMessages(exchangeId, scrollToBottom = false) {
+        function loadMessages(exchangeId, scrollToBottom = false, forceFullReload = false) {
             fetch(config.ajaxUrl, {
                 method: 'POST',
                 headers: {
@@ -463,26 +458,72 @@
             .then(data => {
                 if (data.success && data.data.messages) {
                     const messagesContainer = document.getElementById(`chat-messages-${exchangeId}`);
-                    if (messagesContainer) {
-                        const wasAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight + 50;
-                        
-                        messagesContainer.innerHTML = renderMessages(data.data.messages);
+                    if (!messagesContainer) return;
+                    
+                    const wasAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight + 50;
+                    
+                    // Get current message IDs to detect new messages
+                    const currentMessageIds = new Set();
+                    if (!forceFullReload) {
+                        messagesContainer.querySelectorAll('.chat-message').forEach(msg => {
+                            const msgId = msg.getAttribute('data-message-id');
+                            if (msgId) currentMessageIds.add(parseInt(msgId));
+                        });
+                    }
+                    
+                    // If we have new messages or force reload, update
+                    const newMessages = data.data.messages.filter(msg => !currentMessageIds.has(parseInt(msg.id)));
+                    const hasNewMessages = newMessages.length > 0 || forceFullReload;
+                    
+                    if (hasNewMessages) {
+                        // Only update if there are new messages or force reload
+                        if (forceFullReload || currentMessageIds.size === 0) {
+                            // Full reload - replace all
+                            messagesContainer.innerHTML = renderMessages(data.data.messages);
+                        } else {
+                            // Incremental update - append only new messages
+                            newMessages.forEach(msg => {
+                                const msgHtml = renderSingleMessage(msg);
+                                messagesContainer.insertAdjacentHTML('beforeend', msgHtml);
+                            });
+                        }
                         
                         if (scrollToBottom || wasAtBottom) {
-                            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                            // Use requestAnimationFrame for smooth scroll
+                            requestAnimationFrame(() => {
+                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                            });
                         }
                     }
                     
                     // Update last message ID
                     if (data.data.messages && data.data.messages.length > 0) {
                         const lastMsg = data.data.messages[data.data.messages.length - 1];
-                        lastMessageId = parseInt(lastMsg.id) || 0;
+                        const newLastId = parseInt(lastMsg.id) || 0;
+                        if (newLastId > lastMessageId) {
+                            lastMessageId = newLastId;
+                        }
                     }
                 }
             })
             .catch(error => {
                 console.error('Error loading messages:', error);
             });
+        }
+        
+        /**
+         * Render single message (for incremental updates)
+         */
+        function renderSingleMessage(msg) {
+            const sideClass = msg.side || 'left';
+            const timeStr = msg.created_at ? new Date(msg.created_at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) : '';
+            
+            return `
+                <div class="chat-message ${sideClass}" data-message-id="${msg.id}">
+                    <div class="message-content">${escapeHtml(msg.message)}</div>
+                    ${timeStr ? `<div class="message-time">${timeStr}</div>` : ''}
+                </div>
+            `;
         }
         
         /**

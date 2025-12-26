@@ -256,13 +256,17 @@ function hdh_create_gift_exchange($listing_id, $offerer_user_id) {
             $offerer_farm_code = get_user_meta($offerer_user_id, 'hayday_farm_number', true);
         }
         
-        // Format farm code with # prefix if not already
-        if (!empty($offerer_farm_code) && strpos($offerer_farm_code, '#') !== 0) {
-            $offerer_farm_code = '#' . $offerer_farm_code;
+        // Only send message if farm code exists
+        if (!empty($offerer_farm_code)) {
+            // Format farm code with # prefix if not already
+            $offerer_farm_code = trim($offerer_farm_code);
+            if (strpos($offerer_farm_code, '#') !== 0) {
+                $offerer_farm_code = '#' . $offerer_farm_code;
+            }
+            
+            $first_message = 'Ekle beni Çiftlik kodum: ' . $offerer_farm_code;
+            hdh_send_gift_message($exchange_id, $offerer_user_id, $first_message, true);
         }
-        
-        $first_message = 'Ekle beni Çiftlik kodum:' . $offerer_farm_code;
-        hdh_send_gift_message($exchange_id, $offerer_user_id, $first_message, true);
         
         // Refresh exchange data after sending message
         $exchange = hdh_get_gift_exchange($exchange_id, $offerer_user_id);
