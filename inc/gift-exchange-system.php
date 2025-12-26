@@ -54,10 +54,20 @@ function hdh_create_gift_messages_table() {
     $charset_collate = $wpdb->get_charset_collate();
     
     // Check if table exists
-    $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name;
+    $table_exists = $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) == $table_name;
     
     if ($table_exists) {
         return; // Table already exists
+    }
+    
+    // Only run dbDelta if upgrade.php is available (admin area or after plugins_loaded)
+    if (!function_exists('dbDelta')) {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    }
+    
+    // Check again after requiring upgrade.php
+    if (!function_exists('dbDelta')) {
+        return; // dbDelta not available, skip table creation
     }
     
     $sql = "CREATE TABLE $table_name (
@@ -74,11 +84,10 @@ function hdh_create_gift_messages_table() {
         KEY created_at (created_at)
     ) $charset_collate;";
     
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
 }
-// Run on init hook (works on both frontend and backend)
-add_action('init', 'hdh_create_gift_messages_table', 20);
+// Run on plugins_loaded hook (safer than init, runs after WordPress core is loaded)
+add_action('plugins_loaded', 'hdh_create_gift_messages_table', 20);
 
 /**
  * ============================================
