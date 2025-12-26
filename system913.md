@@ -743,3 +743,9 @@ Aşağıdaki dosyalarda `function_exists()` kontrolleri yapılıyor:
   - `hdh_get_firebase_config()` → `inc/firebase-config.php` (line 110'da yükleniyor) ✅
   - `hdh_is_firebase_configured()` → `inc/firebase-config.php` (line 110'da yükleniyor) ✅
 
+**🔧 Düzeltme 6: dbDelta Safety Checks in Table Creation (2024-12-19)**
+- **Sorun:** `inc/trade-session.php` içindeki `hdh_create_trade_session_table()` ve `hdh_create_trade_timeline_events_table()` fonksiyonları `dbDelta()` fonksiyonunu `function_exists()` kontrolü olmadan çağırıyor. Frontend'de `wp-admin/includes/upgrade.php` yüklenmemişse fatal error oluşabilir.
+- **Kök Sebep:** `admin_init` hook'u frontend'de çalışmaz ama eğer fonksiyon başka bir yerden çağrılırsa veya `dbDelta` yüklenmemişse hata oluşur.
+- **Çözüm:** Her iki fonksiyona da `function_exists('dbDelta')` kontrolü eklendi ve fallback olarak direkt SQL query kullanıldı.
+- **Dosyalar:** `inc/trade-session.php` (line 12-90, 92-130)
+
