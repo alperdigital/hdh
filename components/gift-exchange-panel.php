@@ -7,6 +7,11 @@ if (!function_exists('hdh_render_gift_exchange_panel')) {
     function hdh_render_gift_exchange_panel($user_id) {
         if (!$user_id) return;
         
+        // Ensure tables exist before rendering
+        if (function_exists('hdh_ensure_gift_tables_exist')) {
+            hdh_ensure_gift_tables_exist();
+        }
+        
         // Get total unread count
         $total_unread = 0;
         if (function_exists('hdh_get_total_unread_count')) {

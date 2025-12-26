@@ -55,10 +55,44 @@ function hdh_create_gift_exchanges_table() {
     
     dbDelta($sql);
 }
-// Initialize table on theme activation
-add_action('after_switch_theme', 'hdh_create_gift_exchanges_table');
-// Also create on admin init (for existing sites)
-add_action('admin_init', 'hdh_create_gift_exchanges_table');
+
+/**
+ * Ensure gift tables exist (lazy loading)
+ * This function is called before any table queries to ensure tables are created
+ */
+function hdh_ensure_gift_tables_exist() {
+    static $tables_checked = false;
+    
+    if ($tables_checked) {
+        return; // Already checked in this request
+    }
+    
+    global $wpdb;
+    $exchanges_table = $wpdb->prefix . 'hdh_gift_exchanges';
+    $messages_table = $wpdb->prefix . 'hdh_gift_messages';
+    
+    $exchanges_exists = $wpdb->get_var("SHOW TABLES LIKE '$exchanges_table'") == $exchanges_table;
+    $messages_exists = $wpdb->get_var("SHOW TABLES LIKE '$messages_table'") == $messages_table;
+    
+    if (!$exchanges_exists) {
+        hdh_create_gift_exchanges_table();
+    }
+    if (!$messages_exists) {
+        hdh_create_gift_messages_table();
+    }
+    
+    $tables_checked = true;
+}
+
+// Initialize tables on init hook (works on both frontend and backend)
+add_action('init', function() {
+    // Only create tables if they don't exist
+    if (!did_action('hdh_gift_tables_created')) {
+        hdh_create_gift_exchanges_table();
+        hdh_create_gift_messages_table();
+        do_action('hdh_gift_tables_created');
+    }
+}, 20);
 
 /**
  * Create gift messages table
@@ -75,18 +109,16 @@ function hdh_create_gift_messages_table() {
         return; // Table already exists
     }
     
-    // Only run dbDelta if upgrade.php is available
+    // Try to use dbDelta if available
+    $use_dbdelta = false;
     if (!function_exists('dbDelta')) {
         if (file_exists(ABSPATH . 'wp-admin/includes/upgrade.php')) {
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        } else {
-            return; // upgrade.php not available, skip table creation
         }
     }
     
-    // Check again after requiring upgrade.php
-    if (!function_exists('dbDelta')) {
-        return; // dbDelta not available, skip table creation
+    if (function_exists('dbDelta')) {
+        $use_dbdelta = true;
     }
     
     $sql = "CREATE TABLE $table_name (
@@ -103,12 +135,20 @@ function hdh_create_gift_messages_table() {
         KEY created_at (created_at)
     ) $charset_collate;";
     
-    dbDelta($sql);
+    if ($use_dbdelta) {
+        dbDelta($sql);
+    } else {
+        // Fallback: Direct SQL query (only if table doesn't exist)
+        // This is safer than dbDelta but less flexible
+        $wpdb->query($sql);
+        
+        // Check for errors
+        if ($wpdb->last_error) {
+            // Silently fail - table might already exist or there's a permission issue
+            return;
+        }
+    }
 }
-// Initialize table on theme activation
-add_action('after_switch_theme', 'hdh_create_gift_messages_table');
-// Also create on admin init (for existing sites)
-add_action('admin_init', 'hdh_create_gift_messages_table');
 
 /**
  * ============================================
@@ -120,8 +160,16 @@ add_action('admin_init', 'hdh_create_gift_messages_table');
  * Create gift exchange
  */
 function hdh_create_gift_exchange($listing_id, $offerer_user_id) {
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'hdh_gift_exchanges';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return new WP_Error('db_error', 'Veritabanı hatası');
+    }
     
     $listing = get_post($listing_id);
     if (!$listing || $listing->post_type !== 'hayday_trade') {
@@ -239,8 +287,16 @@ function hdh_get_user_gift_exchanges($user_id) {
         return array();
     }
     
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'hdh_gift_exchanges';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return array();
+    }
     
     $exchanges = $wpdb->get_results($wpdb->prepare(
         "SELECT * FROM $table_name
@@ -293,8 +349,16 @@ function hdh_get_user_gift_exchanges($user_id) {
  * Complete gift exchange
  */
 function hdh_complete_gift_exchange($exchange_id, $user_id) {
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'hdh_gift_exchanges';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return new WP_Error('db_error', 'Veritabanı hatası');
+    }
     
     $exchange = hdh_get_gift_exchange($exchange_id, $user_id);
     if (!$exchange) {
@@ -323,21 +387,29 @@ function hdh_complete_gift_exchange($exchange_id, $user_id) {
         array('%d')
     );
     
-    if ($result === false) {
-        return new WP_Error('db_error', 'Veritabanı hatası');
+    if ($result === false || $wpdb->last_error) {
+        return new WP_Error('db_error', 'Veritabanı hatası: ' . ($wpdb->last_error ?: 'Bilinmeyen hata'));
     }
     
     // Check if both sides completed
     $updated_exchange = hdh_get_gift_exchange($exchange_id, $user_id);
     if ($updated_exchange['completed_owner_at'] && $updated_exchange['completed_offerer_at']) {
         // Mark as completed
-        $wpdb->update(
+        $update_result = $wpdb->update(
             $table_name,
             array('status' => 'COMPLETED'),
             array('id' => $exchange_id),
             array('%s'),
             array('%d')
         );
+        
+        // Check for errors but don't fail if update fails
+        if ($update_result === false && $wpdb->last_error) {
+            // Log error but continue
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('HDH Gift Exchange: Failed to update status to COMPLETED: ' . $wpdb->last_error);
+            }
+        }
         
         // Increment gift counts
         if (function_exists('hdh_increment_completed_gift_count')) {
@@ -353,8 +425,16 @@ function hdh_complete_gift_exchange($exchange_id, $user_id) {
  * Report gift exchange
  */
 function hdh_report_gift_exchange($exchange_id, $user_id, $reason = '') {
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'hdh_gift_exchanges';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return new WP_Error('db_error', 'Veritabanı hatası');
+    }
     
     $exchange = hdh_get_gift_exchange($exchange_id, $user_id);
     if (!$exchange) {
@@ -382,8 +462,8 @@ function hdh_report_gift_exchange($exchange_id, $user_id, $reason = '') {
         array('%d')
     );
     
-    if ($result === false) {
-        return new WP_Error('db_error', 'Veritabanı hatası');
+    if ($result === false || $wpdb->last_error) {
+        return new WP_Error('db_error', 'Veritabanı hatası: ' . ($wpdb->last_error ?: 'Bilinmeyen hata'));
     }
     
     return hdh_get_gift_exchange($exchange_id, $user_id);
@@ -399,9 +479,17 @@ function hdh_report_gift_exchange($exchange_id, $user_id, $reason = '') {
  * Send gift message
  */
 function hdh_send_gift_message($exchange_id, $user_id, $message, $is_system = false) {
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $messages_table = $wpdb->prefix . 'hdh_gift_messages';
     $exchanges_table = $wpdb->prefix . 'hdh_gift_exchanges';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return new WP_Error('db_error', 'Veritabanı hatası');
+    }
     
     // Verify exchange exists and user has access
     $exchange = hdh_get_gift_exchange($exchange_id, $user_id);
@@ -441,20 +529,27 @@ function hdh_send_gift_message($exchange_id, $user_id, $message, $is_system = fa
         array('%d', '%d', '%s', '%d', '%d', '%s')
     );
     
-    if ($result === false) {
-        return new WP_Error('db_error', 'Veritabanı hatası');
+    if ($result === false || $wpdb->last_error) {
+        return new WP_Error('db_error', 'Veritabanı hatası: ' . ($wpdb->last_error ?: 'Bilinmeyen hata'));
     }
     
     $message_id = $wpdb->insert_id;
     
-    // Update exchange updated_at
-    $wpdb->update(
+    // Update exchange updated_at (non-critical, so don't fail if it errors)
+    $update_result = $wpdb->update(
         $exchanges_table,
         array('updated_at' => current_time('mysql')),
         array('id' => $exchange_id),
         array('%s'),
         array('%d')
     );
+    
+    // Log error but don't fail
+    if ($update_result === false && $wpdb->last_error) {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('HDH Gift Exchange: Failed to update updated_at: ' . $wpdb->last_error);
+        }
+    }
     
     return $message_id;
 }
@@ -463,8 +558,16 @@ function hdh_send_gift_message($exchange_id, $user_id, $message, $is_system = fa
  * Get gift messages
  */
 function hdh_get_gift_messages($exchange_id, $user_id, $limit = 100) {
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'hdh_gift_messages';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return array();
+    }
     
     // Verify user has access
     $exchange = hdh_get_gift_exchange($exchange_id, $user_id);
@@ -480,6 +583,15 @@ function hdh_get_gift_messages($exchange_id, $user_id, $limit = 100) {
         $exchange_id,
         $limit
     ), ARRAY_A);
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return array(); // Return empty array on error
+    }
+    
+    if (!is_array($messages)) {
+        return array(); // Ensure we return an array
+    }
     
     // Enrich with user data
     foreach ($messages as &$message) {
@@ -508,8 +620,16 @@ function hdh_get_gift_messages($exchange_id, $user_id, $limit = 100) {
  * Mark messages as read
  */
 function hdh_mark_messages_read($exchange_id, $user_id) {
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'hdh_gift_messages';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return false;
+    }
     
     // Verify user has access
     $exchange = hdh_get_gift_exchange($exchange_id, $user_id);
@@ -532,15 +652,31 @@ function hdh_mark_messages_read($exchange_id, $user_id) {
         array('%d', '%d', '%d')
     );
     
-    return $result !== false;
+    // Check for errors but return true if no error (even if no rows updated)
+    if ($wpdb->last_error) {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('HDH Gift Exchange: Failed to mark messages as read: ' . $wpdb->last_error);
+        }
+        return false;
+    }
+    
+    return true; // Success (even if no rows were updated)
 }
 
 /**
  * Get unread count for an exchange
  */
 function hdh_get_unread_count($exchange_id, $user_id) {
+    // Ensure tables exist before querying
+    hdh_ensure_gift_tables_exist();
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'hdh_gift_messages';
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return 0;
+    }
     
     // Verify user has access
     $exchange = hdh_get_gift_exchange($exchange_id, $user_id);
@@ -560,6 +696,11 @@ function hdh_get_unread_count($exchange_id, $user_id) {
         $exchange_id,
         $counterpart_id
     ));
+    
+    // Check for database errors
+    if ($wpdb->last_error) {
+        return 0; // Return 0 on error
+    }
     
     return (int) $count;
 }
