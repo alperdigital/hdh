@@ -91,12 +91,13 @@ require_once get_template_directory() . '/components/lobby-chat.php';
 // require_once get_template_directory() . '/inc/gift-exchange-system.php';
 // require_once get_template_directory() . '/inc/gift-exchange-handlers.php';
 // require_once get_template_directory() . '/components/gift-exchange-panel.php';
-require_once get_template_directory() . '/components/trade-report-modal.php';
-require_once get_template_directory() . '/inc/trade-ping-system.php';
-require_once get_template_directory() . '/inc/trade-ping-handlers.php';
-require_once get_template_directory() . '/inc/trade-report-system.php';
-require_once get_template_directory() . '/inc/trade-report-handlers.php';
-require_once get_template_directory() . '/inc/presence-admin.php';
+// TEMPORARILY DISABLED FOR DEBUGGING - Recent additions
+// require_once get_template_directory() . '/components/trade-report-modal.php';
+// require_once get_template_directory() . '/inc/trade-ping-system.php';
+// require_once get_template_directory() . '/inc/trade-ping-handlers.php';
+// require_once get_template_directory() . '/inc/trade-report-system.php';
+// require_once get_template_directory() . '/inc/trade-report-handlers.php';
+// require_once get_template_directory() . '/inc/presence-admin.php';
 
 // Premium Admin Panel (load before old admin files)
 require_once get_template_directory() . '/inc/admin-panel.php';
