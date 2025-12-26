@@ -534,8 +534,18 @@
             
             if (!currentExchangeId) return;
             
+            // Only poll if we're in chat view (not in list view)
+            const chatView = document.querySelector('.gift-exchange-chat-view');
+            if (!chatView) return;
+            
             pollTimer = setInterval(function() {
-                loadMessages(currentExchangeId);
+                // Only poll if still in chat view for this exchange
+                const currentChatView = document.querySelector('.gift-exchange-chat-view');
+                if (currentChatView && currentExchangeId) {
+                    loadMessages(currentExchangeId, false, false);
+                } else {
+                    stopPolling();
+                }
             }, config.pollInterval);
         }
         
