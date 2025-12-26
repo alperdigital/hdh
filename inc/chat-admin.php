@@ -35,9 +35,11 @@ function hdh_render_chat_admin_page() {
             <a href="?page=hdh-chat&tab=moderation" class="nav-tab <?php echo $current_tab === 'moderation' ? 'nav-tab-active' : ''; ?>">
                 Moderation Queue
             </a>
+            <?php if (function_exists('hdh_get_trade_reports')) : ?>
             <a href="?page=hdh-chat&tab=trade-reports" class="nav-tab <?php echo $current_tab === 'trade-reports' ? 'nav-tab-active' : ''; ?>">
                 Trade Reports
             </a>
+            <?php endif; ?>
         </nav>
         
         <div class="hdh-chat-admin-content">
@@ -45,8 +47,10 @@ function hdh_render_chat_admin_page() {
                 <?php hdh_render_chat_settings_tab(); ?>
             <?php elseif ($current_tab === 'moderation') : ?>
                 <?php hdh_render_chat_moderation_tab(); ?>
-            <?php elseif ($current_tab === 'trade-reports') : ?>
+            <?php elseif ($current_tab === 'trade-reports' && function_exists('hdh_get_trade_reports')) : ?>
                 <?php hdh_render_trade_reports_tab(); ?>
+            <?php elseif ($current_tab === 'trade-reports') : ?>
+                <p>Trade Reports sistemi şu anda mevcut değil.</p>
             <?php endif; ?>
         </div>
     </div>
@@ -515,14 +519,15 @@ function hdh_handle_trade_report_action() {
         wp_die('Yetkiniz yok.');
     }
     
+    // Check if trade report system is available
+    if (!function_exists('hdh_update_trade_report_status')) {
+        wp_die('Trade report sistemi mevcut değil.');
+    }
+    
     $action = isset($_GET['action']) ? sanitize_text_field($_GET['action']) : '';
     $report_id = isset($_GET['report_id']) ? absint($_GET['report_id']) : 0;
     
     if (!$report_id || !$action) {
-        return;
-    }
-    
-    if (!function_exists('hdh_update_trade_report_status')) {
         return;
     }
     
