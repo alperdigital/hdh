@@ -15,7 +15,8 @@
         
         // Attach click handlers to all gift exchange buttons
         function attachHandlers() {
-            document.querySelectorAll('.btn-start-gift-exchange').forEach(btn => {
+            // Handle both inline and full-width buttons
+            document.querySelectorAll('.btn-start-gift-exchange, .btn-start-gift-exchange-inline').forEach(btn => {
                 // Remove existing listeners by cloning
                 const newBtn = btn.cloneNode(true);
                 btn.parentNode.replaceChild(newBtn, btn);

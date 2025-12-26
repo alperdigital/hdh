@@ -101,29 +101,31 @@ if (!function_exists('hdh_render_trade_card')) {
                 <!-- Title -->
                 <h3 class="listing-title"><?php echo esc_html($listing_title); ?></h3>
                 
-                <!-- Meta Row: Level + Farm Name + Time -->
+                <!-- Meta Row: Level + Farm Name + Gift Button + Time -->
                 <div class="listing-meta-row-unified">
-                    <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
-                         aria-label="Seviye <?php echo esc_attr($user_level); ?>"
-                         title="Seviye <?php echo esc_attr($user_level); ?>">
-                        <?php echo esc_html($user_level); ?>
+                    <div class="listing-meta-left">
+                        <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
+                             aria-label="Seviye <?php echo esc_attr($user_level); ?>"
+                             title="Seviye <?php echo esc_attr($user_level); ?>">
+                            <?php echo esc_html($user_level); ?>
+                        </div>
+                        <span class="listing-meta-farm-name">
+                            <?php echo esc_html($author_name); ?>
+                        </span>
+                        <?php if ($can_start_gift) : ?>
+                            <button class="btn-start-gift-exchange-inline" 
+                                    data-listing-id="<?php echo esc_attr($post_id); ?>"
+                                    aria-label="Hediyeleş"
+                                    type="button">
+                                🎁 Hediyeleş
+                            </button>
+                        <?php endif; ?>
                     </div>
-                    <span class="listing-meta-farm-name">
-                        <?php echo esc_html($author_name); ?>
-                    </span>
                     <span class="listing-meta-time listing-presence-<?php echo esc_attr(str_replace(array('+', ' '), array('plus', '-'), $presence_bucket)); ?>">
                         <?php echo esc_html($presence_label); ?>
                     </span>
                 </div>
             </a>
-            
-            <?php if ($can_start_gift) : ?>
-                <button class="btn-start-gift-exchange" 
-                        data-listing-id="<?php echo esc_attr($post_id); ?>"
-                        aria-label="Hediyeleş">
-                    🎁 Hediyeleş
-                </button>
-            <?php endif; ?>
         </div>
         <?php
     }

@@ -4159,19 +4159,27 @@ footer,
     border-color: rgba(201, 184, 138, 0.6);
 }
 
-/* Meta Row: Blue Star + Farm Name + Time (Top, Left Aligned, Minimum Spacing) */
+/* Meta Row: Blue Star + Farm Name + Gift Button + Time (Unified Box) */
 .listing-meta-row-unified {
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: space-between;
+    gap: 8px;
     margin-top: 0;
     margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    background: transparent;
-    border: none;
-    outline: none;
-    box-shadow: none;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(201, 184, 138, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.listing-meta-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0; /* Allow flex shrinking */
 }
 
 /* Simplified listing (title + meta only) */
@@ -4207,6 +4215,47 @@ footer,
     display: block;
 }
 
+/* Inline Gift Exchange Button (in meta row) */
+.btn-start-gift-exchange-inline {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, var(--farm-green) 0%, var(--farm-green-dark) 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    box-shadow: 0 1px 4px rgba(116, 195, 101, 0.3);
+    font-family: 'Baloo 2', 'Poppins', sans-serif;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 4px;
+}
+
+.btn-start-gift-exchange-inline:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--farm-green-dark) 0%, var(--farm-green) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(116, 195, 101, 0.4);
+}
+
+.btn-start-gift-exchange-inline:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(116, 195, 101, 0.3);
+}
+
+.btn-start-gift-exchange-inline:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    background: rgba(116, 195, 101, 0.5);
+}
+
+/* Legacy full-width button (kept for backward compatibility) */
 .btn-start-gift-exchange {
     width: 100%;
     margin-top: 14px;
@@ -4272,6 +4321,8 @@ footer,
     font-size: 11px;
     color: var(--newspaper-text-light);
     font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 /* Presence label styles */
@@ -4540,8 +4591,25 @@ footer,
         font-size: 1rem;
     }
     
+    .listing-meta-row-unified {
+        padding: 6px 10px;
+        gap: 6px;
+    }
+    
+    .listing-meta-left {
+        gap: 4px;
+        min-width: 0;
+    }
+    
     .listing-meta-farm-name {
         font-size: 12px;
+    }
+    
+    .btn-start-gift-exchange-inline {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+        gap: 3px;
+        margin-left: 2px;
     }
     
     .listing-meta-time {
