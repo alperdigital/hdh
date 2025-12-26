@@ -87,10 +87,10 @@ require_once get_template_directory() . '/components/lobby-chat.php';
 // require_once get_template_directory() . '/components/notification-bell.php';
 // require_once get_template_directory() . '/components/gift-overlay.php';
 
-// New gift exchange system
-require_once get_template_directory() . '/inc/gift-exchange-system.php';
-require_once get_template_directory() . '/inc/gift-exchange-handlers.php';
-require_once get_template_directory() . '/components/gift-exchange-panel.php';
+// New gift exchange system - TEMPORARILY DISABLED FOR DEBUGGING
+// require_once get_template_directory() . '/inc/gift-exchange-system.php';
+// require_once get_template_directory() . '/inc/gift-exchange-handlers.php';
+// require_once get_template_directory() . '/components/gift-exchange-panel.php';
 require_once get_template_directory() . '/components/trade-report-modal.php';
 require_once get_template_directory() . '/inc/trade-ping-system.php';
 require_once get_template_directory() . '/inc/trade-ping-handlers.php';
