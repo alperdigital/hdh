@@ -394,10 +394,6 @@ function hdh_enqueue_scripts() {
             'nonce' => wp_create_nonce('hdh_trade_request'),
         ));
     }
-            'currentStep' => $session_data ? $session_data['current_step'] : 0,
-            'sessionStatus' => $session_data ? $session_data['status'] : '',
-        ));
-        
         // Legacy single trade script (if exists)
         wp_enqueue_script(
             'hdh-single-trade',
