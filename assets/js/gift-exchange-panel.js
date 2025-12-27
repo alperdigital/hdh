@@ -474,6 +474,11 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data.messages) {
+                    // Update current user info from response
+                    if (data.data.current_user_id) {
+                        config.currentUserId = parseInt(data.data.current_user_id);
+                    }
+                    
                     const messagesContainer = document.getElementById(`chat-messages-${exchangeId}`);
                     if (!messagesContainer) return;
                     
