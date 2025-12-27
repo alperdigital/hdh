@@ -462,19 +462,25 @@
                 }
             }
             
-            const completeBtn = document.querySelector('.btn-complete-exchange');
+            const completeBtn = document.querySelector(`.btn-complete-exchange[data-exchange-id="${exchange.id}"]`);
             if (completeBtn) {
-                completeBtn.addEventListener('click', function() {
+                completeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const exchangeId = parseInt(this.getAttribute('data-exchange-id'));
-                    completeExchange(exchangeId);
+                    if (exchangeId) {
+                        completeExchange(exchangeId);
+                    }
                 });
             }
             
-            const reportBtn = document.querySelector('.btn-report-exchange');
+            const reportBtn = document.querySelector(`.btn-report-exchange[data-exchange-id="${exchange.id}"]`);
             if (reportBtn) {
-                reportBtn.addEventListener('click', function() {
+                reportBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const exchangeId = parseInt(this.getAttribute('data-exchange-id'));
-                    if (confirm('Bu hediyeleşmeyi şikayet etmek istediğinize emin misiniz?')) {
+                    if (exchangeId && confirm('Bu hediyeleşmeyi şikayet etmek istediğinize emin misiniz?')) {
                         reportExchange(exchangeId);
                     }
                 });
