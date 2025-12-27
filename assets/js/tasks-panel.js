@@ -73,7 +73,44 @@
         let isToggling = false; // Prevent multiple rapid toggles
         
         // Header tasks button click handler
-        // Use event delegation or wait for button to be available
+        // Use event delegation on document to catch clicks even if button loads later
+        function handleHeaderButtonClick(e) {
+            const target = e.target;
+            const headerBtn = target.closest('#hdh-header-tasks-button');
+            
+            if (headerBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('HDH Tasks: Header button clicked via delegation');
+                if (isToggling) return;
+                isToggling = true;
+                handleToggle(e);
+                setTimeout(function() {
+                    isToggling = false;
+                }, 300);
+            }
+        }
+        
+        // Use event delegation on document body
+        document.body.addEventListener('click', handleHeaderButtonClick, false);
+        document.body.addEventListener('touchend', function(e) {
+            const target = e.target;
+            const headerBtn = target.closest('#hdh-header-tasks-button');
+            
+            if (headerBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('HDH Tasks: Header button touched via delegation');
+                if (isToggling) return;
+                isToggling = true;
+                handleToggle(e);
+                setTimeout(function() {
+                    isToggling = false;
+                }, 300);
+            }
+        }, false);
+        
+        // Also try direct attachment as fallback
         function attachHeaderButtonHandler() {
             const headerBtn = document.getElementById('hdh-header-tasks-button');
             if (headerBtn && !headerBtn.hasAttribute('data-handler-attached')) {
@@ -82,7 +119,7 @@
                 headerBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('HDH Tasks: Header button clicked');
+                    console.log('HDH Tasks: Header button clicked (direct)');
                     if (isToggling) return;
                     isToggling = true;
                     handleToggle(e);
@@ -91,23 +128,7 @@
                     }, 300);
                 }, false);
                 
-                headerBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('HDH Tasks: Header button touched');
-                    if (isToggling) return;
-                    isToggling = true;
-                    handleToggle(e);
-                    setTimeout(function() {
-                        isToggling = false;
-                    }, 300);
-                }, false);
-                
-                console.log('HDH Tasks: Header button handler attached');
-            } else if (!headerBtn) {
-                console.warn('HDH Tasks: Header button not found, will retry...');
-                // Retry after a short delay in case header loads after DOMContentLoaded
-                setTimeout(attachHeaderButtonHandler, 500);
+                console.log('HDH Tasks: Header button handler attached (direct)');
             }
         }
         
@@ -115,6 +136,7 @@
         attachHeaderButtonHandler();
         
         // Also try after a delay in case header loads later
+        setTimeout(attachHeaderButtonHandler, 500);
         setTimeout(attachHeaderButtonHandler, 1000);
         
         // Original tasks icon (if exists)
