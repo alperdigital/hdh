@@ -4367,15 +4367,14 @@ footer,
 }
 
 /* Unified Listing Block (Continuous Column) */
-/* Gift Package Card - Red Gift Box Design (Inspired by Image) */
+/* Gift Package Card - Using hdhbox.webp Image */
 .gift-package-card {
     position: relative;
     margin-bottom: 24px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    filter: drop-shadow(0 4px 12px rgba(220, 20, 60, 0.3));
+    width: 100%;
+    max-width: 100%;
 }
 
 .gift-package-card.gift-package-clickable {
@@ -4383,8 +4382,8 @@ footer,
 }
 
 .gift-package-card.gift-package-clickable:hover {
-    transform: translateY(-6px) scale(1.01);
-    filter: drop-shadow(0 8px 20px rgba(220, 20, 60, 0.5));
+    transform: translateY(-4px) scale(1.01);
+    filter: drop-shadow(0 8px 20px rgba(220, 20, 60, 0.4));
 }
 
 .gift-package-card.gift-package-clickable:active {
@@ -4393,153 +4392,60 @@ footer,
 
 .gift-package-box {
     position: relative;
-    background: linear-gradient(to bottom, 
-        rgba(255, 23, 68, 0.05) 0%,
-        rgba(220, 20, 60, 0.08) 50%,
-        rgba(255, 107, 107, 0.05) 100%
-    );
-    border: 6px solid #DC143C;
-    border-radius: 20px;
+    background-image: url('../images/hdhbox.webp');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
     padding: 0;
     overflow: visible;
-    min-height: 160px;
-    box-shadow: 
-        0 0 20px rgba(220, 20, 60, 0.4),
-        inset 0 0 30px rgba(255, 107, 107, 0.2),
-        0 0 40px rgba(220, 20, 60, 0.2);
+    min-height: 200px;
+    width: 100%;
+    aspect-ratio: 1.2 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Glowing Red Border Effect */
-.gift-package-box::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #FF1744 0%, #DC143C 25%, #FF6B6B 50%, #DC143C 75%, #FF1744 100%);
-    z-index: -1;
-    opacity: 0.5;
-    filter: blur(10px);
-    animation: glow-pulse 2s ease-in-out infinite;
-}
-
-@keyframes glow-pulse {
-    0%, 100% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.7;
-        transform: scale(1.02);
-    }
-}
-
-/* Golden Bow on Top */
-.gift-package-box::after {
-    content: '🎀';
-    position: absolute;
-    top: -24px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2.8rem;
-    z-index: 10;
-    filter: drop-shadow(0 4px 10px rgba(255, 215, 0, 0.6));
-    text-shadow: 
-        0 0 12px rgba(255, 215, 0, 0.9),
-        0 0 24px rgba(255, 215, 0, 0.7),
-        0 2px 6px rgba(0, 0, 0, 0.4);
-    animation: bow-shine 3s ease-in-out infinite;
-    line-height: 1;
-}
-
-@keyframes bow-shine {
-    0%, 100% {
-        filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.5));
-    }
-    50% {
-        filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.8));
-    }
-}
-
-/* Gift Package Lid (3D Top with indentations) */
-.gift-package-lid {
-    position: absolute;
-    top: -20px;
-    left: -6px;
-    right: -6px;
-    height: 38px;
-    background: linear-gradient(135deg, #FF1744 0%, #DC143C 30%, #FF6B6B 50%, #DC143C 70%, #FF1744 100%);
-    border-radius: 20px 20px 0 0;
-    transform: perspective(350px) rotateX(-22deg);
-    transform-origin: bottom;
-    box-shadow: 
-        0 -8px 25px rgba(0, 0, 0, 0.4),
-        inset 0 3px 10px rgba(255, 255, 255, 0.3),
-        inset 0 -3px 10px rgba(0, 0, 0, 0.2),
-        0 0 15px rgba(220, 20, 60, 0.3);
-    z-index: 2;
-    border: 6px solid #DC143C;
-    border-bottom: none;
-    /* Indentations where lid meets base */
-    clip-path: polygon(
-        0% 0%,
-        12% 0%,
-        12% 100%,
-        88% 100%,
-        88% 0%,
-        100% 0%,
-        100% 100%,
-        0% 100%
-    );
-}
-
-/* Gift Package Content - Transparent with inner glow */
+/* Gift Package Content - Positioned in the transparent area of the image */
 .gift-package-content {
     position: relative;
-    z-index: 3;
-    background: linear-gradient(to bottom,
-        rgba(255, 255, 255, 0.95) 0%,
-        rgba(255, 255, 255, 0.85) 50%,
-        rgba(255, 248, 240, 0.9) 100%
-    );
-    border-radius: 14px;
-    padding: 24px 20px;
-    margin: 6px;
-    box-shadow: 
-        inset 0 0 40px rgba(255, 107, 107, 0.15),
-        inset 0 0 20px rgba(220, 20, 60, 0.1),
-        0 2px 8px rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    min-height: 120px;
-    backdrop-filter: blur(2px);
+    z-index: 2;
+    width: calc(100% - 80px);
+    height: calc(100% - 100px);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .gift-package-title {
     font-family: 'Baloo 2', sans-serif;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--newspaper-text);
-    margin: 0 0 18px 0;
-    line-height: 1.4;
+    margin: 0 0 16px 0;
+    line-height: 1.3;
     word-wrap: break-word;
     overflow-wrap: break-word;
     text-align: center;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    max-width: 100%;
 }
 
 .gift-package-meta {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     align-items: center;
+    width: 100%;
 }
 
 .gift-package-user-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -4547,31 +4453,31 @@ footer,
 .gift-package-user-info .hdh-level-badge {
     background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
     color: #FFFFFF;
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     box-shadow: 
-        0 2px 8px rgba(255, 215, 0, 0.5),
-        0 0 12px rgba(255, 215, 0, 0.3),
-        inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        0 2px 8px rgba(255, 215, 0, 0.6),
+        0 0 12px rgba(255, 215, 0, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6);
     font-weight: 800;
-    padding: 5px 12px;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .gift-package-farm-name {
     font-weight: 600;
     color: var(--newspaper-text);
-    font-size: 1.05rem;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .gift-package-date {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--newspaper-text-light);
-    opacity: 0.75;
+    opacity: 0.85;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* Mobile Responsive */
@@ -4581,39 +4487,15 @@ footer,
     }
     
     .gift-package-box {
-        border-width: 5px;
-        border-radius: 16px;
-        min-height: 140px;
-    }
-    
-    .gift-package-box::before {
-        top: -5px;
-        left: -5px;
-        right: -5px;
-        bottom: -5px;
-        border-radius: 16px;
-        filter: blur(6px);
-    }
-    
-    .gift-package-box::after {
-        top: -18px;
-        font-size: 2rem;
-    }
-    
-    .gift-package-lid {
-        top: -15px;
-        left: -5px;
-        right: -5px;
-        height: 30px;
-        border-width: 5px;
-        border-radius: 16px 16px 0 0;
+        min-height: 180px;
+        aspect-ratio: 1.15 / 1;
     }
     
     .gift-package-content {
-        padding: 18px 16px;
-        margin: 5px;
-        border-radius: 12px;
-        min-height: 110px;
+        width: calc(100% - 60px);
+        height: calc(100% - 80px);
+        padding: 16px;
+        margin-top: 15px;
     }
     
     .gift-package-title {
@@ -4622,67 +4504,11 @@ footer,
     }
     
     .gift-package-meta {
-        gap: 12px;
-    }
-    
-    .gift-package-user-info {
         gap: 10px;
     }
     
-    .gift-package-user-info .hdh-level-badge {
-        font-size: 0.9rem;
-        padding: 4px 10px;
-    }
-    
-    .gift-package-farm-name {
-        font-size: 1rem;
-    }
-    
-    .gift-package-date {
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .gift-package-box {
-        border-width: 4px;
-        border-radius: 14px;
-        min-height: 130px;
-    }
-    
-    .gift-package-box::before {
-        top: -4px;
-        left: -4px;
-        right: -4px;
-        bottom: -4px;
-        border-radius: 14px;
-        filter: blur(5px);
-    }
-    
-    .gift-package-box::after {
-        top: -16px;
-        font-size: 1.75rem;
-    }
-    
-    .gift-package-lid {
-        top: -12px;
-        left: -4px;
-        right: -4px;
-        height: 26px;
-        border-width: 4px;
-        border-radius: 14px 14px 0 0;
-    }
-    
-    .gift-package-content {
-        padding: 16px 14px;
-        margin: 4px;
-        border-radius: 10px;
-        min-height: 100px;
-    }
-    
-    .gift-package-title {
-        font-size: 0.95rem;
-        margin-bottom: 12px;
+    .gift-package-user-info {
+        gap: 8px;
     }
     
     .gift-package-user-info .hdh-level-badge {
@@ -4696,6 +4522,38 @@ footer,
     
     .gift-package-date {
         font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .gift-package-box {
+        min-height: 160px;
+        aspect-ratio: 1.1 / 1;
+    }
+    
+    .gift-package-content {
+        width: calc(100% - 50px);
+        height: calc(100% - 70px);
+        padding: 14px;
+        margin-top: 12px;
+    }
+    
+    .gift-package-title {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+    
+    .gift-package-user-info .hdh-level-badge {
+        font-size: 0.8rem;
+        padding: 3px 7px;
+    }
+    
+    .gift-package-farm-name {
+        font-size: 0.9rem;
+    }
+    
+    .gift-package-date {
+        font-size: 0.75rem;
     }
 }
 

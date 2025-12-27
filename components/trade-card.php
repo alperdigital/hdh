@@ -104,12 +104,7 @@ if (!function_exists('hdh_render_trade_card')) {
              aria-label="Hediyeleşmeye başla: <?php echo esc_attr($listing_title); ?>"
              <?php endif; ?>>
             <div class="gift-package-box">
-                <!-- Gift Package Lid (3D effect with indentations) - Created via CSS ::before -->
-                <div class="gift-package-lid"></div>
-                
-                <!-- Golden Bow - Created via CSS ::after -->
-                
-                <!-- Gift Package Content -->
+                <!-- Gift Package Content - Positioned in transparent area of hdhbox.webp -->
                 <div class="gift-package-content">
                     <!-- Listing Title -->
                     <h3 class="gift-package-title"><?php echo esc_html($listing_title); ?></h3>
