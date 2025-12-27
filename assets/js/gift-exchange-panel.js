@@ -410,12 +410,6 @@
                 </div>
             `;
             
-            // Remove existing chat view if any
-            const existingChatView = document.getElementById('gift-exchange-chat-view');
-            if (existingChatView) {
-                existingChatView.remove();
-            }
-            
             // Append chat view to content (preserve list in DOM)
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;

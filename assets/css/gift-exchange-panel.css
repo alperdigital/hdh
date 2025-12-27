@@ -161,6 +161,11 @@
     pointer-events: auto;
 }
 
+/* Ensure gift exchange button is always clickable above overlay */
+.gift-exchange-icon-fixed {
+    z-index: 1002 !important;
+}
+
 /* Gift Exchange Panel */
 .gift-exchange-panel {
     position: fixed;
