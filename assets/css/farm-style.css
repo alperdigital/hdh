@@ -4501,46 +4501,51 @@ footer,
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .gift-package-card {
-        margin-bottom: 20px;
+        margin-bottom: 28px;
+        width: 100%;
+        max-width: 95%;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .gift-package-box {
-        min-height: 300px;
+        min-height: 340px;
         aspect-ratio: 1.25 / 1;
         max-width: 100%;
     }
     
     .gift-package-content {
-        width: calc(100% - 100px);
-        height: calc(100% - 140px);
-        padding: 20px 18px;
-        margin-top: 10px;
+        width: calc(100% - 110px);
+        height: calc(100% - 160px);
+        padding: 24px 20px;
+        margin-top: 15px;
     }
     
     .gift-package-title {
-        font-size: 1rem;
-        margin-bottom: 14px;
+        font-size: 1.1rem;
+        margin-bottom: 18px;
+        line-height: 1.6;
     }
     
     .gift-package-meta {
-        gap: 10px;
+        gap: 12px;
     }
     
     .gift-package-user-info {
-        gap: 8px;
+        gap: 10px;
     }
     
     .gift-package-user-info .hdh-level-badge {
-        font-size: 0.85rem;
-        padding: 3px 8px;
+        font-size: 0.9rem;
+        padding: 4px 10px;
     }
     
     .gift-package-farm-name {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
     
     .gift-package-date {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 }
 
