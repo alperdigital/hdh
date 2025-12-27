@@ -708,12 +708,25 @@
     }
     
     .chat-messages {
-        padding: 12px;
+        padding: 10px 12px;
+        gap: 6px;
     }
     
     .chat-message {
-        max-width: 95%;
+        max-width: 85%;
         padding: 8px 12px;
+    }
+    
+    .message-content {
+        font-size: 0.85rem;
+    }
+    
+    .message-user-name {
+        font-size: 0.7rem;
+    }
+    
+    .message-header .hdh-level-badge {
+        font-size: 0.65rem;
     }
 }
 
