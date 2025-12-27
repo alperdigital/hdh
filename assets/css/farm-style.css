@@ -5118,7 +5118,7 @@ footer,
 
 /* 2. MIDDLE SECTION - SOCIAL PROOF */
 .homepage-recent-listings {
-    padding: 40px 20px;
+    padding: 20px 20px 40px;
     background: #FFF6D8;
     overflow-x: hidden;
     max-width: 100%;
@@ -5191,7 +5191,7 @@ footer,
 /* Desktop Adjustments */
 @media (min-width: 769px) {
     .homepage-hero {
-        padding: 60px 20px 80px;
+        padding: 60px 20px 30px;
     }
     
     .homepage-headline {
@@ -5208,7 +5208,7 @@ footer,
     }
     
     .homepage-recent-listings {
-        padding: 60px 20px;
+        padding: 30px 20px 60px;
     }
     
     .homepage-section-title {

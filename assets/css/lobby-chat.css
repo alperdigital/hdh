@@ -132,8 +132,12 @@
 
 .lock-icon {
     font-size: 3rem;
-    line-height: 1;
+    line-height: 1.2;
     opacity: 0.6;
+    display: block;
+    height: auto;
+    min-height: 48px;
+    margin-bottom: 4px;
 }
 
 .lock-text {
@@ -156,6 +160,8 @@
     font-size: 0.95rem;
     text-decoration: none;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    word-break: keep-all;
 }
 
 .btn-chat-login:hover {
