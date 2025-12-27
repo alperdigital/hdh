@@ -573,6 +573,7 @@
                 }
             });
             
+            // Update icon badge (if exists)
             const badge = document.getElementById('tasks-icon-badge');
             if (badge) {
                 if (claimableCount > 0) {
@@ -581,6 +582,12 @@
                 } else {
                     badge.style.display = 'none';
                 }
+            }
+            
+            // Update header count
+            const headerCount = document.getElementById('hdh-header-tasks-count');
+            if (headerCount) {
+                headerCount.textContent = '(' + claimableCount + ')';
             }
         }
         
