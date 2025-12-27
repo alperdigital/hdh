@@ -362,6 +362,11 @@
                     ? messagesData.data.messages 
                     : [];
                 
+                // Hide loading
+                if (loading) {
+                    loading.style.display = 'none';
+                }
+                
                 renderChatView(exchange, messages);
                 startPolling();
                 
@@ -373,6 +378,11 @@
             .catch(error => {
                 console.error('Error loading chat:', error);
                 showToast('Chat yüklenemedi', 'error');
+                // Hide loading
+                const loading = document.getElementById('gift-exchange-loading');
+                if (loading) {
+                    loading.style.display = 'none';
+                }
                 // If error, go back to list
                 goBackToList();
             });
@@ -383,7 +393,21 @@
          */
         function renderChatView(exchange, messages) {
             const content = document.getElementById('gift-exchange-panel-content');
-            if (!content) return;
+            if (!content) {
+                console.error('Content container not found');
+                return;
+            }
+            
+            if (!exchange) {
+                console.error('Exchange data is missing');
+                showToast('Hediyeleşme verisi yüklenemedi', 'error');
+                return;
+            }
+            
+            // Ensure messages is an array
+            if (!Array.isArray(messages)) {
+                messages = [];
+            }
             
             // Hide list view elements
             const list = document.getElementById('gift-exchanges-list');
