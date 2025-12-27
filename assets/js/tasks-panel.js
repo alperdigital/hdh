@@ -13,7 +13,16 @@
         const tasksClose = document.getElementById('tasks-panel-close');
         const headerTasksButton = document.getElementById('hdh-header-tasks-button');
         
+        console.log('HDH Tasks: Initializing', {
+            tasksIcon: !!tasksIcon,
+            tasksPanel: !!tasksPanel,
+            tasksOverlay: !!tasksOverlay,
+            tasksClose: !!tasksClose,
+            headerTasksButton: !!headerTasksButton
+        });
+        
         if (!tasksPanel) {
+            console.error('HDH Tasks: Panel not found in DOM!');
             return; // Silently fail if panel not found
         }
         
@@ -21,11 +30,32 @@
          * Open tasks panel
          */
         function openTasksPanel() {
+            console.log('HDH Tasks: Opening panel', {
+                panel: tasksPanel,
+                overlay: tasksOverlay,
+                panelExists: !!tasksPanel,
+                overlayExists: !!tasksOverlay
+            });
+            
+            if (!tasksPanel) {
+                console.error('HDH Tasks: Panel not found!');
+                return;
+            }
+            
             tasksPanel.classList.add('active');
+            tasksPanel.style.display = 'flex'; // Force display
+            
             if (tasksOverlay) {
                 tasksOverlay.classList.add('active');
+                tasksOverlay.style.display = 'block'; // Force display
             }
+            
             document.body.style.overflow = 'hidden'; // Prevent background scroll
+            
+            console.log('HDH Tasks: Panel opened', {
+                hasActive: tasksPanel.classList.contains('active'),
+                panelDisplay: window.getComputedStyle(tasksPanel).display
+            });
         }
         
         /**
@@ -59,24 +89,33 @@
         
         // Header tasks button click handler
         if (headerTasksButton) {
+            console.log('HDH Tasks: Header button found, attaching handlers');
+            
             headerTasksButton.addEventListener('click', function(e) {
+                console.log('HDH Tasks: Header button clicked');
+                e.preventDefault();
+                e.stopPropagation();
                 if (isToggling) return;
                 isToggling = true;
                 handleToggle(e);
                 setTimeout(function() {
                     isToggling = false;
                 }, 300);
-            }, { passive: false });
+            });
             
             headerTasksButton.addEventListener('touchend', function(e) {
+                console.log('HDH Tasks: Header button touched');
+                e.preventDefault();
+                e.stopPropagation();
                 if (isToggling) return;
                 isToggling = true;
-                e.preventDefault();
                 handleToggle(e);
                 setTimeout(function() {
                     isToggling = false;
                 }, 300);
-            }, { passive: false });
+            });
+        } else {
+            console.warn('HDH Tasks: Header button not found');
         }
         
         // Original tasks icon (if exists)
