@@ -150,20 +150,43 @@
          * Go back to list view
          */
         function goBackToList() {
+            console.log('goBackToList called'); // Debug
             stopPolling();
             currentExchangeId = null;
-            // Hide chat view
+            
+            // Remove chat view from DOM
             const chatView = document.getElementById('gift-exchange-chat-view');
             if (chatView) {
-                chatView.style.display = 'none';
-                chatView.remove(); // Remove from DOM completely
+                console.log('Removing chat view'); // Debug
+                chatView.remove();
             }
+            
             // Hide header back button
             if (giftBack) {
                 giftBack.style.display = 'none';
             }
-            // Always reload exchanges to ensure fresh data and proper display
-            loadExchanges();
+            
+            // Show list view elements
+            const list = document.getElementById('gift-exchanges-list');
+            const empty = document.getElementById('gift-exchange-empty');
+            const loading = document.getElementById('gift-exchange-loading');
+            
+            console.log('List element:', list); // Debug
+            console.log('List children:', list ? list.children.length : 0); // Debug
+            
+            // Hide loading
+            if (loading) loading.style.display = 'none';
+            
+            // If list exists and has content, show it
+            if (list && list.children.length > 0) {
+                console.log('Showing existing list'); // Debug
+                list.style.display = 'block';
+                if (empty) empty.style.display = 'none';
+            } else {
+                console.log('Reloading exchanges'); // Debug
+                // If list is empty or doesn't exist, reload
+                loadExchanges();
+            }
         }
         
         // Handle header back button
