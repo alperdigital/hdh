@@ -6,15 +6,16 @@
 /* Gift Exchange Icon Toggle Button (Fixed Position) */
 .gift-exchange-icon-fixed {
     position: fixed;
-    bottom: 164px; /* Tasks: 100px, Gift Exchange: 164px (100px + 56px + 8px gap) */
+    bottom: 100px; /* Now in tasks icon position */
     right: 20px;
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--farm-green) 0%, var(--farm-green-dark) 100%);
-    color: #FFFFFF;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 12px rgba(116, 195, 101, 0.4);
+    /* Default: Site background color when no unread messages */
+    background: #FFF6D8;
+    color: var(--wood-brown);
+    border: 2px solid rgba(201, 184, 138, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -28,6 +29,14 @@
     max-width: 56px;
     max-height: 56px;
     box-sizing: border-box;
+}
+
+/* Green background when there are unread messages */
+.gift-exchange-icon-fixed.has-unread {
+    background: linear-gradient(135deg, var(--farm-green) 0%, var(--farm-green-dark) 100%);
+    color: #FFFFFF;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(116, 195, 101, 0.4);
 }
 
 /* Desktop: Ensure visibility above bottom navigation */
