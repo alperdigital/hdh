@@ -892,6 +892,63 @@ h6 { font-size: 1.1rem; }
     color: var(--wood-brown);
 }
 
+.hdh-header-tasks-link {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.hdh-header-tasks-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--farm-green) 0%, var(--farm-green-dark) 100%);
+    color: #FFFFFF;
+    border: 2px solid var(--farm-green-dark);
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 2px 8px rgba(116, 195, 101, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.hdh-header-tasks-button:hover {
+    background: linear-gradient(135deg, var(--farm-green-dark) 0%, var(--farm-green) 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 4px 12px rgba(116, 195, 101, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.hdh-header-tasks-button:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 2px 6px rgba(116, 195, 101, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.hdh-header-tasks-text {
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.hdh-header-tasks-count {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    padding: 2px 8px;
+    font-weight: 800;
+    font-size: 13px;
+    min-width: 28px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 /* Mobile adjustments for header user info */
 @media (max-width: 768px) {
     .hdh-header-user-content {

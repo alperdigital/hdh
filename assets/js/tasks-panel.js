@@ -11,10 +11,7 @@
         const tasksPanel = document.getElementById('tasks-panel');
         const tasksOverlay = document.getElementById('tasks-panel-overlay');
         const tasksClose = document.getElementById('tasks-panel-close');
-        
-        if (!tasksIcon) {
-            return; // Silently fail if icon not found
-        }
+        const headerTasksButton = document.getElementById('hdh-header-tasks-button');
         
         if (!tasksPanel) {
             return; // Silently fail if panel not found
@@ -60,29 +57,54 @@
         // Support both click and touch events for better mobile compatibility
         let isToggling = false; // Prevent multiple rapid toggles
         
-        tasksIcon.addEventListener('click', function(e) {
-            if (isToggling) return;
-            isToggling = true;
-            handleToggle(e);
-            setTimeout(function() {
-                isToggling = false;
-            }, 300);
-        }, { passive: false });
+        // Header tasks button click handler
+        if (headerTasksButton) {
+            headerTasksButton.addEventListener('click', function(e) {
+                if (isToggling) return;
+                isToggling = true;
+                handleToggle(e);
+                setTimeout(function() {
+                    isToggling = false;
+                }, 300);
+            }, { passive: false });
+            
+            headerTasksButton.addEventListener('touchend', function(e) {
+                if (isToggling) return;
+                isToggling = true;
+                e.preventDefault();
+                handleToggle(e);
+                setTimeout(function() {
+                    isToggling = false;
+                }, 300);
+            }, { passive: false });
+        }
         
-        tasksIcon.addEventListener('touchend', function(e) {
-            if (isToggling) return;
-            isToggling = true;
-            e.preventDefault();
-            handleToggle(e);
-            setTimeout(function() {
-                isToggling = false;
-            }, 300);
-        }, { passive: false });
-        
-        // Also add mousedown for desktop
-        tasksIcon.addEventListener('mousedown', function(e) {
-            e.preventDefault();
-        });
+        // Original tasks icon (if exists)
+        if (tasksIcon) {
+            tasksIcon.addEventListener('click', function(e) {
+                if (isToggling) return;
+                isToggling = true;
+                handleToggle(e);
+                setTimeout(function() {
+                    isToggling = false;
+                }, 300);
+            }, { passive: false });
+            
+            tasksIcon.addEventListener('touchend', function(e) {
+                if (isToggling) return;
+                isToggling = true;
+                e.preventDefault();
+                handleToggle(e);
+                setTimeout(function() {
+                    isToggling = false;
+                }, 300);
+            }, { passive: false });
+            
+            // Also add mousedown for desktop
+            tasksIcon.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+            });
+        }
         
         /**
          * Close panel on close button click

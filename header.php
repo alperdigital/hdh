@@ -25,6 +25,36 @@
         // Get completed gift count
         $completed_gift_count = function_exists('hdh_get_completed_gift_count') ? hdh_get_completed_gift_count($current_user_id) : 0;
         
+        // Get task count (incomplete/claimable tasks)
+        $task_count = 0;
+        if (function_exists('hdh_get_user_one_time_tasks') && function_exists('hdh_get_user_daily_tasks')) {
+            try {
+                $one_time_tasks = hdh_get_user_one_time_tasks($current_user_id);
+                $daily_tasks = hdh_get_user_daily_tasks($current_user_id);
+                
+                if (is_array($one_time_tasks)) {
+                    foreach ($one_time_tasks as $task) {
+                        $claimable_count = isset($task['claimable_count']) ? (int) $task['claimable_count'] : 0;
+                        if ($claimable_count > 0) {
+                            $task_count++;
+                        }
+                    }
+                }
+                
+                if (is_array($daily_tasks)) {
+                    foreach ($daily_tasks as $task) {
+                        $claimable_count = isset($task['claimable_count']) ? (int) $task['claimable_count'] : 0;
+                        if ($claimable_count > 0) {
+                            $task_count++;
+                        }
+                    }
+                }
+            } catch (Exception $e) {
+                error_log('HDH Header: Error getting task count: ' . $e->getMessage());
+                $task_count = 0;
+            }
+        }
+        
         // Determine digit class based on level
         $level_int = (int) $user_level;
         $digits = strlen((string)$level_int);
@@ -49,6 +79,12 @@
                             <span class="hdh-header-stat-value"><?php echo esc_html(number_format($bilet_balance, 0, ',', '.')); ?></span>
                         </span>
                     </div>
+                </div>
+                <div class="hdh-header-tasks-link">
+                    <button class="hdh-header-tasks-button" id="hdh-header-tasks-button" aria-label="Görevler">
+                        <span class="hdh-header-tasks-text">Görevler</span>
+                        <span class="hdh-header-tasks-count" id="hdh-header-tasks-count">(<?php echo esc_html($task_count); ?>)</span>
+                    </button>
                 </div>
             </div>
         </div>
