@@ -337,13 +337,19 @@
             const content = document.getElementById('gift-exchange-panel-content');
             if (!content) return;
             
-            // Hide list view
+            // Hide list view elements
             const list = document.getElementById('gift-exchanges-list');
             const empty = document.getElementById('gift-exchange-empty');
             const loading = document.getElementById('gift-exchange-loading');
             if (list) list.style.display = 'none';
             if (empty) empty.style.display = 'none';
             if (loading) loading.style.display = 'none';
+            
+            // Remove existing chat view if any
+            const existingChatView = document.getElementById('gift-exchange-chat-view');
+            if (existingChatView) {
+                existingChatView.remove();
+            }
             
             const isCompleted = exchange.status === 'COMPLETED';
             const isDisputed = exchange.status === 'DISPUTED';
