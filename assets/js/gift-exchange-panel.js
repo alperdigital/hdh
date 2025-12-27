@@ -51,7 +51,8 @@
             if (giftBack) {
                 giftBack.style.display = 'none';
             }
-            loadExchanges();
+            lastExchangeListHash = null; // Reset hash on panel open
+            loadExchanges(true); // Show loading on initial open
             startListPolling(); // Start polling for list updates
             requestNotificationPermission(); // Request notification permission if needed
         }
