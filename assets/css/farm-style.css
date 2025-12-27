@@ -4398,9 +4398,9 @@ footer,
     background-repeat: no-repeat;
     padding: 0;
     overflow: visible;
-    min-height: 280px;
+    min-height: 320px;
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
     aspect-ratio: 1.25 / 1;
     display: flex;
     align-items: center;
@@ -4436,7 +4436,7 @@ footer,
     margin: 0 0 16px 0;
     line-height: 1.5;
     word-wrap: break-word;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
     word-break: break-word;
     text-align: center;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
