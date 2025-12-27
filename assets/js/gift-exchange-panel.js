@@ -408,20 +408,23 @@
          * Render chat view
          */
         function renderChatView(exchange, messages) {
+            console.log('renderChatView: Starting render', { exchange, messagesCount: messages.length });
+            
             const content = document.getElementById('gift-exchange-panel-content');
             if (!content) {
-                console.error('Content container not found');
+                console.error('renderChatView: Content container not found');
                 return;
             }
             
             if (!exchange) {
-                console.error('Exchange data is missing');
+                console.error('renderChatView: Exchange data is missing');
                 showToast('Hediyeleşme verisi yüklenemedi', 'error');
                 return;
             }
             
             // Ensure messages is an array
             if (!Array.isArray(messages)) {
+                console.warn('renderChatView: Messages is not an array, converting', messages);
                 messages = [];
             }
             
@@ -436,6 +439,7 @@
             // Remove existing chat view if any
             const existingChatView = document.getElementById('gift-exchange-chat-view');
             if (existingChatView) {
+                console.log('renderChatView: Removing existing chat view');
                 existingChatView.remove();
             }
             
