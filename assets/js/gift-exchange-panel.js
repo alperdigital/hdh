@@ -46,6 +46,10 @@
                 giftOverlay.classList.add('active');
             }
             document.body.style.overflow = 'hidden'; // Prevent background scroll
+            // Hide header back button initially (list view)
+            if (giftBack) {
+                giftBack.style.display = 'none';
+            }
             loadExchanges();
             startListPolling(); // Start polling for list updates
             requestNotificationPermission(); // Request notification permission if needed
@@ -245,6 +249,10 @@
          */
         function openChat(exchangeId) {
             currentExchangeId = exchangeId;
+            // Show header back button
+            if (giftBack) {
+                giftBack.style.display = 'flex';
+            }
             
             // Load exchange details and messages
             Promise.all([
