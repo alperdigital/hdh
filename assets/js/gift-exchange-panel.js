@@ -183,15 +183,19 @@
         
         /**
          * Load exchanges list
+         * @param {boolean} showLoading - Whether to show loading indicator (default: true)
          */
-        function loadExchanges() {
+        function loadExchanges(showLoading = true) {
             const loading = document.getElementById('gift-exchange-loading');
             const empty = document.getElementById('gift-exchange-empty');
             const list = document.getElementById('gift-exchanges-list');
             
-            if (loading) loading.style.display = 'block';
+            // Only show loading on initial load, not during polling
+            if (showLoading && loading) {
+                loading.style.display = 'block';
+            }
             if (empty) empty.style.display = 'none';
-            if (list) list.style.display = 'none';
+            if (list && showLoading) list.style.display = 'none';
             
             fetch(config.ajaxUrl, {
                 method: 'POST',
@@ -205,24 +209,44 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (loading) loading.style.display = 'none';
+                if (showLoading && loading) loading.style.display = 'none';
                 
                 if (data.success && data.data.exchanges && data.data.exchanges.length > 0) {
                     // Check for new messages and show notifications
                     checkForNewMessages(data.data.exchanges);
-                    renderExchangesList(data.data.exchanges);
+                    
+                    // Only update UI if there are actual changes (silent update during polling)
+                    if (showLoading) {
+                        // Initial load - always render
+                        renderExchangesList(data.data.exchanges);
+                    } else {
+                        // Polling update - only update if there are changes
+                        const currentList = document.getElementById('gift-exchanges-list');
+                        if (currentList && currentList.style.display !== 'none') {
+                            // List is visible, update silently
+                            renderExchangesList(data.data.exchanges);
+                        }
+                        // If list is not visible, don't update UI
+                    }
+                    
                     updateBadgeCount(data.data.total_unread || 0);
                 } else {
-                    if (empty) empty.style.display = 'block';
-                    if (list) list.style.display = 'none';
+                    // Only show empty state on initial load
+                    if (showLoading) {
+                        if (empty) empty.style.display = 'block';
+                        if (list) list.style.display = 'none';
+                    }
                     updateBadgeCount(0);
                 }
             })
             .catch(error => {
                 console.error('Error loading exchanges:', error);
-                if (loading) loading.style.display = 'none';
-                if (empty) empty.style.display = 'block';
-                if (list) list.style.display = 'none';
+                if (showLoading && loading) loading.style.display = 'none';
+                // Only show error state on initial load
+                if (showLoading) {
+                    if (empty) empty.style.display = 'block';
+                    if (list) list.style.display = 'none';
+                }
             });
         }
         
@@ -985,8 +1009,8 @@
                 if (giftPanel.classList.contains('active')) {
                     const chatView = document.querySelector('.gift-exchange-chat-view');
                     if (!chatView) {
-                        // We're in list view, update the list
-                        loadExchanges();
+                        // We're in list view, update silently (no loading indicator)
+                        loadExchanges(false);
                     }
                 } else {
                     stopListPolling();
