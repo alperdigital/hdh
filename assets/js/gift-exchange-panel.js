@@ -162,22 +162,8 @@
             if (giftBack) {
                 giftBack.style.display = 'none';
             }
-            // Show list view - check if list already exists and has content
-            const list = document.getElementById('gift-exchanges-list');
-            const empty = document.getElementById('gift-exchange-empty');
-            const loading = document.getElementById('gift-exchange-loading');
-            
-            // Hide loading and empty states
-            if (loading) loading.style.display = 'none';
-            if (empty) empty.style.display = 'none';
-            
-            // If list exists and has items, show it
-            if (list && list.children.length > 0) {
-                list.style.display = 'block';
-            } else {
-                // If list is empty, reload exchanges
-                loadExchanges();
-            }
+            // Always reload exchanges to ensure fresh data and proper display
+            loadExchanges();
         }
         
         // Handle header back button
@@ -239,8 +225,13 @@
         function renderExchangesList(exchanges) {
             const list = document.getElementById('gift-exchanges-list');
             const empty = document.getElementById('gift-exchange-empty');
+            const loading = document.getElementById('gift-exchange-loading');
             
             if (!list) return;
+            
+            // Hide loading and empty states
+            if (loading) loading.style.display = 'none';
+            if (empty) empty.style.display = 'none';
             
             if (exchanges.length === 0) {
                 if (empty) empty.style.display = 'block';
@@ -248,7 +239,7 @@
                 return;
             }
             
-            if (empty) empty.style.display = 'none';
+            // Show list and render items
             list.style.display = 'block';
             
             // Hide chat view if visible
