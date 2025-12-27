@@ -80,8 +80,14 @@ if (!function_exists('hdh_render_trade_card')) {
         }
         $offer_text = !empty($offer_labels) ? implode(', ', $offer_labels) . ' verebilirim' : '';
         
-        // Add zero-width space after comma to allow breaking after comma
-        $listing_title = $wanted_text . ($offer_text ? ',&#8203; ' . $offer_text : '');
+        // Split title at first comma to create two lines
+        if ($offer_text && strpos($wanted_text . ', ' . $offer_text, ',') !== false) {
+            // First part: "X istiyorum"
+            // Second part: "Y verebilirim"
+            $listing_title = $wanted_text . ',<br>' . $offer_text;
+        } else {
+            $listing_title = $wanted_text . ($offer_text ? ', ' . $offer_text : '');
+        }
         
         // Get user level
         $user_level = 1;

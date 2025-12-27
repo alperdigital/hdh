@@ -4398,9 +4398,9 @@ footer,
     background-repeat: no-repeat;
     padding: 0;
     overflow: visible;
-    min-height: 320px;
+    min-height: 380px;
     width: 100%;
-    max-width: 550px;
+    max-width: 650px;
     aspect-ratio: 1.25 / 1;
     display: flex;
     align-items: center;
@@ -4412,10 +4412,10 @@ footer,
 .gift-package-content {
     position: absolute;
     z-index: 2;
-    width: calc(100% - 130px);
-    max-width: calc(100% - 130px);
-    height: calc(100% - 150px);
-    padding: 22px 20px;
+    width: calc(100% - 140px);
+    max-width: calc(100% - 140px);
+    height: calc(100% - 180px);
+    padding: 28px 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -4423,18 +4423,18 @@ footer,
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin-top: 12px;
+    margin-top: 20px;
     box-sizing: border-box;
     overflow: hidden;
 }
 
 .gift-package-title {
     font-family: 'Baloo 2', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--newspaper-text);
-    margin: 0 0 16px 0;
-    line-height: 1.5;
+    margin: 0 0 20px 0;
+    line-height: 1.6;
     word-wrap: break-word;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -4544,37 +4544,42 @@ footer,
     .gift-package-card {
         display: flex;
         justify-content: center;
+        width: 100%;
+        max-width: 92%;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .gift-package-box {
-        min-height: 280px;
+        min-height: 320px;
         aspect-ratio: 1.25 / 1;
         max-width: 100%;
     }
     
     .gift-package-content {
-        width: calc(100% - 90px);
-        height: calc(100% - 130px);
-        padding: 18px 16px;
-        margin-top: 8px;
+        width: calc(100% - 100px);
+        height: calc(100% - 150px);
+        padding: 22px 18px;
+        margin-top: 12px;
     }
     
     .gift-package-title {
-        font-size: 0.95rem;
-        margin-bottom: 12px;
+        font-size: 1.05rem;
+        margin-bottom: 16px;
+        line-height: 1.6;
     }
     
     .gift-package-user-info .hdh-level-badge {
-        font-size: 0.8rem;
-        padding: 3px 7px;
+        font-size: 0.85rem;
+        padding: 4px 9px;
     }
     
     .gift-package-farm-name {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
     
     .gift-package-date {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
 }
 
