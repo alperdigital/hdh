@@ -36,6 +36,7 @@
         let currentExchangeId = null;
         let lastMessageId = 0;
         let lastExchangeUnreadCounts = {}; // Track unread counts per exchange
+        let lastExchangeListHash = null; // Track last exchange list to detect changes
         
         /**
          * Open gift exchange panel
