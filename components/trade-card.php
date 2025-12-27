@@ -80,6 +80,7 @@ if (!function_exists('hdh_render_trade_card')) {
         }
         $offer_text = !empty($offer_labels) ? implode(', ', $offer_labels) . ' verebilirim' : '';
         
+        // Title will be displayed with word-break CSS for comma wrapping
         $listing_title = $wanted_text . ($offer_text ? ', ' . $offer_text : '');
         
         // Get user level
@@ -107,7 +108,7 @@ if (!function_exists('hdh_render_trade_card')) {
                 <!-- Gift Package Content - Positioned in transparent area of hdhbox.webp -->
                 <div class="gift-package-content">
                     <!-- Listing Title -->
-                    <h3 class="gift-package-title"><?php echo esc_html($listing_title); ?></h3>
+                    <h3 class="gift-package-title"><?php echo wp_kses_post($listing_title); ?></h3>
                     
                     <!-- Meta Info: Level + Farm Name + Date -->
                     <div class="gift-package-meta">
