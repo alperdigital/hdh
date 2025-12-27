@@ -92,8 +92,8 @@
     }
     
     .gift-exchange-panel-back {
-        padding: 6px 10px;
-        font-size: 0.8rem;
+        padding: 4px 7px;
+        font-size: 0.7rem;
     }
     
     .gift-exchange-panel-content {
@@ -255,17 +255,17 @@
     background: rgba(201, 184, 138, 0.2);
     border: none;
     color: var(--newspaper-text);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 5px 8px;
+    border-radius: 6px;
     transition: all 0.2s ease;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    gap: 4px;
+    gap: 3px;
     white-space: nowrap;
 }
 
@@ -968,8 +968,8 @@
     }
     
     .gift-exchange-panel-back {
-        padding: 6px 10px;
-        font-size: 0.75rem;
+        padding: 4px 7px;
+        font-size: 0.7rem;
     }
     
     .exchange-item {
