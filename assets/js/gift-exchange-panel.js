@@ -12,6 +12,7 @@
         const giftPanel = document.getElementById('gift-exchange-panel');
         const giftOverlay = document.getElementById('gift-exchange-panel-overlay');
         const giftClose = document.getElementById('gift-exchange-panel-close');
+        const giftBack = document.getElementById('gift-exchange-panel-back');
         
         if (!giftIcon) {
             return; // Silently fail if icon not found

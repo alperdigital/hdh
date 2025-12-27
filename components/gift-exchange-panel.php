@@ -35,6 +35,7 @@ if (!function_exists('hdh_render_gift_exchange_panel')) {
         <!-- Gift Exchange Panel -->
         <div class="gift-exchange-panel" id="gift-exchange-panel">
             <div class="gift-exchange-panel-header">
+                <button class="gift-exchange-panel-back" id="gift-exchange-panel-back" aria-label="Geri Dön" style="display: none;">←</button>
                 <h3 class="gift-exchange-panel-title">🎁 Hediyeleşmelerim</h3>
                 <button class="gift-exchange-panel-close" id="gift-exchange-panel-close" aria-label="Kapat">×</button>
             </div>
