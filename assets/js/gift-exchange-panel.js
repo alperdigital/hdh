@@ -685,8 +685,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update badge count
-                    loadExchanges();
+                    // Update badge count without reloading list (to avoid closing chat view)
+                    updateBadgeCountFromServer();
                 }
             })
             .catch(error => {
@@ -713,10 +713,10 @@
             .then(data => {
                 if (data.success) {
                     showToast(data.data?.message || 'Hediyeleşme tamamlandı', 'success');
-                    // Reload chat view
+                    // Reload chat view to show updated status
                     openChat(exchangeId);
-                    // Reload exchanges list to update badge
-                    loadExchanges();
+                    // Update badge count without reloading list (to avoid closing chat view)
+                    updateBadgeCountFromServer();
                 } else {
                     showToast(data.data?.message || 'Tamamlanamadı', 'error');
                 }
@@ -747,10 +747,10 @@
             .then(data => {
                 if (data.success) {
                     showToast('Şikayet bildirildi', 'success');
-                    // Reload chat view
+                    // Reload chat view to show updated status
                     openChat(exchangeId);
-                    // Reload exchanges list
-                    loadExchanges();
+                    // Update badge count without reloading list (to avoid closing chat view)
+                    updateBadgeCountFromServer();
                 } else {
                     showToast(data.data?.message || 'Şikayet edilemedi', 'error');
                 }
