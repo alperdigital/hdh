@@ -456,10 +456,10 @@ function hdh_enqueue_scripts() {
             $js_messages_profile = hdh_get_js_messages();
             $js_messages_profile['profile'] = array(
                 'profile_updated_success' => hdh_get_content('profile', 'profile_updated_success', 'Profil başarıyla güncellendi!'),
-                'deactivate_listing_confirm' => hdh_get_content('profile', 'deactivate_listing_confirm', 'Bu ilanı pasife almak istediğinize emin misiniz? Pasife alınan ilanlar tekrar aktif edilemez.'),
-                'listing_deactivated_success' => hdh_get_content('profile', 'listing_deactivated_success', 'İlan başarıyla pasife alındı.'),
+                'deactivate_listing_confirm' => hdh_get_content('profile', 'deactivate_listing_confirm', 'Bu ilanı kaldırmak istediğinize emin misiniz? Kaldırılan ilanlar tekrar aktif edilemez.'),
+                'listing_deactivated_success' => hdh_get_content('profile', 'listing_deactivated_success', 'İlan başarıyla kaldırıldı.'),
                 'listing_status_inactive' => hdh_get_content('profile', 'listing_status_inactive', '⏸️ Pasif'),
-                'deactivate_button_text' => hdh_get_content('profile', 'deactivate_button_text', '⏸️ Pasife Al'),
+                'deactivate_button_text' => hdh_get_content('profile', 'deactivate_button_text', '🗑️ İlanı Kaldır'),
                 'processing_text' => hdh_get_content('profile', 'processing_text', 'İşleniyor...'),
             );
             wp_localize_script('hdh-profile-page', 'hdhProfile', array(
