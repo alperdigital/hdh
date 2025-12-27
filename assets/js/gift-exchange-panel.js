@@ -309,6 +309,12 @@
             // Stop list polling to prevent interference
             stopListPolling();
             
+            // Show loading state
+            const loading = document.getElementById('gift-exchange-loading');
+            if (loading) {
+                loading.style.display = 'block';
+            }
+            
             // Load exchange details and messages
             Promise.all([
                 fetch(config.ajaxUrl, {
@@ -320,7 +326,12 @@
                         action: 'hdh_get_gift_exchanges',
                         nonce: config.nonce,
                     }),
-                }).then(r => r.json()),
+                }).then(r => {
+                    if (!r.ok) {
+                        throw new Error('Failed to fetch exchanges');
+                    }
+                    return r.json();
+                }),
                 fetch(config.ajaxUrl, {
                     method: 'POST',
                     headers: {
@@ -331,7 +342,12 @@
                         nonce: config.nonce,
                         exchange_id: exchangeId,
                     }),
-                }).then(r => r.json())
+                }).then(r => {
+                    if (!r.ok) {
+                        throw new Error('Failed to fetch messages');
+                    }
+                    return r.json();
+                })
             ])
             .then(([exchangesData, messagesData]) => {
                 // Check if both requests were successful
