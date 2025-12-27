@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <div class="hdh-header-tasks-link">
-                    <button class="hdh-header-tasks-button" id="hdh-header-tasks-button" aria-label="Görevler">
+                    <button type="button" class="hdh-header-tasks-button" id="hdh-header-tasks-button" aria-label="Görevler">
                         <span class="hdh-header-tasks-text">Görevler</span>
                         <span class="hdh-header-tasks-count" id="hdh-header-tasks-count">(<?php echo esc_html($task_count); ?>)</span>
                     </button>
