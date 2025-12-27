@@ -4447,12 +4447,6 @@ footer,
     display: block;
 }
 
-/* Allow breaking after comma */
-.gift-package-title {
-    white-space: pre-wrap;
-    word-break: break-word;
-    overflow-wrap: anywhere;
-}
 
 .gift-package-meta {
     display: flex;
