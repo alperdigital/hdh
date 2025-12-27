@@ -33,7 +33,7 @@
 /* Desktop: Ensure visibility above bottom navigation */
 @media (min-width: 769px) {
     .gift-exchange-icon-fixed {
-        bottom: 174px; /* Tasks: 110px, Gift Exchange: 174px (110px + 60px + 4px gap) */
+        bottom: 110px; /* Now in tasks icon position */
         right: 24px;
         width: 60px;
         height: 60px;
@@ -169,7 +169,7 @@
 /* Gift Exchange Panel */
 .gift-exchange-panel {
     position: fixed;
-    bottom: 164px; /* Tasks: 100px, Gift Exchange: 164px */
+    bottom: 100px; /* Now in tasks icon position */
     right: 20px;
     width: 360px;
     max-width: calc(100vw - 40px);

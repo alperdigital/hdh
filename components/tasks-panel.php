@@ -51,15 +51,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
         }
         ?>
         
-        <!-- Tasks Panel Toggle Button (Fixed Position) -->
-        <button class="tasks-icon-fixed" id="tasks-icon-toggle" aria-label="<?php echo esc_attr(hdh_get_content('tasks', 'panel_title', 'Görevler')); ?>">
-            <span class="tasks-icon-emoji">📋</span>
-            <?php if ($incomplete_count > 0) : ?>
-                <span class="tasks-icon-badge" id="tasks-icon-badge"><?php echo esc_html($incomplete_count); ?></span>
-            <?php else : ?>
-                <span class="tasks-icon-badge" id="tasks-icon-badge" style="display: none;">0</span>
-            <?php endif; ?>
-        </button>
+        <!-- Tasks Panel Toggle Button (REMOVED - Now using header button) -->
         
         <!-- Tasks Panel Overlay -->
         <div class="tasks-panel-overlay" id="tasks-panel-overlay"></div>

@@ -19,8 +19,11 @@ if (!function_exists('hdh_render_gift_exchange_panel')) {
         }
         ?>
         
-        <!-- Gift Exchange Panel Toggle Button (Fixed Position) -->
-        <button class="gift-exchange-icon-fixed" id="gift-exchange-icon-toggle" aria-label="Hediyeleşmelerim">
+        <!-- Gift Exchange Panel Toggle Button (Fixed Position - Now in tasks icon position) -->
+        <button class="gift-exchange-icon-fixed <?php echo $total_unread > 0 ? 'has-unread' : ''; ?>" 
+                id="gift-exchange-icon-toggle" 
+                aria-label="Hediyeleşmelerim"
+                data-unread-count="<?php echo esc_attr($total_unread); ?>">
             <span class="gift-exchange-icon-emoji">🎁</span>
             <?php if ($total_unread > 0) : ?>
                 <span class="gift-exchange-icon-badge" id="gift-exchange-icon-badge"><?php echo esc_html($total_unread > 99 ? '99+' : $total_unread); ?></span>

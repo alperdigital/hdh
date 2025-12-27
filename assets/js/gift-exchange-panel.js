@@ -1030,16 +1030,29 @@
         }
         
         /**
-         * Update badge count
+         * Update badge count and icon appearance
          */
         function updateBadgeCount(count) {
             const badge = document.getElementById('gift-exchange-icon-badge');
+            const icon = document.getElementById('gift-exchange-icon-toggle');
+            
             if (badge) {
                 if (count > 0) {
                     badge.textContent = count > 99 ? '99+' : count;
                     badge.style.display = 'block';
                 } else {
                     badge.style.display = 'none';
+                }
+            }
+            
+            // Update icon appearance based on unread count
+            if (icon) {
+                if (count > 0) {
+                    icon.classList.add('has-unread');
+                    icon.setAttribute('data-unread-count', count);
+                } else {
+                    icon.classList.remove('has-unread');
+                    icon.setAttribute('data-unread-count', '0');
                 }
             }
         }
