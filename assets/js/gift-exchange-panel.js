@@ -298,7 +298,12 @@
          * Open chat for an exchange
          */
         function openChat(exchangeId) {
-            if (!exchangeId) return;
+            if (!exchangeId) {
+                console.error('openChat: No exchangeId provided');
+                return;
+            }
+            
+            console.log('openChat: Opening chat for exchange', exchangeId);
             
             currentExchangeId = exchangeId;
             // Show header back button
