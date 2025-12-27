@@ -4517,22 +4517,22 @@ footer,
     }
     
     .gift-package-box {
-        min-height: 400px;
+        min-height: 460px;
         aspect-ratio: 1.25 / 1;
         max-width: 100%;
     }
     
     .gift-package-content {
-        width: calc(100% - 120px);
-        height: calc(100% - 180px);
-        padding: 28px 24px;
-        margin-top: 20px;
+        width: calc(100% - 130px);
+        height: calc(100% - 200px);
+        padding: 32px 28px;
+        margin-top: 25px;
     }
     
     .gift-package-title {
-        font-size: 1.25rem;
-        margin-bottom: 20px;
-        line-height: 1.7;
+        font-size: 1.1rem;
+        margin-bottom: 18px;
+        line-height: 1.6;
     }
     
     .gift-package-meta {
@@ -4544,16 +4544,16 @@ footer,
     }
     
     .gift-package-user-info .hdh-level-badge {
-        font-size: 0.95rem;
-        padding: 5px 11px;
+        font-size: 0.85rem;
+        padding: 4px 10px;
     }
     
     .gift-package-farm-name {
-        font-size: 1.05rem;
+        font-size: 0.9rem;
     }
     
     .gift-package-date {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
 }
 
