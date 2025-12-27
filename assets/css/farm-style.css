@@ -2280,6 +2280,8 @@ h6 { font-size: 1.1rem; }
         padding: 0;
         margin-left: 0;
         margin-right: 0;
+        gap: 28px;
+        justify-items: center;
     }
     
     .listing-unified-block {
@@ -4370,11 +4372,13 @@ footer,
 /* Gift Package Card - Using hdhbox.webp Image */
 .gift-package-card {
     position: relative;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
     max-width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .gift-package-card.gift-package-clickable {
@@ -4960,8 +4964,8 @@ footer,
 /* Unified Newspaper Panel Layout - Grid (Yan Yana) */
 .trade-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 32px;
     margin-bottom: 40px;
     width: 100%;
     max-width: 100%;
@@ -5160,8 +5164,8 @@ footer,
 @media (min-width: 769px) {
     .trade-cards-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 32px;
         max-width: 100%;
         margin: 0 auto;
     }
