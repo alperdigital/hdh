@@ -60,8 +60,29 @@
     }
     
     .gift-exchange-panel-content {
-        padding: 16px;
+        padding: 0;
+        overflow: hidden;
         max-height: calc(750px - 60px);
+        height: calc(750px - 60px);
+        position: relative;
+    }
+    
+    .gift-exchanges-list {
+        padding: 16px;
+        height: 100%;
+    }
+    
+    .gift-exchange-chat-view {
+        height: 100%;
+        max-height: 100%;
+    }
+    
+    .chat-messages {
+        padding: 16px;
+    }
+    
+    .chat-message {
+        max-width: 75%;
     }
 }
 
