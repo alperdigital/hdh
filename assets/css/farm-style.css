@@ -1734,8 +1734,8 @@ h6 { font-size: 1.1rem; }
 /* Trade cards grid - Base definition */
 .trade-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 32px;
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: 40px;
     margin-bottom: 40px;
     width: 100%;
     max-width: 100%;
@@ -2281,7 +2281,7 @@ h6 { font-size: 1.1rem; }
         padding: 0;
         margin-left: 0;
         margin-right: 0;
-        gap: 28px;
+        gap: 36px;
         justify-items: center;
     }
     
@@ -4373,7 +4373,7 @@ footer,
 /* Gift Package Card - Using hdhbox.webp Image */
 .gift-package-card {
     position: relative;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
@@ -4403,9 +4403,9 @@ footer,
     background-repeat: no-repeat;
     padding: 0;
     overflow: visible;
-    min-height: 380px;
+    min-height: 450px;
     width: 100%;
-    max-width: 650px;
+    max-width: 750px;
     aspect-ratio: 1.25 / 1;
     display: flex;
     align-items: center;
@@ -4417,10 +4417,10 @@ footer,
 .gift-package-content {
     position: absolute;
     z-index: 2;
-    width: calc(100% - 140px);
-    max-width: calc(100% - 140px);
-    height: calc(100% - 180px);
-    padding: 28px 24px;
+    width: calc(100% - 160px);
+    max-width: calc(100% - 160px);
+    height: calc(100% - 200px);
+    padding: 32px 28px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -4428,18 +4428,18 @@ footer,
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin-top: 20px;
+    margin-top: 25px;
     box-sizing: border-box;
     overflow: hidden;
 }
 
 .gift-package-title {
     font-family: 'Baloo 2', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--newspaper-text);
-    margin: 0 0 20px 0;
-    line-height: 1.6;
+    margin: 0 0 24px 0;
+    line-height: 1.7;
     word-wrap: break-word;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -4452,11 +4452,18 @@ footer,
     display: block;
 }
 
+/* Ensure line breaks in title are visible */
+.gift-package-title br {
+    display: block;
+    content: "";
+    margin-top: 0.5em;
+}
+
 
 .gift-package-meta {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     align-items: center;
     width: 100%;
 }
@@ -4478,21 +4485,21 @@ footer,
         0 0 12px rgba(255, 215, 0, 0.4),
         inset 0 1px 2px rgba(255, 255, 255, 0.6);
     font-weight: 800;
-    padding: 4px 10px;
+    padding: 6px 12px;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .gift-package-farm-name {
     font-weight: 600;
     color: var(--newspaper-text);
-    font-size: 1rem;
+    font-size: 1.1rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .gift-package-date {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: var(--newspaper-text-light);
     opacity: 0.85;
     font-weight: 500;
@@ -4555,41 +4562,41 @@ footer,
         display: flex;
         justify-content: center;
         width: 100%;
-        max-width: 92%;
+        max-width: 90%;
         margin-left: auto;
         margin-right: auto;
     }
     
     .gift-package-box {
-        min-height: 320px;
+        min-height: 380px;
         aspect-ratio: 1.25 / 1;
         max-width: 100%;
     }
     
     .gift-package-content {
-        width: calc(100% - 100px);
-        height: calc(100% - 150px);
-        padding: 22px 18px;
-        margin-top: 12px;
+        width: calc(100% - 110px);
+        height: calc(100% - 170px);
+        padding: 26px 22px;
+        margin-top: 18px;
     }
     
     .gift-package-title {
-        font-size: 1.05rem;
-        margin-bottom: 16px;
-        line-height: 1.6;
+        font-size: 1.15rem;
+        margin-bottom: 18px;
+        line-height: 1.7;
     }
     
     .gift-package-user-info .hdh-level-badge {
-        font-size: 0.85rem;
-        padding: 4px 9px;
+        font-size: 0.9rem;
+        padding: 5px 10px;
     }
     
     .gift-package-farm-name {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
     
     .gift-package-date {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 }
 
@@ -5170,8 +5177,8 @@ footer,
 @media (min-width: 769px) {
     .trade-cards-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-        gap: 32px;
+        grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        gap: 40px;
         max-width: 100%;
         margin: 0 auto;
     }
