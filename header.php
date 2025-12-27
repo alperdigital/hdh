@@ -10,8 +10,9 @@
     <!-- HDH: SVG Icons Sprite -->
     <?php include get_template_directory() . '/assets/svg/farm-icons.svg'; ?>
     
-    <!-- HDH: User Info Widget (Fixed Top Left) -->
+    <!-- HDH: Header Banner / User Info -->
     <?php if (is_user_logged_in()) : 
+        // LOGIN SONRASI: Kullanıcı bilgileri göster
         $current_user_id = get_current_user_id();
         $current_user = wp_get_current_user();
         $farm_name = $current_user->display_name;
@@ -29,38 +30,39 @@
         $digits = strlen((string)$level_int);
         $digit_class = $digits === 1 ? 'lvl-d1' : ($digits === 2 ? 'lvl-d2' : 'lvl-d3');
         ?>
-        <div class="hdh-user-info-widget">
-            <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
-                 aria-label="Seviye <?php echo esc_attr($user_level); ?>"
-                 title="Seviye <?php echo esc_attr($user_level); ?>">
-                <?php echo esc_html($user_level); ?>
-            </div>
-            <div class="hdh-farm-info">
-                <span class="hdh-farm-name"><?php echo esc_html($farm_name); ?></span>
-                <div class="hdh-farm-stats">
-                    <span class="hdh-stat-item">
-                        <span class="hdh-stat-emoji">🎁</span>
-                        <span class="hdh-stat-value"><?php echo esc_html($completed_gift_count); ?></span>
-                    </span>
-                    <span class="hdh-stat-item">
-                        <span class="hdh-stat-emoji">🎟️</span>
-                        <span class="hdh-stat-value"><?php echo esc_html(number_format($bilet_balance, 0, ',', '.')); ?></span>
-                    </span>
+        <div class="hdh-header-user-info">
+            <div class="hdh-header-user-content">
+                <div class="hdh-header-level-badge <?php echo esc_attr($digit_class); ?>" 
+                     aria-label="Seviye <?php echo esc_attr($user_level); ?>"
+                     title="Seviye <?php echo esc_attr($user_level); ?>">
+                    ⭐<?php echo esc_html($user_level); ?>
+                </div>
+                <div class="hdh-header-farm-info">
+                    <span class="hdh-header-farm-name"><?php echo esc_html($farm_name); ?></span>
+                    <div class="hdh-header-stats">
+                        <span class="hdh-header-stat-item">
+                            <span class="hdh-header-stat-emoji">🎁</span>
+                            <span class="hdh-header-stat-value"><?php echo esc_html($completed_gift_count); ?></span>
+                        </span>
+                        <span class="hdh-header-stat-item">
+                            <span class="hdh-header-stat-emoji">🎟️</span>
+                            <span class="hdh-header-stat-value"><?php echo esc_html(number_format($bilet_balance, 0, ',', '.')); ?></span>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <?php // Notification bell removed ?>
         </div>
-    <?php endif; ?>
-    
-    <!-- HDH: Cartoon Farm Announcement Banner -->
-    <?php if (get_theme_mod('hdh_show_announcement', true)) : ?>
-        <div class="farm-announcement-banner">
-            <div class="container">
-                <p class="farm-announcement-text">
-                    <?php echo esc_html(hdh_get_content('homepage', 'announcement_text', '🎁 Hediyeleşme ve Çekiliş Merkezi!')); ?>
-                </p>
+    <?php else : 
+        // LOGIN ÖNCESİ: Banner göster
+        if (get_theme_mod('hdh_show_announcement', true)) : ?>
+            <div class="farm-announcement-banner">
+                <div class="container">
+                    <p class="farm-announcement-text">
+                        <?php echo esc_html(hdh_get_content('homepage', 'announcement_text', '🎁 Hediyeleşme ve Çekiliş Merkezi!')); ?>
+                    </p>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
     <?php endif; ?>
     
 
