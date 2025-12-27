@@ -4434,7 +4434,7 @@ footer,
     font-weight: 700;
     color: var(--newspaper-text);
     margin: 0 0 16px 0;
-    line-height: 1.4;
+    line-height: 1.5;
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
@@ -4443,17 +4443,15 @@ footer,
     max-width: 100%;
     white-space: normal;
     hyphens: auto;
-    /* Break after comma using CSS */
     overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    display: block;
 }
 
-/* Force line break after comma */
-.gift-package-title::after {
-    content: '';
+/* Allow breaking after comma */
+.gift-package-title {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .gift-package-meta {
