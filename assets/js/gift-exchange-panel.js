@@ -328,10 +328,10 @@
                     <div class="chat-actions">
                         ${!isLocked ? `
                             <button class="btn-complete-exchange" data-exchange-id="${exchange.id}">
-                                ✅ Hediyeleşme Tamamlandı
+                                ✅ Tamamlandı
                             </button>
                             <button class="btn-report-exchange" data-exchange-id="${exchange.id}">
-                                ⚠️ Şikayet Et
+                                ⚠️ Şikayet
                             </button>
                         ` : ''}
                     </div>
@@ -558,10 +558,6 @@
             
             return `
                 <div class="chat-message ${sideClass}" data-message-id="${msg.id}">
-                    <div class="message-header">
-                        <div class="hdh-level-badge ${levelClass}" aria-label="Seviye ${userLevel}">${userLevel}</div>
-                        <span class="message-user-name">${escapeHtml(displayName)}</span>
-                    </div>
                     <div class="message-content">${escapeHtml(msg.message)}</div>
                     ${timeStr ? `<div class="message-time">${timeStr}</div>` : ''}
                 </div>
