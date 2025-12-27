@@ -136,9 +136,47 @@
          */
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && giftPanel.classList.contains('active')) {
-                closeGiftPanel();
+                if (currentExchangeId) {
+                    // If in chat view, go back to list
+                    goBackToList();
+                } else {
+                    // If in list view, close panel
+                    closeGiftPanel();
+                }
             }
         });
+        
+        /**
+         * Go back to list view
+         */
+        function goBackToList() {
+            stopPolling();
+            currentExchangeId = null;
+            // Hide chat view and show list view
+            const chatView = document.getElementById('gift-exchange-chat-view');
+            if (chatView) {
+                chatView.style.display = 'none';
+                chatView.remove(); // Remove from DOM completely
+            }
+            // Show list view
+            const list = document.getElementById('gift-exchanges-list');
+            const empty = document.getElementById('gift-exchange-empty');
+            if (list) list.style.display = 'block';
+            if (empty) empty.style.display = 'none';
+            // Hide header back button
+            if (giftBack) {
+                giftBack.style.display = 'none';
+            }
+            loadExchanges();
+        }
+        
+        // Handle header back button
+        if (giftBack) {
+            giftBack.addEventListener('click', function(e) {
+                e.stopPropagation();
+                goBackToList();
+            });
+        }
         
         /**
          * Load exchanges list
