@@ -4412,10 +4412,10 @@ footer,
 .gift-package-content {
     position: absolute;
     z-index: 2;
-    width: calc(100% - 120px);
-    max-width: calc(100% - 120px);
-    height: calc(100% - 140px);
-    padding: 20px 18px;
+    width: calc(100% - 130px);
+    max-width: calc(100% - 130px);
+    height: calc(100% - 150px);
+    padding: 22px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -4423,7 +4423,7 @@ footer,
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin-top: 10px;
+    margin-top: 12px;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -4552,16 +4552,16 @@ footer,
     }
     
     .gift-package-box {
-        min-height: 240px;
+        min-height: 280px;
         aspect-ratio: 1.25 / 1;
         max-width: 100%;
     }
     
     .gift-package-content {
-        width: calc(100% - 80px);
-        height: calc(100% - 120px);
-        padding: 16px 14px;
-        margin-top: 6px;
+        width: calc(100% - 90px);
+        height: calc(100% - 130px);
+        padding: 18px 16px;
+        margin-top: 8px;
     }
     
     .gift-package-title {
