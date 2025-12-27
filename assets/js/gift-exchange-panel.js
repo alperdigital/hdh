@@ -236,6 +236,12 @@
             if (loading) loading.style.display = 'none';
             if (empty) empty.style.display = 'none';
             
+            // Remove chat view from DOM if it exists
+            const chatView = document.getElementById('gift-exchange-chat-view');
+            if (chatView) {
+                chatView.remove();
+            }
+            
             if (exchanges.length === 0) {
                 if (empty) empty.style.display = 'block';
                 list.style.display = 'none';
@@ -244,12 +250,6 @@
             
             // Show list and render items
             list.style.display = 'block';
-            
-            // Hide chat view if visible
-            const chatView = document.getElementById('gift-exchange-chat-view');
-            if (chatView) {
-                chatView.style.display = 'none';
-            }
             
             let html = '';
             exchanges.forEach(exchange => {
