@@ -375,13 +375,13 @@
 .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 10px 14px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     min-height: 0;
     scroll-behavior: smooth;
-    max-height: 70vh;
+    -webkit-overflow-scrolling: touch;
 }
 
 .chat-messages::-webkit-scrollbar {
@@ -493,6 +493,7 @@
     border-top: 2px solid rgba(201, 184, 138, 0.3);
     background: rgba(201, 184, 138, 0.05);
     align-items: center;
+    flex-shrink: 0;
 }
 
 .chat-input {
@@ -680,15 +681,24 @@
         height: calc(100vh - 100px);
     }
     
+    .gift-exchange-panel-content {
+        height: 100%;
+    }
+    
+    .gift-exchanges-list {
+        padding: 12px;
+        gap: 10px;
+    }
+    
     .gift-exchange-chat-view {
         height: 100%;
         max-height: 100%;
         min-height: 0;
     }
     
-    .gift-exchange-chat-view .chat-messages {
-        max-height: 70vh; /* 70% of viewport height */
-        flex: 1;
+    .chat-messages {
+        padding: 12px;
+        gap: 6px;
     }
     
     .chat-message {
