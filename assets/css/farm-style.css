@@ -4501,15 +4501,16 @@ footer,
     }
     
     .gift-package-box {
-        min-height: 200px;
-        aspect-ratio: 1.2 / 1;
+        min-height: 300px;
+        aspect-ratio: 1.25 / 1;
+        max-width: 100%;
     }
     
     .gift-package-content {
-        width: calc(100% - 70px);
-        height: calc(100% - 100px);
-        padding: 14px;
-        margin-top: 8px;
+        width: calc(100% - 100px);
+        height: calc(100% - 140px);
+        padding: 20px 18px;
+        margin-top: 10px;
     }
     
     .gift-package-title {
