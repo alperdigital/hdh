@@ -200,6 +200,10 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 .exchange-item {
@@ -290,35 +294,55 @@
     }
 }
 
-/* Chat View */
+/* Chat View - Full screen within panel */
 .gift-exchange-chat-view {
     display: flex;
     flex-direction: column;
     height: 100%;
-    max-height: calc(600px - 60px);
-    min-height: 400px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #FFF6D8;
+    z-index: 10;
+    min-height: 0;
 }
 
 .chat-header {
     padding: 12px 16px;
     border-bottom: 2px solid rgba(201, 184, 138, 0.3);
     background: rgba(201, 184, 138, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.chat-header-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
 }
 
 .btn-back-to-list {
-    background: none;
+    background: rgba(201, 184, 138, 0.2);
     border: none;
     color: var(--newspaper-text);
     font-size: 0.875rem;
     cursor: pointer;
-    padding: 6px 10px;
-    margin-bottom: 10px;
+    padding: 8px 12px;
     border-radius: 8px;
     transition: all 0.2s ease;
     font-weight: 600;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 4px;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .btn-back-to-list:hover {
@@ -446,19 +470,20 @@
 /* Message header removed - user names and levels no longer shown in messages */
 
 .message-content {
-    font-size: 0.875rem;
-    line-height: 1.4;
+    font-size: 0.9rem;
+    line-height: 1.5;
     color: var(--newspaper-text);
     word-break: break-word;
+    white-space: pre-wrap;
 }
 
 .message-time {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     color: rgba(44, 44, 44, 0.5);
     margin-top: 2px;
     align-self: flex-end;
     font-weight: 500;
-    line-height: 1;
+    line-height: 1.2;
 }
 
 .chat-input-container {

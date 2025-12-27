@@ -198,6 +198,12 @@
             if (empty) empty.style.display = 'none';
             list.style.display = 'block';
             
+            // Hide chat view if visible
+            const chatView = document.getElementById('gift-exchange-chat-view');
+            if (chatView) {
+                chatView.style.display = 'none';
+            }
+            
             let html = '';
             exchanges.forEach(exchange => {
                 const unreadBadge = exchange.unread_count > 0 
@@ -283,6 +289,14 @@
             const content = document.getElementById('gift-exchange-panel-content');
             if (!content) return;
             
+            // Hide list view
+            const list = document.getElementById('gift-exchanges-list');
+            const empty = document.getElementById('gift-exchange-empty');
+            const loading = document.getElementById('gift-exchange-loading');
+            if (list) list.style.display = 'none';
+            if (empty) empty.style.display = 'none';
+            if (loading) loading.style.display = 'none';
+            
             const isCompleted = exchange.status === 'COMPLETED';
             const isDisputed = exchange.status === 'DISPUTED';
             const isLocked = isCompleted || isDisputed;
@@ -298,14 +312,16 @@
             }
             
             let html = `
-                <div class="gift-exchange-chat-view">
+                <div class="gift-exchange-chat-view" id="gift-exchange-chat-view">
                     <div class="chat-header">
                         <button class="btn-back-to-list" id="btn-back-to-exchanges">← Geri Dön</button>
-                        <div class="chat-counterpart">
-                            ${exchange.counterpart_level ? `<div class="hdh-level-badge lvl-d${String(exchange.counterpart_level || 1).length}" aria-label="Seviye ${exchange.counterpart_level}">${exchange.counterpart_level}</div>` : ''}
-                            <span>${escapeHtml(exchange.counterpart_name || 'Bilinmeyen')}</span>
+                        <div class="chat-header-info">
+                            <div class="chat-counterpart">
+                                ${exchange.counterpart_level ? `<div class="hdh-level-badge lvl-d${String(exchange.counterpart_level || 1).length}" aria-label="Seviye ${exchange.counterpart_level}">${exchange.counterpart_level}</div>` : ''}
+                                <span>${escapeHtml(exchange.counterpart_name || 'Bilinmeyen')}</span>
+                            </div>
+                            <div class="chat-listing">${escapeHtml(exchange.listing_title || 'İlan')}</div>
                         </div>
-                        <div class="chat-listing">${escapeHtml(exchange.listing_title || 'İlan')}</div>
                     </div>
                     
                     <div class="chat-messages" id="chat-messages-${exchange.id}">
@@ -352,6 +368,11 @@
                 backBtn.addEventListener('click', function() {
                     stopPolling();
                     currentExchangeId = null;
+                    // Hide chat view and show list view
+                    const chatView = document.getElementById('gift-exchange-chat-view');
+                    if (chatView) {
+                        chatView.style.display = 'none';
+                    }
                     loadExchanges();
                 });
             }
