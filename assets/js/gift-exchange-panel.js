@@ -536,21 +536,39 @@
             `;
             
             // Append chat view to content (preserve list in DOM)
+            console.log('renderChatView: Creating chat view element');
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             const chatViewElement = tempDiv.firstElementChild;
+            
             if (chatViewElement) {
+                console.log('renderChatView: Appending chat view to content');
                 content.appendChild(chatViewElement);
+                
+                // Force display to ensure visibility
+                chatViewElement.style.display = 'flex';
+                chatViewElement.style.visibility = 'visible';
+                chatViewElement.style.opacity = '1';
+                
+                // Use setTimeout to ensure DOM is updated
+                setTimeout(() => {
+                    // Scroll to bottom
+                    const messagesContainer = document.getElementById(`chat-messages-${exchange.id}`);
+                    if (messagesContainer) {
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                        console.log('renderChatView: Scrolled to bottom');
+                    } else {
+                        console.warn('renderChatView: Messages container not found');
+                    }
+                }, 100);
             } else {
-                console.error('Failed to create chat view element');
+                console.error('renderChatView: Failed to create chat view element', {
+                    htmlLength: html.length,
+                    tempDivChildren: tempDiv.children.length,
+                    htmlPreview: html.substring(0, 200)
+                });
                 showToast('Chat görünümü oluşturulamadı', 'error');
                 return;
-            }
-            
-            // Scroll to bottom
-            const messagesContainer = document.getElementById(`chat-messages-${exchange.id}`);
-            if (messagesContainer) {
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
             
             // Event handlers are handled by header back button
