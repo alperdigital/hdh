@@ -92,26 +92,34 @@
     .gift-exchange-panel-content {
         padding: 0;
         overflow: hidden;
-        max-height: calc(750px - 60px);
-        height: calc(750px - 60px);
+        flex: 1;
         position: relative;
+        min-height: 0;
+        height: 100%;
     }
     
     .gift-exchanges-list {
         padding: 16px;
         height: 100%;
         overflow-y: auto;
+        position: relative;
     }
     
     .gift-exchange-chat-view {
         display: flex !important;
+        flex-direction: column;
         height: 100%;
+        width: 100%;
         max-height: 100%;
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
+        background: #FFF6D8;
+        z-index: 10;
+        min-height: 0;
+        box-sizing: border-box;
     }
     
     .chat-messages {
