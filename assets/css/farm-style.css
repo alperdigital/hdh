@@ -4758,8 +4758,8 @@ footer,
 
 /* Fallback for older browsers that don't support grid */
 @supports not (display: grid) {
-    .trade-cards-grid {
-        display: flex;
+.trade-cards-grid {
+    display: flex;
         flex-wrap: wrap;
         gap: 24px;
     }
