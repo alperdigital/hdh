@@ -73,29 +73,49 @@
         let isToggling = false; // Prevent multiple rapid toggles
         
         // Header tasks button click handler
-        if (headerTasksButton) {
-            headerTasksButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (isToggling) return;
-                isToggling = true;
-                handleToggle(e);
-                setTimeout(function() {
-                    isToggling = false;
-                }, 300);
-            }, false);
-            
-            headerTasksButton.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (isToggling) return;
-                isToggling = true;
-                handleToggle(e);
-                setTimeout(function() {
-                    isToggling = false;
-                }, 300);
-            }, false);
+        // Use event delegation or wait for button to be available
+        function attachHeaderButtonHandler() {
+            const headerBtn = document.getElementById('hdh-header-tasks-button');
+            if (headerBtn && !headerBtn.hasAttribute('data-handler-attached')) {
+                headerBtn.setAttribute('data-handler-attached', 'true');
+                
+                headerBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('HDH Tasks: Header button clicked');
+                    if (isToggling) return;
+                    isToggling = true;
+                    handleToggle(e);
+                    setTimeout(function() {
+                        isToggling = false;
+                    }, 300);
+                }, false);
+                
+                headerBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('HDH Tasks: Header button touched');
+                    if (isToggling) return;
+                    isToggling = true;
+                    handleToggle(e);
+                    setTimeout(function() {
+                        isToggling = false;
+                    }, 300);
+                }, false);
+                
+                console.log('HDH Tasks: Header button handler attached');
+            } else if (!headerBtn) {
+                console.warn('HDH Tasks: Header button not found, will retry...');
+                // Retry after a short delay in case header loads after DOMContentLoaded
+                setTimeout(attachHeaderButtonHandler, 500);
+            }
         }
+        
+        // Try to attach immediately
+        attachHeaderButtonHandler();
+        
+        // Also try after a delay in case header loads later
+        setTimeout(attachHeaderButtonHandler, 1000);
         
         // Original tasks icon (if exists)
         if (tasksIcon) {
