@@ -8,7 +8,7 @@
    ============================================ */
 
 .lobby-chat-section {
-    margin: 40px 0;
+    margin: 24px 0;
     padding: 0;
 }
 
@@ -483,7 +483,7 @@
 
 @media (max-width: 768px) {
     .lobby-chat-section {
-        margin: 32px 0;
+        margin: 20px 0;
     }
     
     .lobby-chat-container {
