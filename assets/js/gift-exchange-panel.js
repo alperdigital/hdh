@@ -547,11 +547,15 @@
             const levelDigits = String(userLevel).length;
             const levelClass = `lvl-d${levelDigits}`;
             
+            // Determine display name: own messages show own name, other messages show sender's name
+            const isOwnMessage = (parseInt(msg.user_id) === config.currentUserId);
+            const displayName = msg.user_name || 'Bilinmeyen';
+            
             return `
                 <div class="chat-message ${sideClass}" data-message-id="${msg.id}">
                     <div class="message-header">
                         <div class="hdh-level-badge ${levelClass}" aria-label="Seviye ${userLevel}">${userLevel}</div>
-                        <span class="message-user-name">${escapeHtml(msg.user_name || 'Bilinmeyen')}</span>
+                        <span class="message-user-name">${escapeHtml(displayName)}</span>
                     </div>
                     <div class="message-content">${escapeHtml(msg.message)}</div>
                     ${timeStr ? `<div class="message-time">${timeStr}</div>` : ''}

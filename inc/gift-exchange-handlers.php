@@ -130,8 +130,14 @@ function hdh_ajax_get_gift_messages() {
         hdh_mark_messages_read($exchange_id, $user_id);
     }
     
+    // Get current user info for frontend comparison
+    $current_user = get_userdata($user_id);
+    $current_user_name = $current_user ? $current_user->display_name : '';
+    
     wp_send_json_success(array(
-        'messages' => $messages
+        'messages' => $messages,
+        'current_user_id' => $user_id,
+        'current_user_name' => $current_user_name
     ));
 }
 add_action('wp_ajax_hdh_get_gift_messages', 'hdh_ajax_get_gift_messages');
