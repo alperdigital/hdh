@@ -450,12 +450,15 @@
                 const input = document.getElementById(`chat-input-${exchange.id}`);
                 
                 if (sendBtn && input) {
-                    sendBtn.addEventListener('click', function() {
+                    sendBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
                         sendMessage(exchange.id, input.value.trim());
                     });
                     
                     input.addEventListener('keypress', function(e) {
                         if (e.key === 'Enter') {
+                            e.preventDefault();
                             sendMessage(exchange.id, input.value.trim());
                         }
                     });
