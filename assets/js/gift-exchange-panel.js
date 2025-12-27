@@ -213,22 +213,32 @@
                 if (showLoading && loading) loading.style.display = 'none';
                 
                 if (data.success && data.data.exchanges && data.data.exchanges.length > 0) {
+                    // Create a simple hash of exchange list to detect changes
+                    const exchangesHash = JSON.stringify(data.data.exchanges.map(e => ({
+                        id: e.id,
+                        unread_count: e.unread_count || 0,
+                        status: e.status
+                    })));
+                    
                     // Check for new messages and show notifications
                     checkForNewMessages(data.data.exchanges);
                     
-                    // Only update UI if there are actual changes (silent update during polling)
+                    // Only update UI if there are actual changes
+                    const hasChanges = exchangesHash !== lastExchangeListHash;
+                    lastExchangeListHash = exchangesHash;
+                    
                     if (showLoading) {
                         // Initial load - always render
                         renderExchangesList(data.data.exchanges);
-                    } else {
+                    } else if (hasChanges) {
                         // Polling update - only update if there are changes
                         const currentList = document.getElementById('gift-exchanges-list');
                         if (currentList && currentList.style.display !== 'none') {
-                            // List is visible, update silently
+                            // List is visible and there are changes, update silently
                             renderExchangesList(data.data.exchanges);
                         }
-                        // If list is not visible, don't update UI
                     }
+                    // If no changes, don't update UI at all
                     
                     updateBadgeCount(data.data.total_unread || 0);
                 } else {
@@ -236,6 +246,7 @@
                     if (showLoading) {
                         if (empty) empty.style.display = 'block';
                         if (list) list.style.display = 'none';
+                        lastExchangeListHash = null; // Reset hash when empty
                     }
                     updateBadgeCount(0);
                 }
