@@ -4403,9 +4403,9 @@ footer,
     background-repeat: no-repeat;
     padding: 0;
     overflow: visible;
-    min-height: 450px;
+    min-height: 520px;
     width: 100%;
-    max-width: 750px;
+    max-width: 850px;
     aspect-ratio: 1.25 / 1;
     display: flex;
     align-items: center;
@@ -4417,10 +4417,10 @@ footer,
 .gift-package-content {
     position: absolute;
     z-index: 2;
-    width: calc(100% - 160px);
-    max-width: calc(100% - 160px);
-    height: calc(100% - 200px);
-    padding: 32px 28px;
+    width: calc(100% - 180px);
+    max-width: calc(100% - 180px);
+    height: calc(100% - 220px);
+    padding: 36px 32px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -4428,18 +4428,18 @@ footer,
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin-top: 25px;
+    margin-top: 30px;
     box-sizing: border-box;
     overflow: hidden;
 }
 
 .gift-package-title {
     font-family: 'Baloo 2', sans-serif;
-    font-size: 1.35rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--newspaper-text);
-    margin: 0 0 24px 0;
-    line-height: 1.7;
+    margin: 0 0 20px 0;
+    line-height: 1.6;
     word-wrap: break-word;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -4485,21 +4485,21 @@ footer,
         0 0 12px rgba(255, 215, 0, 0.4),
         inset 0 1px 2px rgba(255, 255, 255, 0.6);
     font-weight: 800;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .gift-package-farm-name {
     font-weight: 600;
     color: var(--newspaper-text);
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .gift-package-date {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--newspaper-text-light);
     opacity: 0.85;
     font-weight: 500;
@@ -4568,35 +4568,35 @@ footer,
     }
     
     .gift-package-box {
-        min-height: 380px;
+        min-height: 420px;
         aspect-ratio: 1.25 / 1;
         max-width: 100%;
     }
     
     .gift-package-content {
-        width: calc(100% - 110px);
-        height: calc(100% - 170px);
-        padding: 26px 22px;
-        margin-top: 18px;
+        width: calc(100% - 120px);
+        height: calc(100% - 190px);
+        padding: 30px 26px;
+        margin-top: 22px;
     }
     
     .gift-package-title {
-        font-size: 1.15rem;
-        margin-bottom: 18px;
-        line-height: 1.7;
+        font-size: 1.05rem;
+        margin-bottom: 16px;
+        line-height: 1.6;
     }
     
     .gift-package-user-info .hdh-level-badge {
-        font-size: 0.9rem;
-        padding: 5px 10px;
+        font-size: 0.8rem;
+        padding: 4px 9px;
     }
     
     .gift-package-farm-name {
-        font-size: 1rem;
+        font-size: 0.85rem;
     }
     
     .gift-package-date {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
 }
 
