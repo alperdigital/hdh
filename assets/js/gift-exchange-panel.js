@@ -152,22 +152,32 @@
         function goBackToList() {
             stopPolling();
             currentExchangeId = null;
-            // Hide chat view and show list view
+            // Hide chat view
             const chatView = document.getElementById('gift-exchange-chat-view');
             if (chatView) {
                 chatView.style.display = 'none';
                 chatView.remove(); // Remove from DOM completely
             }
-            // Show list view
-            const list = document.getElementById('gift-exchanges-list');
-            const empty = document.getElementById('gift-exchange-empty');
-            if (list) list.style.display = 'block';
-            if (empty) empty.style.display = 'none';
             // Hide header back button
             if (giftBack) {
                 giftBack.style.display = 'none';
             }
-            loadExchanges();
+            // Show list view - check if list already exists and has content
+            const list = document.getElementById('gift-exchanges-list');
+            const empty = document.getElementById('gift-exchange-empty');
+            const loading = document.getElementById('gift-exchange-loading');
+            
+            // Hide loading and empty states
+            if (loading) loading.style.display = 'none';
+            if (empty) empty.style.display = 'none';
+            
+            // If list exists and has items, show it
+            if (list && list.children.length > 0) {
+                list.style.display = 'block';
+            } else {
+                // If list is empty, reload exchanges
+                loadExchanges();
+            }
         }
         
         // Handle header back button
@@ -361,7 +371,6 @@
             let html = `
                 <div class="gift-exchange-chat-view" id="gift-exchange-chat-view">
                     <div class="chat-header">
-                        <button class="btn-back-to-list" id="btn-back-to-exchanges">← Geri Dön</button>
                         <div class="chat-header-info">
                             <div class="chat-counterpart">
                                 ${exchange.counterpart_level ? `<div class="hdh-level-badge lvl-d${String(exchange.counterpart_level || 1).length}" aria-label="Seviye ${exchange.counterpart_level}">${exchange.counterpart_level}</div>` : ''}
@@ -409,13 +418,7 @@
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
             
-            // Attach event handlers
-            const backBtn = document.getElementById('btn-back-to-exchanges');
-            if (backBtn) {
-                backBtn.addEventListener('click', function() {
-                    goBackToList();
-                });
-            }
+            // Event handlers are handled by header back button
             
             if (!isLocked) {
                 const sendBtn = document.getElementById(`chat-send-${exchange.id}`);
