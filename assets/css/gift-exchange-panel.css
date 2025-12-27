@@ -19,7 +19,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1001;
+    z-index: 1002;
     transition: all 0.3s ease;
     pointer-events: auto;
     -webkit-tap-highlight-color: rgba(116, 195, 101, 0.3);
@@ -39,7 +39,7 @@
         height: 60px;
         max-width: 60px;
         max-height: 60px;
-        z-index: 999;
+        z-index: 1002;
     }
     
     .gift-exchange-icon-emoji {
