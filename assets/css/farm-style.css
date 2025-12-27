@@ -4393,9 +4393,12 @@ footer,
 
 .gift-package-box {
     position: relative;
-    background: transparent;
-    border: 6px solid;
-    border-image: linear-gradient(135deg, #FF1744 0%, #DC143C 25%, #FF6B6B 50%, #DC143C 75%, #FF1744 100%) 1;
+    background: linear-gradient(to bottom, 
+        rgba(255, 23, 68, 0.05) 0%,
+        rgba(220, 20, 60, 0.08) 50%,
+        rgba(255, 107, 107, 0.05) 100%
+    );
+    border: 6px solid #DC143C;
     border-radius: 20px;
     padding: 0;
     overflow: visible;
@@ -4404,26 +4407,21 @@ footer,
         0 0 20px rgba(220, 20, 60, 0.4),
         inset 0 0 30px rgba(255, 107, 107, 0.2),
         0 0 40px rgba(220, 20, 60, 0.2);
-    background: linear-gradient(to bottom, 
-        rgba(255, 23, 68, 0.05) 0%,
-        rgba(220, 20, 60, 0.08) 50%,
-        rgba(255, 107, 107, 0.05) 100%
-    );
 }
 
 /* Glowing Red Border Effect */
 .gift-package-box::before {
     content: '';
     position: absolute;
-    top: -6px;
-    left: -6px;
-    right: -6px;
-    bottom: -6px;
-    border-radius: 20px;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 24px;
     background: linear-gradient(135deg, #FF1744 0%, #DC143C 25%, #FF6B6B 50%, #DC143C 75%, #FF1744 100%);
     z-index: -1;
-    opacity: 0.6;
-    filter: blur(8px);
+    opacity: 0.5;
+    filter: blur(10px);
     animation: glow-pulse 2s ease-in-out infinite;
 }
 
@@ -4442,17 +4440,18 @@ footer,
 .gift-package-box::after {
     content: '🎀';
     position: absolute;
-    top: -20px;
+    top: -24px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     z-index: 10;
-    filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.5));
+    filter: drop-shadow(0 4px 10px rgba(255, 215, 0, 0.6));
     text-shadow: 
-        0 0 10px rgba(255, 215, 0, 0.8),
-        0 0 20px rgba(255, 215, 0, 0.6),
-        0 2px 4px rgba(0, 0, 0, 0.3);
+        0 0 12px rgba(255, 215, 0, 0.9),
+        0 0 24px rgba(255, 215, 0, 0.7),
+        0 2px 6px rgba(0, 0, 0, 0.4);
     animation: bow-shine 3s ease-in-out infinite;
+    line-height: 1;
 }
 
 @keyframes bow-shine {
@@ -4467,13 +4466,13 @@ footer,
 /* Gift Package Lid (3D Top with indentations) */
 .gift-package-lid {
     position: absolute;
-    top: -18px;
+    top: -20px;
     left: -6px;
     right: -6px;
-    height: 36px;
+    height: 38px;
     background: linear-gradient(135deg, #FF1744 0%, #DC143C 30%, #FF6B6B 50%, #DC143C 70%, #FF1744 100%);
     border-radius: 20px 20px 0 0;
-    transform: perspective(350px) rotateX(-20deg);
+    transform: perspective(350px) rotateX(-22deg);
     transform-origin: bottom;
     box-shadow: 
         0 -8px 25px rgba(0, 0, 0, 0.4),
@@ -4481,16 +4480,15 @@ footer,
         inset 0 -3px 10px rgba(0, 0, 0, 0.2),
         0 0 15px rgba(220, 20, 60, 0.3);
     z-index: 2;
-    border: 6px solid;
-    border-image: linear-gradient(135deg, #FF1744 0%, #DC143C 50%, #FF1744 100%) 1;
+    border: 6px solid #DC143C;
     border-bottom: none;
     /* Indentations where lid meets base */
     clip-path: polygon(
         0% 0%,
-        15% 0%,
-        15% 100%,
-        85% 100%,
-        85% 0%,
+        12% 0%,
+        12% 100%,
+        88% 100%,
+        88% 0%,
         100% 0%,
         100% 100%,
         0% 100%
