@@ -13,8 +13,80 @@
             nonce: (typeof hdhGiftExchange !== 'undefined' && hdhGiftExchange?.nonce) ? hdhGiftExchange.nonce : '',
         };
         
-        // Attach click handlers to all gift exchange buttons
+        // Attach click handlers to all gift exchange buttons and gift package cards
         function attachHandlers() {
+            // Handle gift package cards (entire card is clickable)
+            document.querySelectorAll('.gift-package-clickable').forEach(card => {
+                // Remove existing listeners by cloning
+                const newCard = card.cloneNode(true);
+                card.parentNode.replaceChild(newCard, card);
+                
+                newCard.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const listingId = parseInt(this.getAttribute('data-listing-id'));
+                    if (!listingId) {
+                        showToast('Geçersiz ilan', 'error');
+                        return;
+                    }
+                    
+                    if (!config.nonce) {
+                        showToast('Güvenlik hatası. Sayfayı yenileyin.', 'error');
+                        return;
+                    }
+                    
+                    // Add loading state
+                    this.style.opacity = '0.7';
+                    this.style.pointerEvents = 'none';
+                    
+                    fetch(config.ajaxUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            action: 'hdh_start_gift_exchange',
+                            nonce: config.nonce,
+                            listing_id: listingId,
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast(data.data?.message || 'Hediyeleşme başlatıldı!', 'success');
+                            // Optionally open gift exchange panel
+                            const giftIcon = document.getElementById('gift-exchange-icon-toggle');
+                            if (giftIcon) {
+                                setTimeout(() => {
+                                    giftIcon.click();
+                                }, 500);
+                            }
+                        } else {
+                            showToast(data.data?.message || 'Hediyeleşme başlatılamadı', 'error');
+                        }
+                        
+                        // Re-enable card
+                        this.style.opacity = '1';
+                        this.style.pointerEvents = 'auto';
+                    })
+                    .catch(error => {
+                        console.error('Error starting gift exchange:', error);
+                        showToast('Bir hata oluştu', 'error');
+                        this.style.opacity = '1';
+                        this.style.pointerEvents = 'auto';
+                    });
+                });
+                
+                // Add keyboard support
+                newCard.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
             // Handle both inline and full-width buttons
             document.querySelectorAll('.btn-start-gift-exchange, .btn-start-gift-exchange-inline').forEach(btn => {
                 // Remove existing listeners by cloning
@@ -91,7 +163,7 @@
                 mutations.forEach(function(mutation) {
                     if (mutation.addedNodes.length > 0) {
                         mutation.addedNodes.forEach(function(node) {
-                            if (node.nodeType === 1 && (node.classList.contains('listing-unified-block') || node.querySelector('.btn-start-gift-exchange'))) {
+                            if (node.nodeType === 1 && (node.classList.contains('gift-package-card') || node.classList.contains('listing-unified-block') || node.querySelector('.btn-start-gift-exchange'))) {
                                 shouldReattach = true;
                             }
                         });

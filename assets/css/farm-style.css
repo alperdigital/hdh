@@ -4367,6 +4367,169 @@ footer,
 }
 
 /* Unified Listing Block (Continuous Column) */
+/* Gift Package Card - Red Gift Box Design */
+.gift-package-card {
+    position: relative;
+    margin-bottom: 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.gift-package-card.gift-package-clickable {
+    cursor: pointer;
+}
+
+.gift-package-card.gift-package-clickable:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+.gift-package-card.gift-package-clickable:active {
+    transform: translateY(-4px) scale(0.98);
+}
+
+.gift-package-box {
+    position: relative;
+    background: linear-gradient(135deg, #b22222 0%, #DC143C 30%, #FF6B6B 50%, #DC143C 70%, #b22222 100%);
+    border: none;
+    border-radius: 16px;
+    padding: 24px 20px;
+    box-shadow: 
+        0 8px 25px rgba(220, 20, 60, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 3px 15px rgba(255, 255, 255, 0.25),
+        inset 0 -3px 15px rgba(0, 0, 0, 0.3),
+        inset 2px 0 10px rgba(255, 255, 255, 0.2),
+        inset -2px 0 10px rgba(0, 0, 0, 0.2);
+    overflow: visible;
+    min-height: 140px;
+}
+
+/* Gift Package Lid (3D Top) */
+.gift-package-lid {
+    position: absolute;
+    top: -14px;
+    left: -3px;
+    right: -3px;
+    height: 32px;
+    background: linear-gradient(135deg, #b22222 0%, #DC143C 30%, #FF6B6B 50%, #DC143C 70%, #b22222 100%);
+    border-radius: 16px 16px 0 0;
+    transform: perspective(300px) rotateX(-18deg);
+    transform-origin: bottom;
+    box-shadow: 
+        0 -6px 20px rgba(0, 0, 0, 0.4),
+        inset 0 2px 8px rgba(255, 255, 255, 0.3),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Gift Package Content */
+.gift-package-content {
+    position: relative;
+    z-index: 3;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 
+        inset 0 3px 12px rgba(0, 0, 0, 0.15),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.1),
+        0 2px 6px rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    min-height: 100px;
+}
+
+.gift-package-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--newspaper-text);
+    margin: 0 0 16px 0;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+}
+
+.gift-package-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.gift-package-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.gift-package-user-info .hdh-level-badge {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #FFFFFF;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.gift-package-farm-name {
+    font-weight: 600;
+    color: var(--newspaper-text);
+    font-size: 1rem;
+}
+
+.gift-package-date {
+    font-size: 0.85rem;
+    color: var(--newspaper-text-light);
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .gift-package-box {
+        padding: 20px 16px;
+        min-height: 120px;
+    }
+    
+    .gift-package-content {
+        padding: 16px;
+        min-height: 90px;
+    }
+    
+    .gift-package-title {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+    
+    .gift-package-meta {
+        gap: 10px;
+    }
+    
+    .gift-package-user-info {
+        gap: 8px;
+    }
+    
+    .gift-package-user-info .hdh-level-badge {
+        font-size: 0.85rem;
+        padding: 3px 8px;
+    }
+    
+    .gift-package-farm-name {
+        font-size: 0.95rem;
+    }
+    
+    .gift-package-date {
+        font-size: 0.8rem;
+    }
+}
+
 .listing-unified-block {
     display: block;
     text-decoration: none;
