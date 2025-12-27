@@ -151,6 +151,7 @@
          */
         function goBackToList() {
             stopPolling();
+            const previousExchangeId = currentExchangeId;
             currentExchangeId = null;
             
             // Remove chat view from DOM
@@ -163,6 +164,9 @@
             if (giftBack) {
                 giftBack.style.display = 'none';
             }
+            
+            // Restart list polling
+            startListPolling();
             
             // Always reload exchanges to ensure fresh data and proper display
             // This ensures the list is properly rendered and visible
@@ -279,9 +283,13 @@
             
             // Attach click handlers
             document.querySelectorAll('.exchange-item').forEach(item => {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const exchangeId = parseInt(this.getAttribute('data-exchange-id'));
-                    openChat(exchangeId);
+                    if (exchangeId) {
+                        openChat(exchangeId);
+                    }
                 });
             });
         }
@@ -290,11 +298,16 @@
          * Open chat for an exchange
          */
         function openChat(exchangeId) {
+            if (!exchangeId) return;
+            
             currentExchangeId = exchangeId;
             // Show header back button
             if (giftBack) {
                 giftBack.style.display = 'flex';
             }
+            
+            // Stop list polling to prevent interference
+            stopListPolling();
             
             // Load exchange details and messages
             Promise.all([
@@ -326,10 +339,16 @@
                 
                 renderChatView(exchange, messagesData.data.messages || []);
                 startPolling();
+                // Update badge count after opening chat
+                if (messagesData.data && messagesData.data.total_unread !== undefined) {
+                    updateBadgeCount(messagesData.data.total_unread || 0);
+                }
             })
             .catch(error => {
                 console.error('Error loading chat:', error);
                 showToast('Chat yüklenemedi', 'error');
+                // If error, go back to list
+                goBackToList();
             });
         }
         
@@ -846,6 +865,31 @@
                 clearInterval(listPollTimer);
                 listPollTimer = null;
             }
+        }
+        
+        /**
+         * Update badge count from server (without reloading list)
+         */
+        function updateBadgeCountFromServer() {
+            fetch(config.ajaxUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    action: 'hdh_get_gift_exchanges',
+                    nonce: config.nonce,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.total_unread !== undefined) {
+                    updateBadgeCount(data.data.total_unread || 0);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating badge count:', error);
+            });
         }
         
         /**
