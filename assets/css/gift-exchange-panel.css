@@ -121,6 +121,15 @@
 
 .gift-exchange-icon-fixed:hover {
     transform: scale(1.1);
+}
+
+/* Hover effects for different states */
+.gift-exchange-icon-fixed:not(.has-unread):hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: rgba(201, 184, 138, 0.6);
+}
+
+.gift-exchange-icon-fixed.has-unread:hover {
     box-shadow: 0 6px 16px rgba(116, 195, 101, 0.5);
 }
 
