@@ -913,6 +913,11 @@
         padding: 12px 16px;
     }
     
+    .gift-exchange-panel-back {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+    
     .exchange-item {
         padding: 12px;
     }
