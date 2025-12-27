@@ -350,39 +350,70 @@
                 })
             ])
             .then(([exchangesData, messagesData]) => {
+                console.log('openChat: Received data', {
+                    exchanges: exchangesData,
+                    messages: messagesData
+                });
+                
                 // Check if both requests were successful
                 if (!exchangesData.success || !messagesData.success) {
                     console.error('Failed to load chat data:', {
                         exchanges: exchangesData,
                         messages: messagesData
                     });
-                    showToast('Chat yüklenemedi', 'error');
+                    showToast('Chat yüklenemedi: ' + (exchangesData.data?.message || messagesData.data?.message || 'Bilinmeyen hata'), 'error');
+                    if (loading) loading.style.display = 'none';
+                    goBackToList();
+                    return;
+                }
+                
+                // Check if exchanges array exists
+                if (!exchangesData.data || !exchangesData.data.exchanges || !Array.isArray(exchangesData.data.exchanges)) {
+                    console.error('Invalid exchanges data:', exchangesData);
+                    showToast('Hediyeleşme verisi geçersiz', 'error');
+                    if (loading) loading.style.display = 'none';
                     goBackToList();
                     return;
                 }
                 
                 // Find exchange - handle both string and number IDs
                 const exchange = exchangesData.data.exchanges.find(e => {
-                    return parseInt(e.id) === parseInt(exchangeId) || e.id == exchangeId;
+                    const eId = parseInt(e.id);
+                    const targetId = parseInt(exchangeId);
+                    return eId === targetId || e.id == exchangeId;
                 });
                 
                 if (!exchange) {
-                    console.error('Exchange not found:', exchangeId, exchangesData.data.exchanges);
+                    console.error('Exchange not found:', {
+                        exchangeId: exchangeId,
+                        exchangeIdType: typeof exchangeId,
+                        availableExchanges: exchangesData.data.exchanges.map(e => ({ 
+                            id: e.id, 
+                            idType: typeof e.id,
+                            counterpart: e.counterpart_name 
+                        }))
+                    });
                     showToast('Hediyeleşme bulunamadı', 'error');
+                    if (loading) loading.style.display = 'none';
                     goBackToList();
                     return;
                 }
                 
+                console.log('openChat: Found exchange', exchange);
+                
                 // Ensure messages is an array
-                const messages = messagesData.data && messagesData.data.messages 
+                const messages = messagesData.data && messagesData.data.messages && Array.isArray(messagesData.data.messages)
                     ? messagesData.data.messages 
                     : [];
+                
+                console.log('openChat: Messages count', messages.length);
                 
                 // Hide loading
                 if (loading) {
                     loading.style.display = 'none';
                 }
                 
+                // Render chat view
                 renderChatView(exchange, messages);
                 startPolling();
                 
