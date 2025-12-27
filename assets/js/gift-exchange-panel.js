@@ -407,7 +407,19 @@
                 </div>
             `;
             
-            content.innerHTML = html;
+            // Remove existing chat view if any
+            const existingChatView = document.getElementById('gift-exchange-chat-view');
+            if (existingChatView) {
+                existingChatView.remove();
+            }
+            
+            // Append chat view to content (preserve list in DOM)
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const chatViewElement = tempDiv.firstElementChild;
+            if (chatViewElement) {
+                content.appendChild(chatViewElement);
+            }
             
             // Scroll to bottom
             const messagesContainer = document.getElementById(`chat-messages-${exchange.id}`);
