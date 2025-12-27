@@ -7814,29 +7814,11 @@ footer,
 }
 
 /* ============================================
-   USER INFO WIDGET (FIXED BELOW HEADER)
+   USER INFO WIDGET (DISABLED - MOVED TO HEADER)
    ============================================ */
 
 .hdh-user-info-widget {
-    position: fixed;
-    top: 52px; /* Below announcement banner (12px padding * 2 + ~28px text height) */
-    left: 16px;
-    z-index: 9999; /* Below header (1000) but above content */
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: linear-gradient(135deg, rgba(255, 246, 216, 0.98) 0%, rgba(255, 250, 240, 0.98) 100%);
-    border: 2px solid rgba(201, 184, 138, 0.5);
-    border-radius: 16px;
-    padding: 10px 18px;
-    box-shadow: 
-        0 4px 16px rgba(0, 0, 0, 0.12),
-        0 2px 8px rgba(201, 184, 138, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: slideInFromTop 0.5s ease-out;
+    display: none !important; /* Widget disabled - info now in header */
 }
 
 @keyframes slideInFromTop {
@@ -8013,113 +7995,7 @@ footer,
     }
 }
 
-/* Adjust top position when announcement banner is hidden */
-body:not(:has(.farm-announcement-banner)) .hdh-user-info-widget,
-body:not([class*="announcement"]) .hdh-user-info-widget {
-    top: 16px;
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-    .hdh-user-info-widget {
-        top: 48px; /* Slightly less on mobile */
-        left: 12px;
-        padding: 8px 14px;
-        gap: 10px;
-        border-radius: 14px;
-    }
-    
-    body:not(:has(.farm-announcement-banner)) .hdh-user-info-widget,
-    body:not([class*="announcement"]) .hdh-user-info-widget {
-        top: 12px;
-    }
-    
-    .hdh-user-info-widget .hdh-level-badge {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .hdh-user-info-widget .hdh-level-badge.lvl-d1 {
-        font-size: 20px;
-    }
-    
-    .hdh-user-info-widget .hdh-level-badge.lvl-d2 {
-        font-size: 18px;
-    }
-    
-    .hdh-user-info-widget .hdh-level-badge.lvl-d3 {
-        font-size: 16px;
-    }
-    
-    .hdh-farm-name {
-        font-size: 14px;
-        max-width: 150px;
-    }
-    
-    .hdh-farm-stats {
-        gap: 10px;
-        font-size: 11px;
-    }
-    
-    .hdh-stat-emoji {
-        font-size: 12px;
-    }
-    
-    .hdh-stat-value {
-        font-size: 11px;
-    }
-}
-
-/* Very small screens */
-@media (max-width: 480px) {
-    .hdh-user-info-widget {
-        top: 44px; /* Adjusted for mobile */
-        left: 8px;
-        padding: 6px 12px;
-        gap: 8px;
-        border-radius: 12px;
-    }
-    
-    body:not(:has(.farm-announcement-banner)) .hdh-user-info-widget,
-    body:not([class*="announcement"]) .hdh-user-info-widget {
-        top: 8px;
-    }
-    
-    .hdh-user-info-widget .hdh-level-badge {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .hdh-user-info-widget .hdh-level-badge.lvl-d1 {
-        font-size: 18px;
-    }
-    
-    .hdh-user-info-widget .hdh-level-badge.lvl-d2 {
-        font-size: 16px;
-    }
-    
-    .hdh-user-info-widget .hdh-level-badge.lvl-d3 {
-        font-size: 14px;
-    }
-    
-    .hdh-farm-name {
-        font-size: 13px;
-        max-width: 120px;
-    }
-    
-    .hdh-farm-stats {
-        gap: 8px;
-        font-size: 10px;
-    }
-    
-    .hdh-stat-emoji {
-        font-size: 11px;
-    }
-    
-    .hdh-stat-value {
-        font-size: 10px;
-    }
-}
+/* Widget mobile styles disabled - moved to header */
 
 /* ============================================
    HOMEPAGE CTA BUTTONS (IN HERO SECTION)
