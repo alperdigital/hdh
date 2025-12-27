@@ -485,6 +485,10 @@
             const chatViewElement = tempDiv.firstElementChild;
             if (chatViewElement) {
                 content.appendChild(chatViewElement);
+            } else {
+                console.error('Failed to create chat view element');
+                showToast('Chat görünümü oluşturulamadı', 'error');
+                return;
             }
             
             // Scroll to bottom
