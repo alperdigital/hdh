@@ -74,10 +74,13 @@
         width: 600px;
         max-width: calc(100vw - 64px);
         max-height: calc(100vh - 120px); /* Better height calculation */
-        display: flex;
-        flex-direction: column;
         height: auto;
         min-height: 500px;
+    }
+    
+    .gift-exchange-panel.active {
+        display: flex !important;
+        flex-direction: column;
     }
     
     .gift-exchange-panel-header {
