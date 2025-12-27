@@ -334,14 +334,40 @@
                 }).then(r => r.json())
             ])
             .then(([exchangesData, messagesData]) => {
-                const exchange = exchangesData.data.exchanges.find(e => e.id == exchangeId);
-                if (!exchange) return;
+                // Check if both requests were successful
+                if (!exchangesData.success || !messagesData.success) {
+                    console.error('Failed to load chat data:', {
+                        exchanges: exchangesData,
+                        messages: messagesData
+                    });
+                    showToast('Chat yüklenemedi', 'error');
+                    goBackToList();
+                    return;
+                }
                 
-                renderChatView(exchange, messagesData.data.messages || []);
+                // Find exchange - handle both string and number IDs
+                const exchange = exchangesData.data.exchanges.find(e => {
+                    return parseInt(e.id) === parseInt(exchangeId) || e.id == exchangeId;
+                });
+                
+                if (!exchange) {
+                    console.error('Exchange not found:', exchangeId, exchangesData.data.exchanges);
+                    showToast('Hediyeleşme bulunamadı', 'error');
+                    goBackToList();
+                    return;
+                }
+                
+                // Ensure messages is an array
+                const messages = messagesData.data && messagesData.data.messages 
+                    ? messagesData.data.messages 
+                    : [];
+                
+                renderChatView(exchange, messages);
                 startPolling();
+                
                 // Update badge count after opening chat
-                if (messagesData.data && messagesData.data.total_unread !== undefined) {
-                    updateBadgeCount(messagesData.data.total_unread || 0);
+                if (exchangesData.data && exchangesData.data.total_unread !== undefined) {
+                    updateBadgeCount(exchangesData.data.total_unread || 0);
                 }
             })
             .catch(error => {
