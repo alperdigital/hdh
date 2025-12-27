@@ -1734,13 +1734,14 @@ h6 { font-size: 1.1rem; }
 /* Trade cards grid - Base definition */
 .trade-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 32px;
     margin-bottom: 40px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
     overflow-x: hidden;
+    justify-items: center;
 }
 
 .trade-pagination {
