@@ -53,7 +53,18 @@
     }
     
     .gift-exchange-icon-emoji {
-        font-size: 2rem;
+        font-size: 2.2rem; /* Slightly larger for better visibility on desktop */
+    }
+    
+    /* Enhanced hover effect for desktop */
+    .gift-exchange-icon-fixed:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .gift-exchange-icon-fixed.has-unread:hover {
+        box-shadow: 0 6px 20px rgba(116, 195, 101, 0.5);
+        transform: translateY(-2px) scale(1.05);
     }
     
     .gift-exchange-panel {
