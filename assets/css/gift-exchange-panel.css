@@ -766,6 +766,29 @@
         padding: 8px 12px;
         font-size: 0.75rem;
     }
+    
+    .gift-exchange-chat-view {
+        display: flex !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    
+    .chat-header {
+        padding: 10px 12px;
+    }
+    
+    .chat-header-info {
+        overflow: hidden;
+        min-width: 0;
+    }
+    
+    .btn-back-to-list {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
 }
 
 @media (max-width: 480px) {
