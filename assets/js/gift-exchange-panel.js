@@ -375,20 +375,7 @@
             const backBtn = document.getElementById('btn-back-to-exchanges');
             if (backBtn) {
                 backBtn.addEventListener('click', function() {
-                    stopPolling();
-                    currentExchangeId = null;
-                    // Hide chat view and show list view
-                    const chatView = document.getElementById('gift-exchange-chat-view');
-                    if (chatView) {
-                        chatView.style.display = 'none';
-                        chatView.remove(); // Remove from DOM completely
-                    }
-                    // Show list view
-                    const list = document.getElementById('gift-exchanges-list');
-                    const empty = document.getElementById('gift-exchange-empty');
-                    if (list) list.style.display = 'block';
-                    if (empty) empty.style.display = 'none';
-                    loadExchanges();
+                    goBackToList();
                 });
             }
             
