@@ -734,23 +734,37 @@
         height: calc(100vh - 100px);
     }
     
+    .gift-exchange-panel-content {
+        height: 100%;
+    }
+    
+    .gift-exchanges-list {
+        padding: 10px;
+        gap: 8px;
+    }
+    
     .gift-exchange-chat-view {
         height: 100%;
         max-height: 100%;
         min-height: 0;
     }
     
-    .gift-exchange-chat-view .chat-messages {
-        max-height: 70vh; /* 70% of viewport height */
-        flex: 1;
+    .chat-messages {
+        padding: 10px;
+        gap: 6px;
+    }
+    
+    .chat-message {
+        max-width: 90%;
+        padding: 8px 12px;
+    }
+    
+    .message-content {
+        font-size: 0.85rem;
     }
     
     .gift-exchange-panel-header {
         padding: 12px 16px;
-    }
-    
-    .gift-exchange-panel-content {
-        padding: 16px;
     }
     
     .exchange-item {
