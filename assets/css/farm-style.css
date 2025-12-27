@@ -4487,15 +4487,15 @@ footer,
     }
     
     .gift-package-box {
-        min-height: 180px;
-        aspect-ratio: 1.15 / 1;
+        min-height: 200px;
+        aspect-ratio: 1.2 / 1;
     }
     
     .gift-package-content {
-        width: calc(100% - 60px);
-        height: calc(100% - 80px);
-        padding: 16px;
-        margin-top: 15px;
+        width: calc(100% - 70px);
+        height: calc(100% - 100px);
+        padding: 14px;
+        margin-top: 8px;
     }
     
     .gift-package-title {
@@ -4527,15 +4527,15 @@ footer,
 
 @media (max-width: 480px) {
     .gift-package-box {
-        min-height: 160px;
-        aspect-ratio: 1.1 / 1;
+        min-height: 180px;
+        aspect-ratio: 1.15 / 1;
     }
     
     .gift-package-content {
-        width: calc(100% - 50px);
-        height: calc(100% - 70px);
-        padding: 14px;
-        margin-top: 12px;
+        width: calc(100% - 60px);
+        height: calc(100% - 90px);
+        padding: 12px;
+        margin-top: 6px;
     }
     
     .gift-package-title {
