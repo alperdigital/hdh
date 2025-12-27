@@ -719,13 +719,5 @@
     .message-content {
         font-size: 0.85rem;
     }
-    
-    .message-user-name {
-        font-size: 0.7rem;
-    }
-    
-    .message-header .hdh-level-badge {
-        font-size: 0.65rem;
-    }
 }
 
