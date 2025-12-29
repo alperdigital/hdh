@@ -976,26 +976,26 @@ h6 { font-size: 1.1rem; }
     }
     
     .hdh-header-user-content .hdh-level-badge {
-        /* translateY = -font-size/2 for small mobile header (14.85px / 2 = 7.425px) */
-        transform: translateY(-7.425px);
+        /* translateY = -font-size/2 for small mobile header (7.425px / 2 = 3.7125px) */
+        transform: translateY(-3.7125px);
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d1 {
-        font-size: 14.85px;
+        font-size: 7.425px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d2 {
-        width: 78px;
-        height: 78px;
-        font-size: 14.85px;
-        letter-spacing: -1px;
+        width: 39px;
+        height: 39px;
+        font-size: 7.425px;
+        letter-spacing: -0.5px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d3 {
-        width: 90px;
-        height: 90px;
-        font-size: 13.2px;
-        letter-spacing: -2px;
+        width: 45px;
+        height: 45px;
+        font-size: 6.6px;
+        letter-spacing: -1px;
     }
     
     .hdh-header-farm-name {
