@@ -667,10 +667,16 @@
     font-size: 14px;
 }
 
+/* Focus state - ensure font-size stays 16px to prevent iOS zoom */
+.chat-input-container .chat-input:focus,
+.gift-exchange-chat-view .chat-input-container .chat-input:focus,
+.gift-exchange-chat-view .chat-input:focus,
 .chat-input:focus {
     border-color: var(--farm-green);
     box-shadow: 0 0 0 3px rgba(116, 195, 101, 0.15);
     background: #FFFFFF;
+    /* Ensure font-size stays at 16px on focus to prevent zoom */
+    font-size: 16px !important;
 }
 
 .chat-send-btn {
