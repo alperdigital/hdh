@@ -206,10 +206,22 @@ function hdh_redirect_after_auth($user_id = 0) {
             }
         }
         
-        // Default to configured redirect URL
-        $default_redirect = hdh_get_setting('default_after_login', '/profil');
-        $return_url = home_url($default_redirect);
+        // Default to homepage instead of /profil
+        $return_url = home_url('/');
     }
+    
+    // Clear user cache to ensure fresh login state
+    if ($user_id) {
+        clean_user_cache($user_id);
+        wp_cache_delete($user_id, 'users');
+        wp_cache_flush(); // Clear all caches to prevent stale login state
+    }
+    
+    // Add cache-busting parameter to prevent stale page cache
+    $return_url = add_query_arg(array(
+        'logged_in' => '1',
+        '_t' => time()
+    ), $return_url);
     
     // Log redirect for debugging (optional)
     if (WP_DEBUG && $user_id) {

@@ -500,6 +500,16 @@ function hdh_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'hdh_enqueue_scripts');
 
+// AJAX: Check login state (for post-auth redirect verification)
+function hdh_ajax_check_login_state() {
+    wp_send_json_success(array(
+        'logged_in' => is_user_logged_in(),
+        'user_id' => get_current_user_id()
+    ));
+}
+add_action('wp_ajax_hdh_check_login_state', 'hdh_ajax_check_login_state');
+add_action('wp_ajax_nopriv_hdh_check_login_state', 'hdh_ajax_check_login_state');
+
 // Preload critical assets
 function hdh_preload_assets() {
     if (is_front_page() || is_page_template('page-ara.php') || is_page_template('page-ilan-ver.php')) {

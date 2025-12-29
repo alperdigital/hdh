@@ -508,6 +508,7 @@ if (!$is_logged_in) {
 }
 
 // Auto-fill referral field from URL parameter and activate register tab
+// Auto-check login state after redirect
 ?>
 <script>
 (function() {
@@ -516,7 +517,9 @@ if (!$is_logged_in) {
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
         const refParam = urlParams.get('ref');
+        const loggedInParam = urlParams.get('logged_in');
         
+        // Auto-fill referral field if ref parameter exists
         if (refParam) {
             const referralField = document.getElementById('referral_username');
             if (referralField && !referralField.value) {
@@ -541,6 +544,40 @@ if (!$is_logged_in) {
                 loginForm.classList.remove('active');
                 registerForm.classList.add('active');
             }
+        }
+        
+        // Check login state after redirect (if logged_in parameter exists)
+        if (loggedInParam === '1') {
+            // Remove parameter from URL
+            const newUrl = window.location.pathname + (window.location.search.replace(/[?&]logged_in=1(&_t=\d+)?/, '').replace(/^&/, '?') || '');
+            window.history.replaceState({}, '', newUrl);
+            
+            // Check if user is actually logged in
+            const ajaxUrl = typeof hdhTasks !== 'undefined' ? hdhTasks.ajaxUrl : (typeof ajaxurl !== 'undefined' ? ajaxurl : '/wp-admin/admin-ajax.php');
+            
+            fetch(ajaxUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'action=hdh_check_login_state'
+            }).then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                if (data.success && data.data.logged_in) {
+                    // User is logged in - check if page shows login form
+                    const loginForm = document.getElementById('login-form-container');
+                    const registerForm = document.getElementById('register-form-container');
+                    const isLoggedOutView = (loginForm && loginForm.classList.contains('active')) || (registerForm && registerForm.classList.contains('active'));
+                    
+                    if (isLoggedOutView) {
+                        // Page shows login form but user is logged in - reload to show profile
+                        window.location.reload();
+                    }
+                }
+            }).catch(function(err) {
+                console.error('Login state check failed:', err);
+            });
         }
     });
 })();

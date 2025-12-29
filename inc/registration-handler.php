@@ -617,7 +617,12 @@ function hdh_handle_custom_registration_submit() {
     
     // Auto login
     wp_set_current_user($user_id);
-    wp_set_auth_cookie($user_id);
+    wp_set_auth_cookie($user_id, false, true); // Remember me = false, secure = true
+    
+    // Clear user cache to ensure fresh login state
+    clean_user_cache($user_id);
+    wp_cache_delete($user_id, 'users');
+    wp_cache_flush(); // Clear all caches to prevent stale login state
     
     // Use new redirect system
     if (function_exists('hdh_redirect_after_auth')) {
@@ -637,8 +642,8 @@ function hdh_handle_custom_registration_submit() {
             }
         }
         
-        // Redirect to specified URL or homepage
-        wp_redirect($redirect_to);
+        // Redirect to homepage with cache-busting parameter
+        wp_redirect(home_url('/?logged_in=1&_t=' . time()));
         exit;
     }
 }
@@ -676,7 +681,12 @@ function hdh_handle_custom_login_submit() {
     
     // Login successful
     wp_set_current_user($user->ID);
-    wp_set_auth_cookie($user->ID, $remember);
+    wp_set_auth_cookie($user->ID, $remember, true); // Secure = true
+    
+    // Clear user cache to ensure fresh login state
+    clean_user_cache($user->ID);
+    wp_cache_delete($user->ID, 'users');
+    wp_cache_flush(); // Clear all caches to prevent stale login state
     
     // Use new redirect system
     if (function_exists('hdh_redirect_after_auth')) {
@@ -696,8 +706,8 @@ function hdh_handle_custom_login_submit() {
             }
         }
         
-        // Redirect to specified URL or homepage
-        wp_redirect($redirect_to);
+        // Redirect to homepage with cache-busting parameter
+        wp_redirect(home_url('/?logged_in=1&_t=' . time()));
         exit;
     }
 }
