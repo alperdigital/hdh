@@ -818,21 +818,21 @@ h6 { font-size: 1.1rem; }
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d1 {
-    font-size: 33px;
+    font-size: 16.5px;
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d2 {
     width: 96px;
     height: 96px;
-    font-size: 33px;
-    letter-spacing: -1.5px;
+    font-size: 16.5px;
+    letter-spacing: -1px;
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d3 {
     width: 108px;
     height: 108px;
-    font-size: 27px;
-    letter-spacing: -3px;
+    font-size: 13.5px;
+    letter-spacing: -2px;
 }
 
 .hdh-header-farm-info {
@@ -974,21 +974,21 @@ h6 { font-size: 1.1rem; }
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d1 {
-        font-size: 27px;
+        font-size: 13.5px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d2 {
         width: 78px;
         height: 78px;
-        font-size: 27px;
-        letter-spacing: -1.5px;
+        font-size: 13.5px;
+        letter-spacing: -1px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d3 {
         width: 90px;
         height: 90px;
-        font-size: 24px;
-        letter-spacing: -3px;
+        font-size: 12px;
+        letter-spacing: -2px;
     }
     
     .hdh-header-farm-name {
@@ -4929,21 +4929,21 @@ footer,
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d1 {
-        font-size: 30px;
+        font-size: 15px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d2 {
         width: 84px;
         height: 84px;
-        font-size: 30px;
-        letter-spacing: -1.5px;
+        font-size: 15px;
+        letter-spacing: -1px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d3 {
         width: 96px;
         height: 96px;
-        font-size: 27px;
-        letter-spacing: -3px;
+        font-size: 13.5px;
+        letter-spacing: -2px;
     }
     
     .listing-meta-row-unified .hdh-level-badge {
@@ -4952,21 +4952,21 @@ footer,
     }
     
     .listing-meta-row-unified .hdh-level-badge.lvl-d1 {
-        font-size: 30px;
+        font-size: 15px;
     }
     
     .listing-meta-row-unified .hdh-level-badge.lvl-d2 {
         width: 72px;
         height: 72px;
-        font-size: 30px;
-        letter-spacing: -1.5px;
+        font-size: 15px;
+        letter-spacing: -1px;
     }
     
     .listing-meta-row-unified .hdh-level-badge.lvl-d3 {
         width: 84px;
         height: 84px;
-        font-size: 27px;
-        letter-spacing: -3px;
+        font-size: 13.5px;
+        letter-spacing: -2px;
     }
     
     .chat-message-user .hdh-level-badge {
@@ -4975,21 +4975,21 @@ footer,
     }
     
     .chat-message-user .hdh-level-badge.lvl-d1 {
-        font-size: 27px;
+        font-size: 13.5px;
     }
     
     .chat-message-user .hdh-level-badge.lvl-d2 {
         width: 72px;
         height: 72px;
-        font-size: 27px;
-        letter-spacing: -1.5px;
+        font-size: 13.5px;
+        letter-spacing: -1px;
     }
     
     .chat-message-user .hdh-level-badge.lvl-d3 {
         width: 84px;
         height: 84px;
-        font-size: 24px;
-        letter-spacing: -3px;
+        font-size: 12px;
+        letter-spacing: -2px;
     }
     
     .listing-content-columns-unified {
@@ -7933,24 +7933,24 @@ footer,
     user-select: none;
 }
 
-/* Font size based on digit count - scaled 1.5x */
+/* Font size based on digit count - 25% smaller than original */
 .hdh-level-badge.lvl-d1 {
-    font-size: 42px;
+    font-size: 21px;
 }
 
 /* Larger heart for 2-digit numbers */
 .hdh-level-badge.lvl-d2 {
     width: 96px;
     height: 96px;
-    font-size: 42px;
-    letter-spacing: -1.5px;
+    font-size: 21px;
+    letter-spacing: -1px;
 }
 
 .hdh-level-badge.lvl-d3 {
     width: 108px;
     height: 108px;
-    font-size: 36px;
-    letter-spacing: -3px;
+    font-size: 18px;
+    letter-spacing: -2px;
 }
 
 /* Smaller size for listing cards - scaled 1.5x */
@@ -7960,21 +7960,21 @@ footer,
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d1 {
-    font-size: 36px;
+    font-size: 18px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d2 {
     width: 84px;
     height: 84px;
-    font-size: 36px;
-    letter-spacing: -1.5px;
+    font-size: 18px;
+    letter-spacing: -1px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d3 {
     width: 96px;
     height: 96px;
-    font-size: 30px;
-    letter-spacing: -3px;
+    font-size: 15px;
+    letter-spacing: -2px;
 }
 
 /* Adjust stroke for smaller badges - scaled 1.5x */
@@ -7992,21 +7992,21 @@ footer,
 }
 
 .chat-message-user .hdh-level-badge.lvl-d1 {
-    font-size: 27px;
+    font-size: 15px;
 }
 
 .chat-message-user .hdh-level-badge.lvl-d2 {
     width: 72px;
     height: 72px;
-    font-size: 27px;
-    letter-spacing: -1.5px;
+    font-size: 15px;
+    letter-spacing: -1px;
 }
 
 .chat-message-user .hdh-level-badge.lvl-d3 {
     width: 84px;
     height: 84px;
-    font-size: 24px;
-    letter-spacing: -3px;
+    font-size: 13.5px;
+    letter-spacing: -2px;
 }
 
 /* Single trade page level badge - scaled 1.5x */
@@ -8016,21 +8016,21 @@ footer,
 }
 
 .trade-description-meta .hdh-level-badge.lvl-d1 {
-    font-size: 39px;
+    font-size: 19.5px;
 }
 
 .trade-description-meta .hdh-level-badge.lvl-d2 {
     width: 90px;
     height: 90px;
-    font-size: 39px;
-    letter-spacing: -1.5px;
+    font-size: 19.5px;
+    letter-spacing: -1px;
 }
 
 .trade-description-meta .hdh-level-badge.lvl-d3 {
     width: 102px;
     height: 102px;
-    font-size: 33px;
-    letter-spacing: -3px;
+    font-size: 16.5px;
+    letter-spacing: -2px;
 }
 
 @media (max-width: 768px) {
@@ -8040,19 +8040,19 @@ footer,
     }
     
     .hdh-level-badge.lvl-d1 {
-        font-size: 33px;
+        font-size: 16.5px;
     }
     
     .hdh-level-badge.lvl-d2 {
         width: 78px;
         height: 78px;
-        font-size: 30px;
+        font-size: 15px;
     }
     
     .hdh-level-badge.lvl-d3 {
         width: 90px;
         height: 90px;
-        font-size: 27px;
+        font-size: 13.5px;
     }
     
     .hdh-level-badge {
