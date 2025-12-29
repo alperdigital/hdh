@@ -106,13 +106,13 @@ function hdh_render_trust_stars($user_id, $size = 'medium') {
           title="<?php echo esc_attr($tooltip_text); ?>"
           aria-label="<?php echo esc_attr($tooltip_text); ?>">
         <?php for ($i = 0; $i < $full_stars; $i++) : ?>
-            <span class="star star-full">⭐</span>
+            <span class="star star-full">❤️</span>
         <?php endfor; ?>
         <?php if ($has_half) : ?>
-            <span class="star star-half">⭐</span>
+            <span class="star star-half">❤️</span>
         <?php endif; ?>
         <?php for ($i = 0; $i < $empty_stars; $i++) : ?>
-            <span class="star star-empty">☆</span>
+            <span class="star star-empty">🤍</span>
         <?php endfor; ?>
         <?php if ($total > 0) : ?>
             <span class="trust-rating-text">(<?php echo esc_html(number_format($rating, 1)); ?>)</span>

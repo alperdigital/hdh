@@ -65,7 +65,7 @@
                 <div class="hdh-header-level-badge <?php echo esc_attr($digit_class); ?>" 
                      aria-label="Seviye <?php echo esc_attr($user_level); ?>"
                      title="Seviye <?php echo esc_attr($user_level); ?>">
-                    ⭐<?php echo esc_html($user_level); ?>
+                    <?php echo esc_html($user_level); ?>
                 </div>
                 <div class="hdh-header-farm-info">
                     <span class="hdh-header-farm-name"><?php echo esc_html($farm_name); ?></span>

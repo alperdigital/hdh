@@ -65,10 +65,6 @@ if (!function_exists('hdh_render_trade_card')) {
             }
         }
         
-        // Get listing creation time for secondary display (optional)
-        $post_time = get_post_time('U', false, $post_id);
-        $listing_creation_time = get_the_date('d.m.Y H:i', $post_id);
-        
         // Build title: "X istiyorum Y verebilirim"
         $wanted_label = hdh_get_item_label($wanted_slug);
         $wanted_text = $trade_data['wanted_qty'] . ' ' . $wanted_label . ' istiyorum';
@@ -118,17 +114,15 @@ if (!function_exists('hdh_render_trade_card')) {
                         <span class="listing-meta-farm-name">
                             <?php echo esc_html($author_name); ?>
                         </span>
-                        <span class="listing-meta-date">
-                            📅 <?php echo esc_html($listing_creation_time); ?>
-                        </span>
                     </div>
                 </div>
             </div>
             
-            <!-- Click Hint (only for clickable listings) -->
+            <!-- Gift Exchange CTA (only for clickable listings) -->
             <?php if ($can_start_gift) : ?>
-                <div class="listing-click-hint">
-                    Hediyeleşmek için tıkla
+                <div class="listing-gift-cta">
+                    <span class="listing-gift-cta-icon">🎁</span>
+                    <span class="listing-gift-cta-text">Hediyeleş</span>
                 </div>
             <?php endif; ?>
         </div>
