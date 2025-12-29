@@ -642,7 +642,9 @@
     padding: 12px 16px;
     border: 2px solid rgba(201, 184, 138, 0.3);
     border-radius: 24px;
-    font-size: 0.875rem;
+    /* iOS Safari input focus zoom fix - minimum 16px required */
+    font-size: 16px !important;
+    line-height: 1.2;
     background: #FFFFFF;
     outline: none;
     transition: all 0.2s ease;
@@ -652,6 +654,8 @@
 
 .chat-input::placeholder {
     color: rgba(44, 44, 44, 0.4);
+    /* Placeholder can be smaller for visual balance */
+    font-size: 14px;
 }
 
 .chat-input:focus {
