@@ -219,9 +219,13 @@ function hdh_get_user_one_time_tasks($user_id) {
             $cta_state = 'in_progress';
         }
         
-        // For one-time tasks: if reward is claimed, don't show in UI (task disappears)
-        // Only add to tasks array if not claimed yet
-        if ($claimed_count === 0 || $claimable_count > 0) {
+        // For one-time tasks: if reward is fully claimed, don't show in UI (task disappears)
+        // Show task only if:
+        // 1. Task is not yet completed, OR
+        // 2. Task is completed but reward is not yet fully claimed (claimable_count > 0)
+        $is_fully_claimed = ($completed_count >= $task_config['max_progress']) && ($claimed_count >= $completed_count);
+        
+        if (!$is_fully_claimed) {
             $task_data = array(
                 'id' => $task_id,
                 'title' => $task_config['title'],

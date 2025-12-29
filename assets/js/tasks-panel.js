@@ -586,6 +586,33 @@
                     
                     // Update one-time tasks UI
                     const oneTimeTasks = data.data.one_time_tasks || [];
+                    const oneTimeTaskIds = oneTimeTasks.map(function(task) { return task.id; });
+                    
+                    // Remove one-time tasks that are no longer in the server response (fully claimed)
+                    const oneTimeTasksList = document.querySelector('#tab-one-time .tasks-list');
+                    if (oneTimeTasksList) {
+                        const existingOneTimeTasks = oneTimeTasksList.querySelectorAll('.task-item[data-task-container-id]');
+                        existingOneTimeTasks.forEach(function(taskItem) {
+                            const taskId = taskItem.getAttribute('data-task-container-id');
+                            // If task is not in server response, remove it from DOM
+                            if (taskId && oneTimeTaskIds.indexOf(taskId) === -1) {
+                                taskItem.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                                taskItem.style.opacity = '0';
+                                taskItem.style.transform = 'translateX(-20px)';
+                                setTimeout(function() {
+                                    taskItem.remove();
+                                    // Update section title count if needed
+                                    const oneTimeSection = document.querySelector('#tab-one-time .tasks-section');
+                                    if (oneTimeSection && oneTimeTasks.length === 0) {
+                                        // Hide section if no tasks left
+                                        oneTimeSection.style.display = 'none';
+                                    }
+                                }, 300);
+                            }
+                        });
+                    }
+                    
+                    // Update existing one-time tasks or add new ones
                     oneTimeTasks.forEach(function(task) {
                         const taskItemContainer = document.querySelector('.task-item[data-task-container-id="' + task.id + '"]');
                         if (taskItemContainer) {
@@ -604,6 +631,12 @@
                             }
                         }
                     });
+                    
+                    // Show one-time tasks section if it was hidden but now has tasks
+                    const oneTimeSection = document.querySelector('#tab-one-time .tasks-section');
+                    if (oneTimeSection && oneTimeTasks.length > 0) {
+                        oneTimeSection.style.display = '';
+                    }
                     
                     // Event delegation handles button clicks automatically, no need to re-attach
                     // But ensure delegation is set up (it should already be, but just in case)
