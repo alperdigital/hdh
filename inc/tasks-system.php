@@ -7,15 +7,50 @@
 if (!defined('ABSPATH')) exit;
 
 /**
+ * Clean up removed tasks from WordPress options
+ * Removes friend_exchange and friend_exchanges tasks
+ */
+function hdh_cleanup_removed_tasks() {
+    // Clean one-time tasks
+    $one_time_tasks = get_option('hdh_one_time_tasks', array());
+    if (!empty($one_time_tasks) && isset($one_time_tasks['friend_exchange'])) {
+        unset($one_time_tasks['friend_exchange']);
+        update_option('hdh_one_time_tasks', $one_time_tasks);
+    }
+    
+    // Clean daily tasks
+    $daily_tasks = get_option('hdh_daily_tasks', array());
+    if (!empty($daily_tasks) && isset($daily_tasks['friend_exchanges'])) {
+        unset($daily_tasks['friend_exchanges']);
+        update_option('hdh_daily_tasks', $daily_tasks);
+    }
+}
+add_action('admin_init', 'hdh_cleanup_removed_tasks');
+
+/**
  * Get one-time tasks configuration
  * Now loads from WordPress options (admin-manageable)
- * Falls back to hardcoded config if options are empty
+ * Falls back to hardcoded config if options are empty (only for frontend, not admin)
+ * 
+ * @param bool $save_if_empty Whether to save defaults to options if empty (default: true for frontend, false for admin)
  */
-function hdh_get_one_time_tasks_config() {
+function hdh_get_one_time_tasks_config($save_if_empty = true) {
+    // Clean up removed tasks first
+    hdh_cleanup_removed_tasks();
+    
     // Try to load from options first (admin-managed)
     $tasks = get_option('hdh_one_time_tasks', array());
     
+    // Filter out removed tasks
+    if (isset($tasks['friend_exchange'])) {
+        unset($tasks['friend_exchange']);
+        if ($save_if_empty) {
+            update_option('hdh_one_time_tasks', $tasks);
+        }
+    }
+    
     // If empty, use hardcoded default (for migration/fallback)
+    // Only save to options if $save_if_empty is true (frontend usage)
     if (empty($tasks)) {
         $tasks = array(
             'verify_email' => array(
@@ -51,8 +86,10 @@ function hdh_get_one_time_tasks_config() {
                 'max_progress' => 1,
             ),
         );
-        // Save defaults to options for first time
-        update_option('hdh_one_time_tasks', $tasks);
+        // Save defaults to options only if $save_if_empty is true (frontend usage)
+        if ($save_if_empty) {
+            update_option('hdh_one_time_tasks', $tasks);
+        }
     }
     
     return $tasks;
@@ -61,13 +98,24 @@ function hdh_get_one_time_tasks_config() {
 /**
  * Get daily tasks configuration
  * Now loads from WordPress options (admin-manageable)
- * Falls back to hardcoded config if options are empty
+ * Falls back to hardcoded config if options are empty (only for frontend, not admin)
+ * 
+ * @param bool $save_if_empty Whether to save defaults to options if empty (default: true for frontend, false for admin)
  */
-function hdh_get_daily_tasks_config() {
+function hdh_get_daily_tasks_config($save_if_empty = true) {
     // Try to load from options first (admin-managed)
     $tasks = get_option('hdh_daily_tasks', array());
     
+    // Filter out removed tasks
+    if (isset($tasks['friend_exchanges'])) {
+        unset($tasks['friend_exchanges']);
+        if ($save_if_empty) {
+            update_option('hdh_daily_tasks', $tasks);
+        }
+    }
+    
     // If empty, use hardcoded default (for migration/fallback)
+    // Only save to options if $save_if_empty is true (frontend usage)
     if (empty($tasks)) {
         $tasks = array(
             'create_listings' => array(
@@ -95,8 +143,10 @@ function hdh_get_daily_tasks_config() {
                 'max_progress' => 5,
             ),
         );
-        // Save defaults to options for first time
-        update_option('hdh_daily_tasks', $tasks);
+        // Save defaults to options only if $save_if_empty is true (frontend usage)
+        if ($save_if_empty) {
+            update_option('hdh_daily_tasks', $tasks);
+        }
     }
     
     return $tasks;

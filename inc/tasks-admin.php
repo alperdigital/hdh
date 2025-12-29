@@ -58,17 +58,18 @@ function hdh_render_tasks_admin_page() {
         settings_errors('hdh_tasks');
     }
     
-    // Get current tasks
+    // Get current tasks directly from options (no hardcoded fallback in admin)
+    // Admin panel should only show what's saved, allowing full control
     $one_time_tasks = get_option('hdh_one_time_tasks', array());
     $daily_tasks = get_option('hdh_daily_tasks', array());
     
-    // If empty, load from hardcoded config (migration)
-    if (empty($one_time_tasks) && function_exists('hdh_get_one_time_tasks_config')) {
-        $one_time_tasks = hdh_get_one_time_tasks_config();
+    // Clean up removed tasks (friend_exchange, friend_exchanges) if they exist
+    if (!empty($one_time_tasks) && isset($one_time_tasks['friend_exchange'])) {
+        unset($one_time_tasks['friend_exchange']);
         update_option('hdh_one_time_tasks', $one_time_tasks);
     }
-    if (empty($daily_tasks) && function_exists('hdh_get_daily_tasks_config')) {
-        $daily_tasks = hdh_get_daily_tasks_config();
+    if (!empty($daily_tasks) && isset($daily_tasks['friend_exchanges'])) {
+        unset($daily_tasks['friend_exchanges']);
         update_option('hdh_daily_tasks', $daily_tasks);
     }
     
@@ -93,18 +94,52 @@ function hdh_render_tasks_admin_page() {
                     echo '<div class="notice notice-success"><p><strong>Migrasyon Tamamlandı:</strong> ' . $results['users_processed'] . ' kullanıcı işlendi, ' . $results['tasks_migrated'] . ' görev migrate edildi.</p></div>';
                 }
             }
+            
+            // Handle load default tasks request
+            if (isset($_POST['hdh_load_default_tasks']) && check_admin_referer('hdh_load_default_tasks')) {
+                if (function_exists('hdh_get_one_time_tasks_config') && function_exists('hdh_get_daily_tasks_config')) {
+                    // Pass false to prevent auto-saving, we'll save manually
+                    $default_one_time = hdh_get_one_time_tasks_config(false);
+                    $default_daily = hdh_get_daily_tasks_config(false);
+                    
+                    // Clean up removed tasks
+                    if (isset($default_one_time['friend_exchange'])) {
+                        unset($default_one_time['friend_exchange']);
+                    }
+                    if (isset($default_daily['friend_exchanges'])) {
+                        unset($default_daily['friend_exchanges']);
+                    }
+                    
+                    update_option('hdh_one_time_tasks', $default_one_time);
+                    update_option('hdh_daily_tasks', $default_daily);
+                    
+                    echo '<div class="notice notice-success"><p><strong>Varsayılan görevler yüklendi!</strong> Sayfayı yenileyin.</p></div>';
+                    echo '<script>setTimeout(function(){ window.location.reload(); }, 1000);</script>';
+                }
+            }
             ?>
-            <form method="post" action="" style="margin-top: 15px;">
-                <?php wp_nonce_field('hdh_run_migration'); ?>
-                <label>
-                    <input type="checkbox" name="hdh_migration_dry_run" value="1" checked>
-                    Test modu (değişiklik yapmadan simüle et)
-                </label>
-                <br><br>
-                <button type="submit" name="hdh_run_migration" class="button button-secondary" onclick="return confirm('Migrasyonu çalıştırmak istediğinizden emin misiniz?');">
-                    Migrasyonu Çalıştır
-                </button>
-            </form>
+            <div style="display: flex; gap: 15px; margin-top: 15px;">
+                <form method="post" action="">
+                    <?php wp_nonce_field('hdh_run_migration'); ?>
+                    <label>
+                        <input type="checkbox" name="hdh_migration_dry_run" value="1" checked>
+                        Test modu (değişiklik yapmadan simüle et)
+                    </label>
+                    <br><br>
+                    <button type="submit" name="hdh_run_migration" class="button button-secondary" onclick="return confirm('Migrasyonu çalıştırmak istediğinizden emin misiniz?');">
+                        Migrasyonu Çalıştır
+                    </button>
+                </form>
+                
+                <form method="post" action="" style="margin-left: 20px;">
+                    <?php wp_nonce_field('hdh_load_default_tasks'); ?>
+                    <p><strong>Varsayılan Görevleri Yükle</strong></p>
+                    <p class="description" style="margin: 5px 0;">Sistem varsayılan görevlerini yükler (mevcut görevlerin üzerine yazar).</p>
+                    <button type="submit" name="hdh_load_default_tasks" class="button button-secondary" onclick="return confirm('Varsayılan görevleri yüklemek istediğinizden emin misiniz? Mevcut görevlerin üzerine yazılacak.');">
+                        Varsayılan Görevleri Yükle
+                    </button>
+                </form>
+            </div>
         </div>
         
         <form method="post" action="" id="hdh-tasks-form">
