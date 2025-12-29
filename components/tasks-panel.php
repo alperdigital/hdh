@@ -136,7 +136,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                     <h4 class="tasks-section-title"><?php echo esc_html(hdh_get_content('tasks', 'daily_section_title', 'Günlük Görevler')); ?></h4>
                     <div class="tasks-list">
                         <?php foreach ($daily_tasks as $task) : ?>
-                            <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?>" data-task-container-id="<?php echo esc_attr($task['id']); ?>">
+                            <div class="task-item <?php echo $task['completed'] ? 'task-completed' : ''; ?> <?php echo (isset($task['is_locked']) && $task['is_locked']) ? 'task-locked-item' : ''; ?>" data-task-container-id="<?php echo esc_attr($task['id']); ?>">
                                 <div class="task-info">
                                     <span class="task-icon">
                                         <?php
@@ -151,7 +151,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                     <div class="task-details">
                                         <span class="task-name" data-task-id="<?php echo esc_attr($task['id']); ?>">
                                             <?php echo esc_html($task['title']); ?>
-                                            <?php if ($task['max_progress'] > 1) : ?>
+                                            <?php if ($task['max_progress'] > 1 && !(isset($task['is_locked']) && $task['is_locked'])) : ?>
                                                 <span class="task-progress">(<?php echo esc_html($task['progress']); ?>/<?php echo esc_html($task['max_progress']); ?>)</span>
                                             <?php endif; ?>
                                         </span>
@@ -167,17 +167,19 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                         </span>
                                     </div>
                                 </div>
-                                <div class="task-actions">
+                                <div class="task-actions <?php echo (isset($task['is_locked']) && $task['is_locked']) ? 'task-actions-locked' : ''; ?>">
                                     <?php if (isset($task['is_locked']) && $task['is_locked']) : ?>
-                                        <span class="task-status task-locked">🔒 Kilitli</span>
-                                        <small class="task-lock-hint">Bu görevi açmak için önce "<?php 
-                                            $unlock_task_names = array(
-                                                'create_listings' => 'İlk ilan',
-                                                'complete_exchanges' => 'İlk hediyeleşme',
-                                                'invite_friends' => 'Davet et'
-                                            );
-                                            echo isset($unlock_task_names[$task['id']]) ? esc_html($unlock_task_names[$task['id']]) : 'Tek seferlik görev';
-                                        ?>" görevini tamamlamalısınız</small>
+                                        <div class="task-locked-wrapper">
+                                            <span class="task-status task-locked">🔒 Kilitli</span>
+                                            <small class="task-lock-hint">Bu görevi açmak için önce "<?php 
+                                                $unlock_task_names = array(
+                                                    'create_listings' => 'İlk ilan',
+                                                    'complete_exchanges' => 'İlk hediyeleşme',
+                                                    'invite_friends' => 'Davet et'
+                                                );
+                                                echo isset($unlock_task_names[$task['id']]) ? esc_html($unlock_task_names[$task['id']]) : 'Tek seferlik görev';
+                                            ?>" görevini tamamlamalısınız</small>
+                                        </div>
                                     <?php elseif ($task['can_claim']) : ?>
                                         <button class="btn-claim-task" 
                                                 data-task-id="<?php echo esc_attr($task['id']); ?>" 

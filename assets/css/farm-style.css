@@ -6371,7 +6371,8 @@ footer,
     
     .btn-claim-daily,
     .btn-do-task,
-    .btn-claim-task {
+    .btn-claim-task,
+    .btn-share-referral {
         width: 100%;
         max-width: 100%;
         padding: 12px 20px;
@@ -6633,7 +6634,8 @@ footer,
 
 .btn-claim-daily, 
 .btn-do-task,
-.btn-claim-task {
+.btn-claim-task,
+.btn-share-referral {
     background: var(--farm-green);
     color: #FFFFFF;
     font-size: 14px;
@@ -6655,7 +6657,8 @@ footer,
 
 .btn-claim-daily:hover,
 .btn-do-task:hover,
-.btn-claim-task:hover {
+.btn-claim-task:hover,
+.btn-share-referral:hover {
     background: var(--farm-green-dark);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
@@ -6663,7 +6666,8 @@ footer,
 
 .btn-claim-daily:active, 
 .btn-do-task:active,
-.btn-claim-task:active {
+.btn-claim-task:active,
+.btn-share-referral:active {
     transform: translateY(0);
     box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
 }
@@ -6682,11 +6686,57 @@ footer,
     flex-shrink: 0;
 }
 
+/* Locked task state styling */
+.task-locked {
+    color: rgba(44, 44, 44, 0.5) !important;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.task-lock-hint {
+    display: block;
+    font-size: 12px;
+    color: rgba(44, 44, 44, 0.6);
+    font-weight: 400;
+    line-height: 1.4;
+    margin-top: 6px;
+    padding: 8px 12px;
+    background: rgba(116, 195, 101, 0.08);
+    border-radius: 8px;
+    border-left: 3px solid var(--farm-green);
+}
+
 
 .task-actions {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.task-actions-locked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+}
+
+.task-locked-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+}
+
+.task-locked-item {
+    opacity: 0.7;
+}
+
+.task-locked-item .task-icon,
+.task-locked-item .task-name,
+.task-locked-item .task-description,
+.task-locked-item .task-reward {
+    opacity: 0.6;
     flex-shrink: 0;
     min-width: 0;
     max-width: 100%;
@@ -6789,6 +6839,7 @@ footer,
     
     .btn-claim-daily,
     .btn-do-task,
+    .btn-share-referral,
     .task-status {
         width: 100%;
         text-align: center;
@@ -6814,7 +6865,8 @@ footer,
     }
     
     .btn-claim-task,
-    .btn-do-task {
+    .btn-do-task,
+    .btn-share-referral {
         width: 100%;
         max-width: 100%;
         padding: 12px 20px;
@@ -6822,6 +6874,12 @@ footer,
         text-overflow: ellipsis;
         white-space: nowrap;
         box-sizing: border-box;
+    }
+    
+    .task-lock-hint {
+        font-size: 11px;
+        padding: 6px 10px;
+        margin-top: 8px;
     }
     
     .task-status {
