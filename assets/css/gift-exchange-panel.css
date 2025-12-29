@@ -637,12 +637,15 @@
     flex-shrink: 0;
 }
 
-.chat-input {
+/* iOS Safari input focus zoom fix - minimum 16px required for input type="text" */
+.chat-input-container .chat-input,
+.gift-exchange-chat-view .chat-input-container .chat-input,
+.gift-exchange-chat-view .chat-input {
     flex: 1;
     padding: 12px 16px;
     border: 2px solid rgba(201, 184, 138, 0.3);
     border-radius: 24px;
-    /* iOS Safari input focus zoom fix - minimum 16px required */
+    /* iOS Safari zoom fix - 16px minimum for input type="text" */
     font-size: 16px !important;
     line-height: 1.2;
     background: #FFFFFF;
@@ -650,9 +653,15 @@
     transition: all 0.2s ease;
     font-family: inherit;
     color: var(--newspaper-text);
+    /* Prevent iOS zoom on focus */
+    -webkit-text-size-adjust: 100%;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
-.chat-input::placeholder {
+.chat-input-container .chat-input::placeholder,
+.gift-exchange-chat-view .chat-input-container .chat-input::placeholder,
+.gift-exchange-chat-view .chat-input::placeholder {
     color: rgba(44, 44, 44, 0.4);
     /* Placeholder can be smaller for visual balance */
     font-size: 14px;
