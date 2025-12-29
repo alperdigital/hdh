@@ -4902,12 +4902,16 @@ footer,
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d2 {
-        font-size: 18px;
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
         letter-spacing: -1px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d3 {
-        font-size: 16px;
+        width: 64px;
+        height: 64px;
+        font-size: 18px;
         letter-spacing: -2px;
     }
     
@@ -4921,12 +4925,16 @@ footer,
     }
     
     .listing-meta-row-unified .hdh-level-badge.lvl-d2 {
-        font-size: 18px;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
         letter-spacing: -1px;
     }
     
     .listing-meta-row-unified .hdh-level-badge.lvl-d3 {
-        font-size: 16px;
+        width: 56px;
+        height: 56px;
+        font-size: 18px;
         letter-spacing: -2px;
     }
     
@@ -4940,12 +4948,16 @@ footer,
     }
     
     .chat-message-user .hdh-level-badge.lvl-d2 {
-        font-size: 16px;
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
         letter-spacing: -1px;
     }
     
     .chat-message-user .hdh-level-badge.lvl-d3 {
-        font-size: 14px;
+        width: 52px;
+        height: 52px;
+        font-size: 16px;
         letter-spacing: -2px;
     }
     
@@ -7892,13 +7904,18 @@ footer,
     font-size: 28px;
 }
 
+/* Larger heart for 2-digit numbers */
 .hdh-level-badge.lvl-d2 {
-    font-size: 26px;
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
     letter-spacing: -1px;
 }
 
 .hdh-level-badge.lvl-d3 {
-    font-size: 22px;
+    width: 72px;
+    height: 72px;
+    font-size: 24px;
     letter-spacing: -2px;
 }
 
