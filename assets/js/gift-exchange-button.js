@@ -71,23 +71,29 @@
                         if (data.success) {
                             showToast(data.data?.message || 'Hediyeleşme başlatıldı!', 'success');
                             
-                            // Get exchange ID from response
-                            const exchangeId = data.data?.exchange?.id || data.data?.exchange_id;
+                            // Get exchange ID from response - handle different response formats
+                            const exchangeId = data.data?.exchange?.id || 
+                                             data.data?.exchange_id || 
+                                             (data.data?.exchange && parseInt(data.data.exchange.id)) ||
+                                             null;
+                            
+                            console.log('Gift exchange started, exchangeId:', exchangeId, 'Response:', data);
                             
                             // Open gift exchange panel and chat view
                             const giftIcon = document.getElementById('gift-exchange-icon-toggle');
-                            if (giftIcon) {
+                            if (giftIcon && exchangeId) {
                                 // Open panel first
-                                if (!document.getElementById('gift-exchange-panel')?.classList.contains('active')) {
+                                const giftPanel = document.getElementById('gift-exchange-panel');
+                                if (!giftPanel || !giftPanel.classList.contains('active')) {
                                     giftIcon.click();
                                 }
                                 
                                 // Wait for panel to open, then open chat view
                                 setTimeout(() => {
-                                    if (exchangeId && typeof window.openGiftExchangeChat === 'function') {
+                                    if (typeof window.openGiftExchangeChat === 'function') {
                                         // Use global function if available
                                         window.openGiftExchangeChat(exchangeId);
-                                    } else if (exchangeId) {
+                                    } else {
                                         // Try to trigger chat view opening via custom event
                                         const event = new CustomEvent('hdh-open-gift-chat', {
                                             detail: { exchangeId: exchangeId }
@@ -95,6 +101,12 @@
                                         window.dispatchEvent(event);
                                     }
                                 }, 800);
+                            } else if (!exchangeId) {
+                                console.warn('Exchange ID not found in response, opening panel only');
+                                // If no exchange ID, just open panel
+                                if (giftIcon) {
+                                    giftIcon.click();
+                                }
                             }
                         } else {
                             showToast(data.data?.message || 'Hediyeleşme başlatılamadı', 'error');
