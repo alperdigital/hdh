@@ -970,16 +970,18 @@ h6 { font-size: 1.1rem; }
         font-size: 16px;
     }
     
-    .hdh-header-level-badge.lvl-d1 {
+    .hdh-header-user-content .hdh-level-badge.lvl-d1 {
         font-size: 18px;
     }
     
-    .hdh-header-level-badge.lvl-d2 {
+    .hdh-header-user-content .hdh-level-badge.lvl-d2 {
         font-size: 16px;
+        letter-spacing: -1px;
     }
     
-    .hdh-header-level-badge.lvl-d3 {
+    .hdh-header-user-content .hdh-level-badge.lvl-d3 {
         font-size: 14px;
+        letter-spacing: -2px;
     }
     
     .hdh-header-farm-name {
