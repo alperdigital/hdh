@@ -130,7 +130,11 @@ function hdh_get_referral_link($user_id) {
     $username = $user->user_login;
     $register_url = home_url('/profil');
     
-    return add_query_arg('ref', $username, $register_url);
+    // Add both action=register and ref parameters for direct registration
+    return add_query_arg(array(
+        'action' => 'register',
+        'ref' => $username
+    ), $register_url);
 }
 
 /**

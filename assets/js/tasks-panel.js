@@ -772,6 +772,7 @@
         
         /**
          * Handle referral link sharing
+         * Uses Web Share API if available, otherwise falls back to clipboard
          */
         function handleReferralShare(link) {
             if (!link) {
@@ -779,14 +780,21 @@
                 return;
             }
             
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(link).then(function() {
-                    console.log('Referral link copied to clipboard:', link);
-                    // Visual feedback: briefly change button text
-                    const shareBtn = document.querySelector('.btn-share-referral[data-referral-link="' + link.replace(/"/g, '&quot;') + '"]');
+            // Get the button for visual feedback
+            const shareBtn = document.querySelector('.btn-share-referral[data-referral-link="' + link.replace(/"/g, '&quot;') + '"]');
+            
+            // Try Web Share API first (mobile-friendly, opens native share dialog)
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Hay Day Help - Hediyeleşmeye Başla',
+                    text: 'Hay Day Help\'e katıl ve hediyeleşmeye başla!',
+                    url: link
+                }).then(function() {
+                    console.log('Referral link shared successfully');
+                    // Visual feedback
                     if (shareBtn) {
                         const originalText = shareBtn.textContent;
-                        shareBtn.textContent = '✅ Kopyalandı!';
+                        shareBtn.textContent = '✅ Paylaşıldı!';
                         shareBtn.style.opacity = '0.7';
                         setTimeout(function() {
                             shareBtn.textContent = originalText;
@@ -794,21 +802,44 @@
                         }, 2000);
                     }
                 }).catch(function(err) {
-                    console.error('Failed to copy referral link:', err);
-                    // Fallback: show link in prompt
-                    const userLink = prompt('Referral linkiniz (kopyalamak için Ctrl+C):', link);
-                    if (userLink) {
-                        // User might have copied manually
-                        console.log('User copied link manually');
+                    // User cancelled or error occurred
+                    if (err.name !== 'AbortError') {
+                        console.error('Error sharing:', err);
                     }
+                    // Fallback to clipboard
+                    copyToClipboard(link, shareBtn);
+                });
+            } else {
+                // Fallback: Copy to clipboard
+                copyToClipboard(link, shareBtn);
+            }
+        }
+        
+        /**
+         * Copy link to clipboard with visual feedback
+         */
+        function copyToClipboard(link, btn) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(link).then(function() {
+                    console.log('Referral link copied to clipboard:', link);
+                    // Visual feedback
+                    if (btn) {
+                        const originalText = btn.textContent;
+                        btn.textContent = '✅ Kopyalandı!';
+                        btn.style.opacity = '0.7';
+                        setTimeout(function() {
+                            btn.textContent = originalText;
+                            btn.style.opacity = '';
+                        }, 2000);
+                    }
+                }).catch(function(err) {
+                    console.error('Failed to copy referral link:', err);
+                    // Final fallback: show link in prompt
+                    prompt('Referral linkiniz (kopyalamak için Ctrl+C veya Cmd+C):', link);
                 });
             } else {
                 // Fallback: show link in prompt
-                const userLink = prompt('Referral linkiniz (kopyalamak için Ctrl+C):', link);
-                if (userLink) {
-                    // User might have copied manually
-                    console.log('User copied link manually');
-                }
+                prompt('Referral linkiniz (kopyalamak için Ctrl+C veya Cmd+C):', link);
             }
         }
     });

@@ -507,5 +507,46 @@ if (!$is_logged_in) {
     <?php
 }
 
+// Auto-fill referral field from URL parameter and activate register tab
+?>
+<script>
+(function() {
+    'use strict';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const refParam = urlParams.get('ref');
+        const actionParam = urlParams.get('action');
+        
+        if (refParam && actionParam === 'register') {
+            const referralField = document.getElementById('referral_username');
+            if (referralField && !referralField.value) {
+                referralField.value = refParam;
+                // Visual feedback
+                referralField.style.borderColor = '#74c365';
+                referralField.style.transition = 'border-color 0.3s ease';
+                setTimeout(function() {
+                    referralField.style.borderColor = '';
+                }, 2000);
+            }
+            
+            // Ensure register tab is active
+            const registerTab = document.querySelector('.auth-tab[data-tab="register"]');
+            const loginTab = document.querySelector('.auth-tab[data-tab="login"]');
+            const registerForm = document.getElementById('register-form-container');
+            const loginForm = document.getElementById('login-form-container');
+            
+            if (registerTab && loginTab && registerForm && loginForm) {
+                loginTab.classList.remove('active');
+                registerTab.classList.add('active');
+                loginForm.classList.remove('active');
+                registerForm.classList.add('active');
+            }
+        }
+    });
+})();
+</script>
+<?php
+
 get_footer();
 ?>
