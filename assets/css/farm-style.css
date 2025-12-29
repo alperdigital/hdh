@@ -8035,27 +8035,31 @@ footer,
 
 @media (max-width: 768px) {
     .hdh-level-badge {
-        width: 44px;
-        height: 44px;
+        width: 66px;
+        height: 66px;
     }
     
     .hdh-level-badge.lvl-d1 {
-        font-size: 22px;
+        font-size: 33px;
     }
     
     .hdh-level-badge.lvl-d2 {
-        font-size: 20px;
+        width: 78px;
+        height: 78px;
+        font-size: 30px;
     }
     
     .hdh-level-badge.lvl-d3 {
-        font-size: 18px;
+        width: 90px;
+        height: 90px;
+        font-size: 27px;
     }
     
     .hdh-level-badge {
-        -webkit-text-stroke: 3px #0b0b0b;
+        -webkit-text-stroke: 4.5px #0b0b0b;
         text-shadow:
-            0 2px 0 rgba(0, 0, 0, 0.25),
-            0 6px 10px rgba(0, 0, 0, 0.18);
+            0 3px 0 rgba(0, 0, 0, 0.25),
+            0 9px 15px rgba(0, 0, 0, 0.18);
     }
 }
 
