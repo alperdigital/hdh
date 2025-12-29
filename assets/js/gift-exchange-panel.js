@@ -1136,6 +1136,28 @@
             }, 3000);
         }
         
+        // Expose openChat function globally for use by gift-exchange-button.js
+        window.openGiftExchangeChat = function(exchangeId) {
+            if (exchangeId) {
+                // Ensure panel is open
+                if (!giftPanel.classList.contains('active')) {
+                    openGiftPanel();
+                }
+                // Open chat view
+                setTimeout(() => {
+                    openChat(exchangeId);
+                }, 300);
+            }
+        };
+        
+        // Listen for custom event to open chat
+        window.addEventListener('hdh-open-gift-chat', function(e) {
+            const exchangeId = e.detail?.exchangeId;
+            if (exchangeId) {
+                window.openGiftExchangeChat(exchangeId);
+            }
+        });
+        
         // Poll for badge updates when panel is closed
         setInterval(function() {
             if (!giftPanel.classList.contains('active')) {
