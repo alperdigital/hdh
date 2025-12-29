@@ -7930,12 +7930,16 @@ footer,
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d2 {
-    font-size: 22px;
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
     letter-spacing: -1px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d3 {
-    font-size: 19px;
+    width: 64px;
+    height: 64px;
+    font-size: 20px;
     letter-spacing: -2px;
 }
 
