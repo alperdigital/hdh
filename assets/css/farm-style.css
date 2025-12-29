@@ -812,29 +812,29 @@ h6 { font-size: 1.1rem; }
 
 /* Header level badge now uses .hdh-level-badge with heart SVG */
 .hdh-header-user-content .hdh-level-badge {
-    width: 84px;
-    height: 84px;
+    width: 42px;
+    height: 42px;
     flex-shrink: 0;
-    /* translateY = -font-size/2 for header (18.15px / 2 = 9.075px) */
-    transform: translateY(-9.075px);
+    /* translateY = -font-size/2 for header (9.075px / 2 = 4.5375px) */
+    transform: translateY(-4.5375px);
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d1 {
-    font-size: 18.15px;
+    font-size: 9.075px;
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d2 {
-    width: 96px;
-    height: 96px;
-    font-size: 18.15px;
-    letter-spacing: -1px;
+    width: 48px;
+    height: 48px;
+    font-size: 9.075px;
+    letter-spacing: -0.5px;
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d3 {
-    width: 108px;
-    height: 108px;
-    font-size: 14.85px;
-    letter-spacing: -2px;
+    width: 54px;
+    height: 54px;
+    font-size: 7.425px;
+    letter-spacing: -1px;
 }
 
 .hdh-header-farm-info {
@@ -7915,8 +7915,8 @@ footer,
    */
 
 .hdh-level-badge {
-    width: 84px;
-    height: 84px;
+    width: 42px;
+    height: 42px;
     background: url('../icons/level-heart.svg') center/contain no-repeat;
     display: flex;
     align-items: center;
@@ -7929,17 +7929,17 @@ footer,
     line-height: 1;
     
     /* Thick black outline (cartoon style) */
-    -webkit-text-stroke: 6px #0b0b0b;
+    -webkit-text-stroke: 3px #0b0b0b;
     paint-order: stroke fill;
     
     /* Drop shadow for depth */
     text-shadow:
-        0 4px 0 rgba(0, 0, 0, 0.25),
-        0 12px 18px rgba(0, 0, 0, 0.20);
+        0 2px 0 rgba(0, 0, 0, 0.25),
+        0 6px 9px rgba(0, 0, 0, 0.20);
     
     /* Perfect center alignment - fine-tuned for visual center */
     /* translateY = -font-size/2 (half of "1" character height) */
-    transform: translateY(-11.55px);
+    transform: translateY(-5.775px);
     position: relative;
     
     flex-shrink: 0;
@@ -7947,141 +7947,141 @@ footer,
     user-select: none;
 }
 
-/* Font size based on digit count - 10% larger than previous (15% smaller than original) */
+/* Font size based on digit count - 50% smaller */
 .hdh-level-badge.lvl-d1 {
-    font-size: 23.1px;
+    font-size: 11.55px;
 }
 
 /* Larger heart for 2-digit numbers */
 .hdh-level-badge.lvl-d2 {
-    width: 96px;
-    height: 96px;
-    font-size: 23.1px;
-    letter-spacing: -1px;
+    width: 48px;
+    height: 48px;
+    font-size: 11.55px;
+    letter-spacing: -0.5px;
 }
 
 .hdh-level-badge.lvl-d3 {
-    width: 108px;
-    height: 108px;
-    font-size: 19.8px;
-    letter-spacing: -2px;
+    width: 54px;
+    height: 54px;
+    font-size: 9.9px;
+    letter-spacing: -1px;
 }
 
-/* Smaller size for listing cards - scaled 1.5x */
+/* Smaller size for listing cards - 50% smaller */
 .listing-meta-row-unified .hdh-level-badge {
-    width: 72px;
-    height: 72px;
+    width: 36px;
+    height: 36px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d1 {
-    font-size: 19.8px;
+    font-size: 9.9px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d2 {
-    width: 84px;
-    height: 84px;
-    font-size: 19.8px;
-    letter-spacing: -1px;
+    width: 42px;
+    height: 42px;
+    font-size: 9.9px;
+    letter-spacing: -0.5px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d3 {
-    width: 96px;
-    height: 96px;
-    font-size: 16.5px;
-    letter-spacing: -2px;
+    width: 48px;
+    height: 48px;
+    font-size: 8.25px;
+    letter-spacing: -1px;
 }
 
-/* Adjust stroke for smaller badges - scaled 1.5x */
+/* Adjust stroke for smaller badges - 50% smaller */
 .listing-meta-row-unified .hdh-level-badge {
-    -webkit-text-stroke: 4.5px #0b0b0b;
+    -webkit-text-stroke: 2.25px #0b0b0b;
     text-shadow:
-        0 3px 0 rgba(0, 0, 0, 0.25),
-        0 9px 15px rgba(0, 0, 0, 0.18);
-    /* translateY = -font-size/2 for listing cards (19.8px / 2 = 9.9px) */
-    transform: translateY(-9.9px);
+        0 1.5px 0 rgba(0, 0, 0, 0.25),
+        0 4.5px 7.5px rgba(0, 0, 0, 0.18);
+    /* translateY = -font-size/2 for listing cards (9.9px / 2 = 4.95px) */
+    transform: translateY(-4.95px);
 }
 
-/* Lobby chat level badge - desktop - scaled 1.5x */
+/* Lobby chat level badge - desktop - 50% smaller */
 .chat-message-user .hdh-level-badge {
-    width: 60px;
-    height: 60px;
-    /* translateY = -font-size/2 for chat (16.5px / 2 = 8.25px) */
-    transform: translateY(-8.25px);
+    width: 30px;
+    height: 30px;
+    /* translateY = -font-size/2 for chat (8.25px / 2 = 4.125px) */
+    transform: translateY(-4.125px);
 }
 
 .chat-message-user .hdh-level-badge.lvl-d1 {
-    font-size: 16.5px;
+    font-size: 8.25px;
 }
 
 .chat-message-user .hdh-level-badge.lvl-d2 {
-    width: 72px;
-    height: 72px;
-    font-size: 16.5px;
-    letter-spacing: -1px;
+    width: 36px;
+    height: 36px;
+    font-size: 8.25px;
+    letter-spacing: -0.5px;
 }
 
 .chat-message-user .hdh-level-badge.lvl-d3 {
-    width: 84px;
-    height: 84px;
-    font-size: 14.85px;
-    letter-spacing: -2px;
-}
-
-/* Single trade page level badge - scaled 1.5x */
-.trade-description-meta .hdh-level-badge {
-    width: 78px;
-    height: 78px;
-    /* translateY = -font-size/2 for single trade (21.45px / 2 = 10.725px) */
-    transform: translateY(-10.725px);
-}
-
-.trade-description-meta .hdh-level-badge.lvl-d1 {
-    font-size: 21.45px;
-}
-
-.trade-description-meta .hdh-level-badge.lvl-d2 {
-    width: 90px;
-    height: 90px;
-    font-size: 21.45px;
+    width: 42px;
+    height: 42px;
+    font-size: 7.425px;
     letter-spacing: -1px;
 }
 
+/* Single trade page level badge - 50% smaller */
+.trade-description-meta .hdh-level-badge {
+    width: 39px;
+    height: 39px;
+    /* translateY = -font-size/2 for single trade (10.725px / 2 = 5.3625px) */
+    transform: translateY(-5.3625px);
+}
+
+.trade-description-meta .hdh-level-badge.lvl-d1 {
+    font-size: 10.725px;
+}
+
+.trade-description-meta .hdh-level-badge.lvl-d2 {
+    width: 45px;
+    height: 45px;
+    font-size: 10.725px;
+    letter-spacing: -0.5px;
+}
+
 .trade-description-meta .hdh-level-badge.lvl-d3 {
-    width: 102px;
-    height: 102px;
-    font-size: 18.15px;
-    letter-spacing: -2px;
+    width: 51px;
+    height: 51px;
+    font-size: 9.075px;
+    letter-spacing: -1px;
 }
 
 @media (max-width: 768px) {
     .hdh-level-badge {
-        width: 66px;
-        height: 66px;
+        width: 33px;
+        height: 33px;
     }
     
     .hdh-level-badge.lvl-d1 {
-        font-size: 18.15px;
+        font-size: 9.075px;
     }
     
     .hdh-level-badge.lvl-d2 {
-        width: 78px;
-        height: 78px;
-        font-size: 16.5px;
+        width: 39px;
+        height: 39px;
+        font-size: 8.25px;
     }
     
     .hdh-level-badge.lvl-d3 {
-        width: 90px;
-        height: 90px;
-        font-size: 14.85px;
+        width: 45px;
+        height: 45px;
+        font-size: 7.425px;
     }
     
     .hdh-level-badge {
-        -webkit-text-stroke: 4.5px #0b0b0b;
+        -webkit-text-stroke: 2.25px #0b0b0b;
         text-shadow:
-            0 3px 0 rgba(0, 0, 0, 0.25),
-            0 9px 15px rgba(0, 0, 0, 0.18);
-        /* translateY = -font-size/2 for mobile (18.15px / 2 = 9.075px average) */
-        transform: translateY(-9.075px);
+            0 1.5px 0 rgba(0, 0, 0, 0.25),
+            0 4.5px 7.5px rgba(0, 0, 0, 0.18);
+        /* translateY = -font-size/2 for mobile (9.075px / 2 = 4.5375px average) */
+        transform: translateY(-4.5375px);
     }
 }
 
