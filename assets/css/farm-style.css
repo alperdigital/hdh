@@ -5241,10 +5241,11 @@ footer,
 
 /* 2. MIDDLE SECTION - SOCIAL PROOF */
 .homepage-recent-listings {
-    padding: 20px 20px 40px;
+    padding: 20px 0 40px;
     background: #FFF6D8;
     overflow-x: hidden;
     max-width: 100%;
+    width: 100%;
     box-sizing: border-box;
 }
 
