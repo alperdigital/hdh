@@ -83,12 +83,12 @@
                         const successMsg = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.listing_deactivated_success) 
                             ? hdhProfile.messages.profile.listing_deactivated_success 
                             : 'İlan başarıyla pasife alındı.';
-                        showToast(successMsg, 'success');
+                        // İlan kaldırıldı - toast kaldırıldı
                     } else {
                         const errorMsg = data.data.message || (hdhProfile.messages && hdhProfile.messages.ajax && hdhProfile.messages.ajax.generic_error) 
                             ? hdhProfile.messages.ajax.generic_error 
                             : 'Bir hata oluştu.';
-                        showToast(errorMsg, 'error');
+                        console.error('Profile error:', errorMsg);
                         btn.disabled = false;
                         const deactivateText = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.deactivate_button_text) 
                             ? hdhProfile.messages.profile.deactivate_button_text 
@@ -101,7 +101,7 @@
                     const errorMsg = (hdhProfile.messages && hdhProfile.messages.ajax && hdhProfile.messages.ajax.generic_error_retry) 
                         ? hdhProfile.messages.ajax.generic_error_retry 
                         : 'Bir hata oluştu. Lütfen tekrar deneyin.';
-                    showToast(errorMsg, 'error');
+                    console.error('Profile error:', errorMsg);
                     btn.disabled = false;
                     const deactivateText = (hdhProfile.messages && hdhProfile.messages.profile && hdhProfile.messages.profile.deactivate_button_text) 
                         ? hdhProfile.messages.profile.deactivate_button_text 
@@ -111,23 +111,14 @@
             });
         });
         
-        // Toast notification function
+        // Toast notification function - Disabled (no visual feedback, only console logging)
         function showToast(message, type) {
-            const toast = document.createElement('div');
-            toast.className = 'profile-toast profile-toast-' + type;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(function() {
-                toast.classList.add('show');
-            }, 10);
-            
-            setTimeout(function() {
-                toast.classList.remove('show');
-                setTimeout(function() {
-                    toast.remove();
-                }, 300);
-            }, 3000);
+            // Toast notifications removed - only log to console for debugging
+            if (type === 'error') {
+                console.error('Toast (disabled):', message);
+            } else {
+                console.log('Toast (disabled):', message);
+            }
         }
     });
 })();

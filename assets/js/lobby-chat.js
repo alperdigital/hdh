@@ -116,7 +116,7 @@
         
         // Validate nonce
         if (!config.nonce) {
-            showToast('Güvenlik hatası. Sayfayı yenileyin.', 'error');
+            console.error('Güvenlik hatası. Sayfayı yenileyin.');
             if (submitBtn) {
                 submitBtn.disabled = false;
             }
@@ -151,7 +151,7 @@
                 stopPolling();
                 setTimeout(startPolling, 1000);
             } else {
-                showToast(data.data?.message || 'Mesaj gönderilemedi', 'error');
+                console.error('Mesaj gönderilemedi:', data.data?.message || 'Bilinmeyen hata');
             }
             
             if (submitBtn) {
@@ -160,7 +160,7 @@
         })
         .catch(error => {
             console.error('Error sending chat message:', error);
-            showToast('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+            console.error('Bir hata oluştu. Lütfen tekrar deneyin.');
             if (submitBtn) {
                 submitBtn.disabled = false;
             }
@@ -538,25 +538,15 @@
     }
     
     /**
-     * Show toast notification
+     * Show toast notification - Disabled (no visual feedback, only console logging)
      */
     function showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `lobby-chat-toast lobby-chat-toast-${type}`;
-        toast.textContent = message;
-        
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
-        
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
-        }, 3000);
+        // Toast notifications removed - only log to console for debugging
+        if (type === 'error') {
+            console.error('Toast (disabled):', message);
+        } else {
+            console.log('Toast (disabled):', message);
+        }
     }
     
     // Initialize when DOM is ready

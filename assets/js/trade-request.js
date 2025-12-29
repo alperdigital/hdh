@@ -65,7 +65,7 @@
         const listingId = btn.getAttribute('data-listing-id');
         
         if (!listingId) {
-            showToast('Hata: İlan ID bulunamadı', 'error');
+            console.error('Hata: İlan ID bulunamadı');
             return;
         }
         
@@ -89,20 +89,20 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast(data.data.message || 'Teklif başarıyla gönderildi', 'success');
+                // Teklif başarıyla gönderildi - toast kaldırıldı
                 // Reload page to show status
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
             } else {
-                showToast(data.data?.message || 'Teklif gönderilemedi', 'error');
+                console.error('Teklif gönderilemedi:', data.data?.message || 'Bilinmeyen hata');
                 btn.disabled = false;
                 btn.innerHTML = originalText;
             }
         })
         .catch(error => {
             console.error('Error sending trade request:', error);
-            showToast('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+            console.error('Bir hata oluştu. Lütfen tekrar deneyin.');
             btn.disabled = false;
             btn.innerHTML = originalText;
         });
@@ -117,7 +117,7 @@
         const requestId = btn.getAttribute('data-request-id');
         
         if (!requestId) {
-            showToast('Hata: Teklif ID bulunamadı', 'error');
+            console.error('Hata: Teklif ID bulunamadı');
             return;
         }
         
@@ -145,20 +145,20 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast(data.data.message || 'Teklif kabul edildi', 'success');
+                // Teklif kabul edildi - toast kaldırıldı
                 // Reload page to show trade session
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
             } else {
-                showToast(data.data?.message || 'Teklif kabul edilemedi', 'error');
+                console.error('Teklif kabul edilemedi:', data.data?.message || 'Bilinmeyen hata');
                 btn.disabled = false;
                 btn.innerHTML = originalText;
             }
         })
         .catch(error => {
             console.error('Error accepting trade request:', error);
-            showToast('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+            console.error('Bir hata oluştu. Lütfen tekrar deneyin.');
             btn.disabled = false;
             btn.innerHTML = originalText;
         });
@@ -173,7 +173,7 @@
         const requestId = btn.getAttribute('data-request-id');
         
         if (!requestId) {
-            showToast('Hata: Teklif ID bulunamadı', 'error');
+            console.error('Hata: Teklif ID bulunamadı');
             return;
         }
         
@@ -201,21 +201,21 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast(data.data.message || 'Teklif reddedildi', 'success');
+                // Teklif reddedildi - toast kaldırıldı
                 // Remove request item from DOM
                 const requestItem = btn.closest('.pending-request-item');
                 if (requestItem) {
                     requestItem.remove();
                 }
             } else {
-                showToast(data.data?.message || 'Teklif reddedilemedi', 'error');
+                console.error('Teklif reddedilemedi:', data.data?.message || 'Bilinmeyen hata');
                 btn.disabled = false;
                 btn.innerHTML = originalText;
             }
         })
         .catch(error => {
             console.error('Error rejecting trade request:', error);
-            showToast('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+            console.error('Bir hata oluştu. Lütfen tekrar deneyin.');
             btn.disabled = false;
             btn.innerHTML = originalText;
         });
@@ -311,29 +311,15 @@
     }
     
     /**
-     * Show toast notification
+     * Show toast notification - Disabled (no visual feedback, only console logging)
      */
     function showToast(message, type = 'info') {
-        // Create toast element
-        const toast = document.createElement('div');
-        toast.className = `trade-request-toast toast-${type}`;
-        toast.textContent = message;
-        
-        // Add to page
-        document.body.appendChild(toast);
-        
-        // Show toast
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
-        
-        // Remove toast after 3 seconds
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
-        }, 3000);
+        // Toast notifications removed - only log to console for debugging
+        if (type === 'error') {
+            console.error('Toast (disabled):', message);
+        } else {
+            console.log('Toast (disabled):', message);
+        }
     }
     
     // Initialize when DOM is ready

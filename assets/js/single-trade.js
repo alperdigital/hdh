@@ -51,7 +51,7 @@
                     const msg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.select_at_least_one_gift) 
                         ? hdhSingleTrade.messages.ajax.select_at_least_one_gift 
                         : 'En az bir hediye seçmelisiniz.';
-                    showToast(msg, 'error');
+                    console.error('Single trade error:', msg);
                     return;
                 }
                 
@@ -73,7 +73,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        showToast(data.data.message, 'success');
+                        // Teklif gönderildi - toast kaldırıldı
                         setTimeout(function() {
                             location.reload();
                         }, 1500);
@@ -81,7 +81,7 @@
                         const errorMsg = data.data.message || (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.generic_error) 
                             ? hdhSingleTrade.messages.ajax.generic_error 
                             : 'Bir hata oluştu.';
-                        showToast(errorMsg, 'error');
+                        console.error('Single trade error:', errorMsg);
                         submitBtn.disabled = false;
                         submitBtn.textContent = '📤 Teklif Gönder';
                     }
@@ -91,7 +91,7 @@
                     const errorMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.generic_error_retry) 
                         ? hdhSingleTrade.messages.ajax.generic_error_retry 
                         : 'Bir hata oluştu. Lütfen tekrar deneyin.';
-                    showToast(errorMsg, 'error');
+                    console.error('Single trade error:', errorMsg);
                     submitBtn.disabled = false;
                     submitBtn.textContent = '📤 Teklif Gönder';
                 });
@@ -130,19 +130,19 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        showToast(data.data.message, 'success');
+                        // Teklif gönderildi - toast kaldırıldı
                         setTimeout(function() {
                             location.reload();
                         }, 1500);
                     } else {
-                        showToast(data.data.message || 'Bir hata oluştu.', 'error');
+                        console.error('Single trade error:', data.data.message || 'Bir hata oluştu.');
                         btn.disabled = false;
                         btn.textContent = '✅ Kabul Et';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showToast('Bir hata oluştu.', 'error');
+                    console.error('Bir hata oluştu.');
                     btn.disabled = false;
                     btn.textContent = '✅ Kabul Et';
                 });
@@ -181,7 +181,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        showToast(data.data.message, 'success');
+                        // Teklif gönderildi - toast kaldırıldı
                         setTimeout(function() {
                             location.reload();
                         }, 1500);
@@ -189,7 +189,7 @@
                         const errorMsg = data.data.message || (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.generic_error) 
                             ? hdhSingleTrade.messages.ajax.generic_error 
                             : 'Bir hata oluştu.';
-                        showToast(errorMsg, 'error');
+                        console.error('Single trade error:', errorMsg);
                         btn.disabled = false;
                         btn.textContent = '❌ Reddet';
                     }
@@ -199,7 +199,7 @@
                     const errorMsg = (hdhSingleTrade.messages && hdhSingleTrade.messages.ajax && hdhSingleTrade.messages.ajax.generic_error) 
                         ? hdhSingleTrade.messages.ajax.generic_error 
                         : 'Bir hata oluştu.';
-                    showToast(errorMsg, 'error');
+                    console.error('Single trade error:', errorMsg);
                     btn.disabled = false;
                     btn.textContent = '❌ Reddet';
                 });
@@ -292,14 +292,14 @@
                         submitBtn.disabled = false;
                         submitBtn.textContent = '📤 Gönder';
                     } else {
-                        showToast(data.data.message || 'Mesaj gönderilemedi.', 'error');
+                        console.error('Mesaj gönderilemedi:', data.data.message || 'Bilinmeyen hata');
                         submitBtn.disabled = false;
                         submitBtn.textContent = '📤 Gönder';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showToast('Bir hata oluştu.', 'error');
+                    console.error('Bir hata oluştu.');
                     submitBtn.disabled = false;
                     submitBtn.textContent = '📤 Gönder';
                 });
@@ -332,12 +332,12 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        showToast(data.data.message, 'success');
+                        // Teklif gönderildi - toast kaldırıldı
                         setTimeout(function() {
                             location.reload();
                         }, 1500);
                     } else {
-                        showToast(data.data.message || 'Bir hata oluştu.', 'error');
+                        console.error('Single trade error:', data.data.message || 'Bir hata oluştu.');
                         confirmExchangeBtn.disabled = false;
                         const completeText = (hdhSingleTrade.messages && hdhSingleTrade.messages.ui && hdhSingleTrade.messages.ui.complete_exchange_button) 
                             ? hdhSingleTrade.messages.ui.complete_exchange_button 
@@ -347,30 +347,21 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showToast('Bir hata oluştu.', 'error');
+                    console.error('Bir hata oluştu.');
                     confirmExchangeBtn.disabled = false;
                     confirmExchangeBtn.textContent = 'Hediyeleşmeyi Tamamladım';
                 });
             });
         }
         
-        // Toast notification function
+        // Toast notification function - Disabled (no visual feedback, only console logging)
         function showToast(message, type) {
-            const toast = document.createElement('div');
-            toast.className = 'trade-toast trade-toast-' + type;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(function() {
-                toast.classList.add('show');
-            }, 10);
-            
-            setTimeout(function() {
-                toast.classList.remove('show');
-                setTimeout(function() {
-                    toast.remove();
-                }, 300);
-            }, 3000);
+            // Toast notifications removed - only log to console for debugging
+            if (type === 'error') {
+                console.error('Toast (disabled):', message);
+            } else {
+                console.log('Toast (disabled):', message);
+            }
         }
         
         // Escape HTML helper

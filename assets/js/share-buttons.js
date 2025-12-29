@@ -34,7 +34,7 @@
                     case 'copy':
                         if (navigator.clipboard) {
                             navigator.clipboard.writeText(url).then(function() {
-                                showToast('Link kopyalandı!');
+                                // Link kopyalandı - toast kaldırıldı
                             });
                         } else {
                             // Fallback
@@ -44,7 +44,7 @@
                             textarea.select();
                             document.execCommand('copy');
                             document.body.removeChild(textarea);
-                            showToast('Link kopyalandı!');
+                            // Link kopyalandı - toast kaldırıldı
                         }
                         break;
                     
@@ -79,21 +79,8 @@
     });
     
     function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'toast toast-success';
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        
-        setTimeout(function() {
-            toast.classList.add('show');
-        }, 10);
-        
-        setTimeout(function() {
-            toast.classList.remove('show');
-            setTimeout(function() {
-                document.body.removeChild(toast);
-            }, 300);
-        }, 2000);
+        // Toast notifications removed - only log to console for debugging
+        console.log('Toast (disabled):', message);
     }
 })();
 

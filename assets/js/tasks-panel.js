@@ -206,7 +206,7 @@
                 const errorMsg = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.task_id_not_found) 
                     ? hdhTasks.messages.tasks.task_id_not_found 
                     : 'Görev ID bulunamadı';
-                showToast(errorMsg, 'error');
+                console.error('Tasks error:', errorMsg);
                 return;
             }
             
@@ -215,7 +215,7 @@
                 const errorMsg = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.task_system_load_error) 
                     ? hdhTasks.messages.tasks.task_system_load_error 
                     : 'Görev sistemi yüklenemedi';
-                showToast(errorMsg, 'error');
+                console.error('Tasks error:', errorMsg);
                 return;
             }
             
@@ -263,7 +263,7 @@
                         message = parts.join(' + ') + ' kazandınız!';
                     }
                     
-                    showToast(message, 'success');
+                    // Task completed - toast removed
                     
                     // Update UI: claimable_count and badge
                     const claimableRemaining = data.data.claimable_remaining !== undefined ? data.data.claimable_remaining : 0;
@@ -411,7 +411,7 @@
                     const errorMsg = data.data.message || (hdhTasks.messages && hdhTasks.messages.ajax && hdhTasks.messages.ajax.generic_error) 
                         ? hdhTasks.messages.ajax.generic_error 
                         : 'Bir hata oluştu';
-                    showToast(errorMsg, 'error');
+                    console.error('Tasks error:', errorMsg);
                     btn.disabled = false;
                     btn.textContent = originalText;
                 }
@@ -421,7 +421,7 @@
                 const errorMsg = (hdhTasks.messages && hdhTasks.messages.ajax && hdhTasks.messages.ajax.generic_error) 
                     ? hdhTasks.messages.ajax.generic_error 
                     : 'Bir hata oluştu';
-                showToast(errorMsg, 'error'); 
+                console.error('Tasks error:', errorMsg); 
                 btn.disabled = false; 
                 btn.textContent = originalText; 
             });
@@ -688,27 +688,15 @@
         }
         
         /**
-         * Show toast notification
+         * Show toast notification - Disabled (no visual feedback, only console logging)
          */
         function showToast(message, type) {
-            const toast = document.createElement('div');
-            toast.className = 'toast toast-' + type;
-            toast.textContent = message;
-            toast.style.cssText = 'position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: ' + (type === 'success' ? 'var(--farm-green)' : '#dc3545') + '; color: #FFFFFF; padding: 14px 24px; border-radius: 10px; font-weight: 600; z-index: 10001; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-width: 90%; text-align: center; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;';
-            document.body.appendChild(toast);
-            
-            setTimeout(function() { 
-                toast.style.opacity = '1'; 
-                toast.style.transform = 'translateX(-50%) translateY(0)'; 
-            }, 10);
-            
-            setTimeout(function() { 
-                toast.style.opacity = '0'; 
-                toast.style.transform = 'translateX(-50%) translateY(20px)'; 
-                setTimeout(function() { 
-                    toast.remove(); 
-                }, 300); 
-            }, 3000);
+            // Toast notifications removed - only log to console for debugging
+            if (type === 'error') {
+                console.error('Toast (disabled):', message);
+            } else {
+                console.log('Toast (disabled):', message);
+            }
         }
     });
 })();

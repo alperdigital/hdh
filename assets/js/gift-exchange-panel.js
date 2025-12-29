@@ -404,7 +404,7 @@
                         exchanges: exchangesData,
                         messages: messagesData
                     });
-                    showToast('Chat yüklenemedi: ' + (exchangesData.data?.message || messagesData.data?.message || 'Bilinmeyen hata'), 'error');
+                    console.error('Chat yüklenemedi:', exchangesData.data?.message || messagesData.data?.message || 'Bilinmeyen hata');
                     if (loading) loading.style.display = 'none';
                     goBackToList();
                     return;
@@ -413,7 +413,7 @@
                 // Check if exchanges array exists
                 if (!exchangesData.data || !exchangesData.data.exchanges || !Array.isArray(exchangesData.data.exchanges)) {
                     console.error('Invalid exchanges data:', exchangesData);
-                    showToast('Hediyeleşme verisi geçersiz', 'error');
+                    console.error('Hediyeleşme verisi geçersiz');
                     if (loading) loading.style.display = 'none';
                     goBackToList();
                     return;
@@ -436,7 +436,7 @@
                             counterpart: e.counterpart_name 
                         }))
                     });
-                    showToast('Hediyeleşme bulunamadı', 'error');
+                    console.error('Hediyeleşme bulunamadı');
                     if (loading) loading.style.display = 'none';
                     goBackToList();
                     return;
@@ -467,7 +467,7 @@
             })
             .catch(error => {
                 console.error('Error loading chat:', error);
-                showToast('Chat yüklenemedi', 'error');
+                console.error('Chat yüklenemedi');
                 // Hide loading
                 const loading = document.getElementById('gift-exchange-loading');
                 if (loading) {
@@ -492,7 +492,7 @@
             
             if (!exchange) {
                 console.error('renderChatView: Exchange data is missing');
-                showToast('Hediyeleşme verisi yüklenemedi', 'error');
+                console.error('Hediyeleşme verisi yüklenemedi');
                 return;
             }
             
@@ -605,7 +605,7 @@
                     tempDivChildren: tempDiv.children.length,
                     htmlPreview: html.substring(0, 200)
                 });
-                showToast('Chat görünümü oluşturulamadı', 'error');
+                console.error('Chat görünümü oluşturulamadı');
                 return;
             }
             
@@ -709,14 +709,14 @@
                     // Force full reload after sending to ensure message appears
                     loadMessages(exchangeId, true, true);
                 } else {
-                    showToast(data.data?.message || 'Mesaj gönderilemedi', 'error');
+                    console.error('Mesaj gönderilemedi:', data.data?.message || 'Bilinmeyen hata');
                 }
             })
             .catch(error => {
                 console.error('Error sending message:', error);
                 if (input) input.disabled = false;
                 if (sendBtn) sendBtn.disabled = false;
-                showToast('Bir hata oluştu', 'error');
+                console.error('Bir hata oluştu');
             });
         }
         
@@ -906,18 +906,18 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showToast(data.data?.message || 'Hediyeleşme tamamlandı', 'success');
+                    // Hediyeleşme tamamlandı - toast kaldırıldı
                     // Reload chat view to show updated status
                     openChat(exchangeId);
                     // Update badge count without reloading list (to avoid closing chat view)
                     updateBadgeCountFromServer();
                 } else {
-                    showToast(data.data?.message || 'Tamamlanamadı', 'error');
+                    console.error('Hediyeleşme tamamlanamadı:', data.data?.message || 'Bilinmeyen hata');
                 }
             })
             .catch(error => {
                 console.error('Error completing exchange:', error);
-                showToast('Bir hata oluştu', 'error');
+                console.error('Bir hata oluştu');
             });
         }
         
@@ -940,18 +940,18 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showToast('Şikayet bildirildi', 'success');
+                    // Şikayet bildirildi - toast kaldırıldı
                     // Reload chat view to show updated status
                     openChat(exchangeId);
                     // Update badge count without reloading list (to avoid closing chat view)
                     updateBadgeCountFromServer();
                 } else {
-                    showToast(data.data?.message || 'Şikayet edilemedi', 'error');
+                    console.error('Şikayet edilemedi:', data.data?.message || 'Bilinmeyen hata');
                 }
             })
             .catch(error => {
                 console.error('Error reporting exchange:', error);
-                showToast('Bir hata oluştu', 'error');
+                console.error('Bir hata oluştu');
             });
         }
         
@@ -999,8 +999,7 @@
                 });
             }
             
-            // Also show in-app toast
-            showToast(`${title}: ${subtitle}`, 'info');
+            // Toast notification removed - only badge system shows notifications
         }
         
         /**
@@ -1105,35 +1104,15 @@
         }
         
         /**
-         * Show toast notification
+         * Show toast notification - Disabled (no visual feedback, only console logging)
          */
         function showToast(message, type) {
-            const toast = document.createElement('div');
-            toast.className = 'toast toast-' + type;
-            toast.textContent = message;
-            // Determine background color based on type
-            let bgColor = '#dc3545'; // default error
-            if (type === 'success') {
-                bgColor = 'var(--farm-green)';
-            } else if (type === 'info') {
-                bgColor = 'var(--sky-blue-dark)';
+            // Toast notifications removed - only log to console for debugging
+            if (type === 'error') {
+                console.error('Toast (disabled):', message);
+            } else {
+                console.log('Toast (disabled):', message);
             }
-            
-            toast.style.cssText = 'position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: ' + bgColor + '; color: #FFFFFF; padding: 14px 24px; border-radius: 10px; font-weight: 600; z-index: 10001; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-width: 90%; text-align: center; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;';
-            document.body.appendChild(toast);
-            
-            setTimeout(function() { 
-                toast.style.opacity = '1'; 
-                toast.style.transform = 'translateX(-50%) translateY(0)'; 
-            }, 10);
-            
-            setTimeout(function() { 
-                toast.style.opacity = '0'; 
-                toast.style.transform = 'translateX(-50%) translateY(20px)'; 
-                setTimeout(function() { 
-                    toast.remove(); 
-                }, 300); 
-            }, 3000);
         }
         
         // Expose openChat function globally for use by gift-exchange-button.js

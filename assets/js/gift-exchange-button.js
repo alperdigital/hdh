@@ -27,7 +27,7 @@
                     
                     const listingId = parseInt(this.getAttribute('data-listing-id'));
                     if (!listingId) {
-                        showToast('Geçersiz ilan', 'error');
+                        console.error('Geçersiz ilan');
                         return;
                     }
                     
@@ -42,7 +42,7 @@
                     }
                     
                     if (!config.nonce) {
-                        showToast('Güvenlik hatası. Sayfayı yenileyin.', 'error');
+                        console.error('Güvenlik hatası. Sayfayı yenileyin.');
                         return;
                     }
                     
@@ -69,8 +69,6 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            showToast(data.data?.message || 'Hediyeleşme başlatıldı!', 'success');
-                            
                             // Get exchange ID from response - handle different response formats
                             const exchangeId = data.data?.exchange?.id || 
                                              data.data?.exchange_id || 
@@ -109,7 +107,7 @@
                                 }
                             }
                         } else {
-                            showToast(data.data?.message || 'Hediyeleşme başlatılamadı', 'error');
+                            console.error('Hediyeleşme başlatılamadı:', data.data?.message || 'Bilinmeyen hata');
                         }
                         
                         // Re-enable card
@@ -121,7 +119,6 @@
                     })
                     .catch(error => {
                         console.error('Error starting gift exchange:', error);
-                        showToast('Bir hata oluştu', 'error');
                         this.style.pointerEvents = '';
                         this.style.opacity = '';
                         if (originalHint) {
@@ -150,7 +147,7 @@
                     
                     const listingId = parseInt(this.getAttribute('data-listing-id'));
                     if (!listingId) {
-                        showToast('Geçersiz ilan', 'error');
+                        console.error('Geçersiz ilan');
                         return;
                     }
                     
@@ -182,8 +179,6 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            showToast(data.data?.message || 'Hediyeleşme başlatıldı!', 'success');
-                            
                             // Get exchange ID from response - handle different response formats
                             const exchangeId = data.data?.exchange?.id || 
                                              data.data?.exchange_id || 
@@ -220,7 +215,7 @@
                                 }
                             }
                         } else {
-                            showToast(data.data?.message || 'Hediyeleşme başlatılamadı', 'error');
+                            console.error('Hediyeleşme başlatılamadı:', data.data?.message || 'Bilinmeyen hata');
                         }
                         
                         this.disabled = false;
@@ -228,7 +223,6 @@
                     })
                     .catch(error => {
                         console.error('Error starting gift exchange:', error);
-                        showToast('Bir hata oluştu', 'error');
                         this.disabled = false;
                         this.textContent = originalText;
                     });
@@ -267,27 +261,15 @@
         }
         
         /**
-         * Show toast notification
+         * Show toast notification - Disabled (no visual feedback, only console logging)
          */
         function showToast(message, type) {
-            const toast = document.createElement('div');
-            toast.className = 'toast toast-' + type;
-            toast.textContent = message;
-            toast.style.cssText = 'position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: ' + (type === 'success' ? 'var(--farm-green)' : '#dc3545') + '; color: #FFFFFF; padding: 14px 24px; border-radius: 10px; font-weight: 600; z-index: 10001; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-width: 90%; text-align: center; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;';
-            document.body.appendChild(toast);
-            
-            setTimeout(function() { 
-                toast.style.opacity = '1'; 
-                toast.style.transform = 'translateX(-50%) translateY(0)'; 
-            }, 10);
-            
-            setTimeout(function() { 
-                toast.style.opacity = '0'; 
-                toast.style.transform = 'translateX(-50%) translateY(20px)'; 
-                setTimeout(function() { 
-                    toast.remove(); 
-                }, 300); 
-            }, 3000);
+            // Toast notifications removed - only log to console for debugging
+            if (type === 'error') {
+                console.error('Toast (disabled):', message);
+            } else {
+                console.log('Toast (disabled):', message);
+            }
         }
     });
 })();

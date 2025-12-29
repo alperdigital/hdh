@@ -102,7 +102,7 @@
                 console.log('HDH Trade Form: Current selected count before adding:', currentCount);
                 if (currentCount > MAX_OFFER_ITEMS) {
                     checkbox.checked = false;
-                    showToast('En fazla ' + MAX_OFFER_ITEMS + ' ürün seçebilirsiniz', 'warning');
+                    console.warn('En fazla ' + MAX_OFFER_ITEMS + ' ürün seçebilirsiniz');
                     return;
                 }
                 
@@ -305,7 +305,7 @@
             const wantedItem = document.querySelector('input[name="wanted_item"]:checked');
             if (!wantedItem) {
                 e.preventDefault();
-                showToast('Lütfen almak istediğiniz ürünü seçin', 'error');
+                console.error('Lütfen almak istediğiniz ürünü seçin');
                 scrollToElement(document.getElementById('wanted-items-grid'));
                 return false;
             }
@@ -315,7 +315,7 @@
             const wantedQtyValue = parseInt(wantedQty.value);
             if (!wantedQtyValue || wantedQtyValue < MIN_QTY || wantedQtyValue > MAX_QTY) {
                 e.preventDefault();
-                showToast('Lütfen geçerli bir miktar girin (1-999)', 'error');
+                console.error('Lütfen geçerli bir miktar girin (1-999)');
                 scrollToElement(wantedQty);
                 return false;
             }
@@ -327,14 +327,14 @@
                 const errorMsg = (window.hdhMessages && window.hdhMessages.ajax && window.hdhMessages.ajax.select_at_least_one_gift) 
                     ? window.hdhMessages.ajax.select_at_least_one_gift 
                     : 'Lütfen en az 1 ürün seçin (vermek istediğiniz)';
-                showToast(errorMsg, 'error');
+                console.error('Trade form error:', errorMsg);
                 scrollToElement(document.getElementById('offer-items-grid'));
                 return false;
             }
             
             if (offerCheckboxes.length > MAX_OFFER_ITEMS) {
                 e.preventDefault();
-                showToast('En fazla ' + MAX_OFFER_ITEMS + ' ürün seçebilirsiniz', 'error');
+                console.error('En fazla ' + MAX_OFFER_ITEMS + ' ürün seçebilirsiniz');
                 return false;
             }
             
@@ -350,7 +350,7 @@
             
             if (!allValid) {
                 e.preventDefault();
-                showToast('Lütfen tüm ürünler için geçerli miktarlar girin (1-999)', 'error');
+                console.error('Lütfen tüm ürünler için geçerli miktarlar girin (1-999)');
                 return false;
             }
             
@@ -366,39 +366,17 @@
     }
     
     /**
-     * Show toast notification
+     * Show toast notification - Disabled (no visual feedback, only console logging)
      */
     function showToast(message, type) {
-        // Check if toast container exists
-        let toastContainer = document.getElementById('hdh-toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.id = 'hdh-toast-container';
-            toastContainer.className = 'toast-container';
-            document.body.appendChild(toastContainer);
+        // Toast notifications removed - only log to console for debugging
+        if (type === 'error') {
+            console.error('Toast (disabled):', message);
+        } else if (type === 'warning') {
+            console.warn('Toast (disabled):', message);
+        } else {
+            console.log('Toast (disabled):', message);
         }
-        
-        // Create toast
-        const toast = document.createElement('div');
-        toast.className = 'toast toast-' + type;
-        
-        const icon = type === 'error' ? '❌' : type === 'warning' ? '⚠️' : '✅';
-        toast.innerHTML = '<span class="toast-icon">' + icon + '</span><span class="toast-message">' + message + '</span>';
-        
-        toastContainer.appendChild(toast);
-        
-        // Animate in
-        setTimeout(function() {
-            toast.classList.add('visible');
-        }, 10);
-        
-        // Remove after 3 seconds
-        setTimeout(function() {
-            toast.classList.remove('visible');
-            setTimeout(function() {
-                toast.remove();
-            }, 300);
-        }, 3000);
     }
     
     /**

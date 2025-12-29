@@ -310,7 +310,7 @@
                 if (farmCode) {
                     handleShareFarmCode(sessionId, farmCode);
                 } else {
-                    showToast('Lütfen çiftlik kodunuzu girin', 'error');
+                    console.error('Lütfen çiftlik kodunuzu girin');
                 }
             });
         });
@@ -368,7 +368,7 @@
             btn.addEventListener('click', function() {
                 const code = this.getAttribute('data-code');
                 navigator.clipboard.writeText(code).then(() => {
-                    showToast('Çiftlik kodu kopyalandı!', 'success');
+                    // Çiftlik kodu kopyalandı - toast kaldırıldı
                 });
             });
         });
@@ -423,12 +423,12 @@
             if (data.success && data.data.session) {
                 renderTradeDetail(data.data.session);
             } else {
-                showToast('Hediyeleşme detayları yüklenemedi', 'error');
+                console.error('Hediyeleşme detayları yüklenemedi');
             }
         })
         .catch(error => {
             console.error('Error loading trade detail:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
         });
     }
     
@@ -546,7 +546,7 @@
                 if (farmCode) {
                     handleShareFarmCode(sessionId, farmCode);
                 } else {
-                    showToast('Lütfen çiftlik kodunuzu girin', 'error');
+                    console.error('Lütfen çiftlik kodunuzu girin');
                 }
             });
         });
@@ -604,7 +604,7 @@
             btn.addEventListener('click', function() {
                 const code = this.getAttribute('data-code');
                 navigator.clipboard.writeText(code).then(() => {
-                    showToast('Çiftlik kodu kopyalandı!', 'success');
+                    // Çiftlik kodu kopyalandı - toast kaldırıldı
                 });
             });
         });
@@ -723,16 +723,16 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast('Adım tamamlandı!', 'success');
+                // Adım tamamlandı - toast kaldırıldı
                 // Reload all trades (since we show all trades directly now)
                 loadActiveTrades();
             } else {
-                showToast(data.data?.message || 'Adım tamamlanamadı', 'error');
+                console.error('Adım tamamlanamadı:', data.data?.message || 'Bilinmeyen hata');
             }
         })
         .catch(error => {
             console.error('Error completing step:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
         });
     }
     
@@ -761,15 +761,15 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast('Çiftlik kodu paylaşıldı!', 'success');
+                // Çiftlik kodu paylaşıldı - toast kaldırıldı
                 loadActiveTrades();
             } else {
-                showToast(data.data?.message || 'Çiftlik kodu paylaşılamadı', 'error');
+                console.error('Çiftlik kodu paylaşılamadı:', data.data?.message || 'Bilinmeyen hata');
             }
         })
         .catch(error => {
             console.error('Error sharing farm code:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
         });
     }
     
@@ -791,15 +791,15 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast('İstek gönderildi!', 'success');
+                // İstek gönderildi - toast kaldırıldı
                 loadActiveTrades();
             } else {
-                showToast(data.data?.message || 'İstek gönderilemedi', 'error');
+                console.error('İstek gönderilemedi:', data.data?.message || 'Bilinmeyen hata');
             }
         })
         .catch(error => {
             console.error('Error sending friend request:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
         });
     }
     
@@ -821,15 +821,15 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast('İstek kabul edildi!', 'success');
+                // İstek kabul edildi - toast kaldırıldı
                 loadActiveTrades();
             } else {
-                showToast(data.data?.message || 'İstek kabul edilemedi', 'error');
+                console.error('İstek kabul edilemedi:', data.data?.message || 'Bilinmeyen hata');
             }
         })
         .catch(error => {
             console.error('Error accepting friend request:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
         });
     }
     
@@ -851,15 +851,15 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast('Hediye hazır olarak işaretlendi!', 'success');
+                // Hediye hazır olarak işaretlendi - toast kaldırıldı
                 loadActiveTrades();
             } else {
-                showToast(data.data?.message || 'İşaretlenemedi', 'error');
+                console.error('İşaretlenemedi:', data.data?.message || 'Bilinmeyen hata');
             }
         })
         .catch(error => {
             console.error('Error marking gift ready:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
         });
     }
     
@@ -881,15 +881,15 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast('Hediye alındı olarak işaretlendi!', 'success');
+                // Hediye alındı olarak işaretlendi - toast kaldırıldı
                 loadActiveTrades();
             } else {
-                showToast(data.data?.message || 'İşaretlenemedi', 'error');
+                console.error('İşaretlenemedi:', data.data?.message || 'Bilinmeyen hata');
             }
         })
         .catch(error => {
             console.error('Error marking gift collected:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
         });
     }
     
@@ -911,15 +911,15 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast(data.data?.message || 'Hediyeleşme tamamlandı!', 'success');
+                // Hediyeleşme tamamlandı - toast kaldırıldı
                 loadActiveTrades();
             } else {
-                showToast(data.data?.message || 'Tamamlanamadı', 'error');
+                console.error('Hediyeleşme tamamlanamadı:', data.data?.message || 'Bilinmeyen hata');
             }
         })
         .catch(error => {
             console.error('Error completing trade:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
         });
     }
     
@@ -947,9 +947,9 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast('Ping gönderildi!', 'success');
+                // Ping gönderildi - toast kaldırıldı
             } else {
-                showToast(data.data?.message || 'Ping gönderilemedi', 'error');
+                console.error('Ping gönderilemedi:', data.data?.message || 'Bilinmeyen hata');
             }
             
             if (btn) {
@@ -959,7 +959,7 @@
         })
         .catch(error => {
             console.error('Error sending ping:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
             
             if (btn) {
                 btn.disabled = false;
@@ -976,7 +976,7 @@
         const sessionInput = document.getElementById('trade-report-session-id');
         
         if (!modal || !sessionInput) {
-            showToast('Rapor formu yüklenemedi', 'error');
+            console.error('Rapor formu yüklenemedi');
             return;
         }
         
@@ -1069,7 +1069,7 @@
         const description = form.querySelector('[name="description"]').value;
         
         if (!issueType) {
-            showToast('Lütfen bir sorun tipi seçin', 'error');
+            console.error('Lütfen bir sorun tipi seçin');
             return;
         }
         
@@ -1095,10 +1095,10 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast('Rapor gönderildi!', 'success');
+                // Rapor gönderildi - toast kaldırıldı
                 closeReportModal();
             } else {
-                showToast(data.data?.message || 'Rapor gönderilemedi', 'error');
+                console.error('Rapor gönderilemedi:', data.data?.message || 'Bilinmeyen hata');
             }
             
             if (submitBtn) {
@@ -1108,7 +1108,7 @@
         })
         .catch(error => {
             console.error('Error submitting report:', error);
-            showToast('Bir hata oluştu', 'error');
+            console.error('Bir hata oluştu');
             
             if (submitBtn) {
                 submitBtn.disabled = false;
@@ -1155,10 +1155,10 @@
                             // Step or status changed, reload detail
                             renderTradeDetail(session);
                             if (newStep !== oldStep) {
-                                showToast('Karşı taraf bir adım tamamladı!', 'success');
+                                // Karşı taraf bir adım tamamladı - toast kaldırıldı
                             }
                             if (newStatus === 'COMPLETED' && oldStatus !== 'COMPLETED') {
-                                showToast('Hediyeleşme tamamlandı! 🎉', 'success');
+                                // Hediyeleşme tamamlandı - toast kaldırıldı
                             }
                         }
                     }
@@ -1229,27 +1229,15 @@
     }
     
     /**
-     * Show toast notification
+     * Show toast notification - Disabled (no visual feedback, only console logging)
      */
     function showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `gift-toast toast-${type}`;
-        toast.textContent = message;
-        
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
-        
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                if (document.body.contains(toast)) {
-                    document.body.removeChild(toast);
-                }
-            }, 300);
-        }, 3000);
+        // Toast notifications removed - only log to console for debugging
+        if (type === 'error') {
+            console.error('Toast (disabled):', message);
+        } else {
+            console.log('Toast (disabled):', message);
+        }
     }
     
     /**
