@@ -822,7 +822,9 @@ h6 { font-size: 1.1rem; }
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d2 {
-    font-size: 20px;
+    width: 64px;
+    height: 64px;
+    font-size: 22px;
     letter-spacing: -1px;
 }
 
