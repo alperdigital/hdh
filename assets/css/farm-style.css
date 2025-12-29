@@ -7925,7 +7925,8 @@ footer,
         0 12px 18px rgba(0, 0, 0, 0.20);
     
     /* Perfect center alignment - fine-tuned for visual center */
-    transform: translateY(-2px);
+    /* translateY = -font-size/2 (half of "1" character height) */
+    transform: translateY(-11.55px);
     position: relative;
     
     flex-shrink: 0;
