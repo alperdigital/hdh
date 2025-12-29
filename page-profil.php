@@ -516,9 +516,8 @@ if (!$is_logged_in) {
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
         const refParam = urlParams.get('ref');
-        const actionParam = urlParams.get('action');
         
-        if (refParam && actionParam === 'register') {
+        if (refParam) {
             const referralField = document.getElementById('referral_username');
             if (referralField && !referralField.value) {
                 referralField.value = refParam;
