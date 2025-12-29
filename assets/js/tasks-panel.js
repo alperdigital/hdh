@@ -442,13 +442,27 @@
                 tasksPanelContent.removeEventListener('click', tasksPanelContent._claimHandler);
             }
             
-            // Create new delegation handler
+            // Create new delegation handler for claim buttons and referral share buttons
             tasksPanelContent._claimHandler = function(e) {
-                const btn = e.target.closest('.btn-claim-task');
-                if (btn && !btn.disabled) {
+                // Handle claim task buttons
+                const claimBtn = e.target.closest('.btn-claim-task');
+                if (claimBtn && !claimBtn.disabled) {
                     e.preventDefault();
                     e.stopPropagation();
-                    handleClaimTask(btn);
+                    handleClaimTask(claimBtn);
+                    return;
+                }
+                
+                // Handle referral share buttons
+                const shareBtn = e.target.closest('.btn-share-referral');
+                if (shareBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const link = shareBtn.getAttribute('data-referral-link');
+                    if (link) {
+                        handleReferralShare(link);
+                    }
+                    return;
                 }
             };
             
@@ -760,29 +774,42 @@
          * Handle referral link sharing
          */
         function handleReferralShare(link) {
+            if (!link) {
+                console.error('Referral link is empty');
+                return;
+            }
+            
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(link).then(function() {
-                    console.log('Referral link copied to clipboard');
+                    console.log('Referral link copied to clipboard:', link);
+                    // Visual feedback: briefly change button text
+                    const shareBtn = document.querySelector('.btn-share-referral[data-referral-link="' + link.replace(/"/g, '&quot;') + '"]');
+                    if (shareBtn) {
+                        const originalText = shareBtn.textContent;
+                        shareBtn.textContent = '✅ Kopyalandı!';
+                        shareBtn.style.opacity = '0.7';
+                        setTimeout(function() {
+                            shareBtn.textContent = originalText;
+                            shareBtn.style.opacity = '';
+                        }, 2000);
+                    }
                 }).catch(function(err) {
                     console.error('Failed to copy referral link:', err);
                     // Fallback: show link in prompt
-                    prompt('Referral linkiniz:', link);
+                    const userLink = prompt('Referral linkiniz (kopyalamak için Ctrl+C):', link);
+                    if (userLink) {
+                        // User might have copied manually
+                        console.log('User copied link manually');
+                    }
                 });
             } else {
                 // Fallback: show link in prompt
-                prompt('Referral linkiniz:', link);
-            }
-        }
-        
-        // Handle referral share button clicks
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('btn-share-referral')) {
-                e.preventDefault();
-                const link = e.target.getAttribute('data-referral-link');
-                if (link) {
-                    handleReferralShare(link);
+                const userLink = prompt('Referral linkiniz (kopyalamak için Ctrl+C):', link);
+                if (userLink) {
+                    // User might have copied manually
+                    console.log('User copied link manually');
                 }
             }
-        });
+        }
     });
 })();
