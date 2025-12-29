@@ -102,7 +102,7 @@ if (!function_exists('hdh_render_trade_card')) {
             <!-- Title -->
             <h3 class="listing-title"><?php echo esc_html($listing_title); ?></h3>
             
-            <!-- Meta Row: Level + Farm Name (with date below) -->
+            <!-- Meta Row: Level + Farm Name + Gift CTA -->
             <div class="listing-meta-row-unified">
                 <div class="listing-meta-left">
                     <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
@@ -110,21 +110,17 @@ if (!function_exists('hdh_render_trade_card')) {
                          title="Seviye <?php echo esc_attr($user_level); ?>">
                         <?php echo esc_html($user_level); ?>
                     </div>
-                    <div class="listing-meta-farm-info">
-                        <span class="listing-meta-farm-name">
-                            <?php echo esc_html($author_name); ?>
-                        </span>
+                    <span class="listing-meta-farm-name">
+                        <?php echo esc_html($author_name); ?>
+                    </span>
+                </div>
+                <?php if ($can_start_gift) : ?>
+                    <div class="listing-gift-cta">
+                        <span class="listing-gift-cta-icon">🎁</span>
+                        <span class="listing-gift-cta-text">Hediyeleş</span>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
-            
-            <!-- Gift Exchange CTA (only for clickable listings) -->
-            <?php if ($can_start_gift) : ?>
-                <div class="listing-gift-cta">
-                    <span class="listing-gift-cta-icon">🎁</span>
-                    <span class="listing-gift-cta-text">Hediyeleş</span>
-                </div>
-            <?php endif; ?>
         </div>
         <?php
     }

@@ -114,7 +114,7 @@
                 targetDateEl.style.color = '';
                 targetDateEl.style.fontWeight = '';
                 targetDateEl.style.fontSize = '';
-            }
+        }
         }
         
         // Initial update
