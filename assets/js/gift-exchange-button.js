@@ -34,10 +34,8 @@
                     // Check if login is required
                     const requiresLogin = this.getAttribute('data-requires-login') === 'true';
                     if (requiresLogin) {
-                        // Redirect to registration page
-                        const currentUrl = window.location.href;
-                        const separator = currentUrl.includes('?') ? '&' : '?';
-                        window.location.href = currentUrl + separator + 'action=register';
+                        // Redirect to profile page (registration form)
+                        window.location.href = '/profil';
                         return;
                     }
                     
@@ -154,10 +152,8 @@
                     // Check if login is required (for buttons, assume they're only shown when logged in)
                     // But check nonce to be sure
                     if (!config.nonce) {
-                        // No nonce means not logged in, redirect to registration
-                        const currentUrl = window.location.href;
-                        const separator = currentUrl.includes('?') ? '&' : '?';
-                        window.location.href = currentUrl + separator + 'action=register';
+                        // No nonce means not logged in, redirect to profile page (registration form)
+                        window.location.href = '/profil';
                         return;
                     }
                     

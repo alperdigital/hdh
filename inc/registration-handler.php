@@ -11,13 +11,14 @@ if (!defined('ABSPATH')) {
 
 /**
  * Custom registration page handler
+ * Redirects to profile page instead of showing modal
  */
 function hdh_handle_custom_registration() {
     if (isset($_GET['action']) && $_GET['action'] === 'register' && !is_user_logged_in()) {
-        // Show registration form - use priority to ensure it runs
-        add_action('wp_footer', 'hdh_render_registration_modal', 999);
-        // Enqueue modal styles
-        add_action('wp_enqueue_scripts', 'hdh_enqueue_registration_modal_styles', 999);
+        // Redirect to profile page instead of showing modal
+        $referral_param = isset($_GET['ref']) ? '&ref=' . urlencode(sanitize_user($_GET['ref'])) : '';
+        wp_redirect(home_url('/profil' . $referral_param));
+        exit;
     }
 }
 add_action('template_redirect', 'hdh_handle_custom_registration', 1);

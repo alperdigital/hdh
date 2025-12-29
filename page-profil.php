@@ -193,6 +193,23 @@ if (!$is_logged_in) {
                             <small class="auth-help">Telefon numaranız isteğe bağlıdır</small>
                         </div>
                         
+                        <?php
+                        // Get referral username from query param
+                        $referral_username = isset($_GET['ref']) ? sanitize_user($_GET['ref']) : '';
+                        ?>
+                        <div class="auth-field">
+                            <label for="referral_username" class="auth-label">Referans (Opsiyonel)</label>
+                            <input 
+                                type="text" 
+                                id="referral_username" 
+                                name="referral_username" 
+                                class="auth-input" 
+                                value="<?php echo isset($_POST['referral_username']) ? esc_attr($_POST['referral_username']) : esc_attr($referral_username); ?>"
+                                placeholder="Arkadaşınızın kullanıcı adı"
+                            >
+                            <small class="auth-help">Eğer bir arkadaşınız tarafından davet edildiyseniz, onun kullanıcı adını girin</small>
+                        </div>
+                        
                         <div class="auth-field">
                             <label for="user_pass" class="auth-label">Şifre <span class="required">*</span></label>
                             <div class="auth-password-wrapper">
