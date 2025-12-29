@@ -964,10 +964,9 @@ h6 { font-size: 1.1rem; }
         gap: 10px;
     }
     
-    .hdh-header-level-badge {
+    .hdh-header-user-content .hdh-level-badge {
         width: 44px;
         height: 44px;
-        font-size: 16px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d1 {
