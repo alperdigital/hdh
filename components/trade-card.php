@@ -96,36 +96,41 @@ if (!function_exists('hdh_render_trade_card')) {
         $is_own_listing = ($current_user_id && $author_id == $current_user_id);
         $can_start_gift = ($current_user_id && !$is_own_listing);
         ?>
-        <div class="listing-unified-block listing-simplified">
-            <a href="<?php echo esc_url($post_url); ?>" class="listing-link">
-                <!-- Title -->
-                <h3 class="listing-title"><?php echo esc_html($listing_title); ?></h3>
-                
-                <!-- Meta Row: Level + Farm Name + Gift Button + Time -->
-                <div class="listing-meta-row-unified">
-                    <div class="listing-meta-left">
-                        <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
-                             aria-label="Seviye <?php echo esc_attr($user_level); ?>"
-                             title="Seviye <?php echo esc_attr($user_level); ?>">
-                            <?php echo esc_html($user_level); ?>
-                        </div>
+        <div class="listing-unified-block listing-simplified <?php echo $can_start_gift ? 'listing-clickable' : ''; ?>" 
+             <?php if ($can_start_gift) : ?>
+             data-listing-id="<?php echo esc_attr($post_id); ?>"
+             role="button"
+             tabindex="0"
+             aria-label="Hediyeleşmeye başla: <?php echo esc_attr($listing_title); ?>"
+             <?php endif; ?>>
+            <!-- Title -->
+            <h3 class="listing-title"><?php echo esc_html($listing_title); ?></h3>
+            
+            <!-- Meta Row: Level + Farm Name (with date below) -->
+            <div class="listing-meta-row-unified">
+                <div class="listing-meta-left">
+                    <div class="hdh-level-badge <?php echo esc_attr($digit_class); ?>" 
+                         aria-label="Seviye <?php echo esc_attr($user_level); ?>"
+                         title="Seviye <?php echo esc_attr($user_level); ?>">
+                        <?php echo esc_html($user_level); ?>
+                    </div>
+                    <div class="listing-meta-farm-info">
                         <span class="listing-meta-farm-name">
                             <?php echo esc_html($author_name); ?>
                         </span>
-                        <?php if ($can_start_gift) : ?>
-                            <button class="btn-start-gift-exchange-inline" 
-                                    data-listing-id="<?php echo esc_attr($post_id); ?>"
-                                    aria-label="Hediyeleş"
-                                    type="button">
-                                🎁 Hediyeleş
-                            </button>
-                        <?php endif; ?>
+                        <span class="listing-meta-date">
+                            📅 <?php echo esc_html($listing_creation_time); ?>
+                        </span>
                     </div>
-                    <span class="listing-meta-time listing-presence-<?php echo esc_attr(str_replace(array('+', ' '), array('plus', '-'), $presence_bucket)); ?>">
-                        <?php echo esc_html($presence_label); ?>
-                    </span>
                 </div>
-            </a>
+            </div>
+            
+            <!-- Click Hint (only for clickable listings) -->
+            <?php if ($can_start_gift) : ?>
+                <div class="listing-click-hint">
+                    Hediyeleşmek için tıkla
+                </div>
+            <?php endif; ?>
         </div>
         <?php
     }

@@ -13,15 +13,15 @@
             nonce: (typeof hdhGiftExchange !== 'undefined' && hdhGiftExchange?.nonce) ? hdhGiftExchange.nonce : '',
         };
         
-        // Attach click handlers to all gift exchange buttons
+        // Attach click handlers to clickable listing cards
         function attachHandlers() {
-            // Handle both inline and full-width buttons
-            document.querySelectorAll('.btn-start-gift-exchange, .btn-start-gift-exchange-inline').forEach(btn => {
+            // Handle clickable listing cards
+            document.querySelectorAll('.listing-clickable').forEach(card => {
                 // Remove existing listeners by cloning
-                const newBtn = btn.cloneNode(true);
-                btn.parentNode.replaceChild(newBtn, btn);
+                const newCard = card.cloneNode(true);
+                card.parentNode.replaceChild(newCard, card);
                 
-                newBtn.addEventListener('click', function(e) {
+                newCard.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -36,10 +36,14 @@
                         return;
                     }
                     
-                    // Disable button
-                    this.disabled = true;
-                    const originalText = this.textContent;
-                    this.textContent = '⏳ İşleniyor...';
+                    // Disable card interaction
+                    this.style.pointerEvents = 'none';
+                    this.style.opacity = '0.7';
+                    const originalHint = this.querySelector('.listing-click-hint');
+                    const originalHintText = originalHint ? originalHint.textContent : '';
+                    if (originalHint) {
+                        originalHint.textContent = '⏳ İşleniyor...';
+                    }
                     
                     fetch(config.ajaxUrl, {
                         method: 'POST',
@@ -67,7 +71,82 @@
                             showToast(data.data?.message || 'Hediyeleşme başlatılamadı', 'error');
                         }
                         
-                        // Re-enable button
+                        // Re-enable card
+                        this.style.pointerEvents = '';
+                        this.style.opacity = '';
+                        if (originalHint) {
+                            originalHint.textContent = originalHintText;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error starting gift exchange:', error);
+                        showToast('Bir hata oluştu', 'error');
+                        this.style.pointerEvents = '';
+                        this.style.opacity = '';
+                        if (originalHint) {
+                            originalHint.textContent = originalHintText;
+                        }
+                    });
+                });
+                
+                // Handle keyboard (Enter/Space)
+                newCard.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // Also handle legacy buttons for backward compatibility
+            document.querySelectorAll('.btn-start-gift-exchange, .btn-start-gift-exchange-inline').forEach(btn => {
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                
+                newBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const listingId = parseInt(this.getAttribute('data-listing-id'));
+                    if (!listingId) {
+                        showToast('Geçersiz ilan', 'error');
+                        return;
+                    }
+                    
+                    if (!config.nonce) {
+                        showToast('Güvenlik hatası. Sayfayı yenileyin.', 'error');
+                        return;
+                    }
+                    
+                    this.disabled = true;
+                    const originalText = this.textContent;
+                    this.textContent = '⏳ İşleniyor...';
+                    
+                    fetch(config.ajaxUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            action: 'hdh_start_gift_exchange',
+                            nonce: config.nonce,
+                            listing_id: listingId,
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast(data.data?.message || 'Hediyeleşme başlatıldı!', 'success');
+                            const giftIcon = document.getElementById('gift-exchange-icon-toggle');
+                            if (giftIcon) {
+                                setTimeout(() => {
+                                    giftIcon.click();
+                                }, 500);
+                            }
+                        } else {
+                            showToast(data.data?.message || 'Hediyeleşme başlatılamadı', 'error');
+                        }
+                        
                         this.disabled = false;
                         this.textContent = originalText;
                     })
@@ -91,7 +170,7 @@
                 mutations.forEach(function(mutation) {
                     if (mutation.addedNodes.length > 0) {
                         mutation.addedNodes.forEach(function(node) {
-                            if (node.nodeType === 1 && (node.classList.contains('listing-unified-block') || node.querySelector('.btn-start-gift-exchange'))) {
+                            if (node.nodeType === 1 && (node.classList.contains('listing-clickable') || node.classList.contains('listing-unified-block') || node.querySelector('.btn-start-gift-exchange'))) {
                                 shouldReattach = true;
                             }
                         });
