@@ -50,6 +50,7 @@ require_once get_template_directory() . '/inc/jeton-system.php';
 require_once get_template_directory() . '/inc/create-trade-handler.php';
 require_once get_template_directory() . '/inc/trade-settings.php';
 require_once get_template_directory() . '/inc/registration-handler.php';
+require_once get_template_directory() . '/inc/referral-system.php';
 require_once get_template_directory() . '/inc/trust-system.php';
 require_once get_template_directory() . '/inc/listing-actions-handler.php';
 require_once get_template_directory() . '/inc/offers-cpt.php';

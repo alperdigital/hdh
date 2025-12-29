@@ -50,14 +50,6 @@ function hdh_get_one_time_tasks_config() {
                 'reward_level' => 1,
                 'max_progress' => 1,
             ),
-            'friend_exchange' => array(
-                'id' => 'friend_exchange',
-                'title' => 'Hediyeleşme',
-                'description' => 'Davet ettiğiniz arkadaşınız hediyeleşme yapsın',
-                'reward_bilet' => 5,
-                'reward_level' => 2,
-                'max_progress' => 1,
-            ),
         );
         // Save defaults to options for first time
         update_option('hdh_one_time_tasks', $tasks);
@@ -81,15 +73,15 @@ function hdh_get_daily_tasks_config() {
             'create_listings' => array(
                 'id' => 'create_listings',
                 'title' => 'İlan Oluştur',
-                'description' => 'Günde 3 ilan oluşturun',
+                'description' => 'İlan oluşturun',
                 'reward_bilet' => 1,
                 'reward_level' => 0,
                 'max_progress' => 3,
             ),
             'complete_exchanges' => array(
                 'id' => 'complete_exchanges',
-                'title' => 'Hediyeleşme',
-                'description' => 'Günde 5 hediyeleşme tamamlayın',
+                'title' => 'Hediyeleşme yap',
+                'description' => 'Hediyeleşme tamamlayın',
                 'reward_bilet' => 4,
                 'reward_level' => 1,
                 'max_progress' => 5,
@@ -97,18 +89,10 @@ function hdh_get_daily_tasks_config() {
             'invite_friends' => array(
                 'id' => 'invite_friends',
                 'title' => 'Davet et',
-                'description' => 'Günde 5 arkadaş davet edin',
+                'description' => 'Arkadaşınızı davet edin',
                 'reward_bilet' => 2,
                 'reward_level' => 0,
                 'max_progress' => 5,
-            ),
-            'friend_exchanges' => array(
-                'id' => 'friend_exchanges',
-                'title' => 'Hediyeleşme',
-                'description' => 'Davet ettiğiniz arkadaşlarınız hediyeleşme yapsın',
-                'reward_bilet' => 5,
-                'reward_level' => 2,
-                'max_progress' => 1,
             ),
         );
         // Save defaults to options for first time
@@ -158,7 +142,6 @@ function hdh_get_user_one_time_tasks($user_id) {
                     $is_completed = $existing_progress && (int) $existing_progress['completed_count'] > 0;
                     break;
                 case 'invite_friend':
-                case 'friend_exchange':
                     // Placeholder - will be implemented later
                     $is_completed = false;
                     break;
@@ -186,21 +169,32 @@ function hdh_get_user_one_time_tasks($user_id) {
             $cta_state = 'in_progress';
         }
         
-        $tasks[] = array(
-            'id' => $task_id,
-            'title' => $task_config['title'],
-            'description' => $task_config['description'],
-            'reward_bilet' => $task_config['reward_bilet'],
-            'reward_level' => $task_config['reward_level'],
-            'progress' => $completed_count,
-            'max_progress' => $task_config['max_progress'],
-            'completed' => $completed_count >= $task_config['max_progress'],
-            'claimed' => $claimed_count > 0,
-            'claimed_count' => $claimed_count,
-            'claimable_count' => $claimable_count,
-            'can_claim' => $claimable_count > 0,
-            'cta_state' => $cta_state,
-        );
+        // For one-time tasks: if reward is claimed, don't show in UI (task disappears)
+        // Only add to tasks array if not claimed yet
+        if ($claimed_count === 0 || $claimable_count > 0) {
+            $task_data = array(
+                'id' => $task_id,
+                'title' => $task_config['title'],
+                'description' => $task_config['description'],
+                'reward_bilet' => $task_config['reward_bilet'],
+                'reward_level' => $task_config['reward_level'],
+                'progress' => $completed_count,
+                'max_progress' => $task_config['max_progress'],
+                'completed' => $completed_count >= $task_config['max_progress'],
+                'claimed' => $claimed_count > 0,
+                'claimed_count' => $claimed_count,
+                'claimable_count' => $claimable_count,
+                'can_claim' => $claimable_count > 0,
+                'cta_state' => $cta_state,
+            );
+            
+            // Add referral link for invite_friend task
+            if ($task_id === 'invite_friend' && function_exists('hdh_get_referral_link')) {
+                $task_data['referral_link'] = hdh_get_referral_link($user_id);
+            }
+            
+            $tasks[] = $task_data;
+        }
     }
     
     return $tasks;
@@ -245,9 +239,34 @@ function hdh_get_user_daily_tasks($user_id) {
         // Calculate claimable count
         $claimable_count = max(0, $completed_count - $claimed_count);
         
+        // Check if daily task is unlocked (one-time task must be completed first)
+        $is_locked = false;
+        $unlock_task_id = null;
+        
+        switch ($task_id) {
+            case 'create_listings':
+                $unlock_task_id = 'create_first_listing';
+                break;
+            case 'complete_exchanges':
+                $unlock_task_id = 'complete_first_exchange';
+                break;
+            case 'invite_friends':
+                $unlock_task_id = 'invite_friend';
+                break;
+        }
+        
+        if ($unlock_task_id) {
+            $one_time_progress = hdh_get_task_progress($user_id, $unlock_task_id, 'lifetime');
+            $one_time_completed = $one_time_progress && (int) $one_time_progress['completed_count'] > 0;
+            $is_locked = !$one_time_completed;
+        }
+        
         // Determine CTA state
         $cta_state = 'locked';
-        if ($completed_count > 0) {
+        if ($is_locked) {
+            // Task is locked because one-time task is not completed
+            $cta_state = 'locked';
+        } elseif ($completed_count > 0) {
             if ($claimable_count > 0) {
                 $cta_state = 'claim';
             } elseif ($completed_count >= $task_config['max_progress']) {
@@ -263,13 +282,15 @@ function hdh_get_user_daily_tasks($user_id) {
             'description' => $task_config['description'],
             'reward_bilet' => $task_config['reward_bilet'],
             'reward_level' => $task_config['reward_level'],
-            'progress' => $completed_count,
+            'progress' => $is_locked ? 0 : $completed_count, // Show 0 progress if locked
             'max_progress' => $task_config['max_progress'],
             'completed' => $completed_count >= $task_config['max_progress'],
-            'can_claim' => $claimable_count > 0,
+            'can_claim' => !$is_locked && $claimable_count > 0, // Cannot claim if locked
             'claimed_count' => $claimed_count,
-            'claimable_count' => $claimable_count,
+            'claimable_count' => $is_locked ? 0 : $claimable_count, // No claimable if locked
             'cta_state' => $cta_state,
+            'is_locked' => $is_locked,
+            'unlock_task_id' => $unlock_task_id,
         );
     }
     
@@ -597,20 +618,18 @@ function hdh_track_listing_creation($user_id, $listing_id) {
         return;
     }
     
-    // Increment daily task progress (create_listings)
-    $today = date('Y-m-d');
-    hdh_increment_task_progress($user_id, 'create_listings', $today);
-    
     // Check if this is the first listing (one-time task)
     $listings = get_posts(array(
         'post_type' => 'hayday_trade',
         'author' => $user_id,
-        'posts_per_page' => 1,
+        'posts_per_page' => -1,
         'fields' => 'ids',
     ));
     
-    // If this is the first listing, increment one-time task progress
+    // If this is the first listing, only increment one-time task progress
+    // Daily task progress should NOT be incremented for the first listing
     if (count($listings) === 1) {
+        // This is the first listing - only increment one-time task
         hdh_increment_task_progress($user_id, 'create_first_listing', 'lifetime');
         
         // Log task completion (progress only, no reward)
@@ -618,8 +637,28 @@ function hdh_track_listing_creation($user_id, $listing_id) {
             hdh_log_event($user_id, 'task_completed', array(
                 'task_id' => 'create_first_listing',
                 'reason' => 'first_listing_created',
-                'note' => 'Progress incremented, reward must be claimed manually',
+                'note' => 'First listing - only one-time task progress incremented, daily task not incremented',
             ));
+        }
+    } else {
+        // This is NOT the first listing - increment daily task progress only
+        // But first check if daily task is unlocked (one-time task must be completed first)
+        $one_time_progress = hdh_get_task_progress($user_id, 'create_first_listing', 'lifetime');
+        $one_time_completed = $one_time_progress && (int) $one_time_progress['completed_count'] > 0;
+        
+        if ($one_time_completed) {
+            // One-time task is completed, so daily task is unlocked - increment daily progress
+            $today = date('Y-m-d');
+            hdh_increment_task_progress($user_id, 'create_listings', $today);
+            
+            // Log task completion (progress only, no reward)
+            if (function_exists('hdh_log_event')) {
+                hdh_log_event($user_id, 'task_completed', array(
+                    'task_id' => 'create_listings',
+                    'reason' => 'listing_created',
+                    'note' => 'Daily task progress incremented, reward must be claimed manually',
+                ));
+            }
         }
     }
 }
@@ -633,25 +672,45 @@ function hdh_track_exchange_completion($user_id, $trade_id) {
         return;
     }
     
-    // Increment daily task progress (complete_exchanges)
-    $today = date('Y-m-d');
-    hdh_increment_task_progress($user_id, 'complete_exchanges', $today);
-    
     // Check if this is the first exchange (one-time task)
     // Get completed exchanges count from progress table
     $progress = hdh_get_task_progress($user_id, 'complete_first_exchange', 'lifetime');
     $completed_count = $progress ? (int) $progress['completed_count'] : 0;
     
-    // Increment one-time task progress
-    hdh_increment_task_progress($user_id, 'complete_first_exchange', 'lifetime');
-    
-    // Log task completion (progress only, no reward)
-    if (function_exists('hdh_log_event')) {
-        hdh_log_event($user_id, 'task_completed', array(
-            'task_id' => 'complete_first_exchange',
-            'reason' => 'exchange_completed',
-            'note' => 'Progress incremented, reward must be claimed manually',
-        ));
+    // If this is the first exchange, only increment one-time task progress
+    // Daily task progress should NOT be incremented for the first exchange
+    if ($completed_count === 0) {
+        // This is the first exchange - only increment one-time task
+        hdh_increment_task_progress($user_id, 'complete_first_exchange', 'lifetime');
+        
+        // Log task completion (progress only, no reward)
+        if (function_exists('hdh_log_event')) {
+            hdh_log_event($user_id, 'task_completed', array(
+                'task_id' => 'complete_first_exchange',
+                'reason' => 'first_exchange_completed',
+                'note' => 'First exchange - only one-time task progress incremented, daily task not incremented',
+            ));
+        }
+    } else {
+        // This is NOT the first exchange - increment daily task progress only
+        // But first check if daily task is unlocked (one-time task must be completed first)
+        $one_time_progress = hdh_get_task_progress($user_id, 'complete_first_exchange', 'lifetime');
+        $one_time_completed = $one_time_progress && (int) $one_time_progress['completed_count'] > 0;
+        
+        if ($one_time_completed) {
+            // One-time task is completed, so daily task is unlocked - increment daily progress
+            $today = date('Y-m-d');
+            hdh_increment_task_progress($user_id, 'complete_exchanges', $today);
+            
+            // Log task completion (progress only, no reward)
+            if (function_exists('hdh_log_event')) {
+                hdh_log_event($user_id, 'task_completed', array(
+                    'task_id' => 'complete_exchanges',
+                    'reason' => 'exchange_completed',
+                    'note' => 'Daily task progress incremented, reward must be claimed manually',
+                ));
+            }
+        }
     }
 }
 add_action('hdh_exchange_completed', 'hdh_track_exchange_completion', 10, 2);

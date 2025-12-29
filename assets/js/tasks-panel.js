@@ -399,11 +399,11 @@
                             refreshTasksListAndUpdateUI();
                         }, 500);
                     } else {
-                        // Update button to show claimed status
-                        const taskActions = btn.closest('.task-actions');
-                        if (taskActions) {
-                            taskActions.innerHTML = '<span class="task-status">✅ Ödül Alındı</span>';
-                        }
+                        // For one-time tasks, remove the task from UI (it disappears after claiming)
+                        // Refresh the entire tasks list to reflect the change
+                        setTimeout(function() {
+                            refreshTasksListAndUpdateUI();
+                        }, 500);
                         // Update badge count
                         updateTasksBadge();
                     }
@@ -543,12 +543,18 @@
                                         ? hdhTasks.messages.tasks.claim_reward_button 
                                         : 'Ödülünü Al';
                                     taskActions.innerHTML = '<button class="btn-claim-task" data-task-id="' + task.id + '" data-is-daily="true">' + claimRewardText + '</button>';
+                                    } else if (task.is_locked) {
+                                    // Task is locked - show locked status
+                                    const lockHint = task.unlock_task_id === 'create_first_listing' ? 'İlk ilan' :
+                                                     task.unlock_task_id === 'complete_first_exchange' ? 'İlk hediyeleşme' :
+                                                     task.unlock_task_id === 'invite_friend' ? 'Davet et' : 'Tek seferlik görev';
+                                    taskActions.innerHTML = '<span class="task-status task-locked">🔒 Kilitli</span><small class="task-lock-hint">Bu görevi açmak için önce "' + lockHint + '" görevini tamamlamalısınız</small>';
                                     } else if (task.id === 'create_listings') {
                                     const doTaskText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.do_task) 
                                         ? hdhTasks.messages.tasks.do_task 
                                         : 'Yap';
                                     taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/ilan-ver" class="btn-do-task">' + doTaskText + '</a>';
-                                    } else if (task.id === 'invite_friends' || task.id === 'friend_exchanges') {
+                                    } else if (task.id === 'invite_friends') {
                                     const doTaskText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.do_task) 
                                         ? hdhTasks.messages.tasks.do_task 
                                         : 'Yap';
@@ -586,6 +592,15 @@
                             const taskActions = taskItemContainer.querySelector('.task-actions');
                             if (taskActions && !task.can_claim && task.claimed) {
                                 taskActions.innerHTML = '<span class="task-status">✅ Ödül Alındı</span>';
+                            } else if (taskActions && task.id === 'invite_friend' && !task.can_claim && !task.claimed) {
+                                // Show share referral link button for invite_friend task
+                                const shareText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.share_referral_button) 
+                                    ? hdhTasks.messages.tasks.share_referral_button 
+                                    : 'Linki Paylaş';
+                                const referralLink = task.referral_link || '';
+                                if (referralLink) {
+                                    taskActions.innerHTML = '<button type="button" class="btn-share-referral" data-referral-link="' + escapeHtml(referralLink) + '">' + shareText + '</button>';
+                                }
                             }
                         }
                     });
@@ -698,5 +713,43 @@
                 console.log('Toast (disabled):', message);
             }
         }
+        
+        /**
+         * Escape HTML to prevent XSS
+         */
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        /**
+         * Handle referral link sharing
+         */
+        function handleReferralShare(link) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(link).then(function() {
+                    console.log('Referral link copied to clipboard');
+                }).catch(function(err) {
+                    console.error('Failed to copy referral link:', err);
+                    // Fallback: show link in prompt
+                    prompt('Referral linkiniz:', link);
+                });
+            } else {
+                // Fallback: show link in prompt
+                prompt('Referral linkiniz:', link);
+            }
+        }
+        
+        // Handle referral share button clicks
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('btn-share-referral')) {
+                e.preventDefault();
+                const link = e.target.getAttribute('data-referral-link');
+                if (link) {
+                    handleReferralShare(link);
+                }
+            }
+        });
     });
 })();

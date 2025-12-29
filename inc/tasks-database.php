@@ -81,3 +81,35 @@ function hdh_create_reward_ledger_table() {
 add_action('after_switch_theme', 'hdh_create_reward_ledger_table');
 add_action('admin_init', 'hdh_create_reward_ledger_table');
 
+/**
+ * Create referrals table for tracking user referrals
+ */
+function hdh_create_referrals_table() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'hdh_referrals';
+    $charset_collate = $wpdb->get_charset_collate();
+    
+    // Check if table exists
+    $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name;
+    
+    if ($table_exists) {
+        return; // Table already exists
+    }
+    
+    $sql = "CREATE TABLE $table_name (
+        id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+        referrer_id bigint(20) UNSIGNED NOT NULL,
+        referred_id bigint(20) UNSIGNED NOT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        UNIQUE KEY referrer_referred (referrer_id, referred_id),
+        KEY referrer_id (referrer_id),
+        KEY referred_id (referred_id)
+    ) $charset_collate;";
+    
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+}
+add_action('after_switch_theme', 'hdh_create_referrals_table');
+add_action('admin_init', 'hdh_create_referrals_table');
+

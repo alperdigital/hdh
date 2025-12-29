@@ -287,6 +287,9 @@ function hdh_render_registration_modal() {
     $redirect_to_trade = isset($_GET['redirect']) && $_GET['redirect'] === 'trade';
     $terms_page_id = get_option('hdh_terms_page_id', 0);
     $terms_url = $terms_page_id ? get_permalink($terms_page_id) : home_url('/uyelik-sozlesmesi/');
+    
+    // Get referral username from query param
+    $referral_username = isset($_GET['ref']) ? sanitize_user($_GET['ref']) : '';
     ?>
     <div id="hdh-registration-modal" class="hdh-modal" style="display: block;">
         <div class="hdh-modal-overlay"></div>
@@ -363,6 +366,12 @@ function hdh_render_registration_modal() {
                             <div class="hdh-phone-note">
                                 <strong>💡 İpucu:</strong> Telefon numaranızı belirtirseniz hesabınız <strong>mavi tikli</strong> olacaktır ve diğer kullanıcılar size daha çok güvenecektir.
                             </div>
+                        </p>
+                        
+                        <p class="form-row">
+                            <label for="referral_username">Referans (Opsiyonel)</label>
+                            <input type="text" name="referral_username" id="referral_username" class="input" value="<?php echo isset($_POST['referral_username']) ? esc_attr($_POST['referral_username']) : esc_attr($referral_username); ?>" placeholder="Arkadaşınızın kullanıcı adı" />
+                            <small>Eğer bir arkadaşınız tarafından davet edildiyseniz, onun kullanıcı adını girin</small>
                         </p>
                         
                         <p class="form-row">
@@ -487,6 +496,7 @@ function hdh_handle_custom_registration_submit() {
     $user_pass = isset($_POST['user_pass']) ? $_POST['user_pass'] : '';
     $farm_tag = isset($_POST['farm_tag']) ? sanitize_text_field($_POST['farm_tag']) : '';
     $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
+    $referral_username = isset($_POST['referral_username']) ? sanitize_user($_POST['referral_username']) : '';
     $accept_terms = isset($_POST['accept_terms']) ? true : false;
     $redirect_to = isset($_POST['redirect_to']) ? esc_url_raw($_POST['redirect_to']) : home_url('/');
     $redirect_to_trade = isset($_POST['redirect_to_trade']) && $_POST['redirect_to_trade'] === '1';
@@ -582,6 +592,17 @@ function hdh_handle_custom_registration_submit() {
     if (!empty($phone_number)) {
         update_user_meta($user_id, 'phone_number', $phone_number);
         update_user_meta($user_id, 'verified_account', true); // Mavi tikli hesap
+    }
+    
+    // Process referral if provided
+    if (!empty($referral_username)) {
+        if (function_exists('hdh_process_referral')) {
+            $referral_result = hdh_process_referral($user_id, $referral_username);
+            // Don't fail registration if referral processing fails, just log it
+            if (is_wp_error($referral_result) && defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('HDH Referral: ' . $referral_result->get_error_message());
+            }
+        }
     }
     
     // Save terms acceptance record (KVKK compliance)

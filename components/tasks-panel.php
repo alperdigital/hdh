@@ -79,7 +79,6 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                             'create_first_listing' => '📝',
                                             'complete_first_exchange' => '🎁',
                                             'invite_friend' => '👥',
-                                            'friend_exchange' => '🤝',
                                         );
                                         echo isset($icons[$task['id']]) ? $icons[$task['id']] : '📋';
                                         ?>
@@ -111,8 +110,16 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php elseif ($task['id'] === 'create_first_listing') : ?>
                                         <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
-                                    <?php elseif ($task['id'] === 'invite_friend' || $task['id'] === 'friend_exchange') : ?>
-                                        <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
+                                    <?php elseif ($task['id'] === 'invite_friend') : ?>
+                                        <?php
+                                        $referral_link = function_exists('hdh_get_referral_link') ? hdh_get_referral_link($user_id) : '';
+                                        if ($referral_link) : ?>
+                                            <button type="button" class="btn-share-referral" data-referral-link="<?php echo esc_attr($referral_link); ?>">
+                                                <?php echo esc_html(hdh_get_content('tasks', 'share_referral_button', 'Linki Paylaş')); ?>
+                                            </button>
+                                        <?php else : ?>
+                                            <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
+                                        <?php endif; ?>
                                     <?php else : ?>
                                         <span class="task-status"><?php echo esc_html(hdh_get_content('tasks', 'pending_status', 'Beklemede')); ?></span>
                                     <?php endif; ?>
@@ -137,7 +144,6 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                             'create_listings' => '📝',
                                             'complete_exchanges' => '🎁',
                                             'invite_friends' => '👥',
-                                            'friend_exchanges' => '🤝',
                                         );
                                         echo isset($icons[$task['id']]) ? $icons[$task['id']] : '📋';
                                         ?>
@@ -162,7 +168,17 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                     </div>
                                 </div>
                                 <div class="task-actions">
-                                    <?php if ($task['can_claim']) : ?>
+                                    <?php if (isset($task['is_locked']) && $task['is_locked']) : ?>
+                                        <span class="task-status task-locked">🔒 Kilitli</span>
+                                        <small class="task-lock-hint">Bu görevi açmak için önce "<?php 
+                                            $unlock_task_names = array(
+                                                'create_listings' => 'İlk ilan',
+                                                'complete_exchanges' => 'İlk hediyeleşme',
+                                                'invite_friends' => 'Davet et'
+                                            );
+                                            echo isset($unlock_task_names[$task['id']]) ? esc_html($unlock_task_names[$task['id']]) : 'Tek seferlik görev';
+                                        ?>" görevini tamamlamalısınız</small>
+                                    <?php elseif ($task['can_claim']) : ?>
                                         <button class="btn-claim-task" 
                                                 data-task-id="<?php echo esc_attr($task['id']); ?>" 
                                                 data-is-daily="true">
@@ -170,7 +186,7 @@ if (!function_exists('hdh_render_tasks_panel')) {
                                         </button>
                                     <?php elseif ($task['id'] === 'create_listings') : ?>
                                         <a href="<?php echo esc_url(home_url('/ilan-ver')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
-                                    <?php elseif ($task['id'] === 'invite_friends' || $task['id'] === 'friend_exchanges') : ?>
+                                    <?php elseif ($task['id'] === 'invite_friends') : ?>
                                         <a href="<?php echo esc_url(home_url('/profil')); ?>" class="btn-do-task"><?php echo esc_html(hdh_get_content('tasks', 'do_task_button', 'Yap')); ?></a>
                                     <?php else : ?>
                                         <span class="task-status"><?php echo esc_html(hdh_get_content('tasks', 'pending_status', 'Beklemede')); ?></span>

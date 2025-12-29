@@ -483,6 +483,11 @@ function hdh_complete_gift_exchange($exchange_id, $user_id) {
             hdh_increment_completed_gift_count($exchange['owner_user_id']);
             hdh_increment_completed_gift_count($exchange['offerer_user_id']);
         }
+        
+        // Trigger exchange completed hook for task tracking
+        // This will track both owner and offerer's task progress
+        do_action('hdh_exchange_completed', $exchange['owner_user_id'], $exchange_id);
+        do_action('hdh_exchange_completed', $exchange['offerer_user_id'], $exchange_id);
     }
     
     return hdh_get_gift_exchange($exchange_id, $user_id);

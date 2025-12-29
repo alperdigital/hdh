@@ -48,6 +48,21 @@ function hdh_handle_claim_task_reward() {
     // Get claimable_remaining from result (if available from atomic claim engine)
     $claimable_remaining = isset($result['claimable_remaining']) ? (int) $result['claimable_remaining'] : 0;
     
+    // Get updated tasks list (one-time tasks may have disappeared after claiming)
+    $one_time_tasks = array();
+    $daily_tasks = array();
+    
+    try {
+        if (function_exists('hdh_get_user_one_time_tasks')) {
+            $one_time_tasks = hdh_get_user_one_time_tasks($user_id);
+        }
+        if (function_exists('hdh_get_user_daily_tasks')) {
+            $daily_tasks = hdh_get_user_daily_tasks($user_id);
+        }
+    } catch (Exception $e) {
+        error_log('HDH Tasks: Error getting updated tasks: ' . $e->getMessage());
+    }
+    
     wp_send_json_success(array(
         'message' => hdh_get_message('ajax', 'reward_claimed_success', 'Ödül başarıyla alındı!'),
         'bilet' => $result['bilet'],
@@ -55,6 +70,8 @@ function hdh_handle_claim_task_reward() {
         'new_bilet' => $new_bilet,
         'new_level' => $new_level,
         'claimable_remaining' => $claimable_remaining,
+        'one_time_tasks' => $one_time_tasks,
+        'daily_tasks' => $daily_tasks,
     ));
 }
 add_action('wp_ajax_hdh_claim_task_reward', 'hdh_handle_claim_task_reward');
@@ -104,6 +121,14 @@ function hdh_handle_get_tasks() {
         error_log('HDH Tasks AJAX: Error getting daily tasks: ' . $e->getMessage());
         $daily_tasks = array();
     }
+    
+    // Add referral link to invite_friend task if user is logged in
+    foreach ($one_time_tasks as &$task) {
+        if ($task['id'] === 'invite_friend' && function_exists('hdh_get_referral_link')) {
+            $task['referral_link'] = hdh_get_referral_link($user_id);
+        }
+    }
+    unset($task); // Break reference
     
     wp_send_json_success(array(
         'one_time_tasks' => $one_time_tasks,
