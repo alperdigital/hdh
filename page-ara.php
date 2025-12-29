@@ -119,12 +119,12 @@ get_header();
                     }
                 }
                 
-                // Get user sorting preference (default: presence)
-                $sort_by = 'presence';
+                // Get user sorting preference (default: newest for newest listings first)
+                $sort_by = 'newest';
                 if (is_user_logged_in()) {
                     $user_sort_pref = get_user_meta($current_user_id, 'hdh_listing_sort_preference', true);
-                    if ($user_sort_pref === 'newest') {
-                        $sort_by = 'newest';
+                    if ($user_sort_pref === 'presence') {
+                        $sort_by = 'presence';
                     }
                 }
                 

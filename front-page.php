@@ -25,9 +25,9 @@ $recent_listings_args = array(
     ),
 );
 
-// Use presence-based sorting if available (default: presence)
+// Use presence-based sorting if available (default: newest for newest listings first)
 if (function_exists('hdh_get_listings_with_presence')) {
-    $recent_listings = hdh_get_listings_with_presence($recent_listings_args, 'presence');
+    $recent_listings = hdh_get_listings_with_presence($recent_listings_args, 'newest');
 } else {
     // Fallback to standard query
     $recent_listings_args['orderby'] = 'date';
