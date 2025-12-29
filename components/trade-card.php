@@ -91,10 +91,15 @@ if (!function_exists('hdh_render_trade_card')) {
         $current_user_id = get_current_user_id();
         $is_own_listing = ($current_user_id && $author_id == $current_user_id);
         $can_start_gift = ($current_user_id && !$is_own_listing);
+        $is_clickable = !$is_own_listing; // All non-own listings are clickable (logged in or not)
+        $requires_login = !$current_user_id; // Requires login if user is not logged in
         ?>
-        <div class="listing-unified-block listing-simplified <?php echo $can_start_gift ? 'listing-clickable' : ''; ?>" 
-             <?php if ($can_start_gift) : ?>
+        <div class="listing-unified-block listing-simplified <?php echo $is_clickable ? 'listing-clickable' : ''; ?>" 
+             <?php if ($is_clickable) : ?>
              data-listing-id="<?php echo esc_attr($post_id); ?>"
+             <?php if ($requires_login) : ?>
+             data-requires-login="true"
+             <?php endif; ?>
              role="button"
              tabindex="0"
              aria-label="Hediyeleşmeye başla: <?php echo esc_attr($listing_title); ?>"
@@ -114,7 +119,7 @@ if (!function_exists('hdh_render_trade_card')) {
                         <?php echo esc_html($author_name); ?>
                     </span>
                 </div>
-                <?php if ($can_start_gift) : ?>
+                <?php if ($is_clickable) : ?>
                     <div class="listing-gift-cta">
                         <span class="listing-gift-cta-icon">🎁</span>
                         <span class="listing-gift-cta-text">Hediyeleş</span>

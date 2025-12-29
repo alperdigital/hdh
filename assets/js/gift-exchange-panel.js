@@ -333,6 +333,7 @@
         
         /**
          * Open chat for an exchange
+         * Exposed globally for use by other scripts
          */
         function openChat(exchangeId) {
             if (!exchangeId) {

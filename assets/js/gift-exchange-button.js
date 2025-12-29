@@ -31,6 +31,16 @@
                         return;
                     }
                     
+                    // Check if login is required
+                    const requiresLogin = this.getAttribute('data-requires-login') === 'true';
+                    if (requiresLogin) {
+                        // Redirect to registration page
+                        const currentUrl = window.location.href;
+                        const separator = currentUrl.includes('?') ? '&' : '?';
+                        window.location.href = currentUrl + separator + 'action=register';
+                        return;
+                    }
+                    
                     if (!config.nonce) {
                         showToast('Güvenlik hatası. Sayfayı yenileyin.', 'error');
                         return;
@@ -60,12 +70,31 @@
                     .then(data => {
                         if (data.success) {
                             showToast(data.data?.message || 'Hediyeleşme başlatıldı!', 'success');
-                            // Optionally open gift exchange panel
+                            
+                            // Get exchange ID from response
+                            const exchangeId = data.data?.exchange?.id || data.data?.exchange_id;
+                            
+                            // Open gift exchange panel and chat view
                             const giftIcon = document.getElementById('gift-exchange-icon-toggle');
                             if (giftIcon) {
-                                setTimeout(() => {
+                                // Open panel first
+                                if (!document.getElementById('gift-exchange-panel')?.classList.contains('active')) {
                                     giftIcon.click();
-                                }, 500);
+                                }
+                                
+                                // Wait for panel to open, then open chat view
+                                setTimeout(() => {
+                                    if (exchangeId && typeof window.openGiftExchangeChat === 'function') {
+                                        // Use global function if available
+                                        window.openGiftExchangeChat(exchangeId);
+                                    } else if (exchangeId) {
+                                        // Try to trigger chat view opening via custom event
+                                        const event = new CustomEvent('hdh-open-gift-chat', {
+                                            detail: { exchangeId: exchangeId }
+                                        });
+                                        window.dispatchEvent(event);
+                                    }
+                                }, 800);
                             }
                         } else {
                             showToast(data.data?.message || 'Hediyeleşme başlatılamadı', 'error');
@@ -113,8 +142,13 @@
                         return;
                     }
                     
+                    // Check if login is required (for buttons, assume they're only shown when logged in)
+                    // But check nonce to be sure
                     if (!config.nonce) {
-                        showToast('Güvenlik hatası. Sayfayı yenileyin.', 'error');
+                        // No nonce means not logged in, redirect to registration
+                        const currentUrl = window.location.href;
+                        const separator = currentUrl.includes('?') ? '&' : '?';
+                        window.location.href = currentUrl + separator + 'action=register';
                         return;
                     }
                     
@@ -137,11 +171,29 @@
                     .then(data => {
                         if (data.success) {
                             showToast(data.data?.message || 'Hediyeleşme başlatıldı!', 'success');
+                            
+                            // Get exchange ID from response
+                            const exchangeId = data.data?.exchange?.id || data.data?.exchange_id;
+                            
+                            // Open gift exchange panel and chat view
                             const giftIcon = document.getElementById('gift-exchange-icon-toggle');
                             if (giftIcon) {
-                                setTimeout(() => {
+                                // Open panel first
+                                if (!document.getElementById('gift-exchange-panel')?.classList.contains('active')) {
                                     giftIcon.click();
-                                }, 500);
+                                }
+                                
+                                // Wait for panel to open, then open chat view
+                                setTimeout(() => {
+                                    if (exchangeId && typeof window.openGiftExchangeChat === 'function') {
+                                        window.openGiftExchangeChat(exchangeId);
+                                    } else if (exchangeId) {
+                                        const event = new CustomEvent('hdh-open-gift-chat', {
+                                            detail: { exchangeId: exchangeId }
+                                        });
+                                        window.dispatchEvent(event);
+                                    }
+                                }, 800);
                             }
                         } else {
                             showToast(data.data?.message || 'Hediyeleşme başlatılamadı', 'error');
