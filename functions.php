@@ -186,6 +186,22 @@ function hdh_enqueue_scripts() {
         wp_localize_script('hdh-trade-form', 'hdhMessages', $js_messages);
     }
     
+    // Enqueue gift exchange button handler on pages with listings (homepage and ara page)
+    if (is_front_page() || is_page_template('page-ara.php')) {
+        wp_enqueue_script(
+            'hdh-gift-exchange-button',
+            get_template_directory_uri() . '/assets/js/gift-exchange-button.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+        
+        wp_localize_script('hdh-gift-exchange-button', 'hdhGiftExchange', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('hdh_gift_exchange'),
+        ));
+    }
+    
     // Enqueue trade filter script on ara page
     if (is_page_template('page-ara.php')) {
         wp_enqueue_style(
@@ -207,20 +223,6 @@ function hdh_enqueue_scripts() {
         wp_localize_script('hdh-trade-filter', 'hdhFilter', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hdh_filter_trades'),
-        ));
-        
-        // Enqueue gift exchange button handler
-        wp_enqueue_script(
-            'hdh-gift-exchange-button',
-            get_template_directory_uri() . '/assets/js/gift-exchange-button.js',
-            array('jquery'),
-            '1.0.0',
-            true
-        );
-        
-        wp_localize_script('hdh-gift-exchange-button', 'hdhGiftExchange', array(
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('hdh_gift_exchange'),
         ));
     }
     
