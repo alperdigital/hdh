@@ -231,8 +231,8 @@ function hdh_add_xp($user_id, $amount, $reason = '', $metadata = array()) {
             'xp' => $new_xp,
         ));
         
-        // Award level up rewards
-        hdh_award_level_up_rewards($user_id, $new_level);
+        // No rewards for level up - users only get rewards from tasks
+        // hdh_award_level_up_rewards($user_id, $new_level); // REMOVED
     }
     
     // Log XP gain event
@@ -274,18 +274,14 @@ function hdh_calculate_level_from_xp($xp) {
 
 /**
  * Award level up rewards
+ * NOTE: All rewards removed - users only get rewards from completing tasks
+ * This function is kept for backward compatibility but does nothing
  */
 function hdh_award_level_up_rewards($user_id, $level) {
-    // Award bilets based on level
-    $bilet_reward = min($level, 10); // Max 10 bilets per level
-    $transaction_id = 'levelup_' . $level . '_' . $user_id . '_' . current_time('timestamp');
-    hdh_add_bilet($user_id, $bilet_reward, 'level_up', array('level' => $level, 'transaction_id' => $transaction_id));
-    
-    // Award badges at milestone levels
-    $milestones = array(5, 10, 25, 50, 100);
-    if (in_array($level, $milestones)) {
-        hdh_award_badge($user_id, 'level_' . $level);
-    }
+    // All rewards removed - no bilet, no badges
+    // Users only get rewards from completing tasks
+    // This function is kept for backward compatibility but does nothing
+    return;
 }
 
 /**
