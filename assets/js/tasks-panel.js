@@ -288,6 +288,9 @@
                     // Update badge count
                     updateBadgeCount();
                     
+                    // Update header task count immediately after claim
+                    updateHeaderTaskCount();
+                    
                     // Log for debugging (only in development)
                     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                         console.log('HDH Tasks: Reward claimed', {
@@ -670,6 +673,9 @@
                     
                     // Update badge count
                     updateTasksBadge();
+                    
+                    // Update header task count
+                    updateHeaderTaskCount();
                 } else {
                     console.error('HDH Tasks: Failed to refresh tasks', data);
                 }
@@ -689,7 +695,67 @@
         }
         
         /**
-         * Update badge count based on claimable_count
+         * Update header task count from server via AJAX
+         */
+        function updateHeaderTaskCount() {
+            // Check if hdhTasks is defined
+            if (typeof hdhTasks === 'undefined') {
+                console.error('HDH Tasks: hdhTasks object not defined');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('action', 'hdh_get_tasks');
+            formData.append('nonce', hdhTasks.nonce);
+            
+            fetch(hdhTasks.ajaxUrl, { 
+                method: 'POST', 
+                body: formData 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success && data.data) {
+                    let claimableCount = 0;
+                    
+                    // Count claimable one-time tasks
+                    if (data.data.one_time_tasks && Array.isArray(data.data.one_time_tasks)) {
+                        data.data.one_time_tasks.forEach(function(task) {
+                            const claimable = parseInt(task.claimable_count || 0, 10);
+                            if (claimable > 0) {
+                                claimableCount++;
+                            }
+                        });
+                    }
+                    
+                    // Count claimable daily tasks
+                    if (data.data.daily_tasks && Array.isArray(data.data.daily_tasks)) {
+                        data.data.daily_tasks.forEach(function(task) {
+                            const claimable = parseInt(task.claimable_count || 0, 10);
+                            if (claimable > 0) {
+                                claimableCount++;
+                            }
+                        });
+                    }
+                    
+                    // Update header count
+                    const headerCount = document.getElementById('hdh-header-tasks-count');
+                    if (headerCount) {
+                        headerCount.textContent = '(' + claimableCount + ')';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error updating header task count:', error);
+            });
+        }
+        
+        /**
+         * Update badge count based on claimable_count (for panel badge)
          */
         function updateBadgeCount() {
             // Reload tasks panel to get fresh claimable_count data
@@ -715,11 +781,8 @@
                 }
             }
             
-            // Update header count
-            const headerCount = document.getElementById('hdh-header-tasks-count');
-            if (headerCount) {
-                headerCount.textContent = '(' + claimableCount + ')';
-            }
+            // Also update header count from server
+            updateHeaderTaskCount();
         }
         
         /**
@@ -729,15 +792,45 @@
             updateBadgeCount();
         }
         
-        /**
-         * Update tasks badge count (uses claimable_count from task data)
-         */
-        function updateTasksBadge() {
-            updateBadgeCount();
-        }
-        
         // Initial badge update
         updateTasksBadge();
+        
+        // Update header task count periodically (every 30 seconds)
+        let headerTaskCountInterval = null;
+        function startHeaderTaskCountPolling() {
+            // Clear existing interval if any
+            if (headerTaskCountInterval) {
+                clearInterval(headerTaskCountInterval);
+            }
+            
+            // Update immediately
+            updateHeaderTaskCount();
+            
+            // Then update every 30 seconds
+            headerTaskCountInterval = setInterval(function() {
+                updateHeaderTaskCount();
+            }, 30000); // 30 seconds
+        }
+        
+        // Start polling when page loads
+        startHeaderTaskCountPolling();
+        
+        // Also update when tasks panel is opened or closed
+        if (tasksPanel) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        // Panel opened or closed, update count
+                        updateHeaderTaskCount();
+                    }
+                });
+            });
+            
+            observer.observe(tasksPanel, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        }
         
         // Update badge when tasks change (throttled to prevent infinite loops)
         // Note: Event delegation handles button clicks automatically, so we don't need to re-attach handlers
