@@ -28,6 +28,53 @@ function hdh_cleanup_removed_tasks() {
 add_action('admin_init', 'hdh_cleanup_removed_tasks');
 
 /**
+ * Update daily task descriptions to new format
+ * Migrates old descriptions to new ones
+ */
+function hdh_update_daily_task_descriptions() {
+    $daily_tasks = get_option('hdh_daily_tasks', array());
+    if (empty($daily_tasks)) {
+        return;
+    }
+    
+    $updated = false;
+    
+    // Update create_listings description
+    if (isset($daily_tasks['create_listings']) && 
+        isset($daily_tasks['create_listings']['description']) &&
+        ($daily_tasks['create_listings']['description'] === 'Günde 3 ilan oluşturun' || 
+         $daily_tasks['create_listings']['description'] === 'İlan oluşturun')) {
+        $daily_tasks['create_listings']['description'] = 'Bir ilan oluşturun';
+        $updated = true;
+    }
+    
+    // Update complete_exchanges description
+    if (isset($daily_tasks['complete_exchanges']) && 
+        isset($daily_tasks['complete_exchanges']['description']) &&
+        ($daily_tasks['complete_exchanges']['description'] === 'Günde 5 hediyeleşme tamamlayın' || 
+         $daily_tasks['complete_exchanges']['description'] === 'Hediyeleşme tamamlayın')) {
+        $daily_tasks['complete_exchanges']['description'] = 'Bir hediyeleşme tamamlayın';
+        $updated = true;
+    }
+    
+    // Update invite_friends description
+    if (isset($daily_tasks['invite_friends']) && 
+        isset($daily_tasks['invite_friends']['description']) &&
+        ($daily_tasks['invite_friends']['description'] === 'Günde 5 arkadaş davet edin' || 
+         $daily_tasks['invite_friends']['description'] === 'Arkadaşınızı davet edin')) {
+        $daily_tasks['invite_friends']['description'] = 'Bir arkadaş davet edin';
+        $updated = true;
+    }
+    
+    if ($updated) {
+        update_option('hdh_daily_tasks', $daily_tasks);
+        // Clear cache
+        wp_cache_delete('hdh_daily_tasks', 'options');
+    }
+}
+add_action('admin_init', 'hdh_update_daily_task_descriptions');
+
+/**
  * Get one-time tasks configuration
  * Now loads from WordPress options (admin-manageable)
  * Falls back to hardcoded config if options are empty (only for frontend, not admin)
@@ -129,7 +176,7 @@ function hdh_get_daily_tasks_config($save_if_empty = true) {
             'create_listings' => array(
                 'id' => 'create_listings',
                 'title' => 'İlan Oluştur',
-                'description' => 'İlan oluşturun',
+                'description' => 'Bir ilan oluşturun',
                 'reward_bilet' => 1,
                 'reward_level' => 0,
                 'max_progress' => 3,
@@ -137,7 +184,7 @@ function hdh_get_daily_tasks_config($save_if_empty = true) {
             'complete_exchanges' => array(
                 'id' => 'complete_exchanges',
                 'title' => 'Hediyeleşme yap',
-                'description' => 'Hediyeleşme tamamlayın',
+                'description' => 'Bir hediyeleşme tamamlayın',
                 'reward_bilet' => 4,
                 'reward_level' => 1,
                 'max_progress' => 5,
@@ -145,7 +192,7 @@ function hdh_get_daily_tasks_config($save_if_empty = true) {
             'invite_friends' => array(
                 'id' => 'invite_friends',
                 'title' => 'Davet et',
-                'description' => 'Arkadaşınızı davet edin',
+                'description' => 'Bir arkadaş davet edin',
                 'reward_bilet' => 2,
                 'reward_level' => 0,
                 'max_progress' => 5,
