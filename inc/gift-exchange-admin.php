@@ -144,7 +144,7 @@ function hdh_render_gift_disputes_page() {
     <div id="hdh-penalty-modal" style="display: none;">
         <div class="hdh-penalty-modal-overlay">
             <div class="hdh-penalty-modal-content">
-                <form method="post" action="">
+                <form method="post" action="<?php echo esc_url(admin_url('admin.php?page=hdh-gift-disputes')); ?>">
                     <?php wp_nonce_field('hdh_apply_penalty', 'hdh_apply_penalty_nonce'); ?>
                     <input type="hidden" name="exchange_id" id="penalty-exchange-id" value="">
                     <input type="hidden" name="apply_penalty" value="1">
@@ -225,6 +225,13 @@ function hdh_render_gift_disputes_page() {
         
         $('.hdh-cancel-penalty').on('click', function() {
             $('#hdh-penalty-modal').hide();
+        });
+        
+        // Close modal when clicking overlay
+        $('.hdh-penalty-modal-overlay').on('click', function(e) {
+            if ($(e.target).is('.hdh-penalty-modal-overlay')) {
+                $('#hdh-penalty-modal').hide();
+            }
         });
         
         $('#reporter-penalty, #reported-penalty').on('change', function() {
