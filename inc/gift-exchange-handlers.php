@@ -211,11 +211,22 @@ function hdh_ajax_complete_gift_exchange() {
         return;
     }
     
-    $message = 'Hediyeleşme tamamlandı';
+    // Determine user-specific message
+    $is_owner = ($exchange['owner_user_id'] == $user_id);
+    $is_offerer = ($exchange['offerer_user_id'] == $user_id);
+    
     if ($exchange['completed_owner_at'] && $exchange['completed_offerer_at']) {
         $message = '✅ Hediyeleşme tamamlandı!';
+    } else if ($is_owner && !$exchange['completed_owner_at']) {
+        $message = '⏳ Onayınız bekleniyor';
+    } else if ($is_owner && $exchange['completed_owner_at'] && !$exchange['completed_offerer_at']) {
+        $message = '⏳ Karşı tarafın onayı bekleniyor';
+    } else if ($is_offerer && !$exchange['completed_offerer_at']) {
+        $message = '⏳ Onayınız bekleniyor';
+    } else if ($is_offerer && $exchange['completed_offerer_at'] && !$exchange['completed_owner_at']) {
+        $message = '⏳ Karşı tarafın onayı bekleniyor';
     } else {
-        $message = 'Karşı tarafın onayı bekleniyor';
+        $message = '⏳ Onay bekleniyor';
     }
     
     wp_send_json_success(array(
@@ -245,6 +256,11 @@ function hdh_ajax_report_gift_exchange() {
     
     if (!$exchange_id) {
         wp_send_json_error(array('message' => 'Geçersiz parametreler'));
+        return;
+    }
+    
+    if (empty($reason)) {
+        wp_send_json_error(array('message' => 'Şikayet sebebi gereklidir'));
         return;
     }
     

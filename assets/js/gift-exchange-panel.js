@@ -521,14 +521,28 @@
             const isDisputed = exchange.status === 'DISPUTED';
             const isLocked = isCompleted || isDisputed;
             
-            // Determine completion status
+            // Determine completion status - user-specific message
+            const currentUserId = config.currentUserId;
+            const isOwner = exchange.owner_user_id === currentUserId;
+            const isOfferer = exchange.offerer_user_id === currentUserId;
+            
             let completionStatus = '';
             if (isCompleted) {
                 completionStatus = '✅ Hediyeleşme tamamlandı';
             } else if (isDisputed) {
                 completionStatus = '⚠️ Şikayet edildi';
             } else if (exchange.completed_owner_at || exchange.completed_offerer_at) {
-                completionStatus = 'Karşı tarafın onayı bekleniyor';
+                if (isOwner && !exchange.completed_owner_at) {
+                    completionStatus = '⏳ Onayınız bekleniyor';
+                } else if (isOwner && exchange.completed_owner_at && !exchange.completed_offerer_at) {
+                    completionStatus = '⏳ Karşı tarafın onayı bekleniyor';
+                } else if (isOfferer && !exchange.completed_offerer_at) {
+                    completionStatus = '⏳ Onayınız bekleniyor';
+                } else if (isOfferer && exchange.completed_offerer_at && !exchange.completed_owner_at) {
+                    completionStatus = '⏳ Karşı tarafın onayı bekleniyor';
+                } else {
+                    completionStatus = '⏳ Onay bekleniyor';
+                }
             }
             
             let html = `
@@ -922,9 +936,118 @@
         }
         
         /**
-         * Report exchange
+         * Report exchange - show modal
          */
         function reportExchange(exchangeId) {
+            showReportModal(exchangeId);
+        }
+        
+        /**
+         * Show report modal with options
+         */
+        function showReportModal(exchangeId) {
+            const modal = document.createElement('div');
+            modal.className = 'gift-report-modal-overlay';
+            modal.innerHTML = `
+                <div class="gift-report-modal">
+                    <div class="gift-report-modal-header">
+                        <h3>Şikayet Sebebi</h3>
+                        <button class="gift-report-modal-close" aria-label="Kapat">×</button>
+                    </div>
+                    <div class="gift-report-modal-body">
+                        <p class="gift-report-modal-description">Lütfen şikayet sebebinizi seçin:</p>
+                        <div class="gift-report-options">
+                            <label class="gift-report-option">
+                                <input type="radio" name="report_reason" value="did_not_receive_gift">
+                                <span>Hediyemi aldı ama hediyesini vermedi</span>
+                            </label>
+                            <label class="gift-report-option">
+                                <input type="radio" name="report_reason" value="did_not_send_gift">
+                                <span>Hediyesini aldı ama hediyemi vermedi</span>
+                            </label>
+                            <label class="gift-report-option">
+                                <input type="radio" name="report_reason" value="did_not_follow_agreement">
+                                <span>Hediyeleri değiştirdik ama karşı taraf anlaşmaya uymadı</span>
+                            </label>
+                            <label class="gift-report-option">
+                                <input type="radio" name="report_reason" value="not_responding">
+                                <span>Karşı taraf mesajlarımı yanıtlamıyor</span>
+                            </label>
+                            <label class="gift-report-option">
+                                <input type="radio" name="report_reason" value="inappropriate_behavior">
+                                <span>Karşı taraf uygunsuz davranış sergiledi</span>
+                            </label>
+                            <label class="gift-report-option">
+                                <input type="radio" name="report_reason" value="other">
+                                <span>Diğer (açıklama yazın)</span>
+                            </label>
+                        </div>
+                        <div class="gift-report-other-text" id="gift-report-other-text" style="display: none;">
+                            <textarea placeholder="Şikayet sebebinizi detaylı olarak açıklayın..." maxlength="500"></textarea>
+                        </div>
+                    </div>
+                    <div class="gift-report-modal-footer">
+                        <button class="btn-cancel-report">İptal</button>
+                        <button class="btn-submit-report" disabled data-exchange-id="${exchangeId}">Şikayeti Gönder</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Handle radio button changes
+            const radioButtons = modal.querySelectorAll('input[name="report_reason"]');
+            const otherText = modal.getElementById('gift-report-other-text');
+            const submitBtn = modal.querySelector('.btn-submit-report');
+            
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'other') {
+                        otherText.style.display = 'block';
+                    } else {
+                        otherText.style.display = 'none';
+                    }
+                    submitBtn.disabled = false;
+                });
+            });
+            
+            // Handle submit
+            submitBtn.addEventListener('click', function() {
+                const selectedReason = modal.querySelector('input[name="report_reason"]:checked');
+                if (!selectedReason) {
+                    alert('Lütfen bir şikayet sebebi seçin');
+                    return;
+                }
+                
+                let reason = selectedReason.value;
+                if (reason === 'other') {
+                    const otherTextValue = otherText.querySelector('textarea').value.trim();
+                    if (!otherTextValue) {
+                        alert('Lütfen şikayet sebebinizi açıklayın');
+                        return;
+                    }
+                    reason = 'other: ' + otherTextValue;
+                }
+                
+                submitReport(exchangeId, reason, modal);
+            });
+            
+            // Handle close
+            modal.querySelector('.gift-report-modal-close').addEventListener('click', () => modal.remove());
+            modal.querySelector('.btn-cancel-report').addEventListener('click', () => modal.remove());
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+        }
+        
+        /**
+         * Submit report
+         */
+        function submitReport(exchangeId, reason, modal) {
+            const submitBtn = modal.querySelector('.btn-submit-report');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Gönderiliyor...';
+            
             fetch(config.ajaxUrl, {
                 method: 'POST',
                 headers: {
@@ -934,24 +1057,27 @@
                     action: 'hdh_report_gift_exchange',
                     nonce: config.nonce,
                     exchange_id: exchangeId,
-                    reason: '',
+                    reason: reason,
                 }),
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Şikayet bildirildi - toast kaldırıldı
+                    modal.remove();
                     // Reload chat view to show updated status
                     openChat(exchangeId);
-                    // Update badge count without reloading list (to avoid closing chat view)
                     updateBadgeCountFromServer();
                 } else {
-                    console.error('Şikayet edilemedi:', data.data?.message || 'Bilinmeyen hata');
+                    alert('Şikayet gönderilemedi: ' + (data.data?.message || 'Bilinmeyen hata'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Şikayeti Gönder';
                 }
             })
             .catch(error => {
                 console.error('Error reporting exchange:', error);
-                console.error('Bir hata oluştu');
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Şikayeti Gönder';
             });
         }
         

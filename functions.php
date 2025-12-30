@@ -92,6 +92,8 @@ require_once get_template_directory() . '/components/lobby-chat.php';
 // New gift exchange system
 require_once get_template_directory() . '/inc/gift-exchange-system.php';
 require_once get_template_directory() . '/inc/gift-exchange-handlers.php';
+require_once get_template_directory() . '/inc/gift-exchange-admin.php';
+require_once get_template_directory() . '/inc/gift-exchange-admin-handlers.php';
 require_once get_template_directory() . '/components/gift-exchange-panel.php';
 // Additional systems
 require_once get_template_directory() . '/components/trade-report-modal.php';
@@ -632,3 +634,31 @@ function hdh_ensure_required_pages() {
     }
 }
 add_action('init', 'hdh_ensure_required_pages', 1);
+
+/**
+ * Check if user is banned on login
+ */
+function hdh_check_user_ban_on_login($user_login, $user) {
+    if (!function_exists('hdh_is_user_banned')) {
+        return;
+    }
+    
+    if (hdh_is_user_banned($user->ID)) {
+        $ban_info = get_user_meta($user->ID, 'hdh_ban_until', true);
+        $ban_reason = get_user_meta($user->ID, 'hdh_ban_reason', true);
+        
+        // Logout user
+        wp_logout();
+        
+        // Show ban message
+        $ban_until_text = ($ban_info && $ban_info !== 'permanent') ? date_i18n('d.m.Y H:i', strtotime($ban_info)) : 'kalıcı';
+        $message = 'Hesabınız askıya alınmıştır.';
+        if ($ban_reason) {
+            $message .= ' Sebep: ' . esc_html($ban_reason);
+        }
+        $message .= ' Askı süresi: ' . $ban_until_text;
+        
+        wp_die($message, 'Hesap Askıya Alındı', array('response' => 403));
+    }
+}
+add_action('wp_login', 'hdh_check_user_ban_on_login', 10, 2);

@@ -42,6 +42,8 @@ function hdh_create_gift_exchanges_table() {
         completed_owner_at datetime DEFAULT NULL,
         completed_offerer_at datetime DEFAULT NULL,
         reported_at datetime DEFAULT NULL,
+        report_reason VARCHAR(255) DEFAULT NULL,
+        reported_by_user_id BIGINT(20) UNSIGNED DEFAULT NULL,
         created_at datetime DEFAULT CURRENT_TIMESTAMP,
         updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (id),
@@ -125,6 +127,34 @@ function hdh_ensure_gift_tables_exist() {
     }
     
     $tables_checked = true;
+    
+    // Run migration to add new columns if needed
+    hdh_migrate_gift_exchanges_table();
+}
+
+/**
+ * Migrate gift exchanges table - add report_reason and reported_by_user_id columns
+ */
+function hdh_migrate_gift_exchanges_table() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'hdh_gift_exchanges';
+    
+    // Check if table exists
+    $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name;
+    if (!$table_exists) {
+        return; // Table doesn't exist yet, will be created with new columns
+    }
+    
+    // Check if columns exist
+    $columns = $wpdb->get_col("DESCRIBE $table_name");
+    
+    if (!in_array('report_reason', $columns)) {
+        $wpdb->query("ALTER TABLE $table_name ADD COLUMN report_reason VARCHAR(255) DEFAULT NULL AFTER reported_at");
+    }
+    
+    if (!in_array('reported_by_user_id', $columns)) {
+        $wpdb->query("ALTER TABLE $table_name ADD COLUMN reported_by_user_id BIGINT(20) UNSIGNED DEFAULT NULL AFTER report_reason");
+    }
 }
 
 // Don't create tables on init hook - use lazy loading only
@@ -523,14 +553,21 @@ function hdh_report_gift_exchange($exchange_id, $user_id, $reason = '') {
         return new WP_Error('already_reported', 'Zaten şikayet edilmiş');
     }
     
+    // Validate reason
+    if (empty($reason)) {
+        return new WP_Error('reason_required', 'Şikayet sebebi gereklidir');
+    }
+    
     $result = $wpdb->update(
         $table_name,
         array(
             'reported_at' => current_time('mysql'),
+            'report_reason' => sanitize_text_field($reason),
+            'reported_by_user_id' => $user_id,
             'status' => 'DISPUTED',
         ),
         array('id' => $exchange_id),
-        array('%s', '%s'),
+        array('%s', '%s', '%d', '%s'),
         array('%d')
     );
     

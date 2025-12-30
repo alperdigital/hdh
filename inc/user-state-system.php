@@ -347,6 +347,48 @@ function hdh_update_trust_score($user_id, $is_positive, $reason = '') {
 }
 
 /**
+ * Decrease trust rating by increasing trust_minus
+ * Uses existing plus/minus system
+ */
+function hdh_decrease_trust_rating($user_id, $amount, $reason = '', $exchange_id = 0) {
+    if (!$user_id || $amount <= 0) {
+        return false;
+    }
+    
+    // Get current trust_minus value
+    $current_minus = (int) get_user_meta($user_id, 'hayday_trust_minus', true);
+    $new_minus = $current_minus + $amount;
+    
+    // Update trust_minus
+    update_user_meta($user_id, 'hayday_trust_minus', $new_minus);
+    
+    // Recalculate trust score
+    $plus = (int) get_user_meta($user_id, 'hayday_trust_plus', true);
+    $total = $plus + $new_minus;
+    $trust_score = $total > 0 ? (int) (($plus / $total) * 100) : 50;
+    update_user_meta($user_id, 'hdh_trust_score', $trust_score);
+    
+    // Log trust decrease event
+    $log_data = array(
+        'amount' => $amount,
+        'reason' => $reason,
+        'old_minus' => $current_minus,
+        'new_minus' => $new_minus,
+        'trust_score' => $trust_score,
+    );
+    
+    if ($exchange_id) {
+        $log_data['exchange_id'] = $exchange_id;
+    }
+    
+    if (function_exists('hdh_log_event')) {
+        hdh_log_event($user_id, 'trust_decreased', $log_data);
+    }
+    
+    return true;
+}
+
+/**
  * Update risk score (0-100, higher = riskier)
  */
 function hdh_update_risk_score($user_id, $change, $reason = '') {
@@ -467,7 +509,7 @@ function hdh_award_badge($user_id, $badge_id, $metadata = array()) {
 /**
  * Ban user
  */
-function hdh_ban_user($user_id, $reason, $days = 0) {
+function hdh_ban_user($user_id, $reason, $days = 0, $admin_id = 0, $exchange_id = 0) {
     if (!$user_id) return false;
     
     update_user_meta($user_id, 'hdh_is_banned', true);
@@ -481,11 +523,21 @@ function hdh_ban_user($user_id, $reason, $days = 0) {
     }
     
     // Log ban event
-    hdh_log_event($user_id, 'user_banned', array(
+    $log_data = array(
         'reason' => $reason,
         'days' => $days,
         'ban_until' => $days > 0 ? $ban_until : 'permanent',
-    ));
+    );
+    
+    if ($admin_id) {
+        $log_data['admin_id'] = $admin_id;
+    }
+    
+    if ($exchange_id) {
+        $log_data['exchange_id'] = $exchange_id;
+    }
+    
+    hdh_log_event($user_id, 'user_banned', $log_data);
     
     return true;
 }
