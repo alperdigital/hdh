@@ -815,25 +815,25 @@ h6 { font-size: 1.1rem; }
     width: 42px;
     height: 42px;
     flex-shrink: 0;
-    /* translateY = -font-size/2 for header (9.075px / 2 = 4.5375px) */
-    transform: translateY(-4.5375px);
+    /* translateY = -font-size/2 for header (13.6125px / 2 = 6.80625px) - 1.5x */
+    transform: translateY(-6.80625px);
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d1 {
-    font-size: 9.075px;
+    font-size: 13.6125px;
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d2 {
     width: 48px;
     height: 48px;
-    font-size: 9.075px;
+    font-size: 13.6125px;
     letter-spacing: -0.5px;
 }
 
 .hdh-header-user-content .hdh-level-badge.lvl-d3 {
     width: 54px;
     height: 54px;
-    font-size: 7.425px;
+    font-size: 11.1375px;
     letter-spacing: -1px;
 }
 
@@ -976,25 +976,25 @@ h6 { font-size: 1.1rem; }
     }
     
     .hdh-header-user-content .hdh-level-badge {
-        /* translateY = -font-size/2 for small mobile header (7.425px / 2 = 3.7125px) */
-        transform: translateY(-3.7125px);
+        /* translateY = -font-size/2 for small mobile header (11.1375px / 2 = 5.56875px) - 1.5x */
+        transform: translateY(-5.56875px);
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d1 {
-        font-size: 7.425px;
+        font-size: 11.1375px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d2 {
         width: 39px;
         height: 39px;
-        font-size: 7.425px;
+        font-size: 11.1375px;
         letter-spacing: -0.5px;
     }
     
     .hdh-header-user-content .hdh-level-badge.lvl-d3 {
         width: 45px;
         height: 45px;
-        font-size: 6.6px;
+        font-size: 9.9px;
         letter-spacing: -1px;
     }
     
@@ -7996,8 +7996,8 @@ footer,
         0 6px 9px rgba(0, 0, 0, 0.20);
     
     /* Perfect center alignment - fine-tuned for visual center */
-    /* translateY = -font-size/2 (half of "1" character height) */
-    transform: translateY(-5.775px);
+    /* translateY = -font-size/2 (half of "1" character height) - 1.5x for larger numbers */
+    transform: translateY(-8.6625px);
     position: relative;
     
     flex-shrink: 0;
@@ -8005,109 +8005,109 @@ footer,
     user-select: none;
 }
 
-/* Font size based on digit count - 50% smaller */
+/* Font size based on digit count - 1.5x larger (was 50% smaller, now 1.5x) */
 .hdh-level-badge.lvl-d1 {
-    font-size: 11.55px;
+    font-size: 17.325px;
 }
 
 /* Larger heart for 2-digit numbers */
 .hdh-level-badge.lvl-d2 {
     width: 48px;
     height: 48px;
-    font-size: 11.55px;
+    font-size: 17.325px;
     letter-spacing: -0.5px;
 }
 
 .hdh-level-badge.lvl-d3 {
     width: 54px;
     height: 54px;
-    font-size: 9.9px;
+    font-size: 14.85px;
     letter-spacing: -1px;
 }
 
-/* Smaller size for listing cards - 50% smaller */
+/* Smaller size for listing cards - 1.5x larger numbers */
 .listing-meta-row-unified .hdh-level-badge {
     width: 36px;
     height: 36px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d1 {
-    font-size: 9.9px;
+    font-size: 14.85px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d2 {
     width: 42px;
     height: 42px;
-    font-size: 9.9px;
+    font-size: 14.85px;
     letter-spacing: -0.5px;
 }
 
 .listing-meta-row-unified .hdh-level-badge.lvl-d3 {
     width: 48px;
     height: 48px;
-    font-size: 8.25px;
+    font-size: 12.375px;
     letter-spacing: -1px;
 }
 
-/* Adjust stroke for smaller badges - 50% smaller */
+/* Adjust stroke for smaller badges - 1.5x larger numbers */
 .listing-meta-row-unified .hdh-level-badge {
     -webkit-text-stroke: 2.25px #0b0b0b;
     text-shadow:
         0 1.5px 0 rgba(0, 0, 0, 0.25),
         0 4.5px 7.5px rgba(0, 0, 0, 0.18);
-    /* translateY = -font-size/2 for listing cards (9.9px / 2 = 4.95px) */
-    transform: translateY(-4.95px);
+    /* translateY = -font-size/2 for listing cards (14.85px / 2 = 7.425px) - 1.5x */
+    transform: translateY(-7.425px);
 }
 
-/* Lobby chat level badge - desktop - 50% smaller */
+/* Lobby chat level badge - desktop - 1.5x larger numbers */
 .chat-message-user .hdh-level-badge {
     width: 30px;
     height: 30px;
-    /* translateY = -font-size/2 for chat (8.25px / 2 = 4.125px) */
-    transform: translateY(-4.125px);
+    /* translateY = -font-size/2 for chat (12.375px / 2 = 6.1875px) - 1.5x */
+    transform: translateY(-6.1875px);
 }
 
 .chat-message-user .hdh-level-badge.lvl-d1 {
-    font-size: 8.25px;
+    font-size: 12.375px;
 }
 
 .chat-message-user .hdh-level-badge.lvl-d2 {
     width: 36px;
     height: 36px;
-    font-size: 8.25px;
+    font-size: 12.375px;
     letter-spacing: -0.5px;
 }
 
 .chat-message-user .hdh-level-badge.lvl-d3 {
     width: 42px;
     height: 42px;
-    font-size: 7.425px;
+    font-size: 11.1375px;
     letter-spacing: -1px;
 }
 
-/* Single trade page level badge - 50% smaller */
+/* Single trade page level badge - 1.5x larger numbers */
 .trade-description-meta .hdh-level-badge {
     width: 39px;
     height: 39px;
-    /* translateY = -font-size/2 for single trade (10.725px / 2 = 5.3625px) */
-    transform: translateY(-5.3625px);
+    /* translateY = -font-size/2 for single trade (16.0875px / 2 = 8.04375px) - 1.5x */
+    transform: translateY(-8.04375px);
 }
 
 .trade-description-meta .hdh-level-badge.lvl-d1 {
-    font-size: 10.725px;
+    font-size: 16.0875px;
 }
 
 .trade-description-meta .hdh-level-badge.lvl-d2 {
     width: 45px;
     height: 45px;
-    font-size: 10.725px;
+    font-size: 16.0875px;
     letter-spacing: -0.5px;
 }
 
 .trade-description-meta .hdh-level-badge.lvl-d3 {
     width: 51px;
     height: 51px;
-    font-size: 9.075px;
+    font-size: 13.6125px;
     letter-spacing: -1px;
 }
 
@@ -8118,19 +8118,19 @@ footer,
     }
     
     .hdh-level-badge.lvl-d1 {
-        font-size: 9.075px;
+        font-size: 13.6125px;
     }
     
     .hdh-level-badge.lvl-d2 {
         width: 39px;
         height: 39px;
-        font-size: 8.25px;
+        font-size: 12.375px;
     }
     
     .hdh-level-badge.lvl-d3 {
         width: 45px;
         height: 45px;
-        font-size: 7.425px;
+        font-size: 11.1375px;
     }
     
     .hdh-level-badge {
@@ -8138,8 +8138,8 @@ footer,
         text-shadow:
             0 1.5px 0 rgba(0, 0, 0, 0.25),
             0 4.5px 7.5px rgba(0, 0, 0, 0.18);
-        /* translateY = -font-size/2 for mobile (9.075px / 2 = 4.5375px average) */
-        transform: translateY(-4.5375px);
+        /* translateY = -font-size/2 for mobile (13.6125px / 2 = 6.80625px average) - 1.5x */
+        transform: translateY(-6.80625px);
     }
 }
 

@@ -252,7 +252,7 @@
 
 .chat-message-user .hdh-level-badge {
     flex-shrink: 0;
-    font-size: 0.75rem;
+    font-size: 1.125rem; /* 1.5x larger (0.75rem * 1.5) */
 }
 
 .chat-message-farm-name {
