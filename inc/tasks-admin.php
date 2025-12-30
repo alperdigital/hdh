@@ -55,13 +55,28 @@ function hdh_render_tasks_admin_page() {
     // Handle form submission
     if (isset($_POST['hdh_save_tasks']) && check_admin_referer('hdh_save_tasks')) {
         hdh_save_tasks_from_admin();
-        settings_errors('hdh_tasks');
+        
+        // Clear cache and reload tasks to show updated values
+        wp_cache_delete('hdh_one_time_tasks', 'options');
+        wp_cache_delete('hdh_daily_tasks', 'options');
+        wp_cache_flush();
     }
+    
+    settings_errors('hdh_tasks');
     
     // Get current tasks directly from options (no hardcoded fallback in admin)
     // Admin panel should only show what's saved, allowing full control
-    $one_time_tasks = get_option('hdh_one_time_tasks', array());
-    $daily_tasks = get_option('hdh_daily_tasks', array());
+    // Use get_option with false to bypass cache, then check if it exists
+    $one_time_tasks = get_option('hdh_one_time_tasks', false);
+    $daily_tasks = get_option('hdh_daily_tasks', false);
+    
+    // If options don't exist, use empty arrays (admin should load defaults manually)
+    if ($one_time_tasks === false || !is_array($one_time_tasks)) {
+        $one_time_tasks = array();
+    }
+    if ($daily_tasks === false || !is_array($daily_tasks)) {
+        $daily_tasks = array();
+    }
     
     // Clean up removed tasks (friend_exchange, friend_exchanges) if they exist
     if (!empty($one_time_tasks) && isset($one_time_tasks['friend_exchange'])) {
@@ -582,10 +597,37 @@ function hdh_save_tasks_from_admin() {
         );
     }
     
-    update_option('hdh_one_time_tasks', $sanitized_one_time);
-    update_option('hdh_daily_tasks', $sanitized_daily);
+    // Debug: Log what we're about to save
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('HDH Tasks Admin: About to save ' . count($sanitized_one_time) . ' one-time tasks and ' . count($sanitized_daily) . ' daily tasks');
+        error_log('HDH Tasks Admin: One-time tasks: ' . print_r(array_keys($sanitized_one_time), true));
+        error_log('HDH Tasks Admin: Daily tasks: ' . print_r(array_keys($sanitized_daily), true));
+    }
     
-    add_settings_error('hdh_tasks', 'tasks_saved', 'Görevler başarıyla kaydedildi! (' . count($sanitized_one_time) . ' tek seferlik, ' . count($sanitized_daily) . ' günlük)', 'updated');
+    // Save to options (force update even if values are the same)
+    $saved_one_time = update_option('hdh_one_time_tasks', $sanitized_one_time, false);
+    $saved_daily = update_option('hdh_daily_tasks', $sanitized_daily, false);
+    
+    // Clear WordPress object cache to ensure fresh data
+    wp_cache_delete('hdh_one_time_tasks', 'options');
+    wp_cache_delete('hdh_daily_tasks', 'options');
+    wp_cache_flush();
+    
+    // Verify the save worked
+    $verify_one_time = get_option('hdh_one_time_tasks', false);
+    $verify_daily = get_option('hdh_daily_tasks', false);
+    
+    // Log for debugging
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('HDH Tasks Admin: Saved ' . count($sanitized_one_time) . ' one-time tasks and ' . count($sanitized_daily) . ' daily tasks');
+        error_log('HDH Tasks Admin: One-time tasks saved: ' . ($saved_one_time ? 'true' : 'false'));
+        error_log('HDH Tasks Admin: Daily tasks saved: ' . ($saved_daily ? 'true' : 'false'));
+        error_log('HDH Tasks Admin: Verification - One-time count: ' . (is_array($verify_one_time) ? count($verify_one_time) : 'not array'));
+        error_log('HDH Tasks Admin: Verification - Daily count: ' . (is_array($verify_daily) ? count($verify_daily) : 'not array'));
+    }
+    
+    $message = 'Görevler başarıyla kaydedildi! (' . count($sanitized_one_time) . ' tek seferlik, ' . count($sanitized_daily) . ' günlük)';
+    add_settings_error('hdh_tasks', 'tasks_saved', $message, 'updated');
 }
 
 /**

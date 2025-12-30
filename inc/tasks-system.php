@@ -39,12 +39,16 @@ function hdh_get_one_time_tasks_config($save_if_empty = true) {
     hdh_cleanup_removed_tasks();
     
     // Try to load from options first (admin-managed)
-    $tasks = get_option('hdh_one_time_tasks', array());
+    // Use get_option with false to check if option exists, then get actual value
+    $tasks = get_option('hdh_one_time_tasks', false);
+    if ($tasks === false) {
+        $tasks = array();
+    }
     
     // Filter out removed tasks
     if (isset($tasks['friend_exchange'])) {
         unset($tasks['friend_exchange']);
-        if ($save_if_empty) {
+        if ($save_if_empty && !empty($tasks)) {
             update_option('hdh_one_time_tasks', $tasks);
         }
     }
@@ -104,7 +108,11 @@ function hdh_get_one_time_tasks_config($save_if_empty = true) {
  */
 function hdh_get_daily_tasks_config($save_if_empty = true) {
     // Try to load from options first (admin-managed)
-    $tasks = get_option('hdh_daily_tasks', array());
+    // Use get_option with false to check if option exists, then get actual value
+    $tasks = get_option('hdh_daily_tasks', false);
+    if ($tasks === false) {
+        $tasks = array();
+    }
     
     // Filter out removed tasks
     if (isset($tasks['friend_exchanges'])) {
@@ -159,7 +167,8 @@ function hdh_get_daily_tasks_config($save_if_empty = true) {
 function hdh_get_user_one_time_tasks($user_id) {
     if (!$user_id) return array();
     
-    $config = hdh_get_one_time_tasks_config();
+    // Get config without auto-saving (to prevent overwriting admin changes)
+    $config = hdh_get_one_time_tasks_config(false);
     $tasks = array();
     
     foreach ($config as $task_id => $task_config) {
@@ -268,7 +277,8 @@ function hdh_get_user_daily_tasks($user_id) {
         hdh_reset_daily_tasks($user_id);
     }
     
-    $config = hdh_get_daily_tasks_config();
+    // Get config without auto-saving (to prevent overwriting admin changes)
+    $config = hdh_get_daily_tasks_config(false);
     $tasks = array();
     
     foreach ($config as $task_id => $task_config) {
@@ -364,7 +374,7 @@ function hdh_get_user_daily_tasks($user_id) {
 function hdh_reset_daily_tasks($user_id) {
     if (!$user_id) return;
     
-    $config = hdh_get_daily_tasks_config();
+    $config = hdh_get_daily_tasks_config(false);
     
     foreach ($config as $task_id => $task_config) {
         delete_user_meta($user_id, 'hdh_daily_task_progress_' . $task_id);
@@ -397,7 +407,7 @@ function hdh_claim_task_reward($user_id, $task_id, $is_daily = false) {
         return new WP_Error('invalid_params', hdh_get_message('ajax', 'invalid_parameters', 'Geçersiz parametreler'));
     }
     
-    $config = $is_daily ? hdh_get_daily_tasks_config() : hdh_get_one_time_tasks_config();
+    $config = $is_daily ? hdh_get_daily_tasks_config(false) : hdh_get_one_time_tasks_config(false);
     
     if (!isset($config[$task_id])) {
         return new WP_Error('invalid_task', hdh_get_message('ajax', 'invalid_task', 'Geçersiz görev'));
@@ -650,7 +660,7 @@ function hdh_update_daily_task_progress($user_id, $task_id, $increment = 1) {
     
     $progress_key = 'hdh_daily_task_progress_' . $task_id;
     $current = (int) get_user_meta($user_id, $progress_key, true);
-    $config = hdh_get_daily_tasks_config();
+    $config = hdh_get_daily_tasks_config(false);
     
     if (!isset($config[$task_id])) return false;
     
