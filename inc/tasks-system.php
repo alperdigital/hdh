@@ -242,7 +242,7 @@ function hdh_get_user_one_time_tasks($user_id) {
                 'cta_state' => $cta_state,
             );
             
-            // Add referral link for invite_friend task
+            // Add referral link for invite_friend task (one-time)
             if ($task_id === 'invite_friend' && function_exists('hdh_get_referral_link')) {
                 $task_data['referral_link'] = hdh_get_referral_link($user_id);
             }
@@ -330,7 +330,7 @@ function hdh_get_user_daily_tasks($user_id) {
             }
         }
         
-        $tasks[] = array(
+        $task_data = array(
             'id' => $task_id,
             'title' => $task_config['title'],
             'description' => $task_config['description'],
@@ -346,6 +346,13 @@ function hdh_get_user_daily_tasks($user_id) {
             'is_locked' => $is_locked,
             'unlock_task_id' => $unlock_task_id,
         );
+        
+        // Add referral link for invite_friends task (daily)
+        if ($task_id === 'invite_friends' && function_exists('hdh_get_referral_link')) {
+            $task_data['referral_link'] = hdh_get_referral_link($user_id);
+        }
+        
+        $tasks[] = $task_data;
     }
     
     return $tasks;

@@ -569,10 +569,19 @@
                                         : 'Yap';
                                     taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/ilan-ver" class="btn-do-task">' + doTaskText + '</a>';
                                     } else if (task.id === 'invite_friends') {
-                                    const doTaskText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.do_task) 
-                                        ? hdhTasks.messages.tasks.do_task 
-                                        : 'Yap';
-                                    taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/profil" class="btn-do-task">' + doTaskText + '</a>';
+                                    // Show share referral link button for invite_friends task
+                                    const shareText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.share_referral_button) 
+                                        ? hdhTasks.messages.tasks.share_referral_button 
+                                        : 'Linki Paylaş';
+                                    const referralLink = task.referral_link || '';
+                                    if (referralLink) {
+                                        taskActions.innerHTML = '<button type="button" class="btn-share-referral" data-referral-link="' + escapeHtml(referralLink) + '">' + shareText + '</button>';
+                                    } else {
+                                        const doTaskText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.do_task) 
+                                            ? hdhTasks.messages.tasks.do_task 
+                                            : 'Yap';
+                                        taskActions.innerHTML = '<a href="' + hdhTasks.siteUrl + '/profil" class="btn-do-task">' + doTaskText + '</a>';
+                                    }
                                     } else {
                                     const pendingText = (hdhTasks.messages && hdhTasks.messages.tasks && hdhTasks.messages.tasks.pending_status) 
                                         ? hdhTasks.messages.tasks.pending_status 
