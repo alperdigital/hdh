@@ -275,7 +275,7 @@ if (!$is_logged_in) {
                     
                     <div class="profile-stats">
                         <div class="profile-stat-item">
-                            <div class="stat-icon">⭐</div>
+                            <div class="stat-icon">🎁</div>
                             <div class="stat-content">
                                 <div class="stat-value"><?php echo esc_html($completed_exchanges); ?></div>
                                 <div class="stat-label">Başarılı Hediyeleşme</div>
